@@ -215,8 +215,8 @@
                                                         <tr>
                                                             <td class="col1">
                                                                 <span
-                                                                    class="custom-t d-flex justify-content-center align-items-center"
-                                                                    style="font-size: 12px;font-weight: 600"oltip"
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.name')">
                                                                     {{ $supplier->name }}
                                                                 </span>

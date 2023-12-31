@@ -4,10 +4,14 @@
             {{-- ++++++++++++++++++++ branches filter ++++++++++++++++++++ --}}
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('branch_id', __('lang.branch'), [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper">
-                    {!! Form::select('branch_id', $branches, null, [
+                    {!! Form::select('branch_id[]', $branches, request()->brach_id, [
                         'class' => 'form-control select2',
-                        'placeholder' => __('lang.branch'),
+                        'multiple',
+                        'placeholder' => __('lang.please_select'),
                         'id' => 'branch_id',
                     ]) !!}
                 </div>
@@ -15,10 +19,14 @@
             {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('store_id', __('lang.store'), [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper">
-                    {!! Form::select('store_id', [], null, [
+                    {!! Form::select('store_id[]', [], request()->store_id, [
                         'class' => 'form-control select2 store',
-                        'placeholder' => __('lang.store'),
+                        'multiple',
+                        'placeholder' => __('lang.please_select'),
                         'id' => 'store_id',
                     ]) !!}
                 </div>
@@ -26,10 +34,13 @@
             {{-- ++++++++++++++++++++ suppliers filter ++++++++++++++++++++ --}}
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('supplier_id', __('lang.supplier'), [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper">
                     {!! Form::select('supplier_id', $suppliers, request()->supplier_id, [
                         'class' => 'form-control select2',
-                        'placeholder' => __('lang.supplier'),
+                        'placeholder' => __('lang.please_select'),
                     ]) !!}
                 </div>
             </div>
@@ -77,84 +88,80 @@
             {{-- ++++++++++++++++++++ categories filter ++++++++++++++++++++ --}}
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('category_id', __('lang.category') . ' 1', [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper">
-                    {!! Form::select(
-                        'category_id',
-                        $categories1,
-                        isset($recent_product->category_id) ? $recent_product->category_id : null,
-                        [
-                            'class' => 'form-control select2 category',
-                            'placeholder' => __('lang.category') . ' 1',
-                            'id' => 'categoryId',
-                        ],
-                    ) !!}
+                    {!! Form::select('category_id', $categories1, request()->category_id, [
+                        'class' => 'form-control select2 category',
+                        'placeholder' => __('lang.please_select'),
+                        'id' => 'categoryId',
+                    ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++++ subcategories1 filter ++++++++++++++++++++ --}}
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('subcategory_id1', __('lang.category') . ' 2', [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper">
-                    {!! Form::select(
-                        'subcategory_id1',
-                        $categories2,
-                        isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null,
-                        [
-                            'class' => 'form-control select2 subcategory',
-                            'placeholder' => __('lang.category') . ' 2',
-                            'id' => 'subcategory_id1',
-                        ],
-                    ) !!}
+                    {!! Form::select('subcategory_id1', $categories2, request()->subcategory_id1, [
+                        'class' => 'form-control select2 subcategory',
+                        'placeholder' => __('lang.please_select'),
+                        'id' => 'subcategory_id1',
+                    ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++++ subcategories2 filter ++++++++++++++++++++ --}}
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('subcategory_id2', __('lang.category') . ' 3', [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper">
-                    {!! Form::select(
-                        'subcategory_id2',
-                        $categories3,
-                        isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null,
-                        [
-                            'class' => 'form-control select2 subcategory2',
-                            'placeholder' => __('lang.category') . ' 3',
-                            'id' => 'subcategory_id2',
-                        ],
-                    ) !!}
+                    {!! Form::select('subcategory_id2', $categories3, request()->subcategory_id2, [
+                        'class' => 'form-control select2 subcategory2',
+                        'placeholder' => __('lang.please_select'),
+                        'id' => 'subcategory_id2',
+                    ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++++ subcategories3 filter ++++++++++++++++++++ --}}
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('subcategory_id3', __('lang.category') . ' 4', [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper">
-                    {!! Form::select(
-                        'subcategory_id3',
-                        $categories4,
-                        isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null,
-                        [
-                            'class' => 'form-control select2 subcategory3',
-                            'placeholder' => __('lang.category') . ' 4',
-                            'id' => 'subcategory_id3',
-                        ],
-                    ) !!}
+                    {!! Form::select('subcategory_id3', $categories4, request()->subcategory_id3, [
+                        'class' => 'form-control select2 subcategory3',
+                        'placeholder' => __('lang.please_select'),
+                        'id' => 'subcategory_id3',
+                    ]) !!}
                 </div>
             </div>
 
             {{-- @endfor --}}
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('brand_id', __('lang.brand'), [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper">
                     {!! Form::select('brand_id', $brands, request()->brand_id, [
                         'class' => 'form-control select2',
-                        'placeholder' => __('lang.brand'),
+                        'placeholder' => __('lang.please_select'),
                     ]) !!}
                 </div>
             </div>
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('created_by', __('lang.created_by')) !!}
                 <div class="input-wrapper">
                     {!! Form::select('created_by', $users, request()->created_by, [
                         'class' => 'form-control select2',
-                        'placeholder' => __('lang.created_by'),
+                        'placeholder' => __('lang.please_select'),
                     ]) !!}
                 </div>
             </div>

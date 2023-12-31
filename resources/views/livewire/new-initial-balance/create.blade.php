@@ -743,7 +743,6 @@
                                                     height: 30px;
                                                     flex-wrap: nowrap;">
                                                     {!! Form::select('fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
-                                                        'id' => 'fill_id',
                                                         'class' => 'select2 fill_id',
                                                         'data-name' => 'fill_id',
                                                         'data-index' => $key,
@@ -868,7 +867,7 @@
                                                         name="discount_from_original_price"
                                                         id="discount_from_original_price{{ $key }}"
                                                         style="font-size: 0.75rem"
-                                                        @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
+                                                        wire:model='discount_from_original_price'
                                                         wire:change="change_discount_from_original_price({{ $key }})">
                                                     <label class="custom-control-label"
                                                         style="font-size: 10px;font-weight: 500"

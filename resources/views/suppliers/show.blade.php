@@ -1,37 +1,48 @@
 @extends('layouts.app')
 @section('title', __('lang.supplier_details'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-       <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.suppliers')</h4>
-                <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item active">
-                            <a href="{{ route('suppliers.index') }}">@lang('lang.suppliers')</a>
-                        </li>
-                         <li class="breadcrumb-item active" aria-current="page">
-                           @lang('lang.supplier_details')
-                        </li>
-                    </ol>
+    <div class="animate-in-page">
+        <div class="breadcrumbbar m-0 px-3 py-0">
+            <div
+                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div>
+                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        @lang('lang.suppliers')
+                    </h4>
+                    <div class="breadcrumb-list">
+                        <ul style=" list-style: none;"
+                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                    @lang('lang.dashboard')</a>
+                            </li>
+                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ route('suppliers.create') }}">/
+                                    @lang('lang.suppliers')</a></li>
+                            {{-- <li class="breadcrumb-item"><a href="#">Brands</a></li> --}}
+                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
+                                aria-current="page">@lang('lang.supplier_details')</li>
+                        </ul>
+                    </div>
                 </div>
+                {{-- <div class="col-md-4">
+                    <div
+                        class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+                        <a href="{{ route('suppliers.create') }}" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            @lang('lang.add_supplier')
+                        </a>
+                    </div>
+                </div> --}}
             </div>
-            {{-- <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    <a href="{{ route('suppliers.show',$supplier->id) }}" class="btn btn-primary">
-                        <i class="fa fa-plus"></i>
-                        @lang('lang.supplier_details')
-                    </a>
-                </div>
-            </div> --}}
         </div>
     </div>
 @endsection
 @section('content')
     <div class="col-md-12  no-print">
         <div class="card">
-            <div class="card-header d-flex align-items-center">
+            <div
+                class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                 <h4>@lang('lang.supplier_details')</h4>
             </div>
             {{-- ++++++++++++++++++++++++ Filters ++++++++++++++++++++++++ --}}
@@ -63,8 +74,8 @@
                     <ul class="nav nav-tabs ml-4 mt-3" role="tablist">
                         {{-- ++++++++++++ tab 1 : info +++++++++++ --}}
                         <li class="nav-item">
-                            <a class="nav-link @if (empty(request()->show)) active @endif" href="#info-sale" role="tab"
-                                data-toggle="tab">@lang('lang.info')</a>
+                            <a class="nav-link @if (empty(request()->show)) active @endif" href="#info-sale"
+                                role="tab" data-toggle="tab">@lang('lang.info')</a>
                         </li>
                         {{-- ++++++++++++ tab 2 : pending_orders +++++++++++ --}}
                         <li class="nav-item">
@@ -80,53 +91,53 @@
 
                     <div class="tab-content">
                         {{-- ++++++++++++ Tab 1 Content : info : معلومات +++++++++++ --}}
-                        <div role="tabpanel" class="tab-pane fade @if (empty(request()->show)) show active @endif" id="info-sale">
-                            <br>
-                            <br>
+                        <div role="tabpanel" class="tab-pane fade @if (empty(request()->show)) show active @endif"
+                            id="info-sale">
                             <div class="col-md-12 text-muted">
-                                <div class="row">
+                                <div
+                                    class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     <input type="hidden" name="supplier_id" id="supplier_id" value="{{ $supplier->id }}">
                                     <div class="col-md-6">
-                                        <div class="col-md-12 ">
-                                            <b>@lang('lang.name'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.name')</b> :
                                             <span class="customer_name_span">{{ $supplier->name }}</span>
                                         </div>
 
-                                        <div class="col-md-12">
-                                            <b>@lang('lang.company_name'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.company_name')</b> :
                                             <span class="customer_company_name_span">{{ $supplier->company_name }}</span>
                                         </div>
 
-                                        <div class="col-md-12">
-                                            <b>@lang('lang.vat_number'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.vat_number')</b> :
                                             <span class="customer_vat_number_span">{{ $supplier->vat_number }}</span>
                                         </div>
-                                        <div class="col-md-12">
-                                            <b>@lang('lang.email'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.email')</b> :
                                             <span class="customer_email_span">{{ $supplier->email }}</span>
                                         </div>
-                                        <div class="col-md-12">
-                                            <b>@lang('lang.mobile'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.mobile')</b> :
                                             <span class="customer_mobile_span">{{ $supplier->mobile }}</span>
                                         </div>
-                                        <div class="col-md-12">
-                                            <b>@lang('lang.address'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.address')</b> :
                                             <span class="customer_address_span">{{ $supplier->address }}</span>
                                         </div>
-                                        <div class="col-md-12">
-                                            <b>@lang('lang.city'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.city')</b> :
                                             <span class="customer_city_span">{{ $supplier->city }}</span>
                                         </div>
-                                        <div class="col-md-12">
-                                            <b>@lang('lang.state'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.state')</b> :
                                             <span class="customer_state_span">{{ $supplier->state }}</span>
                                         </div>
-                                        <div class="col-md-12">
-                                            <b>@lang('lang.postal_code'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.postal_code')</b> :
                                             <span class="customer_postal_code_span">{{ $supplier->postal_code }}</span>
                                         </div>
-                                        <div class="col-md-12">
-                                            <b>@lang('lang.country'):</b>
+                                        <div class="col-md-12 mb-2 d-flex flex-row-reverse">
+                                            <b>@lang('lang.country')</b> :
                                             <span class="customer_country_span">{{ $supplier->country }}</span>
                                         </div>
                                     </div>
@@ -144,40 +155,48 @@
                             </div>
                         </div>
                         {{-- ++++++++++++ Tab 2 Content : pending_orders : طلبات معلقة +++++++++++ --}}
-                        <div role="tabpanel" class="tab-pane fade @if (request()->show == 'pending_orders') show active @endif" id="pending-orders">
-                            <div class="table-responsive">
-                                <table class="table dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>@lang('lang.po_ref_no')</th>
-                                            <th>@lang('lang.date')</th>
-                                            <th>@lang('lang.created_by')</th>
-                                            <th>@lang('lang.supplier')</th>
-                                            <th>@lang('lang.value')</th>
-                                            <th>@lang('lang.status')</th>
-                                            {{-- <th class="notexport">@lang('lang.action')</th> --}}
-                                        </tr>
-                                    </thead>
+                        <div role="tabpanel" class="tab-pane fade @if (request()->show == 'pending_orders') show active @endif"
+                            id="pending-orders">
+                            <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif"
+                                style="margin-top:40px ">
+                                <div class="div1"></div>
+                            </div>
+                            <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div2 table-scroll-wrapper">
+                                    <!-- content goes here -->
+                                    <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>@lang('lang.po_ref_no')</th>
+                                                    <th>@lang('lang.date')</th>
+                                                    <th>@lang('lang.created_by')</th>
+                                                    <th>@lang('lang.supplier')</th>
+                                                    <th>@lang('lang.value')</th>
+                                                    <th>@lang('lang.status')</th>
+                                                    {{-- <th class="notexport">@lang('lang.action')</th> --}}
+                                                </tr>
+                                            </thead>
 
-                                    <tbody>
-                                        @foreach ($purchase_orders as $purchase_order)
-                                            <tr>
-                                                <td>{{ $purchase_order->po_no }}</td>
-                                                <td> {{ @format_date($purchase_order->transaction_date) }}</td>
-                                                <td>{{ $supplier->created_by_user->name ?? '' }}</td>
-                                                <td>
-                                                    @if (!empty($purchase_order->supplier))
-                                                        {{ $purchase_order->supplier->name }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    {{ @num_format($purchase_order->final_total) }}
-                                                </td>
-                                                <td>
-                                                    {{ $purchase_order->status }}
-                                                </td>
+                                            <tbody>
+                                                @foreach ($purchase_orders as $purchase_order)
+                                                    <tr>
+                                                        <td>{{ $purchase_order->po_no }}</td>
+                                                        <td> {{ @format_date($purchase_order->transaction_date) }}</td>
+                                                        <td>{{ $supplier->created_by_user->name ?? '' }}</td>
+                                                        <td>
+                                                            @if (!empty($purchase_order->supplier))
+                                                                {{ $purchase_order->supplier->name }}
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            {{ @num_format($purchase_order->final_total) }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $purchase_order->status }}
+                                                        </td>
 
-                                                {{-- <td>
+                                                        {{-- <td>
 
                                                     <div class="btn-group">
                                                         <button type="button" class="btn btn-default btn-sm dropdown-toggle"
@@ -216,65 +235,118 @@
                                                         </ul>
                                                     </div>
                                                 </td> --}}
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                            <tfoot>
 
-                                    </tfoot>
-                                </table>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {{-- ++++++++++++ Tab 3 Content : statement_of_account : كشف حساب +++++++++++ --}}
                         <div role="tabpanel" class="tab-pane fade @if (request()->show == 'statement_of_account') show active @endif"
                             id="statement-of-account">
-                            <div class="table-responsive">
-                                <table class="table dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>@lang('lang.date')</th>
-                                            <th>@lang('lang.reference_no')</th>
-                                            <th class="sum">@lang('lang.grand_total')</th>
-                                            <th class="sum">@lang('lang.paid')</th>
-                                            <th class="sum">@lang('lang.due')</th>
-                                            <th>@lang('lang.status')</th>
-                                            <th>@lang('lang.due_date')</th>
-                                            {{-- <th>@lang('lang.action')</th> --}}
-                                        </tr>
-                                    </thead>
+                            <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif"
+                                style="margin-top:40px ">
+                                <div class="div1"></div>
+                            </div>
+                            <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div2 table-scroll-wrapper">
+                                    <!-- content goes here -->
+                                    <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>@lang('lang.date')</th>
+                                                    <th>@lang('lang.reference_no')</th>
+                                                    <th class="sum">@lang('lang.grand_total')</th>
+                                                    <th class="sum">@lang('lang.paid')</th>
+                                                    <th class="sum">@lang('lang.due')</th>
+                                                    <th>@lang('lang.status')</th>
+                                                    <th>@lang('lang.due_date')</th>
+                                                    {{-- <th>@lang('lang.action')</th> --}}
+                                                </tr>
+                                            </thead>
 
-                                    <tbody>
-                                        @php
-                                            $total_purchase_payments = 0;
-                                            $total_purchase_due = 0;
-                                        @endphp
-                                        @foreach ($add_stocks as $add_stock)
-                                            <tr>
-                                                <td>{{ @format_date($add_stock->transaction_date) }}</td>
-                                                <td>{{ $add_stock->invoice_no }}</td>
-                                                <td>
-                                                    @if ($add_stock->type == 'purchase_return')
-                                                        {{ @num_format(-$add_stock->final_total) }}@else{{ @num_format($add_stock->final_total) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($add_stock->type == 'purchase_return')
-                                                        {{ @num_format(-$add_stock->transaction_payments->sum('amount')) }}
-                                                    @else{{ @num_format($add_stock->transaction_payments->sum('amount')) }}
-                                                    @endif
-                                                </td>
-                                                <td>{{ @num_format($add_stock->final_total - $add_stock->transaction_payments->sum('amount')) }}</td>
-                                                <td>{{ ucfirst($add_stock->status) }}</td>
-                                                <td>
-                                                    @if ($add_stock->payment_status != 'paid')
-                                                        @if (!empty($add_stock->due_date))
-                                                            {{-- {{ @format_date($add_stock->due_date) }} --}}
-                                                            {{ $add_stock->due_date }}
-                                                        @endif
-                                                    @endif
-                                                </td>
-                                                {{-- +++++++++++++ actions +++++++++++++ --}}
-                                                {{-- <td>
+                                            <tbody>
+                                                @php
+                                                    $total_purchase_payments = 0;
+                                                    $total_purchase_due = 0;
+                                                @endphp
+                                                @foreach ($add_stocks as $add_stock)
+                                                    <tr>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.date')">
+                                                                {{ @format_date($add_stock->transaction_date) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.reference_no')">
+                                                                {{ $add_stock->invoice_no }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.grand_total')">
+
+                                                                @if ($add_stock->type == 'purchase_return')
+                                                                    {{ @num_format(-$add_stock->final_total) }}@else{{ @num_format($add_stock->final_total) }}
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.paid')">
+                                                                @if ($add_stock->type == 'purchase_return')
+                                                                    {{ @num_format(-$add_stock->transaction_payments->sum('amount')) }}
+                                                                    @else{{ @num_format($add_stock->transaction_payments->sum('amount')) }}
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.due')">
+                                                                {{ @num_format($add_stock->final_total - $add_stock->transaction_payments->sum('amount')) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.status')">
+                                                                {{ ucfirst($add_stock->status) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.due_date')">
+                                                                @if ($add_stock->payment_status != 'paid')
+                                                                    @if (!empty($add_stock->due_date))
+                                                                        {{-- {{ @format_date($add_stock->due_date) }} --}}
+                                                                        {{ $add_stock->due_date }}
+                                                                    @endif
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                        {{-- +++++++++++++ actions +++++++++++++ --}}
+                                                        {{-- <td>
                                                     <div class="btn-group">
                                                         <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                                                             data-toggle="dropdown" aria-haspopup="true"
@@ -381,23 +453,25 @@
                                                         </ul>
                                                     </div>
                                                 </td> --}}
-                                            </tr>
-                                            @php
-                                                $total_purchase_payments += $add_stock->transaction_payments->sum('amount');
-                                                $total_purchase_due += $add_stock->final_total - $add_stock->transaction_payments->sum('amount');
-                                            @endphp
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th style="text-align: right">@lang('lang.total')</th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                                    </tr>
+                                                    @php
+                                                        $total_purchase_payments += $add_stock->transaction_payments->sum('amount');
+                                                        $total_purchase_due += $add_stock->final_total - $add_stock->transaction_payments->sum('amount');
+                                                    @endphp
+                                                @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    <th style="text-align: right">@lang('lang.total')</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -70,7 +70,7 @@
                                     <div
                                         class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                         {{-- ++++++++++++++++++++++ name ++++++++++++++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.1s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -87,7 +87,7 @@
                                             </div>
                                         </div>
                                         {{-- ++++++++++++++++++++++ company_name ++++++++++++++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.15s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -105,7 +105,7 @@
                                         </div>
 
                                         {{-- +++++++++++++++++++++++++++++++ exchange_rate ++++++++++++++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.2s">
 
                                             <label style="font-weight: 700;font-size: 13px;"
@@ -123,7 +123,7 @@
 
                                         </div>
 
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.25s">
 
                                             <label style="font-weight: 700;font-size: 13px;"
@@ -142,7 +142,7 @@
 
                                         </div>
                                         {{-- --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.3s">
 
                                             <label style="font-weight: 700;font-size: 13px;"
@@ -161,7 +161,7 @@
 
                                         </div>
                                         {{-- +++++++++++++++++++++++++++++++ postal_code ++++++++++++++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.35s">
 
                                             <label style="font-weight: 700;font-size: 13px;"
@@ -180,7 +180,7 @@
 
                                         {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
 
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.4s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -192,7 +192,7 @@
                                             </div>
                                         </div>
                                         {{-- +++++++++++++++++++++++ owner_debt_in_dollar +++++++++++++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center dollar-cell @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.45s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -205,7 +205,7 @@
                                             </div>
                                         </div>
                                         {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.5s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -221,7 +221,7 @@
                                             </div>
                                         </div>
                                         {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.55s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -243,7 +243,7 @@
                                             </div>
                                         </div>
                                         {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.55s">
 
                                             <label for="city-dd" style="font-weight: 700;font-size: 13px;"
@@ -251,16 +251,16 @@
                                             <div class="input-wrapper">
                                                 <select id="city-dd" name="city_id"
                                                     class="form-control select2"></select>
+                                                <button type="button"
+                                                    class="add-button d-flex justify-content-center align-items-center text-decoration-none"
+                                                    data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
                                             </div>
-                                            <button type="button"
-                                                class="add-button d-flex justify-content-center align-items-center text-decoration-none"
-                                                data-toggle="modal" id="cities_id" data-target="#createRegionModal">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
 
                                         </div>
                                         {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.55s">
 
                                             <label for="quarters_id" style="font-weight: 700;font-size: 13px;"
@@ -268,34 +268,16 @@
                                             <div class="input-wrapper">
                                                 <select id="quarter-dd" class="form-control select2"
                                                     name="quarter_id"></select>
+                                                <button type="button"
+                                                    class="add-button d-flex justify-content-center align-items-center text-decoration-none"
+                                                    data-toggle="modal" id="add_quarters_btn_id"
+                                                    data-target="#createQuarterModal">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
                                             </div>
-                                            <button type="button"
-                                                class="add-button d-flex justify-content-center align-items-center text-decoration-none"
-                                                data-toggle="modal" id="add_quarters_btn_id"
-                                                data-target="#createQuarterModal">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
 
                                         </div>
-                                        {{-- ++++++++++++ images ++++++++++++ --}}
-                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
-                                            style="animation-delay: 1.65s">
 
-                                            <label style="font-weight: 700;font-size: 13px;"
-                                                class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif">@lang('lang.image')</label>
-                                            <div class="input-wrapper">
-                                                <input class=" initial-balance-input m-auto form-control img"
-                                                    style="width: 100%; border:2px solid #ccc;padding: 0" name="image"
-                                                    type="file" accept="image/*">
-                                            </div>
-                                            {{-- <div class="dropzone" id="my-dropzone">
-                                                <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                            </div> --}}
-                                            @error('cover')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-
-                                        </div>
                                         {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
                                         <div class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.7s">
@@ -304,7 +286,7 @@
                                                     <thead class="email_thead">
                                                         <tr>
                                                             <th style="background: transparent !important;color: black !important;"
-                                                                class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                                                class="pb-0 pt-1 @if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                                 <label class="mb-0">
                                                                     @lang('lang.email')
                                                                 </label>
@@ -344,7 +326,7 @@
                                                     <thead class="phone_thead">
                                                         <tr>
                                                             <th style="background: transparent !important;color: black !important;"
-                                                                class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                                                class="pb-0 pt-1 @if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                                 <label class="mb-0">
                                                                     <span class="text-danger">*</span>@lang('lang.phone_number')
                                                                 </label>
@@ -383,16 +365,17 @@
                                         {{-- ====================== notes , address ====================== --}}
 
                                         {{-- ++++++++++++ notes ++++++++++++ --}}
-                                        <div class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-md-6 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.8s">
                                             {!! Form::label('notes', __('lang.notes'), [
                                                 'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0  : mx-2 mb-0  ',
                                                 'style' => 'font-weight: 700;font-size: 13px;width:25%',
                                             ]) !!}
-                                            <div class="input-wrapper" style="width: 100%;height: 50%;margin: 0">
+                                            <div style="width: 100%">
                                                 {!! Form::textarea('notes', null, [
-                                                    'class' => 'form-control initial-balance-input m-auto',
-                                                    'style' => 'width: 100%;height:100%',
+                                                    'class' => 'form-control width-full initial-balance-input m-0',
+                                                    'rows' => 3,
+                                                    'style' => 'background-color:#dedede',
                                                 ]) !!}
                                             </div>
                                             @error('notes')
@@ -400,21 +383,42 @@
                                             @enderror
                                         </div>
                                         {{-- ++++++++++++ address ++++++++++++ --}}
-                                        <div class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-md-6 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.85s">
                                             {!! Form::label('address', __('lang.address'), [
                                                 'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0  : mx-2 mb-0  ',
                                                 'style' => 'font-weight: 700;font-size: 13px;width:25%',
                                             ]) !!}
-                                            <div class="input-wrapper" style="width: 100%;height: 50%;margin: 0">
+                                            <div style="width: 100%">
                                                 {!! Form::textarea('address', null, [
-                                                    'class' => 'form-control initial-balance-input m-auto',
-                                                    'style' => 'width: 100%;height:100%',
+                                                    'class' => 'form-control width-full initial-balance-input m-0',
+                                                    'rows' => 3,
+                                                    'style' => 'background-color:#dedede',
                                                 ]) !!}
                                             </div>
                                             @error('address')
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
+                                        </div>
+
+                                        {{-- ++++++++++++ images ++++++++++++ --}}
+                                        <div class="col-6 col-md-3 flex-column mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                            style="animation-delay: 1.65s">
+
+                                            <label style="font-weight: 700;font-size: 13px;"
+                                                class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif">@lang('lang.image')</label>
+                                            <div class="input-wrapper">
+                                                <input class=" initial-balance-input m-auto form-control img"
+                                                    style="width: 100%; border:2px solid #ccc;padding: 0" name="image"
+                                                    type="file" accept="image/*">
+                                            </div>
+                                            {{-- <div class="dropzone" id="my-dropzone">
+                                                <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                            </div> --}}
+                                            @error('cover')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+
                                         </div>
                                     </div>
 
@@ -433,6 +437,7 @@
                 </div>
                 <!-- End col -->
                 {{-- @include('categories.modalCrop')  --}}
+                @include('suppliers.partials.quick_add')
             </div>
         </div>
     </div>
