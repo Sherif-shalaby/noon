@@ -414,7 +414,6 @@ class ProductController extends Controller
    */
   public function update($id,Request $request)
   {
-    // dd($request);
     try{
       $product_data = [
         'name' => $request->name,
@@ -425,11 +424,11 @@ class ProductController extends Controller
         'subcategory_id3' => $request->subcategory_id3,
         'brand_id' => $request->brand_id,
         'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
-        'height' => $request->height,
-        'length' => $request->length,
-        'width' => $request->width,
-        'size' => $request->size,
-        'weight' => $request->weight,
+        // 'height' => $request->height,
+        // 'length' => $request->length,
+        // 'width' => $request->width,
+        // 'size' => $request->size,
+        // 'weight' => $request->weight,
         'details' => $request->details,
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
