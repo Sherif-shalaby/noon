@@ -230,17 +230,32 @@
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                {{-- ++++++++++++++++++ Show Supplier ++++++++++++++++++ --}}
                                                 <li>
-
+                                                    <a href="{{ route('suppliers.show', $supplier->id) }}"
+                                                        class="btn"><i class="fa fa-eye"></i>
+                                                        @lang('lang.view')</a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                {{-- ++++++++++++++++++ Show statement_of_account of Supplier ++++++++++++++++++ --}}
+                                                <li>
+                                                    <a href="{{ route('suppliers.show', $supplier->id) }}?show=statement_of_account"
+                                                        class="btn"><i class="dripicons-document"></i>
+                                                        @lang('lang.statement_of_account')</a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                {{-- ++++++++++++++++++ Edit Supplier ++++++++++++++++++ --}}
+                                                <li>
                                                     <a href="{{route('suppliers.edit', $supplier->id)}}" target="_blank" class="btn edit_supplier">
                                                         <i class="fa fa-pencil-square-o"></i>@lang('lang.edit')</a>
                                                 </li>
                                                 <li class="divider"></li>
-                                                    <li>
-                                                        <a data-href="{{route('suppliers.destroy', $supplier->id)}}"
-                                                            {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
-                                                            class="btn text-red delete_item"><i class="fa fa-trash"></i>
-                                                            @lang('lang.delete')</a>
+                                                {{-- ++++++++++++++++++ Destroy Supplier ++++++++++++++++++ --}}
+                                                <li>
+                                                    <a data-href="{{route('suppliers.destroy', $supplier->id)}}"
+                                                        {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
+                                                        class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                        @lang('lang.delete')</a>
                                                 </li>
                                             </ul>
                                         </div>

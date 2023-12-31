@@ -328,6 +328,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Returns
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
+    Route::get('sell-return/show/{id}', [SellReturnController::class,'show'])->name('sell_return.show');
 
     // supplier Returns
     Route::get('stock/return/product',[ReturnStockController::class,'show'])->name('suppliers.returns.products');

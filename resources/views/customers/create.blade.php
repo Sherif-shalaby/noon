@@ -265,7 +265,6 @@
                             </div>
                         </div>
                         {{-- ++++++++++++ images ++++++++++++ --}}
-
                     </div>
                     <div class="row pt-4 pb-5">
                         <div class="col-md-12">

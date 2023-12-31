@@ -451,7 +451,7 @@ $(document).on("submit", "#customer-region-form", function (e) {
                 console.log("Outer Second Ajax Request : ",result);
                 $.ajax({
                     method: "get",
-                    url: "/customer/get-dropdown-add_store/"+state_id,
+                    url: "/customer/get-dropdown-city/"+state_id,
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
