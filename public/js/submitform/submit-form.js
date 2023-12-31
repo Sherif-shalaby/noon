@@ -167,7 +167,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                             $(".store_id"+store_index).empty().append(data_html[0]);
                             $(".store_id"+store_index).val(data_html[1]).change();
                         }
-                       
+
                     },
                 });
             } else {
@@ -284,20 +284,24 @@ $(document).on("submit", "#create-category-form", function (e) {
                         if (typeof key !== 'undefined' && key !== null) {
                             if(select_category=="0"){
                                 $("#categoryId" + key).empty().append(data_html);
+                                $(".category").empty().append(data_html);
                                 $("#categoryId" + key).val(category_id).change();
                             }else if(select_category=="2"){
                                 console.log(data_html);
 
                                 $("#subCategoryId2" + key).empty().append(data_html);
+                                $(".subcategory2" ).empty().append(data_html);
                                 $("#subCategoryId2" + key).val(category_id).change();
                                 // $("#subCategoryId2").val(category_id).trigger();
                             }else if(select_category=="3"){
                                 $("#subCategoryId3" + key).empty().append(data_html);
+                                $(".subcategory3").empty().append(data_html);
                                 $("#subCategoryId3" + key).val(category_id).change();
                                 // $("#subCategoryId3").val(category_id).trigger();
                             }
                             else if(select_category=="1"){
                                 $("#subcategory_id1" + key).empty().append(data_html);
+                                $(".subcategory").empty().append(data_html);
                                 $("#subcategory_id1" + key).val(category_id).change();
 
                                 // $("#subcategory_id1").val(category_id).trigger();
