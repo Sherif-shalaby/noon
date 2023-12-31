@@ -99,13 +99,12 @@
                         ]) !!}
                     </div>
                     {{-- +++++++++++++++++++++++ "categories" selectbox +++++++++++++++++++++++ --}}
-                    <div class="col-md-12 product_raws">
+                    {{-- <div class="col-md-12 product_raws">
                         @for ($i = 0; $i < 3; $i++)
                             @include('products.partials.product_row',['key' => $i])
                         @endfor
                         <input type="hidden" id="raw_product_index" value="2" />
-                    </div>
-
+                    </div> --}}
                     {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
                     <div class="col-md-3">
                         <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
