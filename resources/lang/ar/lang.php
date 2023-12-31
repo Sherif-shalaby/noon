@@ -761,6 +761,7 @@ return array(
     'change_bill_to'=>'تحويل الفاتورة الى',
     'dinar_c'=>'دينار',
     'dollar_c'=>'دولار',
+    'debit'=>'دين',
     'info' => 'معلومات',
     'statement_of_account' => 'كشف حساب' ,
     'supplier_details' => 'تفاصيل المورد' ,

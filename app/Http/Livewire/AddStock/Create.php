@@ -79,6 +79,17 @@ class Create extends Component
         $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [],$expenses = [], $customer_types,$total_amount_dollar,$dollar_remaining,$dinar_remaining,$units ,
         $toggle_customers_dropdown , $customer_id ;
+      public $supplier_data=[
+          'dollar_debit'=>'',
+          'dinar_debit'=>'',
+          'email'=>'',
+          'mobile'=>'',
+          'state'=>'',
+          'city'=>'','address'=>'','notes'=>'',
+      ];
+
+       
+
 
 
     public function mount()
@@ -103,6 +114,7 @@ class Create extends Component
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ?? null ;
                 $this->supplier = $recent_stock->supplier_id?? null;
+                $this->changeSupplier();
                 $this->transaction_currency = $recent_stock->transaction_currency ?? null;
                 $this->purchase_type = $recent_stock->purchase_type ?? null;
                 $this->divide_costs = $recent_stock->divide_costs ?? null;
@@ -129,6 +141,27 @@ class Create extends Component
         $this->department_id4 = null;
         $this->source_id=Employee::where('user_id',Auth::user()->id)->first()->id;
     }
+    public function changesupplier(){
+        if($this->supplier!=null){
+            $s_data=Supplier::find($this->supplier);
+            // dd(StockTransaction::where('supplier_id',$s_data)->where('type','add_stock')->where('payment_status','partial')->get());
+            $dollar_debit=StockTransaction::where('supplier_id',$s_data->id)->where('type','add_stock')->where('payment_status','partial')->sum('dollar_remaining');
+            $dollar_debit+=StockTransaction::where('supplier_id',$s_data->id)->where('type','add_stock')->where('payment_status','pending')->sum('dollar_final_total');
+            $dinar_debit=StockTransaction::where('supplier_id',$s_data->id)->where('type','add_stock')->where('payment_status','partial')->sum('dinar_remaining');
+            $dinar_debit+=StockTransaction::where('supplier_id',$s_data->id)->where('type','add_stock')->where('payment_status','pending')->sum('final_total');
+            $this->supplier_data =[
+                'dollar_debit'=>$dollar_debit??0,
+                'dinar_debit'=>$dinar_debit??0,
+                'email'=>json_decode($s_data->email,true),
+                'mobile'=>json_decode($s_data->mobile_number,true),
+                'state'=>!empty($s_data->state)?$s_data->state->name:'',
+                'city'=>!empty($s_data->city)?$s_data->city->name:'',
+                'address'=>$s_data->address??'',
+                'notes'=>$s_data->notes??'',
+            ];
+            // dd($this->supplier_data );
+        }
+    }
     protected $listeners = ['listenerReferenceHere','changeExchangerateForSupplier'];
 
     public function listenerReferenceHere($data)
@@ -146,6 +179,7 @@ class Create extends Component
             }
             if($data['var1'] == 'supplier'){
                 $this->exchange_rate = $this->changeExchangeRate();
+                $this->changesupplier();
             }
             if($data['var1'] == ('paying_currency' || 'divide_costs')){
                 $this->changeTotalAmount();
@@ -153,6 +187,8 @@ class Create extends Component
             if($data['var1'] == 'payment_status'){
                 if($this->payment_status=='pending'){
                     $this->show_payment=1;
+                }else{
+                    $this->show_payment=0;
                 }
             }
             // if (isset($data['var1']) && $data['var1'] == "department_id1") {
