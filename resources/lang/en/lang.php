@@ -683,6 +683,12 @@ return [
     'dinar_c'=>'dinar',
     'dollar_c'=>'dollar',
     'debit'=>'Debit',
+    'info' => 'Information',
+    'statement_of_account' => 'Statement of Account',
+    'supplier_details' => 'Supplier Details' ,
+    'mobile' => 'Mobile',
+    'toggle_suppliers_dropdown' => 'toggle suppliers dropdown' ,
+    'toggle_customers_dropdown' => 'toggle customers dropdown' ,
 ];
 
 

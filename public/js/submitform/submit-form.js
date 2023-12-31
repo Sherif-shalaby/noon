@@ -167,7 +167,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                             $(".store_id"+store_index).empty().append(data_html[0]);
                             $(".store_id"+store_index).val(data_html[1]).change();
                         }
-                       
+
                     },
                 });
             } else {
@@ -447,7 +447,7 @@ $(document).on("submit", "#customer-region-form", function (e) {
                 console.log("Outer Second Ajax Request : ",result);
                 $.ajax({
                     method: "get",
-                    url: "/customer/get-dropdown-add_store/"+state_id,
+                    url: "/customer/get-dropdown-city/"+state_id,
                     data: {},
                     contactType: "html",
                     success: function (data_html) {

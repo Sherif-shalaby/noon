@@ -651,7 +651,7 @@ return array(
     'generate_invoice' => 'طباعة فاتورة',
     'order_discount' => 'خصم',
     'view_payments' => 'عرض المدفوعات',
-    'cities' => 'المدن',
+    'cities' => 'المدينة',
     'regions' => 'المنطقة',
     'show_invoices' => 'عرض الفواتير',
     'view_plan' => 'تفاصيل الخطه',
@@ -762,6 +762,11 @@ return array(
     'dinar_c'=>'دينار',
     'dollar_c'=>'دولار',
     'debit'=>'دين',
-
+    'info' => 'معلومات',
+    'statement_of_account' => 'كشف حساب' ,
+    'supplier_details' => 'تفاصيل المورد' ,
+    'mobile' => 'الهاتف' ,
+    'toggle_suppliers_dropdown' => 'إظهار الموردين',
+    'toggle_customers_dropdown' => 'إظهار العملاء',
 );
 
