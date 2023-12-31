@@ -337,6 +337,23 @@
                                                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
                                                                         user="menu" x-placement="bottom-end"
                                                                         style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                                        {{-- ++++++++++++++++++ Show Supplier ++++++++++++++++++ --}}
+                                                                        <li>
+                                                                            <a href="{{ route('suppliers.show', $supplier->id) }}"
+                                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                                    class="fa fa-eye"></i>
+                                                                                @lang('lang.view')</a>
+                                                                        </li>
+
+                                                                        {{-- ++++++++++++++++++ Show statement_of_account of Supplier ++++++++++++++++++ --}}
+                                                                        <li>
+                                                                            <a href="{{ route('suppliers.show', $supplier->id) }}?show=statement_of_account"
+                                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                                    class="dripicons-document"></i>
+                                                                                @lang('lang.statement_of_account')</a>
+                                                                        </li>
+
+                                                                        {{-- ++++++++++++++++++ Edit Supplier ++++++++++++++++++ --}}
                                                                         <li>
 
                                                                             <a href="{{ route('suppliers.edit', $supplier->id) }}"

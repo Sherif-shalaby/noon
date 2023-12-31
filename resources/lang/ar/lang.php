@@ -662,7 +662,7 @@ return array(
     'remove_expiry' => 'ازالة منهى الصلاحية',
     'order_discount' => 'خصم',
     'view_payments' => 'عرض المدفوعات',
-    'cities' => 'المدن',
+    'cities' => 'المدينة',
     'regions' => 'المنطقة',
     'show_invoices' => 'عرض الفواتير',
     'view_plan' => 'تفاصيل الخطه',
@@ -779,5 +779,10 @@ return array(
     'cash_discount' => 'الخصم النقدي',
     'seasonal_discount' => 'الخصم الموسمي',
     'annual_discount' => 'الخصم السنوي',
-
+    'info' => 'معلومات',
+    'statement_of_account' => 'كشف حساب',
+    'supplier_details' => 'تفاصيل المورد',
+    'mobile' => 'الهاتف',
+    'toggle_suppliers_dropdown' => 'إظهار الموردين',
+    'toggle_customers_dropdown' => 'إظهار العملاء',
 );

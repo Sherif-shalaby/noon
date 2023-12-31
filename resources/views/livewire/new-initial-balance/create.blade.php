@@ -28,6 +28,15 @@
                                 </label>
                             </div>
                         </div>
+                        {{-- ++++++++++++++++ checkbox : Toggle Customer Dropdown ++++++++++++++ --}}
+                        <div div class="col-md-3 animate__animated animate__bounceInLeft" style="animation-delay: 1.1s">
+                            <div class="form-group">
+                                <label>
+                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown']) !!}
+                                    @lang('lang.toggle_customers_dropdown')
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     {{-- {!! Form::open(['id' => 'add_stock_form']) !!} --}}
                     <div class="card-body py-0">
@@ -165,6 +174,38 @@
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                {{-- +++++++++++++++++ customers Dropdown +++++++++++++++++ --}}
+                                @if (!empty($toggle_customers_dropdown))
+                                    <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                        style="animation-delay: 1.2s;width: 160px">
+                                        {!! Form::label('customer_id', __('lang.customers') . '*', [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                            'style' => 'font-weight:500;font-size:10px;color:#888',
+                                        ]) !!}
+                                        <div class="d-flex justify-content-center align-items-center"
+                                            style="background-color: #dedede;
+                                         border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 100%;
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                                            {!! Form::select('customer_id', $customers, $customer_id, [
+                                                'class' => 'form-control select2',
+                                                'data-live-search' => 'true',
+                                                'id' => 'customer_id',
+                                                'placeholder' => __('lang.please_select'),
+                                                'data-name' => 'customer_id',
+                                                'wire:model' => 'customer_id',
+                                            ]) !!}
+                                            {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
+                                        </div>
+                                        @error('customer_id')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @endif
 
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.2s;width: 100px">

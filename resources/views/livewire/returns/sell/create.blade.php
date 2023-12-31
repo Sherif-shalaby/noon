@@ -9,6 +9,8 @@
                 <div class="card-body">
                     {!! Form::open(['method' => 'post', 'files' => true, 'class' => 'pos-form', 'id' => 'sell_return_form']) !!}
                     <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+                        {{-- +++++++++++++++++ stores filter +++++++++++++++++ --}}
                         <div
                             class="col-md-4 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {!! Form::label('store_id', __('lang.store'), [
@@ -25,6 +27,43 @@
                                 ]) !!}
                             </div>
                         </div>
+
+                        {{-- +++++++++++++++++ branches filter +++++++++++++++++ --}}
+                        <div
+                            class="col-md-4 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            {!! Form::label('branch_id', __('lang.branch'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+                                {!! Form::select('branch_id', $branches, $branch_id, [
+                                    'class' => 'form-control select2',
+                                    'placeholder' => __('lang.all'),
+                                    'data-live-search' => 'true',
+                                    'wire:model' => 'branch_id',
+                                ]) !!}
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++ sale_points filter +++++++++++++++++ --}}
+                        <div
+                            class="col-md-4 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            {!! Form::label('pos_id', __('lang.pos'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+                                {!! Form::select(
+                                    'pos_id',
+                                    $store_pos,
+                                    [],
+                                    [
+                                        'class' => 'form-control select2 sale_filter',
+                                        'placeholder' => __('lang.all'),
+                                    ],
+                                ) !!}
+                            </div>
+                        </div>
+
                         <div class="col-md-4 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="font-size: 14px;font-weight: 500;">
                             <span class="mx-1">
@@ -35,6 +74,8 @@
                                 {{ $sale->invoice_no }}
                             </span>
                         </div>
+
+
                         <div class="col-md-4 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="font-size: 14px;font-weight: 500;">
                             <span class="mx-1">
@@ -45,6 +86,7 @@
                                 {{ $sale->customer->name ?? '' }}
                             </span>
                         </div>
+
 
                         <input type="hidden" name="default_customer_id" id="default_customer_id"
                             value="@if (!empty($walk_in_customer)) {{ $walk_in_customer->id }} @endif">

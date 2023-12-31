@@ -40,4 +40,8 @@ class PurchaseOrderTransaction extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function created_by_user()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

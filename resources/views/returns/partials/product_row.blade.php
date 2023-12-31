@@ -63,9 +63,9 @@
             <input type="hidden" class="form-control sub_total"
                 name="transaction_sell_line[{{ $loop->index }}][sub_total]" value="{{ @num_format(0) }}">
         </td>
-        <td>
+        {{-- <td>
             <button type="button" class="btn btn-danger btn-sx remove_row"><i class="fa fa-times"></i></button>
-        </td>
+        </td> --}}
     </tr>
 @empty
 @endforelse

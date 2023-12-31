@@ -702,5 +702,17 @@ return [
     'dollar_c' => 'dollar',
     'download_invoice' => 'Upload invoice',
     'upload_payment_docs' => 'Upload payment documents',
-
+    'purchase_currency' => 'Purchase currency',
+    'discount_on_bonus_quantity' => 'Discount on bonus quantity',
+    'discount_amount' => 'Discount amount',
+    'discount_dependency' => 'Discount dependency',
+    'cash_discount' => 'Cash discount',
+    'seasonal_discount' => 'Seasonal discount',
+    'annual_discount' => 'Annual discount',
+    'info' => 'Information',
+    'statement_of_account' => 'Statement of Account',
+    'supplier_details' => 'Supplier Details',
+    'mobile' => 'Mobile',
+    'toggle_suppliers_dropdown' => 'toggle suppliers dropdown',
+    'toggle_customers_dropdown' => 'toggle customers dropdown',
 ];

@@ -3,16 +3,15 @@
     {!! Form::open(['route' => 'pos.store', 'method' => 'post']) !!}
 
     <div class="row justify-content-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-        <div
-            class="col-md-6 row justify-content-between  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+        <div class="col-md-6 row   @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
             {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
-            <div class="col-md-3 d-flex mb-2 @if (app()->isLocale('ar')) align-items-end  @else  align-items-start @endif  flex-column animate__animated animate__bounceInLeft"
+            <div class="col-md-2 d-flex mb-2 @if (app()->isLocale('ar')) align-items-end  @else  align-items-start @endif  flex-column animate__animated animate__bounceInLeft"
                 style="animation-delay: 1.1s">
                 {!! Form::label('store_id', __('lang.store') . '*', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end h5 mx-2  mb-1 width-fit' : 'mx-2 mb-1 h5 width-fit',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
-                <div class="input-wrapper mx-2">
+                <div class="input-wrapper mx-2" style="width: 100%">
                     {!! Form::select('store_id', $stores ?? [], $store_id, [
                         'class' => 'select2 form-control',
                         'data-live-search' => 'true',
@@ -29,13 +28,13 @@
                 @enderror
             </div>
             {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
-            <div class="col-md-3 d-flex mb-2 @if (app()->isLocale('ar')) align-items-end  @else  align-items-start @endif   flex-column animate__animated animate__bounceInLeft"
+            <div class="col-md-2 d-flex mb-2 @if (app()->isLocale('ar')) align-items-end  @else  align-items-start @endif   flex-column animate__animated animate__bounceInLeft"
                 style="animation-delay: 1.15s">
                 {!! Form::label('store_pos_id', __('lang.pos') . '*', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end h5 mx-2 mb-1 width-fit' : 'mx-2  mb-1 h5 width-fit',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
-                <div class="input-wrapper mx-2">
+                <div class="input-wrapper mx-2" style="width: 100%">
                     {!! Form::select('store_pos_id', $store_pos, $store_pos_id, [
                         'class' => 'select2 form-control',
                         'data-name' => 'store_pos_id',
@@ -50,38 +49,71 @@
                 @enderror
             </div>
             {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-            <div class="col-md-6 align-items-end d-flex mb-2 @if (app()->isLocale('ar')) flex-row-reverse  @else  flex-row @endif animate__animated animate__bounceInLeft"
+            <div class="col-md-3 d-flex flex-column align-items-end mb-2 customer_drop_down animate__animated animate__bounceInLeft"
                 style="animation-delay: 1.2s">
-                <div class="d-flex flex-column align-items-end col-md-7 customer_drop_down p-0">
-                    <label for=""
-                        class=" @if (app()->isLocale('ar')) d-block text-end @endif mx-2 h5 mb-1"
-                        style="font-size: 12px;font-weight: 500;">العملاء</label>
-                    <div class="input-wrapper mx-2">
-                        <select class="form-control client select2" style="width: 80%" wire:model="client_id"
-                            id="client_id" data-name="client_id">
-                            <option value="0 " readonly>اختر </option>
-                            @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}" {{ $client_id == $customer->id ? 'selected' : '' }}>
-                                    {{ $customer->name }} - {{ $customer->phone != '[null]' ? $customer->phone : '' }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <button type="button" class="add-button d-flex justify-content-center align-items-center"
-                            data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
-                    </div>
+                <label for="" class=" @if (app()->isLocale('ar')) d-block text-end @endif mx-2 h5 mb-1"
+                    style="font-size: 12px;font-weight: 500;">العملاء</label>
+                <div class="input-wrapper mx-2" style="width: 100%">
+                    <select class="form-control client select2" style="width: 80%" wire:model="client_id" id="client_id"
+                        data-name="client_id">
+                        <option value="0 " readonly>اختر </option>
+                        @foreach ($customers as $customer)
+                            <option value="{{ $customer->id }}" {{ $client_id == $customer->id ? 'selected' : '' }}>
+                                {{ $customer->name }} - {{ $customer->phone != '[null]' ? $customer->phone : '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button type="button" class="add-button d-flex justify-content-center align-items-center"
+                        data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
                 </div>
-
-                <div class="mx-1 p-0">
-                    <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
-                        wire:click="redirectToCustomerDetails({{ $client_id }})"
-                        class="btn btn-primary d-flex justify-content-center align-items-center payment-btn">
-                        <i class="fa-solid fa-eye"></i>
-                    </button>
-                </div>
-                @error('client_id')
-                    <span style="font-size: 12px;font-weight: 500;" class="text-danger">{{ $message }}</span>
-                @enderror
             </div>
+
+            <div class="col-md-1 justify-content-center d-flex flex-column align-items-end mx-1 p-0 animate__animated animate__bounceInLeft"
+                style="animation-delay: 1.2s">
+                <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
+                    wire:click="redirectToCustomerDetails({{ $client_id }})"
+                    class="btn btn-primary d-flex justify-content-center align-items-center payment-btn">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+            @error('client_id')
+                <span style="font-size: 12px;font-weight: 500;" class="text-danger">{{ $message }}</span>
+            @enderror
+
+            {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
+            <div class="col-md-1  d-flex align-items-center justify-content-center flex-row-reverse p-0">
+                <label class=" d-flex align-items-center justify-content-center flex-column p-0">
+                    {!! Form::checkbox('toggle_suppliers_dropdown', 1, false, ['wire:model' => 'toggle_suppliers_dropdown']) !!}
+                    <span class="mx-1 text-center ">
+
+                        @lang('lang.toggle_suppliers_dropdown')
+                    </span>
+                </label>
+            </div>
+            {{-- +++++++++++++++++ suppliers Dropdown +++++++++++++++++ --}}
+            @if (!empty($toggle_suppliers_dropdown))
+                <div
+                    class="col-md-2 d-flex flex-column align-items-end mb-2  p-0 animate__animated animate__bounceInLeft">
+                    {!! Form::label('supplier_id', __('lang.supplier') . '*', [
+                        'class' => app()->isLocale('ar') ? 'd-block text-end h5 mx-2  mb-1 width-fit' : 'mx-2 mb-1 h5 width-fit',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
+                    <div class="input-wrapper mx-2" style="width: 100%">
+                        {!! Form::select('supplier_id', $suppliers, $supplier_id, [
+                            'class' => 'form-control select2',
+                            'data-live-search' => 'true',
+                            'id' => 'supplier_id',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'supplier',
+                            'wire:model' => 'supplier_id',
+                        ]) !!}
+                        {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
+                    </div>
+                    @error('supplier')
+                        <span class="error text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            @endif
         </div>
         {{-- <div
                     class="row col-md-5 justify-content-between mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"> --}}
@@ -164,13 +196,15 @@
                         $city = \App\Models\City::find($customer_data->city_id);
                     }
                 @endphp
-                <div class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div
+                    class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.phone_number') </span> :
                     <span class="mx-1"
                         style="font-weight: 500;font-size:12px;">{{ !empty($customer_data->phone) ? $customer_data->phone : '' }}</span>
 
                 </div>
-                <div class="col-md-5 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div
+                    class="col-md-5 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.notes') </span> :
                     <span class="mx-1"
                         style="font-weight: 500;font-size:12px;">{{ !empty($customer_data->notes) ? $customer_data->notes : '' }}</span>

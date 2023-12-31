@@ -229,7 +229,7 @@
                                             <div class="input-wrapper">
 
                                                 <select id="state-dd" name="state_id"
-                                                    class=" initial-balance-input m-auto"
+                                                    class=" initial-balance-input select2 m-auto"
                                                     style="width: 100%; border:2px solid #ccc">
                                                     @php
                                                         $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
@@ -242,17 +242,40 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
+                                        {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
                                         <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
-                                            style="animation-delay: 1.6s">
-                                            <label style="font-weight: 700;font-size: 13px;"
-                                                class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                for="city-dd">@lang('lang.city')</label>
+                                            style="animation-delay: 1.55s">
+
+                                            <label for="city-dd" style="font-weight: 700;font-size: 13px;"
+                                                class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif">@lang('lang.regions')</label>
                                             <div class="input-wrapper">
                                                 <select id="city-dd" name="city_id"
-                                                    class=" initial-balance-input m-auto"
-                                                    style="width: 100%; border:2px solid #ccc"></select>
+                                                    class="form-control select2"></select>
                                             </div>
+                                            <button type="button"
+                                                class="add-button d-flex justify-content-center align-items-center text-decoration-none"
+                                                data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+
+                                        </div>
+                                        {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                            style="animation-delay: 1.55s">
+
+                                            <label for="quarters_id" style="font-weight: 700;font-size: 13px;"
+                                                class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif">@lang('lang.quarters')</label>
+                                            <div class="input-wrapper">
+                                                <select id="quarter-dd" class="form-control select2"
+                                                    name="quarter_id"></select>
+                                            </div>
+                                            <button type="button"
+                                                class="add-button d-flex justify-content-center align-items-center text-decoration-none"
+                                                data-toggle="modal" id="add_quarters_btn_id"
+                                                data-target="#createQuarterModal">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+
                                         </div>
                                         {{-- ++++++++++++ images ++++++++++++ --}}
                                         <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
