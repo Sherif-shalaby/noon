@@ -682,6 +682,7 @@ return [
     'number_of_days' => 'Number of Days',
     'dinar_c'=>'dinar',
     'dollar_c'=>'dollar',
+    'debit'=>'Debit',
 ];
 
 

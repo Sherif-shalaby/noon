@@ -31,6 +31,7 @@
                                 </label>
                             </div>
                         </div>
+                    
                     </div>
                     {!! Form::open(['id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!}
                     <div class="card-body">
@@ -98,7 +99,18 @@
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
+                                <div class="col-md-12 pt-2 pb-2 {{$supplier!=null?'':'d-none'}}">
+                                    <div class="row">
+                                        <div class="col-md-2">@lang('lang.debit') {{$supplier_data['dollar_debit']}} $</div>
+                                        <div class="col-md-2">@lang('lang.debit')  {{$supplier_data['dinar_debit']}} د.ع</div>
+                                        <div class="col-md-2">@lang('lang.email') {{$supplier_data['email'][0]}}</div>
+                                        <div class="col-md-2">@lang('lang.phone') {{$supplier_data['mobile'][0]}}</div>
+                                        <div class="col-md-2">@lang('lang.state') {{$supplier_data['state']}}</div>
+                                        <div class="col-md-2">@lang('lang.city') {{$supplier_data['city']}}</div>
+                                        <div class="col-md-2">@lang('lang.address') {{$supplier_data['address']}}</div>
+                                        <div class="col-md-2">@lang('lang.notes') {{$supplier_data['notes']}}</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 mt-2">
@@ -667,7 +679,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     Livewire.emit('changeExchangerateForSupplier','ok');
-                }else{
+                }else {
                     Livewire.emit('changeExchangerateForSupplier','cancel');
                 }
             });
