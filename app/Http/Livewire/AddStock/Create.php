@@ -126,7 +126,7 @@ class Create extends Component
         $this->department_id4 = null;
         $this->source_id=Employee::where('user_id',Auth::user()->id)->first()->id;
     }
-    protected $listeners = ['listenerReferenceHere'];
+    protected $listeners = ['listenerReferenceHere','changeExchangerateForSupplier'];
 
     public function listenerReferenceHere($data)
     {
@@ -168,7 +168,22 @@ class Create extends Component
 
 
     }
-
+    public function changeExchangerateForSupplier($status=''){
+        try{
+            if($status=='ok'){
+                $supplier = Supplier::find($this->supplier);
+                $supplier->exchange_rate =$this->exchange_rate;
+                $supplier->save();
+                $this->changeExchangeRateBasedPrices();
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم بنجاح']);
+            }else{
+                $this->changeExchangeRateBasedPrices();
+            }
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
+            dd($e);
+        }
+    }
     public function render(): Factory|View|Application
     {
         $status_array = $this->getPurchaseOrderStatusArray();

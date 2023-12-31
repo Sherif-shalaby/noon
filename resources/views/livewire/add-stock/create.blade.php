@@ -130,8 +130,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
-                                    <input type="text" class="form-control" id="exchange_rate" name="exchange_rate"
-                                        wire:model="exchange_rate" wire:change="changeExchangeRateBasedPrices()">
+                                    <input type="text" class="form-control changeExchangerateForSupplier" id="exchange_rate" name="exchange_rate"
+                                        wire:model="exchange_rate" >
                                 </div>
                                 @if (!empty($change_exchange_rate_to_supplier))
                                     <div class="col-md-3">
@@ -656,6 +656,23 @@
 
 @push('javascripts')
     <script>
+        $(document).on('change','.changeExchangerateForSupplier', function(e) {
+            Swal.fire({
+                'type' : 'info',
+                'title' : 'تأكيد',
+                'text' : 'هل نريد تغيير سعر الصرف لهذا المورد ؟',
+                'showCancelButton' : true,
+                'confirmButtonText' : 'نعم',
+                'cancelButtonText' : 'إلغاء',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('changeExchangerateForSupplier','ok');
+                }else{
+                    Livewire.emit('changeExchangerateForSupplier','cancel');
+                }
+            });
+
+        });
         document.addEventListener('livewire:load', function() {
             $('.depart1').select().on('change', function(e) {
                 @this.set('department_id1', $(this).val());
