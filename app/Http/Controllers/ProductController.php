@@ -120,12 +120,10 @@ class ProductController extends Controller
   public function create()
   {
     $clear_all_input_form = System::getProperty('clear_all_input_stock_form');
-//    dd($clear_all_input_product_form, isset($clear_all_input_product_form) && $clear_all_input_product_form == '1');
     $recent_product=[];
     if(isset($clear_all_input_form) && $clear_all_input_form == '1') {
          $recent_product = Product::orderBy('created_at', 'desc')->first();
      }
-//     dd(isset($recent_product));
     $units=Unit::orderBy('created_at', 'desc')->get();
     $categories1 = Category::orderBy('name', 'asc')->where('parent_id',1)->pluck('name', 'id')->toArray();
     $categories2 = Category::orderBy('name', 'asc')->where('parent_id',2)->pluck('name', 'id')->toArray();
@@ -147,7 +145,8 @@ class ProductController extends Controller
     /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
     public function store(ProductRequest $request)
     {
-        try {
+        try
+        {
                 DB::beginTransaction();
                 foreach ($request->products as $re_product) {
                     if ($re_product['name'] != null) {
@@ -231,7 +230,9 @@ class ProductController extends Controller
                     'success' => true,
                     'msg' => __('lang.success')
                 ];
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e)
+        {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
@@ -413,12 +414,7 @@ class ProductController extends Controller
    */
   public function update($id,Request $request)
   {
-    // return $request->all();
-    //    $request->validate([
-    //     'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
-    //    ]);
     try{
-//        dd($request);
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],

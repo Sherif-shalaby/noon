@@ -241,10 +241,11 @@
                                             <td class="col4">
                                                 <input type="checkbox" name="product_selected_delete" class="product_selected_delete" value=" {{ $product->id }} " data-product_id="{{ $product->id }}" />
                                             </td>
-                                            <td class="col5">@foreach($product->product_stores as $store)
+                                            <td class="col5">
+                                                @foreach($product->product_stores as $store)
                                                     @php
-                                                    $unit=!empty($store->variations)?$store->variations:[];
-                                                    $amount=0;
+                                                        $unit = !empty($store->variations)?$store->variations:[];
+                                                        $amount = 0;
                                                     @endphp
                                                 @endforeach
 
