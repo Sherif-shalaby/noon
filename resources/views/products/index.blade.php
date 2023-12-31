@@ -140,12 +140,22 @@
                                         {{-- +++++++++++++++++ checkbox6 : category +++++++++++++++++ --}}
                                         <label for="col6_id">
                                             <input type="checkbox" id="col6_id" name="col6" class="checkbox_class"  checked="checked" />
-                                            <span>@lang('lang.category')</span>
+                                            <span>@lang('lang.category') 1</span>
                                         </label>
-                                        {{-- +++++++++++++++++ checkbox7 : subcategories_name +++++++++++++++++ --}}
+                                        {{-- +++++++++++++++++ checkbox7 : category2 +++++++++++++++++ --}}
                                         <label for="col7_id">
                                             <input type="checkbox" id="col7_id" name="col7" class="checkbox_class"  checked="checked" />
-                                            <span>@lang('lang.subcategories_name')</span>
+                                            <span>@lang('lang.category') 2</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox7 : category3 +++++++++++++++++ --}}
+                                        <label for="col7_id">
+                                            <input type="checkbox" id="col19_id" name="col19" class="checkbox_class"  checked="checked" />
+                                            <span>@lang('lang.category') 3</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox7 : category4 +++++++++++++++++ --}}
+                                        <label for="col7_id">
+                                            <input type="checkbox" id="col20_id" name="col20" class="checkbox_class"  checked="checked" />
+                                            <span>@lang('lang.category') 4</span>
                                         </label>
                                         {{-- +++++++++++++++++ checkbox8 : height +++++++++++++++++ --}}
                                         <label for="col8_id">
@@ -216,8 +226,10 @@
                                         <th class="col3">@lang('lang.sku')</th>
                                         <th class="col4">@lang('lang.select_to_delete')</th>
                                         <th class="col5">@lang('lang.stock')</th>
-                                        <th class="col6">@lang('lang.category')</th>
-                                        <th class="col7">@lang('lang.subcategories_name')</th>
+                                        <th class="col6">@lang('lang.category') 1</th>
+                                        <th class="col7">@lang('lang.category') 2</th>
+                                        <th class="col19">@lang('lang.category') 3</th>
+                                        <th class="col20">@lang('lang.category') 4</th>
                                         <th class="col8">@lang('lang.height')</th>
                                         <th class="col9">@lang('lang.length')</th>
                                         <th class="col10">@lang('lang.width')</th>
@@ -261,8 +273,12 @@
                                             </td>
                                             <td class="col6">{{$product->category->name??''}}</td>
                                             <td class="col7">
-                                                {{$product->subCategory1->name??''}} <br>
-                                                {{$product->subCategory2->name??''}} <br>
+                                                {{$product->subCategory1->name??''}}
+                                            </td>
+                                            <td class="col19">
+                                                {{$product->subCategory2->name??''}}
+                                            </td>
+                                            <td class="col20">
                                                 {{$product->subCategory3->name??''}}
                                             </td>
                                             <td class="col8">{{$product->product_dimensions->height??0}}</td>

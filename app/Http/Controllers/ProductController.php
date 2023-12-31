@@ -89,7 +89,7 @@ class ProductController extends Controller
         })
         ->when(\request()->store_id != null, function ($query) {
             $query->whereHas('product_stores', function ($query) {
-                $query->where('store_id',\request()->store_id);
+                $query->whereIn('store_id',\request()->store_id);
             });
         })
         ->when(\request()->supplier_id != null, function ($query) use ($stock_transaction_ids) {
@@ -98,7 +98,7 @@ class ProductController extends Controller
             });
         })
         ->when(\request()->brand_id != null, function ($query) {
-            $query->where('brand_id',\request()->brand_id);
+            $query->whereIn('brand_id',\request()->brand_id);
         })
         ->when(\request()->created_by != null, function ($query) {
             $query->where('created_by',\request()->created_by);

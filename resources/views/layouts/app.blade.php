@@ -269,7 +269,7 @@
         $(document).on("change","#branch_id",function () {
             $.ajax({
                 type: "get",
-                url: "/get_branch_stores/"+$(this).val(),
+                url: "/get_branch_stores/"+$(this).val().join(','),
                 dataType: "html",
                 success: function (response) {
                     console.log(response)
