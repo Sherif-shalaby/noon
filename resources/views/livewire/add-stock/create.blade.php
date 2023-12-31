@@ -7,7 +7,7 @@
                         <h4>@lang('lang.add-stock')</h4>
                     </div>
                     <div class="row ">
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
                         </div>
                         <div class="col-md-2">
@@ -20,7 +20,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="i-checks">
                                 <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
                                     @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif class="">
@@ -28,6 +28,15 @@
                                     <strong>
                                         @lang('lang.clear_all_input_form')
                                     </strong>
+                                </label>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ checkbox : Toggle Customer Dropdown ++++++++++++++ --}}
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>
+                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false,['wire:model' => 'toggle_customers_dropdown']) !!}
+                                    @lang('lang.toggle_customers_dropdown')
                                 </label>
                             </div>
                         </div>
@@ -43,6 +52,7 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div> --}}
+                                {{-- +++++++++++++++ supplier dropdown ++++++++++ --}}
                                 <div class="col-md-3">
                                     {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
                                     <div class="d-flex justify-content-center">
@@ -62,6 +72,7 @@
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+
                                 {{-- <div class="col-md-2">
                                     <label for="invoice_currency">@lang('lang.invoice_currency') :*</label>
                                     {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency,
@@ -98,6 +109,22 @@
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                {{-- +++++++++++++++++ customers Dropdown +++++++++++++++++ --}}
+                                @if(!empty($toggle_customers_dropdown))
+                                    <div class="col-md-3">
+                                        {!! Form::label('customer_id', __('lang.customers') . ':*', []) !!}
+                                        <div class="d-flex justify-content-center">
+                                        {!! Form::select('customer_id', $customers, $customer_id,
+                                            ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'customer_id', 'placeholder' => __('lang.please_select'),
+                                            'data-name' => 'customer_id', 'wire:model' => 'customer_id'
+                                            ]) !!}
+                                            {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
+                                        </div>
+                                        @error('customer_id')
+                                        <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @endif
 
                             </div>
                         </div>

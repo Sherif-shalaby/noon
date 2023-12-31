@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\User;
 use App\Models\Brand;
+use App\Models\Store;
 use App\Models\System;
 use App\Models\Country;
 use App\Models\JobType;
@@ -17,6 +18,7 @@ use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\SellLine;
 use App\Models\StorePos;
+use App\Models\Supplier;
 use App\Models\Variation;
 use App\Models\AddStockLine;
 use App\Models\CashRegister;
@@ -34,7 +36,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CashRegisterTransaction;
 use App\Models\PaymentTransactionSellLine;
-use App\Models\Store;
 
 class Create extends Component
 {
@@ -47,7 +48,8 @@ class Create extends Component
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
 
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0,$back_to_dollar;
+        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0,$back_to_dollar ,
+        $toggle_suppliers_dropdown , $supplier_id ;
 
 
     protected $rules = [
@@ -116,6 +118,7 @@ class Create extends Component
         $this->department_id4 = null;
         // add new_customer
         $this->countryId = System::getProperty('country_id');
+        $this->supplier_id = 1 ;
         $this->countryName = Country::where('id', $this->countryId)->pluck('name')->first();
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
@@ -202,6 +205,7 @@ class Create extends Component
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $this->customers = Customer::orderBy('created_by', 'asc')->get();
         $languages = System::getLanguageDropdown();
+        $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $customer_types = CustomerType::latest()->pluck('name', 'id');
@@ -266,6 +270,7 @@ class Create extends Component
             'customer_types',
             'search_result',
             'deliverymen',
+            'suppliers',
             // 'customers_rt',
             'sell_lines',
         ));
@@ -293,6 +298,7 @@ class Create extends Component
             $transaction_data = [
                 'store_id' => $this->store_id,
                 'customer_id' => $this->client_id,
+                'supplier_id ' => $this->supplier_id ,
                 'employee_id' => Employee::where('user_id', auth()->user()->id)->first()->id,
                 'store_pos_id' => $this->store_pos_id,
                 'exchange_rate' => System::getProperty('dollar_exchange') ?? 0,

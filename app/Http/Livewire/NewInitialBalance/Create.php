@@ -2,30 +2,31 @@
 
 namespace App\Http\Livewire\NewInitialBalance;
 
-use App\Models\AddStockLine;
-use App\Models\Branch;
-use App\Models\Category;
-use App\Models\Currency;
-use App\Models\CustomerType;
-use App\Models\Product;
-use App\Models\ProductDimension;
-use App\Models\ProductPrice;
-use App\Models\ProductStore;
-use App\Models\ProductTax;
-use App\Models\StockTransaction;
-use App\Models\Store;
-use App\Models\Supplier;
-use App\Models\System;
+use Carbon\Carbon;
 use App\Models\Tax;
 use App\Models\Unit;
-use App\Models\Variation;
-use App\Models\VariationPrice;
-use App\Models\VariationStockline;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Models\Store;
+use App\Models\Branch;
+use App\Models\System;
+use App\Models\Product;
 use Livewire\Component;
+use App\Models\Category;
+use App\Models\Currency;
+use App\Models\Customer;
+use App\Models\Supplier;
+use App\Models\Variation;
+use App\Models\ProductTax;
+use App\Models\AddStockLine;
+use App\Models\CustomerType;
+use App\Models\ProductPrice;
+use App\Models\ProductStore;
 use Livewire\WithPagination;
+use App\Models\VariationPrice;
+use App\Models\ProductDimension;
+use App\Models\StockTransaction;
+use App\Models\VariationStockline;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Create extends Component
 {
@@ -97,7 +98,7 @@ class Create extends Component
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $variationSums = [], $customer_types = [],
         $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $units = [],
         $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [];
-    public $rows = [];
+    public $rows = []  , $toggle_customers_dropdown , $customer_id ;
     public function messages()
     {
         return [
@@ -237,6 +238,7 @@ class Create extends Component
     public function render()
     {
         $this->branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
+        $customers = Customer::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $this->discount_from_original_price = 1;
@@ -267,6 +269,7 @@ class Create extends Component
             compact(
                 'stores',
                 'suppliers',
+                'customers',
                 'products',
                 'product_taxes',
                 'basic_units',

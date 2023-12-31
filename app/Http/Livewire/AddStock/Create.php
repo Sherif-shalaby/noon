@@ -2,45 +2,46 @@
 
 namespace App\Http\Livewire\AddStock;
 
-use App\Models\AddStockLine;
-use App\Models\Branch;
-use App\Models\CashRegister;
-use App\Models\CashRegisterTransaction;
-use App\Models\Category;
-use App\Models\Currency;
-use App\Models\CustomerType;
-use App\Models\Employee;
-use App\Models\JobType;
-use App\Models\MoneySafe;
-use App\Models\MoneySafeTransaction;
-use App\Models\Product;
-use App\Models\ProductPrice;
-use App\Models\ProductStore;
-use App\Models\PurchaseOrderTransaction;
-use App\Models\StockTransaction;
-use App\Models\StockTransactionPayment;
-use App\Models\Store;
-use App\Models\StorePos;
-use App\Models\Supplier;
-use App\Models\System;
-use App\Models\Transaction;
+use Carbon\Carbon;
 use App\Models\Unit;
 use App\Models\User;
-use App\Models\Variation;
-use App\Models\VariationPrice;
-use App\Models\VariationStockline;
-use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Store;
+use App\Models\Branch;
+use App\Models\System;
+use App\Models\JobType;
+use App\Models\Product;
 use Livewire\Component;
+use App\Models\Category;
+use App\Models\Currency;
+use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\StorePos;
+use App\Models\Supplier;
+use App\Models\MoneySafe;
+use App\Models\Variation;
+use App\Models\Transaction;
+use App\Models\AddStockLine;
+use App\Models\CashRegister;
+use App\Models\CustomerType;
+use App\Models\ProductPrice;
+use App\Models\ProductStore;
 use Livewire\WithPagination;
+use App\Models\VariationPrice;
+use App\Models\StockTransaction;
+use App\Models\VariationStockline;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use App\Models\MoneySafeTransaction;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
+use App\Models\CashRegisterTransaction;
+use App\Models\StockTransactionPayment;
+use App\Models\PurchaseOrderTransaction;
 use function Symfony\Component\String\s;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -76,11 +77,13 @@ class Create extends Component
         $transaction_currency,$expenses_currency ,$current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
-        $variationSums = [],$expenses = [], $customer_types,$total_amount_dollar,$dollar_remaining,$dinar_remaining,$units;
+        $variationSums = [],$expenses = [], $customer_types,$total_amount_dollar,$dollar_remaining,$dinar_remaining,$units ,
+        $toggle_customers_dropdown , $customer_id ;
 
 
-    public function mount(){
-
+    public function mount()
+    {
+        $this->customer_id = 1 ;
         if(isset($_GET['product_id'])){
             $productId = $_GET['product_id'];
             $this->add_product($productId);
@@ -192,6 +195,7 @@ class Create extends Component
         $payment_types = $payment_type_array;
         $product_id = request()->get('product_id');
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
+        $customers = Customer::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $preparers = JobType::with('employess')->where('title','preparer')->get();
@@ -274,6 +278,7 @@ class Create extends Component
             'payment_types',
             'payment_status_array',
             'suppliers',
+            'customers',
             'selected_currencies',
             'preparers' ,
             'customer_types',
@@ -397,6 +402,9 @@ class Create extends Component
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
             $transaction->supplier_id = $this->supplier;
+            // customers dropdown
+            $transaction->customer_id = $this->customer_id ;
+
             // $transaction->transaction_currency = $this->transaction_currency;
             $transaction->payment_status = $this->payment_status;
             $transaction->expenses = json_encode($this->expenses);
