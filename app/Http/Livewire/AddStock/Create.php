@@ -78,7 +78,7 @@ class Create extends Component
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [],$expenses = [], $customer_types,$total_amount_dollar,$dollar_remaining,$dinar_remaining,$units ,
-        $toggle_customers_dropdown , $customer_id ,$total_expenses,$market_exchange_rate=1,$dinar_expenses=0,$dollar_expenses=0;
+        $toggle_customers_dropdown , $customer_id ,$total_expenses=0,$market_exchange_rate=1,$dinar_expenses=0,$dollar_expenses=0;
       public $supplier_data=[
           'dollar_debit'=>'',
           'dinar_debit'=>'',
@@ -380,6 +380,7 @@ class Create extends Component
     }
     public function getTotalExpenses(){
         $this->total_expenses=0;
+        // $this->total_dinar_expenses=0;
         $this->dinar_expenses=0;
         $this->dollar_expenses=0;
         foreach($this->expenses as $expense){
@@ -393,10 +394,15 @@ class Create extends Component
         }
         $this->dinar_expenses=number_format($this->num_uf($this->dinar_expenses),3);
         $this->dollar_expenses=number_format($this->num_uf($this->dollar_expenses),3);
-        return number_format($this->total_expenses,3);
+        // return number_format($this->total_expenses,3);
     }
     public function removeExpense($index)
     {
+        if($this->expenses[$index]['expense_currency']=2){
+            $this->dollar_expenses-=$this->expenses[$index]['amount'];
+        }else{
+            $this->dinar_expenses-=$this->expenses[$index]['amount'];
+        }
         unset($this->expenses[$index]);
         $this->expenses = array_values($this->expenses);
     }
@@ -1587,7 +1593,7 @@ class Create extends Component
     public function changeTotalAmount(){
         // if($this->paying_currency == 2){
             $totalExpenses=$this->num_uf($this->getTotalExpenses());
-            $this->total_amount_dollar =$this->num_uf($this->sum_dollar_total_cost()) - $totalExpenses;
+            $this->total_amount_dollar =$this->num_uf($this->sum_dollar_total_cost()) ;
             // $this->total_amount_dollar =$this->num_uf($this->sum_dollar_total_cost()) -$this->calcPayment();
         // }else{
             // $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
