@@ -523,7 +523,7 @@
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input"
                                                 name="discount_from_original_price" id="discount_from_original_price{{ $key }}"
-                                                style="font-size: 0.75rem" wire:model='discount_from_original_price'
+                                                style="font-size: 0.75rem" wire:model='prices.{{ $key }}.discount_from_original_price' 
                                              
                                                 wire:change="change_discount_from_original_price({{ $key }})">
                                             <label class="custom-control-label"

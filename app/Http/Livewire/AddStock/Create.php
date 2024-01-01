@@ -78,7 +78,7 @@ class Create extends Component
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [],$expenses = [], $customer_types,$total_amount_dollar,$dollar_remaining,$dinar_remaining,$units ,
-        $toggle_customers_dropdown , $customer_id ;
+        $toggle_customers_dropdown , $customer_id ,$total_expenses,$market_exchange_rate=1,$dinar_expenses=0,$dollar_expenses=0;
       public $supplier_data=[
           'dollar_debit'=>'',
           'dinar_debit'=>'',
@@ -94,6 +94,7 @@ class Create extends Component
 
     public function mount()
     {
+        $this->market_exchange_rate=System::getProperty('dollar_exchange');
         $this->customer_id = 1 ;
         if(isset($_GET['product_id'])){
             $productId = $_GET['product_id'];
@@ -191,6 +192,11 @@ class Create extends Component
                     $this->show_payment=0;
                 }
             }
+            
+            if($data['var1'] == 'expense_currency'){
+                $this->expenses[$data['var3']]["expense_currency"]=$data['var2'];
+            }
+            
             // if (isset($data['var1']) && $data['var1'] == "department_id1") {
             //     $this->updatedDepartmentId($data['var2'], 'department_id1');
             // }
@@ -370,9 +376,25 @@ class Create extends Component
 
     public function addExpense()
     {
-        $this->expenses[] = ['details' => '', 'amount' => 0];
+        $this->expenses[] = ['details' => '', 'amount' => 0,'expense_currency'=>''];
     }
-
+    public function getTotalExpenses(){
+        $this->total_expenses=0;
+        $this->dinar_expenses=0;
+        $this->dollar_expenses=0;
+        foreach($this->expenses as $expense){
+            if($expense['expense_currency']=='2'){
+                $this->total_expenses +=$this->num_uf($expense['amount']);
+                $this->dollar_expenses +=$this->num_uf($expense['amount']);
+            }else{
+                $this->total_expenses +=$this->num_uf($expense['amount']) / $this->num_uf($this->exchange_rate);
+                $this->dinar_expenses +=$this->num_uf($expense['amount']);
+            }
+        }
+        $this->dinar_expenses=number_format($this->num_uf($this->dinar_expenses),3);
+        $this->dollar_expenses=number_format($this->num_uf($this->dollar_expenses),3);
+        return number_format($this->total_expenses,3);
+    }
     public function removeExpense($index)
     {
         unset($this->expenses[$index]);
@@ -1564,9 +1586,12 @@ class Create extends Component
     }
     public function changeTotalAmount(){
         // if($this->paying_currency == 2){
-            $this->total_amount_dollar =$this->num_uf($this->sum_dollar_total_cost()) -$this->calcPayment();
+            $totalExpenses=$this->num_uf($this->getTotalExpenses());
+            $this->total_amount_dollar =$this->num_uf($this->sum_dollar_total_cost()) - $totalExpenses;
+            // $this->total_amount_dollar =$this->num_uf($this->sum_dollar_total_cost()) -$this->calcPayment();
         // }else{
-            $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
+            // $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
+            $this->total_amount =$this->sum_total_cost();
         // }
     }
     public function changeReceivedDollar()

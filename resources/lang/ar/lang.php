@@ -768,5 +768,6 @@ return array(
     'mobile' => 'الهاتف' ,
     'toggle_suppliers_dropdown' => 'إظهار الموردين',
     'toggle_customers_dropdown' => 'إظهار العملاء',
+    'total_expenses'=>'اجمالى المصروفات',
 );
 
