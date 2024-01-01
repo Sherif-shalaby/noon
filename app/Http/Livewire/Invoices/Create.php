@@ -501,7 +501,9 @@ class Create extends Component
             //         ->Where('subcategory_id3', $this->department_id4);
             // });
         })->when($name == 'department_id2', function ($query) {
-            $query->where('subcategory_id1', $this->department_id2);
+            $query->where('subcategory_id1', $this->de                    $this->items[$index]['customer_prices'][$key]['dinar_increase'] = ($purchase_price * $percent) / 100;
+
+partment_id2);
         })
 
             ->when($name == 'department_id3', function ($query) {

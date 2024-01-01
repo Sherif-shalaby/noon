@@ -473,7 +473,7 @@
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                     @foreach ($variationSums as $unit_name => $variant)
-                                        {{ $unit_name }}:
+                                        {{ $unit_name == "" ? __('lang.no_units') : $unit_name }}:
                                         <span class="items_quantity_span" style="margin-right: 15px;">
                                             {{ $variant }} </span><br>
                                     @endforeach
