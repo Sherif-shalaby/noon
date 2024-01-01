@@ -439,7 +439,7 @@
                                 <div class="row {{ $price['parent_price']==1?'d-none':''}}">
                                     <div class="col-md-1">
                                         <label for="fill_id" class="h5 pt-3">{{ __('lang.fill') . ':*' }}</label>
-                                        {!! Form::select('fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
+                                        {!! Form::select('prices.' . $key . '.fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
                                             'class' => ' form-control select2 fill_id',
                                             'data-name' => 'fill_id',
                                             'data-index' => $key,
@@ -449,7 +449,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('price', __('lang.quantity')) !!}
-                                        <input type="text" class="form-control discount_quantity"
+                                        <input type="text" class="form-control discount_quantity" name="prices.{{ $key }}.discount_quantity"
                                             wire:model="prices.{{ $key }}.discount_quantity"
                                             wire:change="changePrice({{ $key }}, 'quantity')"
                                             placeholder = "{{ __('lang.quantity') }}">
@@ -467,7 +467,7 @@
                                     <div class="col-md-1">
                                         {!! Form::label('b_qty', __('lang.b_qty')) !!}
                                         <input type="text" class="form-control bonus_quantity"
-                                            wire:model="prices.{{ $key }}.bonus_quantity"
+                                            wire:model="prices.{{ $key }}.bonus_quantity" name="prices.{{ $key }}.bonus_quantity"
                                             wire:change="changePrice({{ $key }}, 'quantity')"
                                             placeholder = "{{ __('lang.b_qty') }}">
                                         @error('prices.' . $key . '.bonus_quantity')
@@ -477,7 +477,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         {!! Form::label('customer_type', __('lang.customer_type')) !!}
-                                        <select wire:model="prices.{{ $key }}.price_customer_types"
+                                        <select wire:model="prices.{{ $key }}.price_customer_types" name="prices.{{ $key }}.price_customer_types"
                                             data-name='price_customer_types' data-index="{{ $key }}"
                                             data-key="{{ $key }}" class="form-control select2" wire:change="changePrice({{ $key }})"
                                             placeholder="{{ __('lang.please_select') }}">
@@ -539,7 +539,7 @@
                                             'price',
                                             isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
                                         ) !!}
-                                        <input type="text" name="price" class="form-control price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_price" class="form-control price"
                                             wire:model="prices.{{ $key }}.dinar_price"
                                             wire:change="changePrice({{ $key }})"
                                             placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
@@ -550,7 +550,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('', __('lang.price')) !!}
-                                        <input type="text" name="" class="form-control price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_price_after_desc" class="form-control price"
                                             wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                             placeholder = "{{ __('lang.price') }}">
                                          <p>
@@ -559,7 +559,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('total_price', __('lang.total_price')) !!}
-                                        <input type="text" name="total_price" class="form-control total_price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_total_price" class="form-control total_price"
                                             wire:model="prices.{{ $key }}.dinar_total_price"
                                             placeholder = "{{ __('lang.total_price') }}">
                                          <p>
@@ -568,7 +568,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('piece_price', __('lang.piece_price')) !!}
-                                        <input type="text" name="piece_price" class="form-control piece_price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_piece_price" class="form-control piece_price"
                                             wire:model="prices.{{ $key }}.dinar_piece_price"
                                             placeholder = "{{ __('lang.total_price') }}">
 {{--                                             <span>{{$rows[$index]['prices'][$key]['dollar_piece_price']??0}} $</span>--}}
@@ -578,8 +578,8 @@
                                     </div>
                                     <div class="col-md-1">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input"
-                                                name="apply_on_all_customers" id="apply_on_all_customers{{ $key }}"
+                                            <input type="checkbox" class="custom-control-input" name="prices.{{ $key }}.apply_on_all_customers"
+                                                id="apply_on_all_customers{{ $key }}"
                                                 style="font-size: 0.75rem"
                                                 wire:model="prices.{{ $key }}.apply_on_all_customers"
                                                 wire:change="applyOnAllCustomers({{ $key }})">
