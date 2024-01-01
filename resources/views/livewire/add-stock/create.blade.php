@@ -113,8 +113,8 @@
                                     <div class="row">
                                         <div class="col-md-2">@lang('lang.debit') {{$supplier_data['dollar_debit']}} $</div>
                                         <div class="col-md-2">@lang('lang.debit')  {{$supplier_data['dinar_debit']}} د.ع</div>
-                                        <div class="col-md-2">@lang('lang.email') {{$supplier_data['email'][0]}}</div>
-                                        <div class="col-md-2">@lang('lang.phone') {{$supplier_data['mobile'][0]}}</div>
+                                        <div class="col-md-2">@lang('lang.email') {{$supplier_data['email'][0] ?? ''}}</div>
+                                        <div class="col-md-2">@lang('lang.phone') {{$supplier_data['mobile'][0] ?? ''}}</div>
                                         <div class="col-md-2">@lang('lang.state') {{$supplier_data['state']}}</div>
                                         <div class="col-md-2">@lang('lang.city') {{$supplier_data['city']}}</div>
                                         <div class="col-md-2">@lang('lang.address') {{$supplier_data['address']}}</div>
@@ -407,7 +407,7 @@
                                                     <input type="search" name="search_by_product_symbol" id="search_by_product_symbol" wire:model.debounce.200ms="search_by_product_symbol"
                                                         placeholder="@lang('lang.enter_product_symbol')"
                                                         class="form-control" autocomplete="off">
-                
+
                                                     @if(!empty($search_result) && !empty($search_by_product_symbol))
                                                         <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
                                                             @foreach($search_result as $product)
@@ -437,7 +437,7 @@
                                                     <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
                                                         placeholder="@lang('lang.enter_product_name_to_print_labels')"
                                                         class="form-control" autocomplete="off">
-                
+
                                                     @if(!empty($search_result) && !empty($searchProduct))
                                                         <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
                                                             @foreach($search_result as $product)
