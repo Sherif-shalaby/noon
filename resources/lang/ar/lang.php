@@ -226,7 +226,7 @@ return array(
     'other_expenses' => 'مصروفات',
     'other_payments' => 'مصروفات أخري',
 //    'other_payment' => 'المبلغ',
-    'source_type' => 'مصدر الأموال',
+    'source_type' => 'جهة الصرف',
     'wage_source_type' => 'طريقة الدفع',
     'source_of_payment' => 'اسم الموظف',
     'wage_source_of_payment' => 'مصدر الاموال',
@@ -768,5 +768,6 @@ return array(
     'mobile' => 'الهاتف' ,
     'toggle_suppliers_dropdown' => 'إظهار الموردين',
     'toggle_customers_dropdown' => 'إظهار العملاء',
+    'print_date' => 'تاريخ الطباعه',
 );
 

@@ -162,7 +162,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    {!! Form::label('transaction_date', __('lang.date_and_time'), []) !!}
+                                    {!! Form::label('transaction_date', __('lang.print_date'), []) !!}
                                     <input type="datetime-local" wire:model="transaction_date"
                                         value="{{ date('Y-m-d\TH:i') }}" class="form-control">
                                 </div>
@@ -556,7 +556,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    {!! Form::label('source_of_payment', __('lang.source_of_payment') . ':*', []) !!} <br>
+                                    {!! Form::label(null, null, []) !!} <br>
                                     {!! Form::select('source_id', $users, $source_id, [
                                         'class' => 'form-control select2',
                                         'data-live-search' => 'true',
