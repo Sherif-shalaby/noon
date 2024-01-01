@@ -966,7 +966,7 @@ class Create extends Component
             'parent_price' => 0,
             'discount_from_original_price' => true,
         ];
-        array_unshift($this->prices, $new_price);
+        $this->prices[]= $new_price;
     }
     public function addStoreRow()
     {
