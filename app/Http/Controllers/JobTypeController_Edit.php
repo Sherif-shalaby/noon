@@ -131,47 +131,46 @@ class JobTypeController extends Controller
             ];
             $data = $request->except('_token');
             $job=JobType::where('id', $id)->first();
-            if(in_array($job->id, [1,2,3,4]))
+            // ++++ update title +++++++++
+            $job->update(['title' => $request->title]);
+            $role=Role::where('name',$job->title)->first();
+            if($role)
             {
-                $job->update(['title' => $request->title]);
-            }
-            else
-            {
-                $role=Role::where('name',$job->title)->first();
                 $role->update([
-                'name' => $request->title,
-                ]);
-                $job->update($data);
-                $rolePermissions = $role->permissions()->delete();
-                $subModulePermissionArray = User::subModulePermissionArray();
-                foreach($request->permissions as $key=>$permission)
-                {
-                if (!empty($subModulePermissionArray[$key])) {
-                    foreach ($subModulePermissionArray[$key] as $key_sub_module =>  $sub_module) {
-                        $permission=Permission::where('name', $key . '.' . $key_sub_module . '.view')->first();
-                        if (!empty($permission)) {$role->givePermissionTo($permission->id);}
-                        $permission=Permission::where('name', $key . '.' . $key_sub_module . '.edit')->first();
-                        if (!empty($permission)) {$role->givePermissionTo($permission->id);}
-                        $permission=Permission::where('name', $key . '.' . $key_sub_module . '.create')->first();
-                        if (!empty($permission)) {$role->givePermissionTo($permission->id);}
-                        $permission=Permission::where('name', $key . '.' . $key_sub_module . '.delete')->first();
-                        if (!empty($permission)) {$role->givePermissionTo($permission->id);}
-                    }
-                }
-                }
-                // ++++++++++++++++ Update permissions of "job type" ++++++++++++++++++++++
-                // Check if permissions data is present in the request
-                if (!empty($data['permissions']))
-                {
-                    foreach ($data['permissions'] as $key => $value) {
-                        $permissions[] = $key;
-                    }
+                    'name' => $request->title,
+                    ]);
+                    $job->update($data);
+                    $rolePermissions = $role->permissions()->delete();
+                    $subModulePermissionArray = User::subModulePermissionArray();
+                      foreach($request->permissions as $key=>$permission)
+                      {
+                        if (!empty($subModulePermissionArray[$key])) {
+                            foreach ($subModulePermissionArray[$key] as $key_sub_module =>  $sub_module) {
+                                $permission=Permission::where('name', $key . '.' . $key_sub_module . '.view')->first();
+                                if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                                $permission=Permission::where('name', $key . '.' . $key_sub_module . '.edit')->first();
+                                if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                                $permission=Permission::where('name', $key . '.' . $key_sub_module . '.create')->first();
+                                if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                                $permission=Permission::where('name', $key . '.' . $key_sub_module . '.delete')->first();
+                                if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                            }
+                        }
+                      }
+                    // ++++++++++++++++ Update permissions of "job type" ++++++++++++++++++++++
+                    // Check if permissions data is present in the request
+                    if (!empty($data['permissions']))
+                    {
+                        foreach ($data['permissions'] as $key => $value) {
+                            $permissions[] = $key;
+                        }
 
-                    if (!empty($permissions)) {
-                        $job->syncPermissions($permissions);
+                        if (!empty($permissions)) {
+                            $job->syncPermissions($permissions);
+                        }
                     }
-                }
             }
+
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
