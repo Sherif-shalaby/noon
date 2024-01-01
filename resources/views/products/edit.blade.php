@@ -106,6 +106,10 @@
             box-shadow: 0 0 0 0 !important;
             background-color: white !important;
         }
+
+        .store-drop-down .dropdown-menu {
+            left: -50px !important
+        }
     </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -146,10 +150,10 @@
                     'id' => 'edit_product_form',
                 ]) !!}
                 <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                    style="overflow-x: auto;margin-top: -5px;">
+                    style="margin-top: -5px; position: relative;z-index:999 ;">
                     <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1"
-                            style="width: 160px;position: relative;z-index: ;">
+                            style="width: 160px;">
                             {{-- {!! Form::label('store', __('lang.store'), ['class' => 'h5 pt-3']) !!} --}}
                             <div class="d-flex justify-content-center align-items-center"
                                 style="background-color: #dedede;
@@ -162,7 +166,7 @@
                                         flex-wrap: nowrap;">
                                 @php $selected_stores=$product->stores->pluck('id'); @endphp
                                 {!! Form::select('store_id[]', $stores, $selected_stores, [
-                                    'class' => 'form-control selectpicker ',
+                                    'class' => 'form-control selectpicker store-drop-down',
                                     'multiple' => 'multiple',
                                     'id' => 'store_id',
                                     'placeholder' => __('lang.store'),
