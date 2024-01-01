@@ -236,6 +236,7 @@
                                     {{$this->getTotalExpenses()}}
                                     <h3 class="{{$dollar_expenses>0?'':'d-none'}}">@lang('lang.total_expenses') {{$dollar_expenses}} $</h3>
                                     <h3 class="{{$dinar_expenses>0?'':'d-none'}}">@lang('lang.total_expenses') {{$dinar_expenses}} </h3>
+                                    {{$this->total_expenses}}
                                 </div>
                                 {{-- <div class="col-md-3">
                                     <div class="form-group">
@@ -370,6 +371,7 @@
 
                                                     <th style="width: 10%">@lang('lang.action')</th>
                                                     <th></th>
+                                                    <th style="width: 10%">@lang('lang.cost')</th>
                                                     <th style="width: 10%">@lang('lang.size')</th>
                                                     <th style="width: 10%">@lang('lang.total_size')</th>
                                                     <th style="width: 10%">@lang('lang.weight')</th>

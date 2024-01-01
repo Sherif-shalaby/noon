@@ -150,6 +150,17 @@
             </span>
         @endif
     </td>
+    <td title="{{__('lang.cost')}}">
+        @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
+        {{$this->cost($index)}}
+            <span class="cost" aria-placeholder="dollar cost">
+                {{ $product['cost'] }}
+            </span>
+            <span class="dollar_cost" aria-placeholder="dollar cost">
+                {{ $product['dollar_cost'] }} $
+            </span>
+        @endif
+    </td>
     <td title="{{__('lang.size')}} ">
         <span class="size">
             {{ $product['size'] }}
@@ -368,6 +379,17 @@
                 </span>
            @endif
         </td>
+        <td title="{{__('lang.cost')}}">
+            @if(!empty($store['quantity']) && (!empty($store['purchase_price'])))
+            {{$this->cost($index,'stores',$i)}}
+                 <span class="cost_span" aria-placeholder="final purchase for piece">
+                     {{$store['cost']}}
+                 </span>
+                 <span class="cost_span" aria-placeholder="final purchase for piece">
+                    {{$store['dollar_cost']}} $
+                 </span>
+            @endif
+         </td>
         <td title="{{__('lang.new_stock')}}">
         <span class="current_stock_text">
             {{$store['total_stock'] }}
