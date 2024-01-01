@@ -76,6 +76,7 @@ class Create extends Component
             'piece_price' => null,
             'apply_on_all_customers' => 0,
             'parent_price' => 0,
+            'discount_from_original_price'=>0,
         ]
     ];
     public $fill_stores = [
@@ -590,6 +591,7 @@ class Create extends Component
                                         'total_price' => ($this->transaction_currency == 2) ? (!empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null) : null,
                                         'dinar_piece_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price']) : null) : null,
                                         'piece_price' => ($this->transaction_currency == 2) ? (!empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null) : null,
+                                        'discount_from_original_price'=>0,
                                     ];
                                     ProductPrice::create($price_data);
                                 } else {
@@ -1134,6 +1136,7 @@ class Create extends Component
             $dollar_sell_price = ($row_index >= 0) && isset($price_key) ?  $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']) : null;
             $total_quantity=1;
             $total_quantity = $this->num_uf($this->prices[$index]['discount_quantity']) + $this->num_uf($this->prices[$index]['bonus_quantity']);
+            // dd($this->prices[$index]);
             if ($this->prices[$index]['discount_from_original_price']==0 && !empty($this->prices[$index]['discount_quantity'])) {
                 if ($this->prices[$index]['price_type'] == "fixed") {
                     if ($this->transaction_currency == 2) {
@@ -1176,6 +1179,7 @@ class Create extends Component
                         $dollar_price = number_format($this->num_uf($this->prices[$index]['dinar_price']) / $this->num_uf($this->exchange_rate), 3);
                     }
                     $this->prices[$index]['price'] = $this->num_uf($dollar_price);
+                    // dd($sell_price);
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($this->num_uf($sell_price) - $this->num_uf($this->prices[$index]['dinar_price']), 3);
                     $this->prices[$index]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) - $this->num_uf($this->prices[$index]['price']), 3);
                 } else {
