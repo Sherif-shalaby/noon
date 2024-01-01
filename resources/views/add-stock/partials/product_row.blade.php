@@ -366,9 +366,12 @@
 
 
 
-        <div class="  animate__animated  animate__bounceInLeft dollar-cell d-flex flex-column align-items-center mr-1"
-            style="width: 150px;min-height: 60px">
-            @if (!empty($product['quantity']) && !empty($product['purchase_price']))
+        @if (!empty($product['quantity']) && !empty($product['purchase_price']))
+            <div class="  animate__animated  animate__bounceInLeft dollar-cell d-flex flex-column align-items-center mr-1"
+                style="width: 150px;min-height: 60px">
+                <label for="cost"
+                    class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.cost') }}</label>
                 {{ $this->cost($index) }}
                 <span style="font-weight: 500" class="cost" aria-placeholder="dollar cost">
                     {{ $product['cost'] }}
@@ -376,18 +379,24 @@
                 <span style="font-weight: 500" class="dollar_cost" aria-placeholder="dollar cost">
                     {{ $product['dollar_cost'] }} $
                 </span>
-            @endif
-        </div>
+            </div>
+        @endif
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
             style="width: 60px;min-height: 60px">
-            <span class="size">
+            <label for="final purchase for piece"
+                class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.size') }}</label>
+            <span style="font-weight: 500" class="size">
                 {{ $product['size'] }}
             </span>
         </div>
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
             style="width: 60px;min-height: 60px">
+            <label for="final purchase for piece"
+                class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.total_size') }}</label>
             @if (!empty($product['quantity']))
                 <span class="total_size">
                     {{ $this->total_size($index) }}
@@ -399,6 +408,9 @@
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
             style="width: 60px;min-height: 60px">
+            <label for="final purchase for piece"
+                class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.weight') }}</label>
             <span class="weight">
                 {{ $product['weight'] }}
             </span>
@@ -406,6 +418,9 @@
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
             style="width: 60px;min-height: 60px">
+            <label for="final purchase for piece"
+                class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.total_weight') }}</label>
             @if (!empty($product['quantity']))
                 <span class="total_weight">
                     {{ $this->total_weight($index) }}
