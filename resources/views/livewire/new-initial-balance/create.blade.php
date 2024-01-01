@@ -461,7 +461,7 @@
                                     <div class="col-md-1">
                                         {!! Form::label('price_category', __('lang.price_category'), ['style' => 'font-size: 10px;', 'class' => 'pt-2']) !!}
                                         <input type="text" class="form-control price_category"
-                                            name="price_category"
+                                            name="prices.{{ $key }}.price_category"
                                             wire:model="prices.{{ $key }}.price_category" maxlength="6">
                                     </div>
                                     <div class="col-md-1">
@@ -479,7 +479,7 @@
                                         {!! Form::label('customer_type', __('lang.customer_type')) !!}
                                         <select wire:model="prices.{{ $key }}.price_customer_types" name="prices.{{ $key }}.price_customer_types"
                                             data-name='price_customer_types' data-index="{{ $key }}"
-                                            data-key="{{ $key }}" class="form-control select2" wire:change="changePrice({{ $key }})"
+                                            data-key="{{ $key }}" class="form-control select2"
                                             placeholder="{{ __('lang.please_select') }}">
                                             @foreach ($customer_types as $type)
                                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -523,9 +523,9 @@
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input"
                                                 name="discount_from_original_price" id="discount_from_original_price{{ $key }}"
-                                                style="font-size: 0.75rem" wire:model='prices.{{ $key }}.discount_from_original_price' 
-                                             
-                                                wire:change="change_discount_from_original_price({{ $key }})">
+                                                style="font-size: 0.75rem" wire:model='prices.{{ $key }}.discount_from_original_price'
+
+                                                wire:change="changePrice({{ $key }})">
                                             <label class="custom-control-label"
                                                 for="discount_from_original_price{{ $key }}">@lang('lang.discount_from_original_price')</label>
                                         </div>
