@@ -35,7 +35,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>
-                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false,['wire:model' => 'toggle_customers_dropdown']) !!}
+                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown']) !!}
                                     @lang('lang.toggle_customers_dropdown')
                                 </label>
                             </div>
@@ -109,31 +109,37 @@
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-12 pt-2 pb-2 {{$supplier!=null?'':'d-none'}}">
+                                <div class="col-md-12 pt-2 pb-2 {{ $supplier != null ? '' : 'd-none' }}">
                                     <div class="row">
-                                        <div class="col-md-2">@lang('lang.debit') {{$supplier_data['dollar_debit']}} $</div>
-                                        <div class="col-md-2">@lang('lang.debit')  {{$supplier_data['dinar_debit']}} د.ع</div>
-                                        <div class="col-md-2">@lang('lang.email') {{$supplier_data['email'][0]}}</div>
-                                        <div class="col-md-2">@lang('lang.phone') {{$supplier_data['mobile'][0]}}</div>
-                                        <div class="col-md-2">@lang('lang.state') {{$supplier_data['state']}}</div>
-                                        <div class="col-md-2">@lang('lang.city') {{$supplier_data['city']}}</div>
-                                        <div class="col-md-2">@lang('lang.address') {{$supplier_data['address']}}</div>
-                                        <div class="col-md-2">@lang('lang.notes') {{$supplier_data['notes']}}</div>
+                                        <div class="col-md-2">@lang('lang.debit') {{ $supplier_data['dollar_debit'] }} $
+                                        </div>
+                                        <div class="col-md-2">@lang('lang.debit') {{ $supplier_data['dinar_debit'] }} د.ع
+                                        </div>
+                                        <div class="col-md-2">@lang('lang.email') {{ $supplier_data['email'][0] }}</div>
+                                        <div class="col-md-2">@lang('lang.phone') {{ $supplier_data['mobile'][0] }}</div>
+                                        <div class="col-md-2">@lang('lang.state') {{ $supplier_data['state'] }}</div>
+                                        <div class="col-md-2">@lang('lang.city') {{ $supplier_data['city'] }}</div>
+                                        <div class="col-md-2">@lang('lang.address') {{ $supplier_data['address'] }}</div>
+                                        <div class="col-md-2">@lang('lang.notes') {{ $supplier_data['notes'] }}</div>
                                     </div>
                                 </div>
                                 {{-- +++++++++++++++++ customers Dropdown +++++++++++++++++ --}}
-                                @if(!empty($toggle_customers_dropdown))
+                                @if (!empty($toggle_customers_dropdown))
                                     <div class="col-md-3">
                                         {!! Form::label('customer_id', __('lang.customers') . ':*', []) !!}
                                         <div class="d-flex justify-content-center">
-                                        {!! Form::select('customer_id', $customers, $customer_id,
-                                            ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'customer_id', 'placeholder' => __('lang.please_select'),
-                                            'data-name' => 'customer_id', 'wire:model' => 'customer_id'
+                                            {!! Form::select('customer_id', $customers, $customer_id, [
+                                                'class' => 'form-control select2',
+                                                'data-live-search' => 'true',
+                                                'id' => 'customer_id',
+                                                'placeholder' => __('lang.please_select'),
+                                                'data-name' => 'customer_id',
+                                                'wire:model' => 'customer_id',
                                             ]) !!}
                                             {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
                                         </div>
                                         @error('customer_id')
-                                        <span class="error text-danger">{{ $message }}</span>
+                                            <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 @endif
@@ -168,8 +174,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
-                                    <input type="text" class="form-control changeExchangerateForSupplier" id="exchange_rate" name="exchange_rate"
-                                        wire:model="exchange_rate" >
+                                    <input type="text" class="form-control changeExchangerateForSupplier"
+                                        id="exchange_rate" name="exchange_rate" wire:model="exchange_rate">
                                 </div>
                                 @if (!empty($change_exchange_rate_to_supplier))
                                     <div class="col-md-3">
@@ -181,46 +187,53 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-md-2">
-                                    <label for="expenses_currency">@lang('lang.expenses_currency')</label>
-                                    {!! Form::select('expenses_currency', $selected_currencies, $transaction_currency, [
-                                        'class' => 'form-control select2',
-                                        'placeholder' => __('lang.please_select'),
-                                        'data-live-search' => 'true',
-                                        'data-name' => 'expenses_currency',
-                                        'wire:model' => 'expenses_currency',
-                                    ]) !!}
+                                {{-- <div class="col-md-2">
+                           
                                     @error('expenses_currency')
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
-                                <div class="col-md-10">
+                                </div> --}}
+                                <div class="col-md-8">
                                     @foreach ($expenses as $index => $expense)
                                         <div class="row">
-                                            <div class="form-group">
-                                                {!! Form::label('details', __('Details'), []) !!} <br>
-                                                {!! Form::text('expenses.' . $index . '.details', $expense['details'], [
-                                                    'class' => 'form-control',
-                                                    'placeholder' => __('Details'),
-                                                    'wire:model' => 'expenses.' . $index . '.details',
-                                                ]) !!}
-                                            </div>
-                                            <div class="form-group">
-                                                {!! Form::label('amount', __('Amount'), []) !!} <br>
-                                                {!! Form::text('expenses.' . $index . '.amount', $expense['amount'], [
-                                                    'class' => 'form-control',
-                                                    'placeholder' => __('Amount'),
-                                                    'wire:model' => 'expenses.' . $index . '.amount',
-                                                    'wire:change' => 'changeTotalAmount',
-                                                ]) !!}
-                                            </div>
-                                            <button class="btn btn-primary btn-sm ml-2"
-                                                wire:click="removeExpense({{ $index }})">Remove</button>
+                                                <div class="form-group">
+                                                    <label for="expenses_currency">@lang('lang.expenses_currency')</label>
+                                                    {!! Form::select('expenses_currency', $selected_currencies, $transaction_currency, [
+                                                        'class' => 'form-control select2',
+                                                        'placeholder' => __('lang.please_select'),
+                                                        'data-name' => 'expense_currency',
+                                                        'data-index' =>$index,
+                                                        'wire:model' => 'expenses.' . $index . '.expense_currency',
+                                                    ]) !!}
+                                                </div>
+                                                <div class="form-group">
+                                                    {!! Form::label('details', __('Details'), []) !!} <br>
+                                                    {!! Form::text('expenses.' . $index . '.details', $expense['details'], [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => __('Details'),
+                                                        'wire:model' => 'expenses.' . $index . '.details',
+                                                    ]) !!}
+                                                </div>
+                                                <div class="form-group">
+                                                    {!! Form::label('amount', __('Amount'), []) !!} <br>
+                                                    {!! Form::text('expenses.' . $index . '.amount', $expense['amount'], [
+                                                        'class' => 'form-control',
+                                                        'placeholder' => __('Amount'),
+                                                        'wire:model' => 'expenses.' . $index . '.amount',
+                                                        'wire:change' => 'changeTotalAmount',
+                                                    ]) !!}
+                                                </div>
+                                                <button class="btn btn-primary btn-sm ml-2"
+                                                    wire:click="removeExpense({{ $index }})">Remove</button>
+                                          
                                         </div>
                                     @endforeach
 
                                     <button class="btn btn-primary btn-sm ml-2 " wire:click="addExpense">Add
                                         Expense</button>
+                                </div>
+                                <div class="col-md-2 pt-3">
+                                    <h3>@lang('lang.total_expenses') {{$this->getTotalExpenses()}} $</h3>
                                 </div>
                                 {{-- <div class="col-md-3">
                                     <div class="form-group">
@@ -246,7 +259,8 @@
                                                 <option value="0 " readonly selected>اختر </option>
                                                 @foreach ($departments as $depart)
                                                     @if ($depart->parent_id === 1)
-                                                        <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                        </option>
                                                         {{-- @if ($depart->subCategories->count() > 0) --}}
                                                         {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
                                                         {{-- @endif --}}
@@ -367,7 +381,8 @@
                                                         @include('add-stock.partials.product_row')
                                                     @endforeach
                                                     <tr>
-                                                        <td colspan="8" style="text-align: right"> @lang('lang.total')</td>
+                                                        <td colspan="8" style="text-align: right">
+                                                            @lang('lang.total')</td>
                                                         {{--                                            @if ($showColumn) --}}
                                                         {{-- <td> {{$this->sum_dollar_sub_total()}} </td> --}}
                                                         <td></td>
@@ -404,23 +419,32 @@
                                             {{-- ++++++ "البحث "برمز المنتج ++++++ --}}
                                             <div class="col-md-3 m-t-15">
                                                 <div class="search-box input-group">
-                                                    <input type="search" name="search_by_product_symbol" id="search_by_product_symbol" wire:model.debounce.200ms="search_by_product_symbol"
-                                                        placeholder="@lang('lang.enter_product_symbol')"
-                                                        class="form-control" autocomplete="off">
-                
-                                                    @if(!empty($search_result) && !empty($search_by_product_symbol))
-                                                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
-                                                            @foreach($search_result as $product)
-                                                                <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
-                                                                    <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
+                                                    <input type="search" name="search_by_product_symbol"
+                                                        id="search_by_product_symbol"
+                                                        wire:model.debounce.200ms="search_by_product_symbol"
+                                                        placeholder="@lang('lang.enter_product_symbol')" class="form-control"
+                                                        autocomplete="off">
+
+                                                    @if (!empty($search_result) && !empty($search_by_product_symbol))
+                                                        <ul id="ui-id-1" tabindex="0"
+                                                            class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                                                            style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                                                            @foreach ($search_result as $product)
+                                                                <li class="ui-menu-item"
+                                                                    wire:click="add_product({{ $product->id }})">
+                                                                    <div id="ui-id-73" tabindex="-1"
+                                                                        class="ui-menu-item-wrapper">
                                                                         @if ($product->image)
                                                                             <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                                                alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                                                                alt="{{ $product->name }}"
+                                                                                class="img-thumbnail" width="100px">
                                                                         @else
-                                                                            <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
+                                                                            <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                                                alt="{{ $product->name }}"
                                                                                 class="img-thumbnail" width="100px">
                                                                         @endif
-                                                                        {{$product->product_symbol ?? ''}} - {{$product->name}}
+                                                                        {{ $product->product_symbol ?? '' }} -
+                                                                        {{ $product->name }}
                                                                     </div>
                                                                 </li>
                                                             @endforeach
@@ -431,26 +455,34 @@
                                             {{-- ++++++ "البحث "باسم المنتج" و "الباركود ++++++ --}}
                                             <div class="col-md-7 m-t-15">
                                                 <div class="search-box input-group">
-                                                    <button type="button" class="btn btn-secondary" id="search_button"><i
-                                                            class="fa fa-search"></i>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        id="search_button"><i class="fa fa-search"></i>
                                                     </button>
-                                                    <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
-                                                        placeholder="@lang('lang.enter_product_name_to_print_labels')"
-                                                        class="form-control" autocomplete="off">
-                
-                                                    @if(!empty($search_result) && !empty($searchProduct))
-                                                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
-                                                            @foreach($search_result as $product)
-                                                                <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
-                                                                    <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
+                                                    <input type="search" name="search_product" id="search_product"
+                                                        wire:model.debounce.200ms="searchProduct"
+                                                        placeholder="@lang('lang.enter_product_name_to_print_labels')" class="form-control"
+                                                        autocomplete="off">
+
+                                                    @if (!empty($search_result) && !empty($searchProduct))
+                                                        <ul id="ui-id-1" tabindex="0"
+                                                            class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                                                            style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                                                            @foreach ($search_result as $product)
+                                                                <li class="ui-menu-item"
+                                                                    wire:click="add_product({{ $product->id }})">
+                                                                    <div id="ui-id-73" tabindex="-1"
+                                                                        class="ui-menu-item-wrapper">
                                                                         @if ($product->image)
                                                                             <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                                                alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                                                                alt="{{ $product->name }}"
+                                                                                class="img-thumbnail" width="100px">
                                                                         @else
-                                                                            <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
+                                                                            <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                                                alt="{{ $product->name }}"
                                                                                 class="img-thumbnail" width="100px">
                                                                         @endif
-                                                                        {{$product->sku ?? ''}} - {{$product->name}}
+                                                                        {{ $product->sku ?? '' }} -
+                                                                        {{ $product->name }}
                                                                     </div>
                                                                 </li>
                                                             @endforeach
@@ -461,8 +493,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            <br>
-                        </div>
+                                <br>
+                            </div>
                         </div>
                         <div class="col-md-12 text-center mt-1 ">
                             <h4>@lang('lang.items_count'):
@@ -588,7 +620,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-3 payment_fields hide {{$show_payment==1?'d-none':''}}">
+                            <div class="col-md-3 payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}">
                                 <div class="form-group">
                                     {!! Form::label('method', __('lang.payment_type'), []) !!}
                                     {!! Form::select('method', $payment_type_array, $method, [
@@ -608,7 +640,7 @@
                             @include('add-stock.partials.payment_form')
                             @if ($payment_status != 'paid' && isset($payment_status))
                                 @if (!empty($amount))
-                                    <div class="col-md-3 due_amount_div {{$show_payment==1?'d-none':''}}">
+                                    <div class="col-md-3 due_amount_div {{ $show_payment == 1 ? 'd-none' : '' }}">
                                         <label for="due_amount" style="margin-top: 25px;">@lang('lang.duePaid'):
                                             <span class="due_amount_span">
                                                 @if ($paying_currency == 2)
@@ -620,7 +652,7 @@
                                         </label>
                                     </div>
                                 @endif
-                                <div class="col-md-3 due_amount_div {{$show_payment==1?'d-none':''}}">
+                                <div class="col-md-3 due_amount_div {{ $show_payment == 1 ? 'd-none' : '' }}">
                                     <div class="form-group">
                                         <label for="due_date">@lang('lang.due'): </label>
                                         <input class="form-control" placeholder="@lang('lang.due')" name="due_date"
@@ -629,7 +661,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 due_fields d-none {{$show_payment==1?'d-none':''}}">
+                                <div class="col-md-3 due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">
                                     <div class="form-group">
                                         {!! Form::label('due_date', __('lang.due_date') . ':', []) !!} <br>
                                         {!! Form::text(
@@ -644,7 +676,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 due_fields d-none {{$show_payment==1?'d-none':''}}">
+                                <div class="col-md-3 due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">
                                     <div class="form-group">
                                         {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}
                                         <br>
@@ -694,19 +726,19 @@
 
 @push('javascripts')
     <script>
-        $(document).on('change','.changeExchangerateForSupplier', function(e) {
+        $(document).on('change', '.changeExchangerateForSupplier', function(e) {
             Swal.fire({
-                'type' : 'info',
-                'title' : 'تأكيد',
-                'text' : 'هل نريد تغيير سعر الصرف لهذا المورد ؟',
-                'showCancelButton' : true,
-                'confirmButtonText' : 'نعم',
-                'cancelButtonText' : 'إلغاء',
+                'type': 'info',
+                'title': 'تأكيد',
+                'text': 'هل نريد تغيير سعر الصرف لهذا المورد ؟',
+                'showCancelButton': true,
+                'confirmButtonText': 'نعم',
+                'cancelButtonText': 'إلغاء',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.emit('changeExchangerateForSupplier','ok');
-                }else {
-                    Livewire.emit('changeExchangerateForSupplier','cancel');
+                    Livewire.emit('changeExchangerateForSupplier', 'ok');
+                } else {
+                    Livewire.emit('changeExchangerateForSupplier', 'cancel');
                 }
             });
 
@@ -761,8 +793,7 @@
         });
 
         $(document).ready(function() {
-            $('.select2').on('change', function(e) {
-
+            $(document).on('change','.select2',function(){
                 var name = $(this).data('name');
                 var index = $(this).data('index');
                 var select2 = $(this); // Save a reference to $(this)

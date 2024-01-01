@@ -689,6 +689,7 @@ return [
     'mobile' => 'Mobile',
     'toggle_suppliers_dropdown' => 'toggle suppliers dropdown' ,
     'toggle_customers_dropdown' => 'toggle customers dropdown' ,
+    'total_expenses'=>'Total Expenses',
 ];
 
 
