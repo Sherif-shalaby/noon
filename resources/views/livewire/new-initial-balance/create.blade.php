@@ -529,10 +529,10 @@
                                             <label class="custom-control-label"
                                                 for="discount_from_original_price{{ $key }}">@lang('lang.discount_from_original_price')</label>
                                         </div>
-                                        @error('prices.' . $key . '.price_type')
+                                        {{-- @error('prices.' . $key . '.price_type')
                                             <br>
                                             <label class="text-danger error-msg">{{ $message }}</label>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label(
