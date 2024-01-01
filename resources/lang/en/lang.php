@@ -716,4 +716,5 @@ return [
     'toggle_suppliers_dropdown' => 'toggle suppliers dropdown',
     'toggle_customers_dropdown' => 'toggle customers dropdown',
     'debit' => 'Debit',
+    'total_expenses' => 'Total Expenses',
 ];

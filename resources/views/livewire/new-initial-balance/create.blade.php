@@ -867,7 +867,7 @@
                                                         name="discount_from_original_price"
                                                         id="discount_from_original_price{{ $key }}"
                                                         style="font-size: 0.75rem"
-                                                        wire:model='discount_from_original_price'
+                                                        wire:model='prices.{{ $key }}.discount_from_original_price'
                                                         wire:change="change_discount_from_original_price({{ $key }})">
                                                     <label class="custom-control-label"
                                                         style="font-size: 10px;font-weight: 500"

@@ -358,10 +358,11 @@ class AddStockController extends Controller
 
         return number_format($paid,3);
     }
-
-    public function recentTransactions(Request $request){
+    // +++++++++++++++++++ recentTransactions() +++++++++++++++++++
+    public function recentTransactions(Request $request)
+    {
+        // dd($request);
         $sell_lines = TransactionSellLine::query();
-
         // Check if the user is a superadmin or admin
         if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
             $sell_lines = $sell_lines->orderBy('created_at', 'desc');
@@ -377,6 +378,16 @@ class AddStockController extends Controller
         if (!empty(request()->customer_id)) {
             $sell_lines->where('transaction_sell_lines.customer_id', request()->customer_id);
         }
+        // +++++++++++++++ phone_number column +++++++++++++++
+        // Adjust the condition to search by customer phone number
+        if (!empty(request()->phone_number))
+        {
+            $sell_lines->whereHas('customer', function ($query) {
+                // $query->where('phone', request()->phone_number);
+                $query->where('phone', 'like', '%' . request()->phone_number . '%');
+            });
+        }
+        // dd($sell_lines);
         if (!empty(request()->deliveryman_id)) {
             $sell_lines->where('transaction_sell_lines.deliveryman_id', request()->deliveryman_id);
         }
@@ -387,7 +398,7 @@ class AddStockController extends Controller
             $sell_lines->where('payment_transaction_sell_lines.method', request()->method);
         }
         $sell_lines = $sell_lines->paginate(10);
-
+        // return($sell_lines);
         $customers=Customer::latest()->pluck('name','id')->toArray();
         $payment_types = $this->getPaymentTypeArrayForPos();
         $users=User::latest()->pluck('name','id')->toArray();

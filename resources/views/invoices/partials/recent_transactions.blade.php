@@ -15,7 +15,7 @@
         }
 
         .table-top-head {
-            top: 165px !important;
+            top: 145px !important;
         }
 
         .table-scroll-wrapper {
@@ -30,7 +30,7 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 165px !important
+                top: 145px !important
             }
         }
 
@@ -65,7 +65,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="container-fluid">
-                                        <div class="card-body">
+                                        <div class="card-body no-print">
                                             <form action="{{ route('recent_transactions') }}" method="get">
                                                 <div
                                                     class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -112,6 +112,16 @@
                                                             {!! Form::select('created_by', $users, null, [
                                                                 'class' => 'form-control select2',
                                                                 'placeholder' => __('lang.created_by'),
+                                                            ]) !!}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-sm-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                        style="animation-delay: 1.15s">
+                                                        <div class="input-wrapper width-full">
+                                                            {!! Form::text('phone_number', request()->phone_number, [
+                                                                'class' => 'form-control initial-balance-input width-full',
+                                                                'placeholder' => __('lang.phone_number'),
+                                                                'wire:model' => 'phone_number',
                                                             ]) !!}
                                                         </div>
                                                     </div>

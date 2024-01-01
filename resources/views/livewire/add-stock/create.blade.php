@@ -591,7 +591,7 @@
                                 class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <div
                                     class="col-md-12 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                    <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                    {{-- <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                         style="animation-delay: 1.5s">
                                         <label
                                             class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @endif"
@@ -602,7 +602,7 @@
                                                 'class' => 'form-control select2',
                                                 'placeholder' => __('lang.please_select'),
                                                 'data-live-search' => 'true',
-                                            
+
                                                 'data-name' => 'expenses_currency',
                                                 'wire:model' => 'expenses_currency',
                                             ]) !!}
@@ -611,6 +611,9 @@
                                         @error('expenses_currency')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
+                                    </div> --}}
+                                    <div class="col-md-2 mx-3">
+                                        <h3>@lang('lang.total_expenses') {{ $this->getTotalExpenses() }} $</h3>
                                     </div>
                                     <button
                                         class="btn btn-primary animate__animated animate__bounceInLeft btn-sm mt-2 ml-2"
@@ -624,6 +627,20 @@
 
                                     @foreach ($expenses as $index => $expense)
                                         <div class="row flex-row-reverse align-items-center">
+                                            <div
+                                                class="col-md-2 d-flex mb-0 animate__animated animate__bounceInLeft flex-column py-0 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                                <label class='mx-2 mb-0'
+                                                    for="expenses_currency">@lang('lang.expenses_currency')</label>
+                                                <div class="input-wrapper width-full">
+                                                    {!! Form::select('expenses_currency', $selected_currencies, $transaction_currency, [
+                                                        'class' => 'form-control select2',
+                                                        'placeholder' => __('lang.please_select'),
+                                                        'data-name' => 'expense_currency',
+                                                        'data-index' => $index,
+                                                        'wire:model' => 'expenses.' . $index . '.expense_currency',
+                                                    ]) !!}
+                                                </div>
+                                            </div>
                                             <div
                                                 class="col-md-6 d-flex mb-0 animate__animated animate__bounceInLeft flex-column py-0 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
 
@@ -971,7 +988,7 @@
         });
 
         $(document).ready(function() {
-            $('.select2').on('change', function(e) {
+            $(document).on('change', '.select2', function() {
 
                 var name = $(this).data('name');
                 var index = $(this).data('index');
