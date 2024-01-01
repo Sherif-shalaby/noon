@@ -47,7 +47,11 @@
                             @foreach($jobs as $job)
                                 <tr>
                                     <td>
-                                        {{$job->title}}
+                                        @if(in_array($job->title, ['Cashier', 'Deliveryman', 'Representative','Preparer']))
+                                            @lang('lang.'.$job->title)
+                                        @else
+                                            {{ $job->title }}
+                                        @endif
                                     </td>
                                     <td>
                                         {{@format_date($job->date_of_creation)}}
@@ -60,17 +64,17 @@
                                             {{$job->updated_by()->get()[0]->name}}
                                         @endif
                                     </td>
+                                    {{-- +++++++++++++++ Actions +++++++++++++++ --}}
                                     <td>
-                                        @if(!in_array($job->title, ['Cashier', 'Deliveryman','Representative']) )
-                                            <a data-href="{{route('jobs.edit', $job->id)}}"
-                                               data-container=".view_modal"
-                                               class="btn btn-primary btn-modal text-white edit_job"><i
-                                                    class="fa fa-pencil-square-o"></i></a>
-                                            <a data-href="{{route('jobs.destroy', $job->id)}}"
-                                               class="btn btn-danger text-white delete_item"><i
-                                                    class="fa fa-trash"></i></a>
+                                        <a data-href="{{route('jobs.edit', $job->id)}}" data-container=".view_modal" class="btn btn-primary btn-modal text-white edit_job">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>
+                                        {{-- @if(!in_array($job->title, ['Cashier', 'Deliveryman','Representative','Preparer']) ) --}}
+                                        @if(!in_array($job->id, [1,2,3,4]))
+                                            <a data-href="{{route('jobs.destroy', $job->id)}}" class="btn btn-danger text-white delete_item">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
                                         @endif
-
                                     </td>
                                 </tr>
                             @endforeach
