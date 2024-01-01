@@ -769,5 +769,6 @@ return array(
     'toggle_suppliers_dropdown' => 'إظهار الموردين',
     'toggle_customers_dropdown' => 'إظهار العملاء',
     'print_date' => 'تاريخ الطباعه',
+    'total_expenses'=>'اجمالى المصروفات',
 );
 
