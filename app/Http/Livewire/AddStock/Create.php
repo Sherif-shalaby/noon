@@ -78,7 +78,7 @@ class Create extends Component
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name, $total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $exchangeRate, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [], $expenses = [], $customer_types, $total_amount_dollar, $dollar_remaining, $dinar_remaining, $units,
-        $toggle_customers_dropdown, $customer_id, $total_expenses, $market_exchange_rate = 1, $dinar_expenses = 0, $dollar_expenses = 0;
+        $toggle_customers_dropdown, $customer_id, $total_expenses = 0, $market_exchange_rate = 1, $dinar_expenses = 0, $dollar_expenses = 0;
     public $supplier_data = [
         'dollar_debit' => '',
         'dinar_debit' => '',
@@ -383,6 +383,7 @@ class Create extends Component
     public function getTotalExpenses()
     {
         $this->total_expenses = 0;
+        // $this->total_dinar_expenses=0;
         $this->dinar_expenses = 0;
         $this->dollar_expenses = 0;
         foreach ($this->expenses as $expense) {
@@ -397,10 +398,15 @@ class Create extends Component
         $this->dinar_expenses = number_format($this->num_uf($this->dinar_expenses), 3);
         $this->dollar_expenses = number_format($this->num_uf($this->dollar_expenses), 3);
         $this->dispatchBrowserEvent('componentRefreshed');
-        return number_format($this->total_expenses, 3);
+        // dd(number_format($this->total_expenses,3));
     }
     public function removeExpense($index)
     {
+        if ($this->expenses[$index]['expense_currency'] = 2) {
+            $this->dollar_expenses -= $this->expenses[$index]['amount'];
+        } else {
+            $this->dinar_expenses -= $this->expenses[$index]['amount'];
+        }
         unset($this->expenses[$index]);
         $this->expenses = array_values($this->expenses);
         $this->dispatchBrowserEvent('componentRefreshed');
@@ -968,6 +974,7 @@ class Create extends Component
         } else {
             $this->items[] = $new_item;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function stayShowDiscount($index)
     {
@@ -1091,6 +1098,7 @@ class Create extends Component
             ];
             array_unshift($customer_prices, $new_price);
         }
+
         return $customer_prices;
     }
 
@@ -1158,15 +1166,15 @@ class Create extends Component
                 $dollar_purchase_price =  $this->dollar_final_purchase_for_piece($index);
                 $percent = $this->num_uf($this->items[$index]['customer_prices'][$key]['percent']);
                 if ($this->items[$index]['used_currency'] != 2) {
-                    $this->items[$index]['customer_prices'][$key]['dinar_increase'] = ($purchase_price * $percent) / 100;
+                    $this->items[$index]['customer_prices'][$key]['dinar_increase'] = ($this->num_uf($purchase_price) * $this->num_uf($percent)) / 100;
                     $this->items[$index]['customer_prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase'])  / $this->num_uf($this->exchange_rate), 3);
-                    $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
-                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
+                    $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format($this->num_uf($purchase_price) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
+                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format(($this->num_uf($purchase_price) / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
                 } else {
-                    $this->items[$index]['customer_prices'][$key]['dollar_increase'] = ($dollar_purchase_price * $percent) / 100;
+                    $this->items[$index]['customer_prices'][$key]['dollar_increase'] = ($this->num_uf($dollar_purchase_price) * $this->num_uf($percent)) / 100;
                     $this->items[$index]['customer_prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase'])  * $this->num_uf($this->exchange_rate), 3);
-                    $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format(($dollar_purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
-                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($dollar_purchase_price) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
+                    $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format(($this->num_uf($dollar_purchase_price) * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
+                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($this->num_uf($dollar_purchase_price)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
                 }
             }
         }
@@ -1439,6 +1447,11 @@ class Create extends Component
 
         foreach ($this->items as $item) {
             $totalSize += $item['total_size'];
+            if (!empty($item['stores'])) {
+                foreach ($item['stores'] as $store) {
+                    $totalSize += $store['total_size'];
+                }
+            }
         }
         return $totalSize;
     }
@@ -1449,48 +1462,82 @@ class Create extends Component
 
         foreach ($this->items as $item) {
             $totalWeight += $item['total_weight'];
+            if (!empty($item['stores'])) {
+                foreach ($item['stores'] as $store) {
+                    $totalWeight += $store['total_weight'];
+                }
+            }
         }
         return $totalWeight;
     }
 
-    public function cost($index)
+    public function cost($index, $stores = null, $key = null)
     {
         $totalExpenses = 0;
-        foreach ($this->expenses as $expense) {
-            $totalExpenses += (float)$expense['amount'];
-        }
-        if ($this->expenses_currency == 2) {
-            (float)$cost = ((float)$totalExpenses) * $this->num_uf($this->exchange_rate);
-        } else {
-            (float)$cost = (float)$totalExpenses;
-        }
+        $cost = 0;
         // convert purchase price from Dollar To Dinar
-        $purchase_price = $this->convertDollarPrice($index);
+        if ($stores == 'stores') {
+            $dollar_purchase_price = $this->dollar_final_purchase_for_piece($index, 'stores', $key);
 
 
-        if (isset($this->divide_costs)) {
+            if (isset($this->divide_costs)) {
 
-            if ($this->divide_costs == 'size') {
-                if ($this->sum_size() >= 0) {
-                    $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_sizes_less_equal_zero']);
-                    unset($this->divide_costs);
+                if ($this->divide_costs == 'size') {
+                    if ($this->sum_size() >= 0) {
+                        $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_sizes_less_equal_zero']);
+                        unset($this->divide_costs);
+                    } else {
+                        (float)$this->items[$index]['stores'][$key]['dollar_cost'] = number_format((($this->total_expenses / $this->sum_size()) * $this->items[$index]['stores'][$key]['size']) + (float)$dollar_purchase_price, 3);
+                        (float)$this->items[$index]['stores'][$key]['cost'] = number_format($this->num_uf($this->items[$index]['stores'][$key]['dollar_cost']) * $this->num_uf($this->exchange_rate), 3);
+                    }
+                } elseif ($this->divide_costs == 'weight') {
+                    if ($this->sum_weight() >= 0) {
+                        $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_weights_less_equal_zero']);
+                        unset($this->divide_costs);
+                    } else {
+                        (float)$this->items[$index]['stores'][$key]['dollar_cost'] = number_format((($this->total_expenses / $this->sum_weight()) * $this->items[$index]['stores'][$key]['weight']) + (float)$dollar_purchase_price, 3);
+                        (float)$this->items[$index]['stores'][$key]['cost'] = number_format($this->num_uf($this->items[$index]['stores'][$key]['dollar_cost']) * $this->num_uf($this->exchange_rate), 3);
+                    }
                 } else {
-                    (float)$this->items[$index]['cost'] = (($cost / $this->sum_size()) * $this->items[$index]['size']) + (float)$purchase_price;
-                }
-            } elseif ($this->divide_costs == 'weight') {
-                if ($this->sum_weight() >= 0) {
-                    $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_weights_less_equal_zero']);
-                    unset($this->divide_costs);
-                } else {
-                    (float)$this->items[$index]['cost'] = (($cost / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$purchase_price;
+                    $this->items[$index]['stores'][$key]['dollar_cost'] = number_format((($this->total_expenses / $this->sum_sub_total()) * (float)$dollar_purchase_price) + (float)$dollar_purchase_price, 3);
+                    (float)$this->items[$index]['stores'][$key]['cost'] = number_format($this->num_uf($this->items[$index]['stores'][$key]['dollar_cost']) * $this->num_uf($this->exchange_rate), 3);
                 }
             } else {
-                $this->items[$index]['cost'] = (((float)$cost / (float)$this->sum_sub_total()) * (float)$purchase_price) + (float)$purchase_price;
+                $this->items[$index]['stores'][$key]['cost'] = number_format($dollar_purchase_price, 3);
             }
         } else {
-            $this->items[$index]['cost'] = (float)$purchase_price;
+            $purchase_price = $this->final_purchase_for_piece($index);
+            $dollar_purchase_price = $this->dollar_final_purchase_for_piece($index);
+
+
+            if (isset($this->divide_costs)) {
+
+                if ($this->divide_costs == 'size') {
+                    if ($this->sum_size() >= 0) {
+                        $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_sizes_less_equal_zero']);
+                        unset($this->divide_costs);
+                    } else {
+                        (float)$this->items[$index]['dollar_cost'] = number_format((($this->total_expenses / $this->sum_size()) * $this->items[$index]['size']) + (float)$dollar_purchase_price, 3);
+                        (float)$this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), 3);
+                    }
+                } elseif ($this->divide_costs == 'weight') {
+                    if ($this->sum_weight() >= 0) {
+                        $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_weights_less_equal_zero']);
+                        unset($this->divide_costs);
+                    } else {
+                        (float)$this->items[$index]['dollar_cost'] = number_format((($this->total_expenses / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$dollar_purchase_price, 3);
+                        (float)$this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), 3);
+                    }
+                } else {
+                    $this->items[$index]['dollar_cost'] = number_format((($this->total_expenses / $this->sum_sub_total()) * (float)$dollar_purchase_price) + (float)$dollar_purchase_price, 3);
+                    (float)$this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), 3);
+                }
+            } else {
+                $this->items[$index]['cost'] = number_format($dollar_purchase_price, 3);
+            }
         }
-        return number_format($this->num_uf($this->items[$index]['cost']), 3);
+
+        // return number_format($this->num_uf($this->items[$index]['cost']),3);
     }
 
     public function total_cost($index)
@@ -1609,7 +1656,7 @@ class Create extends Component
     {
         // if($this->paying_currency == 2){
         $totalExpenses = $this->num_uf($this->getTotalExpenses());
-        $this->total_amount_dollar = $this->num_uf($this->sum_dollar_total_cost()) - $totalExpenses;
+        $this->total_amount_dollar = $this->num_uf($this->sum_dollar_total_cost());
         // $this->total_amount_dollar =$this->num_uf($this->sum_dollar_total_cost()) -$this->calcPayment();
         // }else{
         // $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
@@ -1707,8 +1754,13 @@ class Create extends Component
     {
         $totalSubTotal = 0;
 
-        foreach ($this->items as $item) {
-            $totalSubTotal += $item['sub_total'];
+        foreach ($this->items as $index => $item) {
+            $totalSubTotal += $this->purchase_final_dollar($index);
+            if (!empty($item['stores'])) {
+                foreach ($item['stores'] as $key => $store) {
+                    $totalSubTotal += $this->purchase_final_dollar($index, 'stores', $key);
+                }
+            }
         }
         return $this->num_uf($totalSubTotal);
     }
@@ -2048,6 +2100,7 @@ class Create extends Component
                 $this->variationSums[$variation_name] = (float)$item['quantity'];
             }
         }
+        //        dd($this->variationSums);
     }
     public function getPurchaseOrderStatusArray()
     {

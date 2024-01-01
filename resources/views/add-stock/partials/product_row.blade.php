@@ -46,7 +46,7 @@
                 ]) !!}
             </div>
             @error('items.' . $index . '.used_currency')
-                <span class="error text-danger">{{ $message }}</span>
+                <span class="error validation-error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -83,7 +83,7 @@
                 </button>
             </div>
             @error('store_id')
-                <span class="error text-danger">{{ $message }}</span>
+                <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -109,7 +109,7 @@
                 <span>@lang('lang.no_units')</span>
             @endif
             @error('items.' . $index . '.variation_id')
-                <span class="error text-danger">{{ $message }}</span>
+                <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -149,7 +149,7 @@
             <input type="text" class="form-control quantity  initial-balance-input width-full" required
                 wire:model="items.{{ $index }}.quantity" wire:change="changeCurrentStock({{ $index }})">
             @error('items.{{ $index }}.quantity')
-                <span class="error text-danger">{{ $message }}</span>
+                <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
 
         </div>
@@ -163,7 +163,7 @@
                 placeholder="{{ __('lang.b_qty') }}" wire:model="items.{{ $index }}.bonus_quantity"
                 wire:change="changeCurrentStock({{ $index }})">
             @error('items.{{ $index }}.bonus_quantity')
-                <span class="error text-danger">{{ $message }}</span>
+                <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
 
         </div>
@@ -203,7 +203,7 @@
             <span class="d-block width-full dollar-cell"
                 style='font-weight:500;font-size:10px;color:#888;text-align: center'>{{ $product['dollar_purchase_price'] ?? 0 }}$</span>
             @error('items.' . $index . '.purchase_price')
-                <span class="error text-danger">{{ $message }}</span>
+                <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -358,6 +358,63 @@
             </div>
         @endif
 
+
+
+
+
+
+
+
+
+        <div class="  animate__animated  animate__bounceInLeft dollar-cell d-flex flex-column align-items-center mr-1"
+            style="width: 150px;min-height: 60px">
+            @if (!empty($product['quantity']) && !empty($product['purchase_price']))
+                {{ $this->cost($index) }}
+                <span style="font-weight: 500" class="cost" aria-placeholder="dollar cost">
+                    {{ $product['cost'] }}
+                </span>
+                <span style="font-weight: 500" class="dollar_cost" aria-placeholder="dollar cost">
+                    {{ $product['dollar_cost'] }} $
+                </span>
+            @endif
+        </div>
+
+        <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+            style="width: 60px;min-height: 60px">
+            <span class="size">
+                {{ $product['size'] }}
+            </span>
+        </div>
+
+        <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+            style="width: 60px;min-height: 60px">
+            @if (!empty($product['quantity']))
+                <span class="total_size">
+                    {{ $this->total_size($index) }}
+                </span>
+            @else
+                {{ 0.0 }}
+            @endif
+        </div>
+
+        <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+            style="width: 60px;min-height: 60px">
+            <span class="weight">
+                {{ $product['weight'] }}
+            </span>
+        </div>
+
+        <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+            style="width: 60px;min-height: 60px">
+            @if (!empty($product['quantity']))
+                <span class="total_weight">
+                    {{ $this->total_weight($index) }}
+                </span>
+            @else
+                {{ 0.0 }}
+            @endif
+        </div>
+
     </div>
 </div>
 
@@ -386,7 +443,7 @@
                     style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['customer_prices'][$key]['dollar_increase'] }}
                     $</span>
                 @error('items.' . $index . 'customer_prices' . $key . '.dinar_increase')
-                    <label class="text-danger error-msg">{{ $message }}</label>
+                    <label class="text-danger  validation-error error-msg">{{ $message }}</label>
                 @enderror
             </div>
 
@@ -399,10 +456,13 @@
                     style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['customer_prices'][$key]['dollar_sell_price'] }}
                     $</span>
                 @error('items.' . $index . 'customer_prices' . $key . '.dinar_sell_price')
-                    <label class="text-danger error-msg">{{ $message }}</label>
+                    <label class="text-danger  validation-error error-msg">{{ $message }}</label>
                 @enderror
             </div>
         @endforeach
+
+
+
 
         <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center align-items-center mt-1"
             style="width: 85px;background-color: #596fd7;color: white;border-radius: 6px">
@@ -456,10 +516,10 @@
                         data-target="#createStoreModal">
                         <i class="fas fa-plus"></i>
                     </button>
-                    @error('items.' . $index . '.stores' . $i . '.store_id')
-                        <span class="error text-danger">{{ $message }}</span>
-                    @enderror
                 </div>
+                @error('items.' . $index . '.stores' . $i . '.store_id')
+                    <span class="error  validation-error text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
@@ -486,7 +546,7 @@
                     <span>@lang('lang.no_units')</span>
                 @endif
                 @error('items.' . $index . '.stores' . $i . '.variation_id')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="error  validation-error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -500,7 +560,7 @@
                     wire:model="items.{{ $index }}.stores.{{ $i }}.quantity"
                     wire:change="changeCurrentStock({{ $index }},'stores',{{ $i }})">
                 @error('items.{{ $index }}.quantity')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="error  validation-error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -516,7 +576,7 @@
                     wire:model="items.{{ $index }}.stores.{{ $i }}.bonus_quantity"
                     wire:change="changeCurrentStock({{ $index }},'stores',{{ $i }})">
                 @error('items.' . $index . '.stores' . $i . '.bonus_quantity')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="error  validation-error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -546,7 +606,7 @@
                 <span class="d-block width-full dollar-cell"
                     style='font-weight:500;font-size:10px;color:#888;text-align: center'>{{ $items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
                 @error('items.' . $index . '.stores' . $i . '.purchase_price')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="error  validation-error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -719,7 +779,7 @@
                         style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] }}
                         $</span>
                     @error('items.' . $index . '.stores' . $i . 'customer_prices' . $key . '.dinar_increase')
-                        <label class="text-danger error-msg">{{ $message }}</label>
+                        <label class="text-danger  validation-error error-msg">{{ $message }}</label>
                     @enderror
                 </div>
 
@@ -733,10 +793,23 @@
                         style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['stores'][$i]['customer_prices'][$key]['dollar_sell_price'] }}
                         $</span>
                     @error('items.' . $index . '.stores' . $i . 'customer_prices' . $key . '.dinar_sell_price')
-                        <label class="text-danger error-msg">{{ $message }}</label>
+                        <label class="text-danger  validation-error error-msg">{{ $message }}</label>
                     @enderror
                 </div>
             @endforeach
+
+            <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-row justify-content-center @if (app()->isLocale('ar')) align-items-center @else align-items-start @endif pl-1 mx-1 mt-1"
+                style="width: 100px;">
+                @if (!empty($store['quantity']) && !empty($store['purchase_price']))
+                    {{ $this->cost($index, 'stores', $i) }}
+                    <span class="cost_span" aria-placeholder="final purchase for piece">
+                        {{ $store['cost'] }}
+                    </span>
+                    <span class="cost_span" aria-placeholder="final purchase for piece">
+                        {{ $store['dollar_cost'] }} $
+                    </span>
+                @endif
+            </div>
             <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center align-items-center pl-1 mx-1 mt-1"
                 style="width: 100px;background-color: #596fd7;color: white;border-radius: 6px">
                 <label for="purchase_price"

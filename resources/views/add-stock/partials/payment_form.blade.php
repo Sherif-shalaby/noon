@@ -12,7 +12,8 @@
         <span wire:model="dinar_remaining">Change: {{ $dinar_remaining }}</span>
     @endif
     @error('amount')
-        <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
+        <span style="font-size: 10px;font-weight: 700;"
+            class="error validation-error text-danger">{{ $message }}</span>
     @enderror
 </div>
 
@@ -33,7 +34,8 @@
         <button wire:click= "convertRemainingDollar()"><i class="fa-solid fa-retweet"></i></button>
     @endif
     @error('amount')
-        <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
+        <span style="font-size: 10px;font-weight: 700;"
+            class="error validation-error text-danger">{{ $message }}</span>
     @enderror
 
 </div>
@@ -117,7 +119,8 @@
             ) !!}
         </div>
         @error('ref_number')
-            <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
+            <span style="font-size: 10px;font-weight: 700;"
+                class="error validation-error text-danger">{{ $message }}</span>
         @enderror
     </div>
 
@@ -136,7 +139,8 @@
             ]) !!}
         </div>
         @error('bank_deposit_date')
-            <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
+            <span style="font-size: 10px;font-weight: 700;"
+                class="error validation-error text-danger">{{ $message }}</span>
         @enderror
     </div>
 
@@ -163,7 +167,8 @@
             ) !!}
         </div>
         @error('bank_name')
-            <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
+            <span style="font-size: 10px;font-weight: 700;"
+                class="error validation-error text-danger">{{ $message }}</span>
         @enderror
     </div>
 @endif

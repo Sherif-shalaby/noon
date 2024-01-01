@@ -861,3 +861,9 @@ thead tr {
 .navbar_item:hover::after {
     height: 100%;
 }
+
+.validation-error {
+    color: #dc3545;
+    font-size: 10px;
+    font-weight: 500;
+}

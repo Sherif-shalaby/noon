@@ -24,7 +24,8 @@
                     ]) !!}
                 </div>
                 @error('store_id')
-                    <span style="font-size: 12px;font-weight: 500;" class="error text-danger">{{ $message }}</span>
+                    <span style="font-size: 12px;font-weight: 500;"
+                        class="error validation-error text-danger">{{ $message }}</span>
                 @enderror
             </div>
             {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
@@ -45,7 +46,8 @@
                     ]) !!}
                 </div>
                 @error('store_pos_id')
-                    <span style="font-size: 12px;font-weight: 500;" class="error text-danger">{{ $message }}</span>
+                    <span style="font-size: 12px;font-weight: 500;"
+                        class="error validation-error text-danger">{{ $message }}</span>
                 @enderror
             </div>
             {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
@@ -66,6 +68,11 @@
                     <button type="button" class="add-button d-flex justify-content-center align-items-center"
                         data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
                 </div>
+
+                @error('client_id')
+                    <span style="font-size: 12px;font-weight: 500;"
+                        class="text-danger validation-error">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="col-md-1 justify-content-center d-flex flex-column align-items-end mx-1 p-0 animate__animated animate__bounceInLeft"
@@ -75,10 +82,8 @@
                     class="btn btn-primary d-flex justify-content-center align-items-center payment-btn">
                     <i class="fa-solid fa-eye"></i>
                 </button>
+
             </div>
-            @error('client_id')
-                <span style="font-size: 12px;font-weight: 500;" class="text-danger">{{ $message }}</span>
-            @enderror
 
             {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
             <div class="col-md-1  d-flex align-items-center justify-content-center flex-row-reverse p-0">
@@ -110,7 +115,7 @@
                         {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
                     </div>
                     @error('supplier')
-                        <span class="error text-danger">{{ $message }}</span>
+                        <span class="error validation-error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             @endif
@@ -266,7 +271,7 @@
                     ) !!}
                 </div>
                 @error('alphabetical_order_id')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="error  text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -287,10 +292,10 @@
                         'data-name' => 'price_order_id',
                         'wire:model' => 'price_order_id',
                     ]) !!}
-                    @error('price_order_id')
-                        <span class="error text-danger">{{ $message }}</span>
-                    @enderror
                 </div>
+                @error('price_order_id')
+                    <span class="error validation-error text-danger">{{ $message }}</span>
+                @enderror
             </div>
             {{-- +++++++++++ dollar_lowest_price , dollar_highest_price filter +++++++++++ --}}
             <div class="px-1 col-md-3 mb-2 d-flex align-items-center flex-column dollar-cell">
@@ -316,7 +321,7 @@
                     ) !!}
                 </div>
                 @error('dollar_price_order_id')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="error validation-error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -345,7 +350,7 @@
                 </div>
 
                 @error('expiry_order_id')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="error validation-error text-danger">{{ $message }}</span>
                 @enderror
             </div>
         </div>
@@ -446,15 +451,19 @@
                                                         <i style="font-size: 10px;width: 50px;font-weight: 600"
                                                             class="fa-solid fa-plus"></i>
                                                     </div>
-                                                    <input
-                                                        class="form-control p-1 text-center initial-balance-input mb-0"
-                                                        style="width: 50px font-size: 12px;font-weight: 700;border:2px solid #cecece"
-                                                        type="text" min="1"
-                                                        wire:model="items.{{ $key }}.quantity"
-                                                        Wire:change="subtotal({{ $key }})">
-                                                    @error("items.$key.quantity")
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
+                                                    <div class="d-flex flex-column">
+                                                        <input
+                                                            class="form-control p-1 text-center initial-balance-input mb-0"
+                                                            style="width: 50px font-size: 12px;font-weight: 700;border:2px solid #cecece"
+                                                            type="text" min="1"
+                                                            wire:model="items.{{ $key }}.quantity"
+                                                            Wire:change="subtotal({{ $key }})">
+
+                                                        @error("items.$key.quantity")
+                                                            <span
+                                                                class="text-danger validation-error">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
                                                     <div class="btn-danger decrease-num control-num d-flex justify-content-center align-items-center"
                                                         style="width: 15px;height: 15px;border-radius: 50%;color: white;cursor:pointer;"
                                                         wire:click="decrement({{ $key }})">
@@ -652,10 +661,10 @@
     </div>
     @include('invoices.partials.draft_transaction')
 
-    @include('customers.quick_add', ['quick_add' => 1])
     {!! Form::close() !!}
 
 </section>
+@include('customers.quick_add', ['quick_add' => 1])
 
 
 {{-- <!-- This will be printed --> --}}

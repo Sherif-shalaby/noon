@@ -509,7 +509,6 @@ class Create extends Component
         })->when($name == 'department_id2', function ($query) {
             $query->where('subcategory_id1', $this->department_id2);
         })
-
             ->when($name == 'department_id3', function ($query) {
                 $query->where('subcategory_id2', $this->department_id3);
             })
@@ -696,8 +695,8 @@ class Create extends Component
     {
         foreach ($this->items as $index => $item) {
             $this->delete_item($index);
-            $this->dispatchBrowserEvent('componentRefreshed');
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function getUnits($product, $store)
@@ -819,7 +818,6 @@ class Create extends Component
             $this->dinar_remaining = 0;
             $this->back_to_dollar = 0;
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function increment($key)
     {

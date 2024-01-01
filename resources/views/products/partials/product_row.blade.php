@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-    style="overflow-x: auto;margin-top: -5px">
+    style="overflow-x: auto;margin-top: -5px;">
     <input type="hidden" name="products[{{ $key ?? 0 }}]" value="{{ $product->id ?? null }}">
 
     <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -24,7 +24,7 @@
                     $brands,
                     $key == 0 && isset($recent_product->brand) ? $recent_product->brand->id : null,
                     [
-                        'class' => 'form-control select2',
+                        'class' => 'form-control select2 brand',
                         'placeholder' => __('lang.brand'),
                         'id' => 'brand_id' . $key,
                     ],
@@ -65,8 +65,10 @@
                     <i class="fas fa-globe"></i>
                 </button>
             </div>
+
+
             @error('products.' . $key . '.name')
-                <label class="text-danger error-msg">{{ $message }}</label>
+                <label class="text-danger validation-error error-msg">{{ $message }}</label>
             @enderror
         </div>
         <div>
@@ -91,7 +93,7 @@
             ]) !!}
 
             @error('products.' . $key . '.product_symbol')
-                <label class="text-danger error-msg">{{ $message }}</label>
+                <label class="text-danger validation-error error-msg">{{ $message }}</label>
             @enderror
         </div>
         {{-- ++++++++++++++++ product sku ++++++++++++++++ --}}
@@ -108,7 +110,7 @@
             ]) !!}
 
             @error('products.' . $key . '.product_sku')
-                <label class="text-danger error-msg">{{ $message }}</label>
+                <label class="text-danger validation-error error-msg">{{ $message }}</label>
             @enderror
         </div>
         {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
@@ -160,7 +162,7 @@
                                 ]) !!}
 
                                 @error('products.' . $key . '.variations.0.sku')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                 @enderror
 
                             </div>
@@ -215,7 +217,7 @@
     </div>
 </div>
 
-<div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+<div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif" style="">
     <div class="accordion animate__animated  animate__bounceInLeft">
         <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
             style="border: none">
@@ -268,7 +270,7 @@
                                             class="fas fa-plus"></i></a>
                                 </div>
                                 @error('products.' . $key . '.category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
 
@@ -305,7 +307,7 @@
                                             class="fas fa-plus"></i></a>
                                 </div>
                                 @error('products.' . $key . '.category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
 
@@ -341,7 +343,7 @@
                                             class="fas fa-plus"></i></a>
                                 </div>
                                 @error('products.' . $key . '.subcategory_id2')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
 
@@ -376,8 +378,9 @@
                                         style="cursor: pointer" data-toggle="modal" data-select_category="3"><i
                                             class="fas fa-plus"></i></a>
                                 </div>
+
                                 @error('products.' . $key . '.subcategory_id3')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                         </div>
@@ -390,7 +393,7 @@
 
 
 <div class="mb-2 mt-1 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-    style="overflow-x: auto;margin-top: -9px">
+    style="overflow-x: auto;margin-top: -9px;">
 
 
     <div class="accordion animate__animated  animate__bounceInLeft">
@@ -450,7 +453,7 @@
                     ) !!}
 
                     @error('length')
-                        <label class="text-danger error-msg">{{ $message }}</label>
+                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                     @enderror
                 </div>
 
@@ -473,7 +476,7 @@
                     ) !!}
 
                     @error('width')
-                        <label class="text-danger error-msg">{{ $message }}</label>
+                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                     @enderror
                 </div>
 
@@ -496,7 +499,7 @@
                     ) !!}
 
                     @error('height')
-                        <label class="text-danger error-msg">{{ $message }}</label>
+                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                     @enderror
                 </div>
                 <div
@@ -517,7 +520,7 @@
                         ],
                     ) !!}
                     @error('size')
-                        <label class="text-danger error-msg">{{ $message }}</label>
+                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                     @enderror
                 </div>
 
@@ -539,7 +542,7 @@
                     ) !!}
 
                     @error('weight')
-                        <label class="text-danger error-msg">{{ $message }}</label>
+                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                     @enderror
                 </div>
 

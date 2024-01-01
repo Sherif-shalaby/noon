@@ -717,4 +717,9 @@ return [
     'toggle_customers_dropdown' => 'toggle customers dropdown',
     'debit' => 'Debit',
     'total_expenses' => 'Total Expenses',
+    'print_date' => 'Print Date',
+    'Cashier' => 'Cashier',
+    'Preparer' => 'Preparer',
+    'Deliveryman' => 'DeliveryMan',
+    'Representative' => 'Representative',
 ];

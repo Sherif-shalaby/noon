@@ -107,7 +107,7 @@
 
         <label class="mb-0" for="state-dd">@lang('lang.state')</label>
         <div class="input-wrapper width-full">
-            <select id="state-dd" name="state_id" class="form-control select2">
+            <select id="state-dd" name="state_id" class="form-select select">
                 @php
                     $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
                 @endphp
@@ -116,6 +116,7 @@
                         {{ $state->name }}
                     </option>
                 @endforeach
+
             </select>
         </div>
     </div>
@@ -126,7 +127,7 @@
         <label class="mb-0" for="city-dd">@lang('lang.regions')</label>
         <div class="input-wrapper width-full">
 
-            <select id="city-dd" name="city_id" class="form-control select2"></select>
+            <select id="city-dd" name="city_id" class="form-select select"></select>
             {{-- <button type="button" class="btn btn-primary" data-toggle="modal" id="cities_id" data-target="#createRegionModal">
                         <i class="fas fa-plus"></i>
                     </button> --}}
@@ -138,7 +139,7 @@
         style="position: relative;z-index: 4;">
         <label class="mb-0" for="quarters_id">@lang('lang.quarters')</label>
         <div class="input-wrapper width-full">
-            <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
+            <select id="quarter-dd" class="form-select select" name="quarter_id"></select>
             {{-- <button type="button" class="btn btn-primary" data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
                         <i class="fas fa-plus"></i>
                     </button> --}}

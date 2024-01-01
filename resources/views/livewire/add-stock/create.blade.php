@@ -63,7 +63,7 @@
 
                                 <div
                                     class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-                                    {!! Form::label('transaction_date', __('lang.date_and_time'), [
+                                    {!! Form::label('transaction_date', __('lang.print_date'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
@@ -92,7 +92,7 @@
                                     </div>
                                     @error('purchase_type')
                                         <span style="font-size: 10px;font-weight: 700;"
-                                            class="error text-danger">{{ $message }}</span>
+                                            class="error validation-error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
@@ -123,7 +123,7 @@
                                     </div>
                                     @error('supplier')
                                         <span style="font-size: 10px;font-weight: 700;"
-                                            class="error text-danger">{{ $message }}</span>
+                                            class="error validation-error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
@@ -167,7 +167,7 @@
                                         ]) !!}
                                     </div>
                                     @error('po_id')
-                                        <span class="error text-danger">{{ $message }}</span>
+                                        <span class="error validation-error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
@@ -194,7 +194,7 @@
                                     </div>
                                     @error('divide_costs')
                                         <span style="font-size: 10px;font-weight: 700;"
-                                            class="error text-danger">{{ $message }}</span>
+                                            class="error validation-error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
@@ -218,7 +218,7 @@
                                             {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
                                         </div>
                                         @error('customer_id')
-                                            <span class="error text-danger">{{ $message }}</span>
+                                            <span class="error validation-error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 @endif
@@ -271,7 +271,7 @@
                                             @lang('lang.email')
                                         </span> :
                                         <span>
-                                            {{ $supplier_data['email'][0] }}
+                                            {{ $supplier_data['email'][0] ?? '' }}
                                         </span>
                                     </div>
                                     <div
@@ -280,7 +280,7 @@
                                             @lang('lang.phone')
                                         </span> :
                                         <span>
-                                            {{ $supplier_data['mobile'][0] }}
+                                            {{ $supplier_data['mobile'][0] ?? '' }}
                                         </span>
                                     </div>
                                     <div
@@ -562,7 +562,7 @@
                                     {{ $this->count_total_by_variations() }}
                                     @if (!empty($variationSums))
                                         @foreach ($variationSums as $unit_name => $variant)
-                                            {{ $unit_name }}:
+                                            {{ $unit_name == '' ? __('lang.no_units') : $unit_name }}:
                                             <span class="items_quantity_span" style="margin-right: 15px;">
                                                 {{ $variant }} </span><br>
                                         @endforeach
@@ -613,7 +613,13 @@
                                         @enderror
                                     </div> --}}
                                     <div class="col-md-2 mx-3">
-                                        <h3>@lang('lang.total_expenses') {{ $this->getTotalExpenses() }} $</h3>
+                                        {{ $this->getTotalExpenses() }}
+                                        <h3 class="dollar-cell {{ $dollar_expenses > 0 ? '' : 'd-none' }}">
+                                            @lang('lang.total_expenses')
+                                            {{ $dollar_expenses }} $</h3>
+                                        <h3 class="{{ $dinar_expenses > 0 ? '' : 'd-none' }}">@lang('lang.total_expenses')
+                                            {{ $dinar_expenses }} </h3>
+                                        {{ $this->total_expenses }}
                                     </div>
                                     <button
                                         class="btn btn-primary animate__animated animate__bounceInLeft btn-sm mt-2 ml-2"
@@ -719,16 +725,16 @@
                                             'wire:model' => 'source_type',
                                         ]) !!}
                                     </div>
+                                    @error('source_type')
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error validation-error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                @error('source_type')
-                                    <span style="font-size: 10px;font-weight: 700;"
-                                        class="error text-danger">{{ $message }}</span>
-                                @enderror
 
 
                                 <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 2.1s">
-                                    {!! Form::label('source_of_payment', __('lang.source_of_payment') . '*', [
+                                    {!! Form::label(null, null, [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
@@ -746,7 +752,7 @@
                                     </div>
                                     @error('source_id')
                                         <span style="font-size: 10px;font-weight: 700;"
-                                            class="error text-danger">{{ $message }}</span>
+                                            class="error validation-error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
@@ -770,7 +776,7 @@
                                     </div>
                                     @error('payment_status')
                                         <span style="font-size: 10px;font-weight: 700;"
-                                            class="error text-danger">{{ $message }}</span>
+                                            class="error validation-error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
@@ -791,10 +797,10 @@
                                             'wire:model' => 'method',
                                             'wire:change' => 'reset_change()',
                                         ]) !!}
-                                        @error('method')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('method')
+                                        <span class="error validation-error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
 

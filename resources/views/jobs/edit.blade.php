@@ -21,20 +21,23 @@
                         value="{{ $job->title }}" name="title" id="title" required>
 
                 </div>
-                <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div class="col-md-12 pt-2">
-                        <h5 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.permissions')
-                        </h5>
+                @if (!in_array($job->id, [1, 2, 3, 4]))
+                    <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <div class="col-md-12 pt-2">
+                            <h5 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.permissions')
+                            </h5>
+                        </div>
                     </div>
-                </div>
-                <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div class="col-md-12 text-center">
-                        {{-- <h3>@lang('lang.user_rights')</h3>  --}}
+                    <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <div class="col-md-12 text-center">
+                            {{-- <h3>@lang('lang.user_rights')</h3>  --}}
+                        </div>
+                        <div class="col-md-12">
+                            @include('jobs.partials.permission')
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        @include('jobs.partials.permission')
-                    </div>
-                </div>
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">@lang('lang.save')</button>

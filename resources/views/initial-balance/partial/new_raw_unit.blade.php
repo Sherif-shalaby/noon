@@ -16,7 +16,7 @@
                     style="width:160px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                     placeholder="@lang('lang.sku')" required>
                 @error('rows.' . $index . '.sku')
-                    <label class="text-danger error-msg">{{ $message }}</label>
+                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                 @enderror
             </div>
 
@@ -89,7 +89,7 @@
                     style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                     wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.cost') }}">
                 @error('rows.' . $index . '.purchase_price')
-                    <label class="text-danger error-msg">{{ $message }}</label>
+                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                 @enderror
             </div>
 
@@ -158,7 +158,7 @@
                             style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_increase'] ?? 0 }}
                             $</span>
                         @error('rows.' . $index . 'prices' . $key . '.dinar_increase')
-                            <label class="text-danger error-msg">{{ $message }}</label>
+                            <label class="text-danger validation-error error-msg">{{ $message }}</label>
                         @enderror
                     </div>
                     <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  align-items-center pl-1"
@@ -175,7 +175,7 @@
                             style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_sell_price'] }}
                             $</span>
                         @error('rows.' . $index . 'prices' . $key . '.dinar_sell_price')
-                            <label class="text-danger error-msg">{{ $message }}</label>
+                            <label class="text-danger validation-error error-msg">{{ $message }}</label>
                         @enderror
                     </div>
                 </div>

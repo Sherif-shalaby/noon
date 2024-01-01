@@ -41,6 +41,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
                     success: function (data_html) {
                         if (typeof key !== 'undefined' && key !== null) {
                             $("#brand_id" + key).empty().append(data_html);
+                            $(".brand").empty().append(data_html);
                             $("#brand_id" + key).val(brand_id).trigger();
                         }
                         else {

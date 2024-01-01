@@ -60,7 +60,7 @@
                                         'placeholder' => __('lang.product_symbol'),
                                     ]) !!}
                                     @error('item.0.product_symbol')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
 
@@ -78,7 +78,7 @@
                                         'wire:change' => 'confirmCreateProduct()',
                                     ]) !!}
                                     @error('item.0.name')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
 
@@ -111,7 +111,7 @@
                                             href="{{ route('suppliers.create') }}"><i class="fas fa-plus"></i></button>
                                     </div>
                                     @error('item.0.supplier_id ')
-                                        <span class="error text-danger">{{ $message }}</span>
+                                        <span class="error validation-error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 @include('suppliers.quick_add', ['quick_add' => 1])
@@ -171,7 +171,7 @@
 
                                     </div>
                                     @error('item.0.store_id')
-                                        <span class="error text-danger">{{ $message }}</span>
+                                        <span class="error validation-error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 {{-- +++++++++++++++++ customers Dropdown +++++++++++++++++ --}}
@@ -202,7 +202,7 @@
                                             {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
                                         </div>
                                         @error('customer_id')
-                                            <span class="error text-danger">{{ $message }}</span>
+                                            <span class="error validation-error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 @endif
@@ -229,10 +229,10 @@
                                             'data-name' => 'transaction_currency',
                                             'wire:model' => 'transaction_currency',
                                         ]) !!}
-                                        @error('transaction_currency')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('transaction_currency')
+                                        <span class="error validation-error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="accordion d-flex">
@@ -370,7 +370,7 @@
                                     </div>
 
                                     @error('item.0.category_id')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
 
@@ -411,7 +411,7 @@
                                         </div>
                                     </div>
                                     @error('item.0.subcategory_id1')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
 
@@ -456,7 +456,7 @@
                                         </div>
                                     </div>
                                     @error('item.0.subcategory_id2')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
 
@@ -494,7 +494,7 @@
                                         </div>
                                     </div>
                                     @error('item.0.subcategory_id3')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                        <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
                             </div>
@@ -614,7 +614,7 @@
                                             placeholder={{ __('lang.length') }} />
 
                                         @error('item.0.length')
-                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                            <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                         @enderror
                                     </div>
 
@@ -630,7 +630,7 @@
                                             placeholder={{ __('lang.width') }} />
 
                                         @error('item.0.width')
-                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                            <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                         @enderror
                                     </div>
 
@@ -646,7 +646,7 @@
                                             placeholder={{ __('lang.height') }} />
 
                                         @error('item.0.height')
-                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                            <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                         @enderror
                                     </div>
 
@@ -662,7 +662,7 @@
                                             placeholder={{ __('lang.size') }} />
 
                                         @error('item.0.size')
-                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                            <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                         @enderror
                                     </div>
 
@@ -678,13 +678,9 @@
                                             style="border:2px solid #ccc;width: 75px;font-size:12px" />
 
                                         @error('item.0.weight')
-                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                            <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                         @enderror
                                     </div>
-
-
-
-
 
                                 </div>
                             </div>
@@ -721,7 +717,7 @@
                                                 ]) !!}
                                                 <input type="text" style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 price_category"
-                                                    name="price_category"
+                                                    name="prices.{{ $key }}.price_category"
                                                     placeholder="{{ __('lang.price_category') }}"
                                                     wire:model="prices.{{ $key }}.price_category"
                                                     maxlength="6">
@@ -742,7 +738,7 @@
                                                     width: 100%;
                                                     height: 30px;
                                                     flex-wrap: nowrap;">
-                                                    {!! Form::select('fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
+                                                    {!! Form::select('prices.' . $key . '.fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
                                                         'class' => 'select2 fill_id',
                                                         'data-name' => 'fill_id',
                                                         'data-index' => $key,
@@ -763,11 +759,12 @@
                                                 ]) !!}
                                                 <input type="text" style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 discount_quantity"
+                                                    name="prices.{{ $key }}.discount_quantity"
                                                     wire:model="prices.{{ $key }}.discount_quantity"
                                                     wire:change="changePrice({{ $key }}, 'quantity')"
                                                     placeholder = "{{ __('lang.quantity') }}">
                                                 @error('prices.' . $key . '.discount_quantity')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                                 @enderror
                                             </div>
 
@@ -784,11 +781,12 @@
                                                 <input type="text"
                                                     class="form-control initial-balance-input m-0 bonus_quantity"
                                                     wire:model="prices.{{ $key }}.bonus_quantity"
+                                                    name="prices.{{ $key }}.bonus_quantity"
                                                     style="width: 100px;border:2px solid #cececf;"
                                                     wire:change="changePrice({{ $key }}, 'quantity')"
                                                     placeholder = "{{ __('lang.b_qty') }}">
                                                 @error('prices.' . $key . '.bonus_quantity')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                                 @enderror
                                             </div>
 
@@ -811,10 +809,10 @@
                                                                             flex-wrap: nowrap;">
                                                     <select
                                                         wire:model="prices.{{ $key }}.price_customer_types"
+                                                        name="prices.{{ $key }}.price_customer_types"
                                                         data-name='price_customer_types'
                                                         data-index="{{ $key }}"
                                                         data-key="{{ $key }}" class="form-control select2"
-                                                        wire:change="changePrice({{ $key }})"
                                                         placeholder="{{ __('lang.customer_type') }}">
                                                         @foreach ($customer_types as $type)
                                                             <option value="{{ $type->id }}">
@@ -868,14 +866,14 @@
                                                         id="discount_from_original_price{{ $key }}"
                                                         style="font-size: 0.75rem"
                                                         wire:model='prices.{{ $key }}.discount_from_original_price'
-                                                        wire:change="change_discount_from_original_price({{ $key }})">
+                                                        wire:change="changePrice({{ $key }})">
                                                     <label class="custom-control-label"
                                                         style="font-size: 10px;font-weight: 500"
                                                         for="discount_from_original_price{{ $key }}">@lang('lang.discount_from_original_price')</label>
                                                 </div>
-                                                @error('prices.' . $key . '.price_type')
+                                                {{-- @error('prices.' . $key . '.price_type')
                                                     <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
+                                                @enderror --}}
                                             </div>
                                             <div
                                                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
@@ -887,7 +885,8 @@
                                                         'style' => 'font-weight:500;font-size:10px;color:#888',
                                                     ],
                                                 ) !!}
-                                                <input type="text" name="price" style="width: 100px"
+                                                <input type="text" name="prices.{{ $key }}.dinar_price"
+                                                    style="width: 100px"
                                                     class="form-control initial-balance-input m-0 price"
                                                     wire:model="prices.{{ $key }}.dinar_price"
                                                     wire:change="changePrice({{ $key }})"
@@ -911,7 +910,8 @@
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
-                                                <input type="text" name=""
+                                                <input type="text"
+                                                    name="prices.{{ $key }}.dinar_price_after_desc"
                                                     style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 price"
                                                     wire:model="prices.{{ $key }}.dinar_price_after_desc"
@@ -934,7 +934,8 @@
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
-                                                <input type="text" name="total_price"
+                                                <input type="text"
+                                                    name="prices.{{ $key }}.dinar_total_price"
                                                     style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 total_price"
                                                     wire:model="prices.{{ $key }}.dinar_total_price"
@@ -957,7 +958,8 @@
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
-                                                <input type="text" name="piece_price"
+                                                <input type="text"
+                                                    name="prices.{{ $key }}.dinar_piece_price"
                                                     style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 piece_price"
                                                     wire:model="prices.{{ $key }}.dinar_piece_price"
@@ -991,7 +993,7 @@
 
                                             <div class="custom-control custom-switch">
                                                 <input type="checkbox" class="custom-control-input"
-                                                    name="apply_on_all_customers"
+                                                    name="prices.{{ $key }}.apply_on_all_customers"
                                                     id="apply_on_all_customers{{ $key }}"
                                                     style="font-size: 0.75rem"
                                                     wire:model="prices.{{ $key }}.apply_on_all_customers"
@@ -1106,7 +1108,7 @@
                                                                 placeholder = "{{ __('lang.quantity') }}">
                                                             @error('fill_stores.' . $i . 'data' . $x . '.quantity')
                                                                 <label
-                                                                    class="text-danger error-msg">{{ $message }}</label>
+                                                                    class="text-danger validation-error error-msg">{{ $message }}</label>
                                                             @enderror
 
                                                         </div>

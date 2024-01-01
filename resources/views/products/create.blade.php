@@ -119,8 +119,9 @@
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
+
                                 @error('store_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                         </div>

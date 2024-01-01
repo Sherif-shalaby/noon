@@ -91,7 +91,11 @@
                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                             style="font-size: 12px;font-weight: 600"
                                                             data-tooltip="@lang('lang.job_title')">
-                                                            {{ $job->title }}
+                                                            @if (in_array($job->title, ['Cashier', 'Deliveryman', 'Representative', 'Preparer']))
+                                                                @lang('lang.' . $job->title)
+                                                            @else
+                                                                {{ $job->title }}
+                                                            @endif
                                                         </span>
                                                     </td>
                                                     <td>
@@ -121,18 +125,17 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if (!in_array($job->title, ['Cashier', 'Deliveryman', 'Representative']))
-                                                            <div class="d-flex justify-content-center align-items-center">
-                                                                <a data-href="{{ route('jobs.edit', $job->id) }}"
-                                                                    data-container=".view_modal"
-                                                                    class="btn mx-1 btn-primary btn-modal text-white edit_job  d-flex justify-content-center align-items-center"
-                                                                    style="font-size: 12px;font-weight: 600;width: fit-content;"><i
-                                                                        class="fa fa-pencil-square-o"></i></a>
-                                                                <a data-href="{{ route('jobs.destroy', $job->id) }}"
-                                                                    class="btn mx-1 btn-danger text-white delete_item"
-                                                                    style="font-size: 12px;font-weight: 600;"><i
-                                                                        class="fa fa-trash"></i></a>
-                                                            </div>
+                                                        <a data-href="{{ route('jobs.edit', $job->id) }}"
+                                                            data-container=".view_modal"
+                                                            class="btn btn-primary btn-modal text-white edit_job">
+                                                            <i class="fa fa-pencil-square-o"></i>
+                                                        </a>
+                                                        {{-- @if (!in_array($job->title, ['Cashier', 'Deliveryman', 'Representative', 'Preparer'])) --}}
+                                                        @if (!in_array($job->id, [1, 2, 3, 4]))
+                                                            <a data-href="{{ route('jobs.destroy', $job->id) }}"
+                                                                class="btn btn-danger text-white delete_item">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
                                                         @endif
 
                                                     </td>

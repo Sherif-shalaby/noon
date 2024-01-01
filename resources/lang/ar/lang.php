@@ -222,7 +222,7 @@ return array(
     'other_expenses' => 'مصروفات',
     'other_payments' => 'مصروفات أخري',
     //    'other_payment' => 'المبلغ',
-    'source_type' => 'مصدر الأموال',
+    'source_type' => 'جهة الصرف',
     'wage_source_type' => 'طريقة الدفع',
     'source_of_payment' => 'اسم الموظف',
     'wage_source_of_payment' => 'مصدر الاموال',
@@ -787,4 +787,9 @@ return array(
     'toggle_customers_dropdown' => 'إظهار العملاء',
     'debit' => 'دين',
     'total_expenses' => 'اجمالى المصروفات',
+    'print_date' => 'تاريخ الطباعه',
+    'Cashier' => 'محاسب',
+    'Preparer' => 'مٌجهز',
+    'Deliveryman' => 'رجل التوصيل',
+    'Representative' => 'مندوب',
 );
