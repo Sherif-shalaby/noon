@@ -115,8 +115,8 @@
                                         </div>
                                         <div class="col-md-2">@lang('lang.debit') {{ $supplier_data['dinar_debit'] }} د.ع
                                         </div>
-                                        <div class="col-md-2">@lang('lang.email') {{ $supplier_data['email'][0] }}</div>
-                                        <div class="col-md-2">@lang('lang.phone') {{ $supplier_data['mobile'][0] }}</div>
+                                        <div class="col-md-2">@lang('lang.email') {{ $supplier_data['email'][0]?? '' }}</div>
+                                        <div class="col-md-2">@lang('lang.phone') {{ $supplier_data['mobile'][0] ?? '' }}</div>
                                         <div class="col-md-2">@lang('lang.state') {{ $supplier_data['state'] }}</div>
                                         <div class="col-md-2">@lang('lang.city') {{ $supplier_data['city'] }}</div>
                                         <div class="col-md-2">@lang('lang.address') {{ $supplier_data['address'] }}</div>
@@ -168,7 +168,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    {!! Form::label('transaction_date', __('lang.date_and_time'), []) !!}
+                                    {!! Form::label('transaction_date', __('lang.print_date'), []) !!}
                                     <input type="datetime-local" wire:model="transaction_date"
                                         value="{{ date('Y-m-d\TH:i') }}" class="form-control">
                                 </div>
@@ -188,7 +188,7 @@
                             </div>
                             <div class="row">
                                 {{-- <div class="col-md-2">
-                           
+
                                     @error('expenses_currency')
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -225,7 +225,7 @@
                                                 </div>
                                                 <button class="btn btn-primary btn-sm ml-2"
                                                     wire:click="removeExpense({{ $index }})">Remove</button>
-                                          
+
                                         </div>
                                     @endforeach
 
@@ -507,7 +507,7 @@
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                     @foreach ($variationSums as $unit_name => $variant)
-                                        {{ $unit_name }}:
+                                        {{ $unit_name == "" ? __('lang.no_units') : $unit_name }}:
                                         <span class="items_quantity_span" style="margin-right: 15px;">
                                             {{ $variant }} </span><br>
                                     @endforeach
@@ -590,7 +590,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    {!! Form::label('source_of_payment', __('lang.source_of_payment') . ':*', []) !!} <br>
+                                    {!! Form::label(null, null, []) !!} <br>
                                     {!! Form::select('source_id', $users, $source_id, [
                                         'class' => 'form-control select2',
                                         'data-live-search' => 'true',
