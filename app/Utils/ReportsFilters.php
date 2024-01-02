@@ -290,7 +290,39 @@ class ReportsFilters extends Util
             ->when(request()->to != null, function ($query) {
                 $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') <= ?", [request()->to]);
             })
-
+            ->when(request()->brand_id != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('brand_id', request()->brand_id);
+                });
+            })
+            ->when(request()->discount == 'invoice_discount', function ($query) {
+                $query->where('discount_amount', '>' ,0);
+            })
+            ->when(request()->discount == 'product_discount', function ($query) {
+                $query->whereHas('add_stock_lines', function ($subquery) {
+                    $subquery->havingRaw('SUM(discount) > 0');
+                });
+            })
+            ->when(request()->discount == 'product_discount_percent', function ($query) {
+                $query->whereHas('add_stock_lines', function ($subquery) {
+                    $subquery->havingRaw('SUM(discount_percent) > 0');
+                });
+            })
+            ->when(request()->discount == 'cash_discount', function ($query) {
+                $query->whereHas('add_stock_lines', function ($subquery) {
+                    $subquery->havingRaw('SUM(cash_discount) > 0');
+                });
+            })
+            ->when(request()->discount == 'seasonal_discount', function ($query) {
+                $query->whereHas('add_stock_lines', function ($subquery) {
+                    $subquery->havingRaw('SUM(seasonal_discount) > 0');
+                });
+            })
+            ->when(request()->discount == 'annual_discount', function ($query) {
+                $query->whereHas('add_stock_lines', function ($subquery) {
+                    $subquery->havingRaw('SUM(annual_discount) > 0');
+                });
+            })            
             ->orderBy('created_at', 'desc')->get();
         return $stocks;
     }
