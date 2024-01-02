@@ -14,6 +14,7 @@ use App\Models\Employee;
 use App\Models\JobType;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
+use App\Models\ReceiveDiscount;
 use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
 use App\Models\Store;
@@ -68,6 +69,11 @@ class AddStockController extends Controller
         $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
         $stocks  = $this->reportsFilters->addStockFilter();
+        // foreach($stocks as $index => $stock){
+        //     return $stock->add_stock_lines->sum('cash_discount');
+        // }
+       
+
         return view('add-stock.index')->with(compact('stocks','suppliers','users','brands','categories',
             'subcategories1','subcategories2','subcategories3','payment_status_array','branches','stores'));
     }
@@ -158,6 +164,121 @@ class AddStockController extends Controller
     }
 
     public function storePayment(Request $request,$transaction_id){
+
+        try {
+            $data = $request->except('_token');
+
+
+            $transaction = StockTransaction::find($transaction_id);
+
+            // add Stock Payment.
+
+            $payment_data = [
+                'stock_transaction_id' =>  $transaction_id,
+                'amount' => $this->commonUtil->num_uf($request->amount),
+                'method' => $data['method'],
+                'paid_on' => $this->commonUtil->uf_date($data['paid_on']) . ' ' . date('H:i:s'),
+                'exchange_rate' => $request->exchange_rate,
+                'created_by' => Auth::user()->id,
+                'paying_currency' => $request->paying_currency,
+            ];
+            DB::beginTransaction();
+
+            $transaction_payment = StockTransactionPayment::create($payment_data);
+
+            //update Exchange Rate to supplier.
+
+            if(isset($request->change_exchange_rate_to_supplier)){
+                $transaction->supplier->update(['exchange_rate' => $request->exchange_rate]);
+            }
+            // check user and add money to user.
+            if ($data['method'] == 'cash') {
+                $user_id = null;
+                if (!empty($request->source_id)) {
+                    if ($request->source_type == 'pos') {
+                        $user_id = StorePos::where('id', $request->source_id)->first()->user_id;
+                    }
+                    if ($request->source_type == 'user') {
+                        $user_id = $request->source_id;
+                    }
+                    if ($request->source_type == 'safe') {
+                        $money_safe = MoneySafe::find($request->source_id);
+                        $payment_data['currency_id'] = $transaction->paying_currency_id;
+                        $this->moneysafeUtil->updatePayment($transaction, $payment_data, 'debit', $transaction_payment->id, null, $money_safe);
+                    }
+
+                    $register =  $this->getCurrentCashRegisterOrCreate($user_id);
+                    if (!empty($user_id)) {
+                        $payments_formatted[] = new CashRegisterTransaction([
+                            'amount' => $this->amount,
+                            'pay_method' => $this->method,
+                            'type' => 'debit',
+                            'transaction_type' => 'add_stock',
+                            'transaction_id' => $transaction->id,
+                            'transaction_payment_id' => null
+                        ]);
+                    }
+                    if (!empty($payments_formatted) && !empty($register)) {
+                        $register->cash_register_transactions()->saveMany($payments_formatted);
+                    }
+                }
+            }
+
+
+            $this->stockTransactionUtil->updateTransactionPaymentStatus($transaction->id);
+
+            DB::commit();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+        }
+
+
+        return redirect()->back()->with('status', $output);
+    }
+
+    public function receive_discount_view($transaction_id){
+        // $payment_type_array = $this->commonUtil->getPaymentTypeArray();
+        $transaction = StockTransaction::find($transaction_id);
+        $received_discounts = ReceiveDiscount::where('stock_transaction_id', $transaction_id)->get();
+    
+        if(!empty($transaction->add_stock_lines)){
+            $seasonal_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('seasonal_discount');
+            $annual_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('annual_discount');
+    
+            $sum_received_seasonal = $received_discounts->where('discount_type', 'seasonal_discount')->sum('received_amount');
+            $seasonal_discount -= $sum_received_seasonal;
+    
+            $sum_received_annual = $received_discounts->where('discount_type', 'annual_discount')->sum('received_amount');
+            $annual_discount -= $sum_received_annual;
+    
+            $seasonal_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount') - $received_discounts->sum('received_amount_dollar');
+            $annual_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('annual_discount') - $received_discounts->sum('received_amount_dollar');
+        } else {
+            $seasonal_discount = 0;
+            $annual_discount = 0;
+            $seasonal_discount_dollar = 0;
+            $annual_discount_dollar = 0;
+        }
+    
+        return view('add-stock.partials.receive_discount')->with(compact(
+            'transaction_id',
+            'transaction',
+            'seasonal_discount',
+            'annual_discount',
+            'seasonal_discount_dollar',
+            'annual_discount_dollar'
+        ));
+    }
+    public function receive_discount(Request $request,$transaction_id){
 
         try {
             $data = $request->except('_token');

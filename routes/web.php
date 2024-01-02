@@ -212,6 +212,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
     Route::get('add-stock/show/{id}',[AddStockController::class , 'show'])->name('stocks.show');
     Route::get('add-stock/add-payment/{id}',[AddStockController::class , 'addPayment'])->name('stocks.addPayment');
+    Route::get('add-stock/receive_discount/{id}',[AddStockController::class , 'receive_discount_view'])->name('stocks.receive_discount_view');
+    Route::post('add-stock/receive_discount_store/{id}',[AddStockController::class , 'receive_discount'])->name('stocks.receive_discount');
+
     Route::post('add-stock/post-payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.storePayment');
     Route::delete('add-stock/{id}/delete',[AddStockController::class , 'destroy'])->name('stocks.delete');
 

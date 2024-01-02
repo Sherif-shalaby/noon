@@ -24,10 +24,19 @@
                             </div>
                         </div>
                         {{-- +++++++++++++++++ sale_points filter +++++++++++++++++ --}}
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <div class="form-group">
                                 {!! Form::label('pos_id', __('lang.pos'), []) !!}
                                 {!! Form::select('pos_id', $store_pos,[], [
+                                    'class' => 'form-control select2 sale_filter',
+                                    'placeholder' => __('lang.all'),
+                                ]) !!}
+                            </div>
+                        </div> --}}
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {!! Form::label('pos_id', __('lang.pos'), []) !!}
+                                {!! Form::select('pos_id', $store_pos,$store_pos_id, [
                                     'class' => 'form-control select2 sale_filter',
                                     'placeholder' => __('lang.all'),
                                 ]) !!}

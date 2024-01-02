@@ -133,6 +133,18 @@
                 {!! Form::select('payment_status', $payment_status_array, request()->payment_status,
                 ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select')]) !!}
             </div>
+            <div class="col-md-2">
+                {!! Form::label('discounts', __('lang.discounts') . ':*', []) !!}
+                {!! Form::select('discount', [
+                    'invoice_discount' => __('lang.invoice_discount'),
+                    'product_discount' =>__('lang.product_discount'),
+                    'product_discount_percent' =>__('lang.product_discount_percent'),
+                    'cash_discount' =>__('lang.cash_discount'),
+                    'seasonal_discount' =>__('lang.seasonal_discount'),
+                    'annual_discount'=>__('lang.annual_discount'),
+                ], request()->discount, ['class' => 'form-control select2', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select')]) !!}
+            </div>
+            
             <div class="col-2">
                 <div class="form-group">
                     <label for="due_date">{{__('lang.payment_date')}}</label>
