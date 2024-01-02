@@ -28,7 +28,7 @@ class Create extends Component
     public $id, $sellines = [], $quantity = [], $amount, $sell_return, $store,
             $branches,$branch_id,$store_pos,
             $method, $paid_on, $notes,$sale, $transaction_sell_line_id = [] ,
-            $payment_status,$payment,$final_total ;
+            $payment_status,$payment,$final_total , $store_pos_id ;
 
 
     public function __construct($id)
@@ -36,7 +36,8 @@ class Create extends Component
         $this->id = $id;
     }
 
-    public function mount(){
+    public function mount()
+    {
         $this->sale = TransactionSellLine::find($this->id);
         $this->sellines = $this->sale->transaction_sell_lines;
         $this->store = $this->sale->store_id;
@@ -48,6 +49,10 @@ class Create extends Component
             ->where('return_parent_id', $this->id)
             ->first();
 
+        $cash_register_id = CashRegisterTransaction::select('cash_register_id')->where('transaction_id', $this->id)->get();
+        $this->store_pos_id = CashRegister::where('store_pos_id',$cash_register_id[0]->cash_register_id)->pluck('store_pos_id');
+
+        // dd( $this->store_pos_id);
         foreach ($this->sellines as $key => $product){
             $this->transaction_sell_line_id[$key] = $product->id;
 
@@ -419,7 +424,6 @@ class Create extends Component
         $register =  CashRegister::where('user_id', $user_id)
             ->where('status', 'open')
             ->first();
-
         if (empty($register))
         {
             $store_pos = StorePos::where('user_id', $user_id)->first();
