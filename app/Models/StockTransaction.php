@@ -93,5 +93,9 @@ class StockTransaction extends Model
 
     }
 
+    public function received_discount()
+    {
+        return $this->hasMany(ReceiveDiscount::class , 'stock_transaction_id');
+    }
 
 }
