@@ -39,17 +39,38 @@
                 <div class="container-fluid">
                     <div class="row pt-5">
                         {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select('customer_type_id', $customer_types, null, [
                                         'class' => 'form-control select2',
+                                        'id' => 'customer-types-dd' ,
                                         'required',
                                         'placeholder' => __('lang.please_select'),
                                     ]) !!}
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerTypesModal">
                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                @error('customer_type_id')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                        </div> --}}
+                        {{-- ++++++++++++++++ customer_type selectbox : انواع العملاء : (customer_type table) +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="customer_type_id">@lang('lang.customer_type')</label>
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select('customer_type_id', $customer_types, null, [
+                                        'class' => 'form-control select2',
+                                        'id' => 'customer_type_id' ,
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                    ]) !!}
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerTypesModal2">
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
                                 @error('customer_type_id')
@@ -406,6 +427,25 @@
             $("#cityId").val(city_id);
             console.log("+++++++++++++++++++++++++++ "+city_id+" +++++++++++++++++++++++++++");
         });
+        // ================ CustomerTypes selectbox ================
+        // $('#createCustomerTypesModal').on('submit', function(){
+        //     console.log("++++++++++++++++++++++++++++++++++++++++++++");
+        //     $.ajax({
+        //         url: "/customers/get-dropdown-customer-type",
+        //         type: 'POST',
+        //         dataType: 'json',
+        //         success:function(response)
+        //         {
+        //             console.log(response);
+        //             dd(response);
+        //             $("#customer-types-dd").html('<option value="">Select Customer Type</option>')
+        //             $.each(response,function(index, val)
+        //             {
+        //                 $('#customer-types-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+        //             });
+        //         }
+        //     })
+        // });
     });
 </script>
 @endpush
