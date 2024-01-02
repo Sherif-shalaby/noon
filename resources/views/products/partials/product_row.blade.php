@@ -6,7 +6,7 @@
             {!! Form::label('brand', __('lang.brand'), ['class' => 'h5 pt-3']) !!}
             <div class="d-flex justify-content-center">
                 {!! Form::select('products['.$key.'][brand_id]', $brands, $key == 0 && isset($recent_product->brand) ? $recent_product->brand->id : null, [
-                    'class' => 'form-control select2',
+                    'class' => 'form-control select2 brand',
                     'placeholder' => __('lang.please_select'),
                     'id' => 'brand_id'.$key,
                 ]) !!}

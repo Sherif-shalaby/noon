@@ -4,12 +4,13 @@
 
 @section('content')
 
-    <div class="row pt-5">
+    <div class="container-fluid pt-5">
         <div class="card-body no-print">
             <form action="{{ route('recent_transactions') }}" method="get">
                 <div class="row">
-                    <div class="col-md-2"></div>
+                    {{-- <div class="col-md-1"></div> --}}
                     <div class="row">
+                        {{-- ++++++++++++++++ customer filter +++++++++++++ --}}
                         <div class="col-3">
                             <div class="form-group">
                                 {!! Form::select('customer_id', $customers, null, [
@@ -18,7 +19,7 @@
                                 ]) !!}
                             </div>
                         </div>
-
+                        {{-- ++++++++++++++++ payment_type filter +++++++++++++ --}}
                         <div class="col-3">
                             <div class="form-group">
                                 {!! Form::select('method', $payment_types, null, [
@@ -49,6 +50,16 @@
                                     'class' => 'form-control select2',
                                     'placeholder' => __('lang.created_by'),
                                 ]) !!}
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ customer_phone filter +++++++++++++ --}}
+                        <div class="col-3 pt-4">
+                            <div class="form-group">
+                                {!! Form::text(
+                                    'phone_number', request()->phone_number,
+                                    ['class' => 'form-control', 'placeholder' => __('lang.phone_number'),
+                                    'wire:model' => 'phone_number']
+                                ) !!}
                             </div>
                         </div>
                         <div class="col-3">
@@ -240,7 +251,7 @@
                         setTimeout(() => {
                             pos_print(result.html_content);
                             // $("#receipt_section_print").html(result.html_content);
-                            // window.print(); 
+                            // window.print();
                         }, 3000);
                     }
                 },

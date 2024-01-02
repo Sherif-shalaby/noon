@@ -331,6 +331,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Returns
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
+    Route::get('sell-return/show/{id}', [SellReturnController::class,'show'])->name('sell_return.show');
 
     // supplier Returns
     Route::get('stock/return/product',[ReturnStockController::class,'show'])->name('suppliers.returns.products');
@@ -358,7 +359,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Branch
     Route::resource('branches',BranchController::class);
-    Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
+    Route::get('get_branch_stores/{ids}', [BranchController::class, 'getBranchStores']);
 
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
 

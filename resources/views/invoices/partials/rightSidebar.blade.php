@@ -114,7 +114,7 @@
                             'wire:change' => 'changeReceivedDollar',
                         ]) !!}
                     </div>
-                    
+
                 </div>
                 {{-- +++++++++++ الواصل دينار +++++++++++ --}}
                 <div class="col-md-6">
@@ -250,7 +250,7 @@
                         {{-- <a data-href="{{route('customers.pay_due_view', ['id' => $due->id])}}"   data-container=".view_modal" class="btn btn-modal"  style="background-color: #ffc107;" type="button" class="btn btn-custom"
                             id="recent-transaction-btn"><i class="dripicons-clock"></i>
                             @lang('lang.recent_transactions')</a> --}}
-
+                        {{-- +++++++++++++++++++++++ recent_transaction ++++++++++++++++++++ --}}
                         <a href="{{ route('recent_transactions') }}" target="_blank" style="background-color: #ffc107;" type="button"
                             class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
                             @lang('lang.recent_transactions')</a>

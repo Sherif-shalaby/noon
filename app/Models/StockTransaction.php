@@ -45,7 +45,14 @@ class StockTransaction extends Model
     {
         return $this->belongsTo(Store::class, 'store_id', 'id')->withDefault(['name' => '']);
     }
-
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+    public function state()
+    {
+        return $this->belongsTo(State::class, 'state_id', 'id');
+    }
     public function transaction_payments()
     {
         return $this->hasMany(StockTransactionPayment::class);

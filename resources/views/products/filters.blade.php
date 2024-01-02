@@ -4,74 +4,41 @@
             {{-- ++++++++++++++++++++ branches filter ++++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
+                    {!! Form::label('branch_id' ,__('lang.branch')) !!}
                     {!! Form::select(
-                        'branch_id',
-                        $branches,null,
-                        ['class' => 'form-control select2','placeholder'=>__('lang.branch'), 'id' => 'branch_id']
+                        'branch_id[]',
+                        $branches,request()->brach_id,
+                        ['class' => 'form-control select2','multiple','placeholder'=>__('lang.please_select'), 'id' => 'branch_id']
                     ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
+                    {!! Form::label('store_id' ,__('lang.store')) !!}
                     {!! Form::select(
-                        'store_id',[],null,['class' => 'form-control select2 store','placeholder'=>__('lang.store'), 'id' => 'store_id']
+                        'store_id[]',[],request()->store_id,['class' => 'form-control select2 store','multiple','placeholder'=>__('lang.please_select'), 'id' => 'store_id']
                     ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++++ suppliers filter ++++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
+                    {!! Form::label('supplier_id' ,__('lang.supplier')) !!}
                     {!! Form::select(
                         'supplier_id',
                         $suppliers,request()->supplier_id,
-                        ['class' => 'form-control select2','placeholder'=>__('lang.supplier')]
+                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
                     ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++++ categories filter ++++++++++++++++++++ --}}
-            {{-- <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select(
-                        'category_id',
-                        $categories,request()->category_id,
-                        ['class' => 'form-control select2 category','placeholder'=>__('lang.category'),'id' => 'categoryId']
-                    ) !!}
-                </div>
-            </div> --}}
-            {{-- ++++++++++++++++++++ subcategories1 filter ++++++++++++++++++++ --}}
-            {{-- <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select(
-                        'subcategory_id1', [] ,request()->subcategory_id1,
-                        ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
-                    ) !!}
-                </div>
-            </div> --}}
-            {{-- ++++++++++++++++++++ subcategories2 filter ++++++++++++++++++++ --}}
-            {{-- <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select(
-                        'subcategory_id2',[] ,request()->subcategory_id2,
-                        ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
-                    ) !!}
-                </div>
-            </div> --}}
-            {{-- ++++++++++++++++++++ subcategories3 filter ++++++++++++++++++++ --}}
-            {{-- <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select(
-                        'subcategory_id3', [] ,request()->subcategory_id3,
-                        ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
-                    ) !!}
-                </div>
-            </div> --}}
-            {{-- ++++++++++++++++++++ categories filter ++++++++++++++++++++ --}}
             <div class="col-2">
-                <div class="d-flex justify-content-center">
-                    {!! Form::select('category_id', $categories1, isset($recent_product->category_id) ? $recent_product->category_id : null, [
+                <div class="form-group">
+                    {!! Form::label('category_id' ,__('lang.category').' 1') !!}
+                    {!! Form::select('category_id', $categories1, request()->category_id, [
                         'class' => 'form-control select2 category',
-                        'placeholder' => __('lang.category'). ' 1',
+                        'placeholder' => __('lang.please_select'),
                         'id' => 'categoryId',
 
                     ]) !!}
@@ -79,30 +46,33 @@
             </div>
             {{-- ++++++++++++++++++++ subcategories1 filter ++++++++++++++++++++ --}}
             <div class="col-2">
-                <div class="d-flex justify-content-center">
-                    {!! Form::select('subcategory_id1', $categories2, isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null, [
+                <div class="form-group">
+                    {!! Form::label('subcategory_id1' ,__('lang.category').' 2') !!}
+                    {!! Form::select('subcategory_id1', $categories2, request()->subcategory_id1, [
                         'class' => 'form-control select2 subcategory',
-                        'placeholder' =>  __('lang.category') . ' 2',
+                        'placeholder' =>  __('lang.please_select'),
                         'id' => 'subcategory_id1'
                     ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++++ subcategories2 filter ++++++++++++++++++++ --}}
             <div class="col-2">
-                <div class="d-flex justify-content-center">
-                    {!! Form::select('subcategory_id2', $categories3, isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null, [
+                <div class="form-group">
+                    {!! Form::label('subcategory_id2' ,__('lang.category').' 3') !!}
+                    {!! Form::select('subcategory_id2', $categories3, request()->subcategory_id2, [
                         'class' => 'form-control select2 subcategory2',
-                        'placeholder' =>  __('lang.category') . ' 3',
+                        'placeholder' =>  __('lang.please_select'),
                         'id' => 'subcategory_id2'
                     ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++++ subcategories3 filter ++++++++++++++++++++ --}}
             <div class="col-2">
-                <div class="d-flex justify-content-center">
-                    {!! Form::select('subcategory_id3', $categories4, isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null, [
+                <div class="form-group">
+                    {!! Form::label('subcategory_id3' ,__('lang.category').' 4') !!}
+                    {!! Form::select('subcategory_id3', $categories4, request()->subcategory_id3, [
                         'class' => 'form-control select2 subcategory3',
-                        'placeholder' => __('lang.category') . ' 4',
+                        'placeholder' => __('lang.please_select') ,
                         'id' => 'subcategory_id3'
                     ]) !!}
                 </div>
@@ -111,19 +81,21 @@
             {{-- @endfor --}}
             <div class="col-2">
                 <div class="form-group">
+                    {!! Form::label('brand_id' ,__('lang.brand')) !!}
                     {!! Form::select(
                         'brand_id',
                         $brands,request()->brand_id,
-                        ['class' => 'form-control select2','placeholder'=>__('lang.brand')]
+                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
                     ) !!}
                 </div>
             </div>
             <div class="col-2">
                 <div class="form-group">
+                    {!! Form::label('created_by' ,__('lang.created_by')) !!}
                     {!! Form::select(
                         'created_by',
                         $users,request()->created_by,
-                        ['class' => 'form-control select2','placeholder'=>__('lang.created_by')]
+                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
                     ) !!}
                 </div>
             </div>
