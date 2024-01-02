@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         {{-- +++++++++++++++++ sale_points filter +++++++++++++++++ --}}
-                        <div
+                        {{-- <div
                             class="col-md-4 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {!! Form::label('pos_id', __('lang.pos'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -62,8 +62,21 @@
                                     ],
                                 ) !!}
                             </div>
-                        </div>
+                        </div> --}}
 
+                        <div class="col-md-4 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="font-size: 14px;font-weight: 500;">
+                            {!! Form::label('pos_id', __('lang.pos'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+                                {!! Form::select('pos_id', $store_pos, $store_pos_id, [
+                                    'class' => 'form-control select2 sale_filter',
+                                    'placeholder' => __('lang.all'),
+                                ]) !!}
+                            </div>
+                        </div>
                         <div class="col-md-4 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="font-size: 14px;font-weight: 500;">
                             <span class="mx-1">

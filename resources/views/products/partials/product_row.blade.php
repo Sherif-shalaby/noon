@@ -203,7 +203,7 @@
                             <button
                                 class="btn btn-sm d-flex justify-content-center align-items-center btn-primary add_small_unit animate__animated  animate__bounceInRight h-50"
                                 style="margin-top:11px " type="button" data-key="{{ $key }}"
-                                id="addButton{{ $key }}" onclick="fadeButton(event ,{{ $key }})">
+                                id="addButton{{ $key }}" onclick="disableButton(event)">
                                 <i class="fa fa-equals"></i>
                             </button>
 
@@ -649,7 +649,7 @@
     {{--        </div> --}}
 </div>
 @include('products.partials.crop-multi-imge-modal', ['key' => $key])
-
+{{--
 <script>
     function fadeButton(event, key) {
         let button = event.target
@@ -657,5 +657,22 @@
         if (rowId >= 0) {
             $('#addButton' + key).addClass('disabled')
         }
+    }
+</script> --}}
+
+<script>
+    function disableButton(event) {
+        var button = event.currentTarget
+        button.classList.add("disabled");
+
+    }
+</script>
+
+<script>
+    function fadeInButton(event) {
+        // var button = event.currentTarget
+
+        // let parent = button.parentNode.previousElementSibling.querySelector('.add_small_unit').classList.remove(
+        //     'disabled')
     }
 </script>

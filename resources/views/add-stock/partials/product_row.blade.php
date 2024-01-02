@@ -393,12 +393,12 @@
         </div>
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
-            style="width: 60px;min-height: 60px">
+            style="width: 80px;min-height: 60px">
             <label for="final purchase for piece"
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.total_size') }}</label>
             @if (!empty($product['quantity']))
-                <span class="total_size">
+                <span style="font-weight: 500" class="total_size">
                     {{ $this->total_size($index) }}
                 </span>
             @else
@@ -411,22 +411,24 @@
             <label for="final purchase for piece"
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.weight') }}</label>
-            <span class="weight">
+            <span style="font-weight: 500" class="weight">
                 {{ $product['weight'] }}
             </span>
         </div>
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
-            style="width: 60px;min-height: 60px">
+            style="width: 80px;min-height: 60px">
             <label for="final purchase for piece"
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.total_weight') }}</label>
             @if (!empty($product['quantity']))
-                <span class="total_weight">
+                <span style="font-weight: 500" class="total_weight">
                     {{ $this->total_weight($index) }}
                 </span>
             @else
-                {{ 0.0 }}
+                <span style="font-weight: 500">
+                    {{ 0.0 }}
+                </span>
             @endif
         </div>
 

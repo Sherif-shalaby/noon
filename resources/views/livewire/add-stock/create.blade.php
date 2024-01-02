@@ -248,73 +248,73 @@
                                 <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="font-weight: 500">
                                     <div
-                                        class="col-md-1 p-0 d-flex dollar-cell border-left border-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-1 p-0 d-flex dollar-cell border-left border-2 flex-column justify-content-start align-items-center">
                                         <span>
                                             @lang('lang.debit')
-                                        </span> :
+                                        </span>
                                         <span>
                                             {{ $supplier_data['dollar_debit'] }} $
                                         </span>
                                     </div>
                                     <div
-                                        class="col-md-1 border-left border-2 mr-1 p-0 d-flex mr-1 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-1 border-left border-2 mr-1 p-0 d-flex mr-1 flex-column justify-content-start align-items-center">
                                         <span>
                                             @lang('lang.debit')
-                                        </span> :
+                                        </span>
                                         <span>
                                             {{ $supplier_data['dinar_debit'] }} د.ع
                                         </span>
                                     </div>
                                     <div
-                                        class="col-md-2 border-left border-2 mr-1 p-0 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-2 border-left border-2 mr-1 p-0 d-flex flex-column justify-content-start align-items-center">
                                         <span>
                                             @lang('lang.email')
-                                        </span> :
+                                        </span>
                                         <span>
                                             {{ $supplier_data['email'][0] ?? '' }}
                                         </span>
                                     </div>
                                     <div
-                                        class="col-md-2 border-left border-2 mr-1 p-0 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-2 border-left border-2 mr-1 p-0 d-flex flex-column justify-content-start align-items-center">
                                         <span>
                                             @lang('lang.phone')
-                                        </span> :
+                                        </span>
                                         <span>
                                             {{ $supplier_data['mobile'][0] ?? '' }}
                                         </span>
                                     </div>
                                     <div
-                                        class="col-md-1 border-left border-2 mr-1 p-0 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-1 border-left border-2 mr-1 p-0 d-flex flex-column justify-content-start align-items-center">
                                         <span>
                                             @lang('lang.state')
-                                        </span> :
+                                        </span>
                                         <span>
                                             {{ $supplier_data['state'] }}
                                         </span>
                                     </div>
                                     <div
-                                        class="col-md-1 border-left border-2 mr-1 p-0 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-1 border-left border-2 mr-1 p-0 d-flex flex-column justify-content-start align-items-center">
                                         <span>
                                             @lang('lang.city')
-                                        </span> :
+                                        </span>
                                         <span>
                                             {{ $supplier_data['city'] }}
                                         </span>
                                     </div>
                                     <div
-                                        class="col-md-1 border-left border-2 mr-1 p-0 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-1 border-left border-2 mr-1 p-0 d-flex flex-column justify-content-start align-items-center">
                                         <span>
                                             @lang('lang.address')
-                                        </span> :
+                                        </span>
                                         <span>
                                             {{ $supplier_data['address'] }}
                                         </span>
                                     </div>
                                     <div
-                                        class="col-md-2 mr-1 p-0 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-2 mr-1 p-0 d-flex flex-column justify-content-start align-items-center">
                                         <span>
                                             @lang('lang.notes')
-                                        </span> :
+                                        </span>
                                         <span>
                                             {{ $supplier_data['notes'] }}
                                         </span>

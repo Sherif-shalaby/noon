@@ -77,7 +77,7 @@
 
             <button type="button" style="margin-top:17px"
                 class="btn btn-sm mx-1 h-50 btn-danger d-flex justify-content-center align-items-center  remove_row"
-                data-key="{{ $key }}">
+                data-key="{{ $key }}" onclick="fadeInButton(event)">
                 <i class="fas fa-close"></i>
             </button>
 
@@ -104,10 +104,10 @@
         @endif
     </div>
 
-    <script>
+    {{-- <script>
         function disableButton(event) {
             var button = event.currentTarget
             button.classList.add("disabled");
 
         }
-    </script>
+    </script> --}}

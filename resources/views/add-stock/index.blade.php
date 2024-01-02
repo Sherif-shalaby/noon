@@ -3,7 +3,7 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 260px;
+            top: 305px;
         }
 
         .wrapper1 {
@@ -117,6 +117,12 @@
                                             <th class="sum">@lang('lang.paid_amount')</th>
                                             <th class="sum">@lang('lang.pending_amount')</th>
                                             <th>@lang('lang.due_date')</th>
+                                            <th>@lang('lang.invoice_discount')</th>
+                                            <th>@lang('lang.product_discount')</th>
+                                            <th>@lang('lang.product_discount_percent')</th>
+                                            <th>@lang('lang.cash_discount')</th>
+                                            <th>@lang('lang.seasonal_discount')</th>
+                                            <th>@lang('lang.annual_discount')</th>
                                             <th>@lang('lang.notes')</th>
                                             <th class="notexport">@lang('lang.action')</th>
                                         </tr>
@@ -278,6 +284,90 @@
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.due_date')">
                                                         {{ $stock->due_date ?? '' }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.invoice_discount')">
+                                                        {{ $stock->discount_amount }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.product_discount')">
+                                                        @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                                            {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('discount') }}
+                                                            <span class="dollar-cell">
+                                                                {{ $stock->add_stock_lines->where('used_currency', 2)->sum('discount') }}</span>
+                                                            $
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.product_discount_percent')">
+                                                        @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                                            {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('discount_percent') }}
+                                                            %
+                                                            <span class="dollar-cell">
+                                                                {{ $stock->add_stock_lines->where('used_currency', 2)->sum('discount_percent') }}</span>
+                                                            $
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.cash_discount')">
+                                                        @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                                            {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('cash_discount') }}
+                                                            <span class="dollar-cell">
+                                                                {{ $stock->add_stock_lines->where('used_currency', 2)->sum('cash_discount') }}</span>
+                                                            $
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.seasonal_discount')">
+                                                        @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                                            {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('seasonal_discount') }}
+                                                            %
+                                                            <span class="dollar-cell">
+                                                                {{ $stock->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount') }}</span>$
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.annual_discount')">
+                                                        @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                                            {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('annual_discount') }}
+                                                            %
+                                                            <span class="dollar-cell">
+                                                                {{ $stock->add_stock_lines->where('used_currency', 2)->sum('annual_discount') }}</span>$
+                                                        @else
+                                                            0
+                                                        @endif
                                                     </span>
                                                 </td>
                                                 <td>

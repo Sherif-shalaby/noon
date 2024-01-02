@@ -722,4 +722,6 @@ return [
     'Preparer' => 'Preparer',
     'Deliveryman' => 'DeliveryMan',
     'Representative' => 'Representative',
+    'discounts' => 'Discounts',
+
 ];

@@ -792,4 +792,5 @@ return array(
     'Preparer' => 'مٌجهز',
     'Deliveryman' => 'رجل التوصيل',
     'Representative' => 'مندوب',
+    'discounts' => 'الخصومات',
 );

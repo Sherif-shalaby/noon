@@ -196,6 +196,27 @@
             </div>
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
+                {!! Form::label('discounts', __('lang.discounts') . '*', [
+                    'class' => 'mb-0',
+                ]) !!}
+                <div class="input-wrapper">
+                    {!! Form::select(
+                        'discount',
+                        [
+                            'invoice_discount' => __('lang.invoice_discount'),
+                            'product_discount' => __('lang.product_discount'),
+                            'product_discount_percent' => __('lang.product_discount_percent'),
+                            'cash_discount' => __('lang.cash_discount'),
+                            'seasonal_discount' => __('lang.seasonal_discount'),
+                            'annual_discount' => __('lang.annual_discount'),
+                        ],
+                        request()->discount,
+                        ['class' => 'form-control select2', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select')],
+                    ) !!}
+                </div>
+            </div>
+            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                style="animation-delay: 1.15s">
                 <label class="mb-0" for="due_date">{{ __('lang.payment_date') }}</label>
                 <div class="input-wrapper">
                     {!! Form::date('due_date', null, [
