@@ -52,7 +52,58 @@
         </div>
     </div>
 </div>
+<!-- ================== Modal 1 : createCustomerTypesModal ================== -->
+<div class="modal fade" id="createCustomerTypesModal2" tabindex="-1" role="dialog"
+    aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog  rollIn  animated" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleStandardModalLabel">{{ __('lang.add_customer_type') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            {!! Form::open([
+                'route' => 'customertypes.store',
+                'method' => 'post',
+                'files' => true,
+                'id' => 'customer-type-form2',
+            ]) !!}
+            <div class="modal-body">
+                <div
+                    class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <label class="modal-label-width mx-2 mb-0" for="name">@lang('lang.name')</label>
+                    <div
+                        class="select_body input-wrapper d-flex justify-content-between align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <input type="text" required
+                            class="initial-balance-input my-0 @if (app()->isLocale('ar')) text-end  @else text-start @endif"
+                            style="width: 100%" placeholder="@lang('lang.name')" name="name"
+                            value="{{ old('name') }}">
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                        <button class="add-button d-flex justify-content-center align-items-center" type="button"
+                            data-toggle="collapse" data-target="#translation_table_customertype" aria-expanded="false"
+                            aria-controls="collapseExample">
+                            <i class="fas fa-globe"></i>
+                        </button>
+                    </div>
 
+                    @include('layouts.translation_inputs', [
+                        'attribute' => 'name',
+                        'translations' => [],
+                        'type' => 'customertype',
+                    ])
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
+                <button type="submit" class="btn btn-primary">{{ __('lang.save') }}</button>
+            </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
+</div>
 <!-- ================== Modal 2 : createRegionModal ================== -->
 <div class="modal  modal-add-region animate__animated" data-animate-in="animate__rollIn"
     data-animate-out="animate__rollOut" id="createRegionModal" tabindex="-1" role="dialog"

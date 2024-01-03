@@ -363,6 +363,13 @@ class CustomerController extends Controller
         $quarters_dp = $this->Util->createDropdownHtml($quarters, __('lang.please_select'));
         return  $quarters_dp;
     }
+    // ++++++++++++++++++ Task 14-12-2023 : customer_types dropdown in "customer create" page +++++++++++++
+    public function getDropdownCustomerType()
+    {
+        $customer_types = CustomerType::orderBy('created_at', 'asc')->pluck('name', 'id')->toArray();
+        $customer_types_dp = $this->Util->createDropdownHtml($customer_types, __('lang.please_select'));
+        return  $customer_types_dp;
+    }
 
     public function get_due(Request $request){
         $today = Carbon::today()->toDateString();

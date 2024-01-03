@@ -467,7 +467,7 @@ $(document).ready(function () {
         }, 500);
     });
 });
-
+// ++++++++++++++++++++++++ Customer Type Form +++++++++++++++++++++
 $(document).on("submit", "#quick_add_customer_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -520,7 +520,15 @@ $(document).on("submit", "#customer-region-form", function (e) {
         success: function (result) {
             console.log("First Ajax Request : ", result);
             if (result.success) {
-                Swal.fire("Success", result.msg, "success");
+                Swal.fire({
+                    title: `${result.msg}`,
+                    type: 'success',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    // confirmButtonText:"حسنا",
+                    // confirmButtonColor: '#3085d6',
+                    timer: 1000
+                });
                 $("#createRegionModal").modal("hide");
                 var city_id = result.id;
                 var state_id = result.state_id;
@@ -557,7 +565,15 @@ $(document).on("submit", "#customer-quarter-form", function (e) {
         success: function (result) {
             console.log("First Ajax Request : ", result);
             if (result.success) {
-                Swal.fire("Success", result.msg, "success");
+                Swal.fire({
+                    title: `${result.msg}`,
+                    type: 'success',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    // confirmButtonText:"حسنا",
+                    // confirmButtonColor: '#3085d6',
+                    timer: 1000
+                });
                 $("#createQuarterModal").modal("hide");
                 var quarter_id = result.id;
                 var city_id = result.city_id;
@@ -583,4 +599,47 @@ $(document).on("submit", "#customer-quarter-form", function (e) {
     });
 });
 
+// +++++++++++++++++++++++ customer_quarters_Dropdown ++++++++++++++++++++
+$(document).on("submit", "#customer-type-form2", function (e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+        method: "post",
+        url: $(this).attr("action"),
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            console.log("First Ajax Request : ", result);
+            if (result.success) {
+                Swal.fire({
+                    title: `${result.msg}`,
+                    type: 'success',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    // confirmButtonText:"حسنا",
+                    // confirmButtonColor: '#3085d6',
+                    timer: 1000
+                });
+                $("#createCustomerTypesModal2").modal("hide");
+                var customer_type_id = result.customer_type_id;
+                console.log("Outer Second Ajax Request : ", result);
+                $.ajax({
+                    method: "get",
+                    url: "/customer/get-dropdown-customer-type/",
+                    data: {},
+                    contactType: "html",
+                    success: function (data_html) {
+                        // console.log("data_html = ", data_html);
+                        console.log("Inner Second Ajax Request : " + data_html);
+                        console.log("data_html = " + data_html);
+                        $("#customer_type_id").empty().append(data_html);
+                        $("#customer_type_id").val(customer_type_id).change();
+                    },
+                });
+            } else {
+                Swal.fire("Error", result.msg, "error");
+            }
+        },
+    });
+});
 //category form

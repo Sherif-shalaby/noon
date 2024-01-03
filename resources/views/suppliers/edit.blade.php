@@ -7,7 +7,7 @@
         <div
             class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             <div>
-                <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.add_supplier')
+                <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.edit_supplier')
                 </h4>
                 <div class="breadcrumb-list">
                     <ul style=" list-style: none;"
@@ -20,7 +20,7 @@
                                 style="text-decoration: none;color: #596fd7" href="{{ route('suppliers.index') }}">/
                                 @lang('lang.suppliers')</a></li>
                         <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                            aria-current="page">@lang('lang.add_supplier')</li>
+                            aria-current="page">@lang('lang.edit_supplier')</li>
                     </ul>
                 </div>
             </div>
@@ -195,45 +195,59 @@
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- ++++++++++++++++++++ city ++++++++++++++++++++ --}}
+                                    {{-- ++++++++++++++++ state selectbox : المحافظة : (states table) +++++++++++++++++ --}}
                                     <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                        style="animation-delay: 1.55s">
+                                        style="animation-delay: 1.5s">
                                         <label style="font-weight: 700;font-size: 13px;"
                                             class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                            for="city-dd">@lang('lang.city')</label>
+                                            for="state-dd">@lang('lang.state')</label>
                                         <div
                                             class="select_body input-wrapper d-flex justify-content-between align-items-center">
-                                            <select id="city-dd" name="city_id" class="form-control select2">
-                                                <option value=""> @lang('lang.please_select')</option>
-                                                @if (isset($cities))
-                                                    @foreach ($cities as $city)
-                                                        <option value="{{ $city->id }}"
-                                                            {{ $supplier->city_id == $city->id ? 'selected' : '' }}>
-                                                            {{ $city->name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endif
+                                            <select id="state-dd" name="state_id" class="form-control select2">
+                                                @php
+                                                    $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
+                                                @endphp
+                                                @foreach ($states as $state)
+                                                    <option value="{{ $state->id }}">
+                                                        {{ $state->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- ++++++++++++++++++++ image ++++++++++++++++++++ --}}
+                                    {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
                                     <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                        style="animation-delay: 1.6s">
+                                        style="animation-delay: 1.5s">
                                         <label style="font-weight: 700;font-size: 13px;"
-                                            class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif">@lang('image')</label>
+                                            class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                            for="city-dd">@lang('lang.regions')</label>
                                         <div class="input-wrapper">
-
-                                            <input class="initial-balance-input m-auto form-control img"
-                                                style="width: 100%; border:2px solid #ccc;padding: 0" name="image"
-                                                type="file" accept="image/*" value="{{ $supplier->image }}">
+                                            <select id="city-dd" name="city_id" class="form-control select2"></select>
+                                            <button type="button"
+                                                class="add-button d-flex justify-content-center align-items-center"
+                                                data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
                                         </div>
-                                        {{-- <div class="dropzone" style="opacity: 0;width: 20px;height: 20px;" id="my-dropzone">
-                                        <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                    </div> --}}
-                                        @error('cover')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
+                                    <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        style="animation-delay: 1.5s">
+                                        <label style="font-weight: 700;font-size: 13px;"
+                                            class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                            for="quarters_id">@lang('lang.quarters')</label>
+                                        <div class="input-wrapper">
+                                            <select id="quarter-dd" class="form-control select2"
+                                                name="quarter_id"></select>
+                                            <button type="button"
+                                                class="add-button d-flex justify-content-center align-items-center"
+                                                data-toggle="modal" id="add_quarters_btn_id"
+                                                data-target="#createQuarterModal">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
                                     {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
                                     <div class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                         style="animation-delay: 1.65s">
@@ -290,7 +304,8 @@
                                                                     placeholder="@lang('lang.email')" name="email[]"
                                                                     value="{{ $email }}" required>
                                                                 @error('email')
-                                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                                    <div class="alert alert-danger">{{ $message }}
+                                                                    </div>
                                                                 @enderror
                                                         </td>
 
@@ -308,6 +323,7 @@
                                         </table>
                                     </div>
                                 </div>
+
                                 {{-- +++++++++++++++++++++++++++++++ mobile_number array ++++++++++++++++++++++++ --}}
                                 <div class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.7s">
@@ -379,8 +395,27 @@
                                     </tbody>
                                     </table>
                                 </div>
-                            </div>
 
+
+                            </div>
+                            {{-- ++++++++++++++++++++ image ++++++++++++++++++++ --}}
+                            <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.6s">
+                                <label style="font-weight: 700;font-size: 13px;"
+                                    class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif">@lang('image')</label>
+                                <div class="input-wrapper">
+
+                                    <input class="initial-balance-input m-auto form-control img"
+                                        style="width: 100%; border:2px solid #ccc;padding: 0" name="image"
+                                        type="file" accept="image/*" value="{{ $supplier->image }}">
+                                </div>
+                                {{-- <div class="dropzone" style="opacity: 0;width: 20px;height: 20px;" id="my-dropzone">
+                                        <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                           </div> --}}
+                                @error('cover')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                     </div>
                     <br>
                 </div>
@@ -395,6 +430,8 @@
     </div>
     <!-- End col -->
     @include('categories.modalCrop')
+    {{-- ++++++++++++ Quick_Add "city","quarter" Modal ++++++++++++ --}}
+    @include('suppliers.partials.quick_add')
     </div>
     </div>
 @endsection
@@ -455,7 +492,7 @@
             var idState = this.value;
             $('#city-dd').html('');
             $.ajax({
-                url: "/api/fetch-cities",
+                url: "/api/customers/fetch-cities",
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -471,6 +508,42 @@
                     });
                 }
             })
+        });
+        // ================ city selectbox ================
+        // ++++++++++++ store "state_id" in hidden inputField in "cities modal" ++++++++++
+        $("#cities_id").on('click', function() {
+            var state_id = $("#state-dd").val();
+            $("#stateId").val(state_id);
+            console.log("+++++++++++++++++++++++++++ " + state_id + " +++++++++++++++++++++++++++");
+        });
+        // ================ quarter selectbox ================
+        $('#city-dd').change(function(event) {
+            // Capture the selected city value
+            var idCity = this.value;
+            $('#quarter-dd').html('');
+            $.ajax({
+                url: "/api/customers/fetch-quarters",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    city_id: idCity,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    console.log("Quarter = " + response.quarters);
+                    $('#quarter-dd').html('<option value="">Select Quarter</option>');
+                    $.each(response.quarters, function(index, val) {
+                        $('#quarter-dd').append('<option value="' + val.id + '">' + val.name +
+                            '</option>')
+                    });
+                }
+            })
+        });
+        // ++++++++++++ store "cities_id" in hidden inputField in "quarter modal" ++++++++++
+        $("#add_quarters_btn_id").on('click', function() {
+            var city_id = $("#city-dd").val();
+            $("#cityId").val(city_id);
+            console.log("+++++++++++++++++++++++++++ " + city_id + " +++++++++++++++++++++++++++");
         });
     </script>
 @endpush

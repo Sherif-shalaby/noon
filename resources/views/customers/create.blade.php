@@ -62,7 +62,7 @@
                     <div class="container-fluid">
                         <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
-                            <div class=" col-6 col-md-3 flex-column col-md-3 mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            {{-- <div class=" col-6 col-md-3 flex-column col-md-3 mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                 style="animation-delay: 1.1s;position: relative;z-index: 4;">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -77,6 +77,30 @@
                                     <button type="button"
                                         class="add-button d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-target="#createCustomerTypesModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                @error('customer_type_id')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div> --}}
+                            {{-- ++++++++++++++++ customer_type selectbox : انواع العملاء : (customer_type table) +++++++++++++++++ --}}
+                            <div class=" col-6 col-md-3 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.1s">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="customer_type_id">@lang('lang.customer_type')</label>
+                                <div class="input-wrapper">
+                                    {!! Form::select('customer_type_id', $customer_types, null, [
+                                        'class' => 'form-control select2',
+                                        'id' => 'customer_type_id',
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                    ]) !!}
+                                    <button type="button"
+                                        class="add-button d-flex justify-content-center align-items-end align-items-md-center"
+                                        data-toggle="modal" data-target="#createCustomerTypesModal2">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
