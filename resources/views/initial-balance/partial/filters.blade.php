@@ -4,7 +4,7 @@
         <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.15s">
             <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
-                style="font-size: 12px;font-weight: 500;" for="product_name">{{ __('lang.product_name') }}</label>
+                for="product_name">{{ __('lang.product_name') }}</label>
             <div class="input-wrapper">
                 {!! Form::text('product_name', null, [
                     'class' => 'form-control  m-0 initial-balance-input width-full',
@@ -16,7 +16,7 @@
         <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.15s">
             <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
-                style="font-size: 12px;font-weight: 500;" for="product_sku">{{ __('lang.sku') }}</label>
+                for="product_sku">{{ __('lang.sku') }}</label>
             <div class="input-wrapper">
                 {!! Form::text('product_sku', null, [
                     'class' => 'form-control  m-0 initial-balance-input width-full',
@@ -28,7 +28,7 @@
         <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.15s">
             <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
-                style="font-size: 12px;font-weight: 500;" for="product_symbol">{{ __('lang.product_symbol') }}</label>
+                for="product_symbol">{{ __('lang.product_symbol') }}</label>
             <div class="input-wrapper">
                 {!! Form::text('product_symbol', null, [
                     'class' => 'form-control  m-0 initial-balance-input width-full',
@@ -40,7 +40,7 @@
         <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.15s">
             <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
-                style="font-size: 12px;font-weight: 500;" for="supplier">{{ __('lang.supplier') }}</label>
+                for="supplier">{{ __('lang.supplier') }}</label>
             <div class="input-wrapper">
                 {!! Form::select('supplier_id', $suppliers, $supplier_id, [
                     'class' => 'form-control select2',
@@ -53,7 +53,7 @@
         <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.15s">
             <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
-                style="font-size: 12px;font-weight: 500;" for="created_by">{{ __('lang.created_by') }}</label>
+                for="created_by">{{ __('lang.created_by') }}</label>
             <div class="input-wrapper">
                 {!! Form::select('created_by', $users, $created_by, [
                     'class' => 'form-control select2',
@@ -66,7 +66,7 @@
         <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.15s">
             <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
-                style="font-size: 12px;font-weight: 500;" for="brand">{{ __('lang.brand') }}</label>
+                for="brand">{{ __('lang.brand') }}</label>
             <div class="input-wrapper">
                 {!! Form::select('brand_id', $brands, $brand_id, [
                     'class' => 'form-control select2',
@@ -79,7 +79,7 @@
         <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.15s">
             <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
-                style="font-size: 12px;font-weight: 500;" for="from">{{ __('site.From') }}</label>
+                for="from">{{ __('site.From') }}</label>
             <div class="input-wrapper">
                 {!! Form::date('from', $from, [
                     'class' => 'form-control  m-0 initial-balance-input width-full',
@@ -91,7 +91,7 @@
         <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.15s">
             <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
-                style="font-size: 12px;font-weight: 500;" for="to">{{ __('site.To') }}</label>
+                for="to">{{ __('site.To') }}</label>
             <div class="input-wrapper">
                 {!! Form::date('to', $to, [
                     'class' => 'form-control  m-0 initial-balance-input width-full',

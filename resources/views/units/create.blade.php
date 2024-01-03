@@ -18,8 +18,7 @@
                         class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <input type="hidden" name="quick_add"
                             value="{{ isset($quick_add) && $quick_add ? $quick_add : '' }}">
-                        <label style="font-size: 12px;font-weight: 500;" class="col-md-3"
-                            for="name">@lang('units.unitname')</label>
+                        <label class="col-md-3" for="name">@lang('units.unitname')</label>
                         <div class="col-md-9 d-flex justify-content-between p-0 align-items-center select_body position-relative @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="background-color: #dedede; border: none;
                                         border-radius: 16px;

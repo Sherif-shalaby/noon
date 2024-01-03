@@ -72,7 +72,7 @@
                                         class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                         <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.2s">
-                                            <label style="font-size: 12px;font-weight: 500;"
+                                            <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                 for="fname">@lang('lang.employee_name') </label>:
                                             <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
@@ -81,7 +81,7 @@
                                         </div>
                                         <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.25s">
-                                            <label style="font-size: 12px;font-weight: 500;"
+                                            <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                 for="store_id">@lang('lang.store') </label>:
                                             <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
@@ -92,7 +92,7 @@
                                         </div>
                                         <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.3s">
-                                            <label style="font-size: 12px;font-weight: 500;"
+                                            <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                 for="email">@lang('lang.email') </label>:
                                             <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
@@ -101,7 +101,7 @@
                                         </div>
                                         <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.35s">
-                                            <label style="font-size: 12px;font-weight: 500;"
+                                            <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                 for="date_of_start_working">@lang('lang.date_of_start_working') </label>:
                                             <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
@@ -112,7 +112,7 @@
                                         </div>
                                         <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.4s">
-                                            <label style="font-size: 12px;font-weight: 500;"
+                                            <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                 for="date_of_birth">@lang('lang.date_of_birth') </label>:
                                             <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
@@ -124,7 +124,7 @@
 
                                         <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.45s">
-                                            <label style="font-size: 12px;font-weight: 500;"
+                                            <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                 for="job_type">@lang('lang.job_type') </label>:
                                             <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
@@ -135,7 +135,7 @@
                                         </div>
                                         <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.5s">
-                                            <label style="font-size: 12px;font-weight: 500;"
+                                            <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                 for="mobile">@lang('lang.phone_number')</label>:
                                             <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
@@ -154,15 +154,13 @@
 
                             <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                 style="animation-delay: 1.55s">
-                                <label style="font-size: 12px;font-weight: 500;"
-                                    class="mx-2 mb-0 @if (app()->isLocale('ar')) d-block text-end @endif">
+                                <label class="mx-2 mb-0 @if (app()->isLocale('ar')) d-block text-end @endif">
                                     @lang('lang.salary_details') </label>
                                 <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
                                     @if ($employee->fixed_wage)
                                         <div class="form-group">
                                             <div class="text-right">
-                                                <label style="font-size: 12px;font-weight: 500;"
-                                                    class="mx-2 mb-0 @if (app()->isLocale('ar')) text-end @endif"
+                                                <label class="mx-2 mb-0 @if (app()->isLocale('ar')) text-end @endif"
                                                     for="fixed_wage"><strong>@lang('lang.wage')</strong></label>
                                                 <br>
                                                 <div
@@ -170,7 +168,7 @@
 
                                                     <div
                                                         class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                        <label style="font-size: 12px;font-weight: 500;"
+                                                        <label
                                                             class="mx-2 mb-0 @if (app()->isLocale('ar')) text-end @endif"
                                                             for="">@lang('lang.fixed_wage_value') </label>:
                                                         <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
@@ -180,7 +178,7 @@
 
                                                     <div
                                                         class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                        <label style="font-size: 12px;font-weight: 500;"
+                                                        <label
                                                             class="mx-2 mb-0 @if (app()->isLocale('ar')) text-end @endif"
                                                             for="">@lang('lang.payment_cycle') </label>:
                                                         <span style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
@@ -222,7 +220,7 @@
                             <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                 style="animation-delay: 1.65s">
                                 <div class="col-md-12">
-                                    <label style="font-size: 12px;font-weight: 500;"
+                                    <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="working_day_per_week">@lang('lang.working_day_per_week')</label>
                                     <table class="@if (app()->isLocale('ar')) dir-rtl @endif" style="width: 100%">

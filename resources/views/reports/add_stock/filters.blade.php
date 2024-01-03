@@ -169,8 +169,7 @@
             </div>
             <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.7s">
-                <label style="font-size: 12px;font-weight: 500;"
-                    class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                     for="due_date">{{ __('lang.payment_date') }}</label>
                 {!! Form::date('due_date', null, [
                     'class' => 'form-control mt-0 initial-balance-input width-full',
@@ -179,8 +178,7 @@
             </div>
             <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.75s">
-                <label style="font-size: 12px;font-weight: 500;"
-                    class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                     for="from">{{ __('site.From') }}</label>
                 {!! Form::date('from', request()->from, [
                     'class' => 'form-control mt-0 initial-balance-input width-full',
@@ -190,8 +188,7 @@
             </div>
             <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.8s">
-                <label style="font-size: 12px;font-weight: 500;"
-                    class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                     for="to">{{ __('site.To') }}</label>
                 {!! Form::date('to', request()->to ?? date('Y-m-d'), [
                     'class' => 'form-control mt-0 initial-balance-input width-full',

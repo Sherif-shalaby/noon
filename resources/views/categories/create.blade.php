@@ -48,8 +48,7 @@
                                     <div class="col-md-4 ">
                                         <div
                                             class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                            <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
-                                                for="name">@lang('categories.categorie_name')</label>
+                                            <label class="modal-label-width" for="name">@lang('categories.categorie_name')</label>
                                             <div
                                                 class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                 <input type="text" required
@@ -76,8 +75,7 @@
                                     <div class="col-md-4">
                                         <div
                                             class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                            <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
-                                                for="parent_id">@lang('categories.parent')</label>
+                                            <label class="modal-label-width" for="parent_id">@lang('categories.parent')</label>
                                             <div
                                                 class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                 <select name="parent_id"
@@ -118,8 +116,7 @@
                                     <div class="col-md-4">
                                         <div
                                             class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                            <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
-                                                for="status">@lang('categories.status')</label>
+                                            <label class="modal-label-width" for="status">@lang('categories.status')</label>
                                             <div
                                                 class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                 <select name="status"
@@ -141,7 +138,7 @@
                                 <div class="row">
 
                                     <div class="form-group">
-                                        <label style="font-size: 12px;font-weight: 500;"
+                                        <label
                                             class="d-block @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('categories.cover')</label>
                                         <input class="form-control img" name="cover" type="file" accept="image/*">
                                         <div class="dropzone d-flex justify-content-center align-items-center"

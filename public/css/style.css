@@ -268,7 +268,8 @@ nav {
 
 .contentbar {
     padding: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .footerbar {

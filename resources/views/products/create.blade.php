@@ -3,7 +3,7 @@
 @push('css')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/product.css') }}">
-    <style>
+    {{-- <style>
         .form-select {
             height: 100%;
             padding-bottom: 0;
@@ -21,7 +21,7 @@
             box-shadow: 0 0 0 0 !important;
             background-color: white !important;
         }
-    </style>
+    </style> --}}
 @endpush
 @section('breadcrumbbar')
     <div class="animate-in-page">
@@ -92,7 +92,6 @@
                             <div class=" mb-2 p-0">
                                 {!! Form::label('store', __('lang.store'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede;

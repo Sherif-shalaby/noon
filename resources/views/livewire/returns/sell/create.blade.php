@@ -184,7 +184,7 @@
                     <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <div
                             class="col-md-9 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse my-2 @else flex-row @endif">
-                            <label style="font-size: 12px;font-weight: 500;">@lang('lang.notes')</label>
+                            <label>@lang('lang.notes')</label>
                             <textarea rows="3" class="form-control initial-balance-input width-full" name="notes" id="notes"
                                 wire:model = 'notes'>{{ !empty($sell_return) ? $sell_return->notes : '' }}</textarea>
                         </div>

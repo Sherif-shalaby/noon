@@ -7,7 +7,6 @@
                 style="width: 75px">
                 {!! Form::label('equal', __('lang.equal'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                    'style' => 'font-weight:500;font-size:10px;color:#888',
                 ]) !!}
                 {!! Form::text(
                     'products[' . $key . '][variations][' . $index . '][equal]',
@@ -24,7 +23,6 @@
                 class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                 {!! Form::label('unit', __('lang.small_filling'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                    'style' => 'font-weight:500;font-size:10px;color:#888',
                 ]) !!}
                 <div class="d-flex justify-content-center align-items-center"
                     style="background-color: #dedede; border: none;
@@ -55,7 +53,6 @@
                 style="width: 75px">
                 {!! Form::label('sku', __('lang.product_code'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                    'style' => 'font-weight:500;font-size:10px;color:#888',
                 ]) !!}
                 {!! Form::text('products[' . $key . '][variations][' . $index . '][sku]', $variation->sku ?? null, [
                     'class' => 'form-control initial-balance-input',

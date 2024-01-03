@@ -584,7 +584,6 @@
             <div class=" animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                 style="width: 80px;min-height: 60px">
                 {!! Form::label('b_qty', __('lang.b_qty'), [
-                    'style' => 'font-weight:500;font-size:10px;color:#888',
                     'class' => 'mx-2 mb-0 d-block text-end',
                 ]) !!}
                 <input style="height:30px;font-size:12px;" type="text"

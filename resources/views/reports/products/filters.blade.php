@@ -287,7 +287,7 @@
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="checkbox" id="balance_return_request"
                         {{ !empty(request()->balance_return_request) ? 'checked' : '' }} name="balance_return_request">
-                    <label style="font-size: 12px;font-weight: 500;"
+                    <label
                         class="checkbox @if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                         for="balance_return_request">@lang('lang.balance_return_request')</label>
                 </div>
@@ -298,7 +298,7 @@
                     <input type="checkbox" class="checkbox" id="sell_price_less_purchase_price"
                         {{ !empty(request()->sell_price_less_purchase_price) ? 'checked' : '' }}
                         name="sell_price_less_purchase_price">
-                    <label style="font-size: 12px;font-weight: 500;"
+                    <label
                         class="checkbox @if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                         for="sell_price_less_purchase_price">@lang('lang.sell_price_less_purchase_price')</label>
                 </div>

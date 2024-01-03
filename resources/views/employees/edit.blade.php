@@ -73,7 +73,7 @@
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.2s">
-                                    <label style="font-size: 12px;font-weight: 500;"
+                                    <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="fname">@lang('lang.name')*</label>
                                     <div class="input-wrapper">
@@ -86,7 +86,7 @@
 
                                 <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.25s">
-                                    <label style="font-size: 12px;font-weight: 500;"
+                                    <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="email">@lang('lang.email')*<small>(@lang('lang.it_will_be_used_for_login'))</small></label>
                                     <div class="input-wrapper">
@@ -98,7 +98,7 @@
                                 {{-- ============= password ============= --}}
                                 <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.3s">
-                                    <label style="font-size: 12px;font-weight: 500;"
+                                    <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="password">@lang('lang.password')</label>
                                     <div class="input-wrapper">
@@ -110,7 +110,7 @@
                                 {{-- ============= confirm_password ============= --}}
                                 <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.35s">
-                                    <label style="font-size: 12px;font-weight: 500;"
+                                    <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="pass">@lang('lang.confirm_password')</label>
                                     <div class="input-wrapper">
@@ -123,7 +123,7 @@
 
                                 <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.4s">
-                                    <label style="font-size: 12px;font-weight: 500;"
+                                    <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="mobile">@lang('lang.mobile')*</label>
                                     <div class="input-wrapper">
@@ -136,7 +136,7 @@
                                 {{-- ============= branch_id ============= --}}
                                 <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.45s">
-                                    <label style="font-size: 12px;font-weight: 500;"
+                                    <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="branch_id">@lang('lang.branch')</label>
                                     <div class="input-wrapper" style="background-color: transparent">
@@ -151,7 +151,7 @@
                                 {{-- ============= store_id ============= --}}
                                 <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.5s">
-                                    <label style="font-size: 12px;font-weight: 500;"
+                                    <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="store_id">@lang('lang.store')</label>
                                     <div class="input-wrapper" style="background-color: transparent">
@@ -166,7 +166,7 @@
                                 </div>
                                 <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.55s">
-                                    <label style="font-size: 12px;font-weight: 500;"
+                                    <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="job_type">@lang('lang.job_type')</label>
                                     <div class="input-wrapper" style="background-color: transparent">
@@ -198,7 +198,7 @@
 
                                                 <div
                                                     class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                    <label style="font-size: 12px;font-weight: 500;"
+                                                    <label
                                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                         for="date_of_start_working">@lang('lang.date_of_start_working')</label>
                                                     <div class="input-wrapper">
@@ -212,7 +212,7 @@
                                                 </div>
                                                 <div
                                                     class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                    <label style="font-size: 12px;font-weight: 500;"
+                                                    <label
                                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                         for="date_of_birth">@lang('lang.date_of_birth')</label>
                                                     <div class="input-wrapper">
@@ -227,7 +227,7 @@
 
                                                 <div
                                                     class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                    <label style="font-size: 12px;font-weight: 500;"
+                                                    <label
                                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                         for="upload_files">@lang('lang.upload_files')</label>
                                                     <div class="input-wrapper">
@@ -237,7 +237,7 @@
                                                 </div>
                                                 <div
                                                     class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                    <label style="font-size: 12px;font-weight: 500;"
+                                                    <label
                                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                         for="photo">@lang('lang.profile_photo')</label>
                                                     <div class="input-wrapper">

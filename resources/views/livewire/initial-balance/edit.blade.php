@@ -23,7 +23,6 @@
                                     style="animation-delay: 1.15s;width: 75px">
                                     {!! Form::label('product_symbol', __('lang.product_symbol'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     {!! Form::text('product_symbol', $item[0]['product_symbol'], [
                                         'class' => 'form-control initial-balance-input',
@@ -39,7 +38,6 @@
                                     style="animation-delay: 1.2s;width: 320px">
                                     {!! Form::label('name', __('lang.product_name'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     {!! Form::text('name', $item[0]['name'], [
                                         'class' => 'form-control  required initial-balance-input',
@@ -56,7 +54,6 @@
                                     style="animation-delay: 1.2s;width: 200px">
                                     {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     <div class="d-flex justify-content-center align-items-center"
                                         style="background-color: #dedede;
@@ -91,7 +88,6 @@
                                     style="animation-delay: 1.2s;width: 75px">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     <input type="text" class="form-control initial-balance-input p-1"
                                         id="exchange_rate" value="{{ $item[0]['exchange_rate'] }}"
@@ -105,7 +101,6 @@
                                     style="animation-delay: 1.2s;width: 100px">
                                     {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     {!! Form::text('balance_return_request', $item[0]['balance_return_request'], [
                                         'wire:model' => 'item.0.balance_return_request',
@@ -118,7 +113,6 @@
                                     style="animation-delay: 1.2s;width: 160px">
                                     {!! Form::label('store_id', __('lang.store') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     <div class="d-flex justify-content-center align-items-center"
                                         style="background-color: #dedede;
@@ -278,7 +272,6 @@
                                     style="width:200px;animation-delay: 1.2s;">
                                     {!! Form::label('category', __('lang.category'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     <div class="d-flex flex-row-reverse">
 
@@ -320,7 +313,6 @@
                                     style="width:200px">
                                     {!! Form::label('subcategory', __('lang.category') . ' 1', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     <div class="d-flex flex-row-reverse">
                                         <div class="d-flex justify-content-center align-items-center subcategory_id1 "
@@ -363,7 +355,6 @@
 
                                     {!! Form::label('subcategory', __('lang.category') . ' 2', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     <div class="d-flex flex-row-reverse">
                                         <div class="d-flex justify-content-center align-items-center  subcategory2"
@@ -407,7 +398,6 @@
 
                                     {!! Form::label('subcategory', __('lang.category') . ' 3', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     <div class="d-flex flex-row-reverse">
                                         <div class="d-flex justify-content-center align-items-center subcategory3 "
@@ -589,7 +579,6 @@
                                         class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                         {!! Form::label('length', __('lang.length'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                            'style' => 'font-weight:500;font-size:10px;color:#888',
                                         ]) !!}
                                         <input type="text" wire:model='item.0.length' wire:change='changeSize()'
                                             class='form-control initial-balance-input m-0 length'
@@ -604,7 +593,6 @@
                                         class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                         {!! Form::label('width', __('lang.width'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                            'style' => 'font-weight:500;font-size:10px;color:#888',
                                         ]) !!}
                                         <input type="text" wire:model='item.0.width' wire:change='changeSize()'
                                             class='form-control  initial-balance-input m-0 width'
@@ -619,7 +607,6 @@
                                         class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                         {!! Form::label('height', __('lang.height'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                            'style' => 'font-weight:500;font-size:10px;color:#888',
                                         ]) !!}
                                         <input type="text" wire:model='item.0.height' wire:change='changeSize()'
                                             class='form-control height initial-balance-input m-0'
@@ -633,7 +620,6 @@
                                         class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                         {!! Form::label('size', __('lang.size'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                            'style' => 'font-weight:500;font-size:10px;color:#888',
                                         ]) !!}
                                         <input type="text" wire:model='item.0.size' wire:change='changeSize()'
                                             class='form-control  initial-balance-input m-0  size'
@@ -649,7 +635,6 @@
                                         class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                         {!! Form::label('weight', __('lang.weight'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                            'style' => 'font-weight:500;font-size:10px;color:#888',
                                         ]) !!}
                                         <input type="text" wire:model='item.0.weight' wire:change='changeSize()'
                                             class='form-control weight initial-balance-input m-0'
@@ -696,7 +681,6 @@
                                                     pl-1">
                                                 {!! Form::label('price_category', __('lang.price_category'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <input type="text" style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 price_category"
@@ -736,7 +720,6 @@
                                          pl-1">
                                                 {!! Form::label('price', __('lang.quantity'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <input type="text" style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 discount_quantity"
@@ -754,7 +737,6 @@
                                                             pl-1">
                                                 {!! Form::label('b_qty', __('lang.b_qty'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <input type="text"
                                                     class="form-control initial-balance-input m-0 bonus_quantity"
@@ -771,7 +753,6 @@
                                                 style="width: 160px">
                                                 {!! Form::label('customer_type', __('lang.customer_type'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <div class="d-flex justify-content-center align-items-center"
                                                     style="background-color: #dedede;
@@ -803,7 +784,6 @@
                                                 style="width: 160px">
                                                 {!! Form::label('price_type', __('lang.type'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <div class="d-flex justify-content-center align-items-center"
                                                     style="background-color: #dedede;
@@ -849,7 +829,6 @@
                                                     isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
                                                     [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                        'style' => 'font-weight:500;font-size:10px;color:#888',
                                                     ],
                                                 ) !!}
                                                 <input type="text" name="price" style="width: 100px"
@@ -863,7 +842,6 @@
                                                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                                 {!! Form::label('', __('lang.price'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <input type="text" name=""
                                                     style="width: 150px;border:2px solid #cececf;"
@@ -879,7 +857,6 @@
                                                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                                 {!! Form::label('total_price', __('lang.total_price'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <input type="text" name="total_price"
                                                     style="width: 150px;border:2px solid #cececf;"
@@ -892,7 +869,6 @@
                                                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                                 {!! Form::label('piece_price', __('lang.piece_price'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <input type="text" name="piece_price"
                                                     style="width: 150px;border:2px solid #cececf;"
@@ -1009,7 +985,6 @@
                                                             style="width: 75px">
                                                             {!! Form::label('quantity', __('lang.quantity'), [
                                                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                                'style' => 'font-weight:500;font-size:10px;color:#888',
                                                             ]) !!}
                                                             <input type="text"
                                                                 class="form-control quantity initial-balance-input"

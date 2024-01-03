@@ -32,7 +32,6 @@
                                         wire:ignore>
                                         <label
                                             class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif"
-                                            style="font-size: 12px;font-weight: 500;"
                                             for="customer_id">@lang('lang.customers')</label>
                                         <div class="input-wrapper">
                                             <select class="form-control client width-full" style="height: 100%"
@@ -49,7 +48,7 @@
                                     <div
                                         class="col-6 col-lg-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                                        <label for="" style="font-size: 12px;font-weight: 500;"
+                                        <label for=""
                                             class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif">{{ __('site.From') }}</label>
                                         <input type="date" class="form-control initial-balance-input mx-3 mx-lg-0"
                                             wire:model="from">
@@ -61,7 +60,6 @@
 
                                         <label
                                             class="mx-2 mb-0 width-fit small-label @if (app()->isLocale('ar')) d-block text-end @endif"
-                                            style="font-size: 12px;font-weight: 500;"
                                             for="">{{ __('site.To') }}</label>
                                         <input type="date" class="form-control initial-balance-input mx-3 mx-lg-0"
                                             wire:model="to">

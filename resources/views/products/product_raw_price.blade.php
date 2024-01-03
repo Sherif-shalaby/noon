@@ -13,7 +13,7 @@
                 'class' => 'form-control mater-name-input m-0',
             ]) !!}
             @error('sku.' . $index)
-                <label style="font-size: 12px;font-weight: 500;" class="text-danger error-msg">{{ $message }}</label>
+                <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </div>
 

@@ -101,11 +101,13 @@
                     <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
                         <div class="div2 table-scroll-wrapper">
                             <!-- content goes here -->
-                            <div style="min-width: 1300px;max-height: 90vh;overflow: auto;">
-
+                            <div style="min-width: 1800px;max-height: 90vh;overflow: auto;">
                                 <table id="datatable-buttons" class="table table-hover dataTable">
                                     <thead>
-                                        <tr>
+                                        <tr
+                                            style="position: sticky;
+                                                        top: 0;
+                                                        z-index: 1000;">
                                             <th>@lang('lang.po_ref_no')</th>
                                             <th>@lang('lang.invoice_no')</th>
                                             <th>@lang('lang.date_and_time')</th>
@@ -118,11 +120,11 @@
                                             <th class="sum">@lang('lang.pending_amount')</th>
                                             <th>@lang('lang.due_date')</th>
                                             <th>@lang('lang.invoice_discount')</th>
-                                            <th>@lang('lang.product_discount')</th>
-                                            <th>@lang('lang.product_discount_percent')</th>
-                                            <th>@lang('lang.cash_discount')</th>
-                                            <th>@lang('lang.seasonal_discount')</th>
-                                            <th>@lang('lang.annual_discount')</th>
+                                            <th class="dollar-cell">@lang('lang.product_discount')</th>
+                                            <th class="dollar-cell">@lang('lang.product_discount_percent')</th>
+                                            <th class="dollar-cell">@lang('lang.cash_discount')</th>
+                                            <th class="dollar-cell">@lang('lang.seasonal_discount')</th>
+                                            <th class="dollar-cell">@lang('lang.annual_discount')</th>
                                             <th>@lang('lang.notes')</th>
                                             <th class="notexport">@lang('lang.action')</th>
                                         </tr>
@@ -296,12 +298,12 @@
                                                 </td>
                                                 <td>
                                                     <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.product_discount')">
                                                         @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
                                                             {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('discount') }}
-                                                            <span class="dollar-cell">
+                                                            <span>
                                                                 {{ $stock->add_stock_lines->where('used_currency', 2)->sum('discount') }}</span>
                                                             $
                                                         @else
@@ -311,13 +313,13 @@
                                                 </td>
                                                 <td>
                                                     <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center dollar-cell"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.product_discount_percent')">
                                                         @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
                                                             {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('discount_percent') }}
                                                             %
-                                                            <span class="dollar-cell">
+                                                            <span>
                                                                 {{ $stock->add_stock_lines->where('used_currency', 2)->sum('discount_percent') }}</span>
                                                             $
                                                         @else
@@ -327,12 +329,12 @@
                                                 </td>
                                                 <td>
                                                     <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center dollar-cell"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.cash_discount')">
                                                         @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
                                                             {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('cash_discount') }}
-                                                            <span class="dollar-cell">
+                                                            <span>
                                                                 {{ $stock->add_stock_lines->where('used_currency', 2)->sum('cash_discount') }}</span>
                                                             $
                                                         @else
@@ -342,13 +344,13 @@
                                                 </td>
                                                 <td>
                                                     <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center dollar-cell"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.seasonal_discount')">
                                                         @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
                                                             {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('seasonal_discount') }}
                                                             %
-                                                            <span class="dollar-cell">
+                                                            <span>
                                                                 {{ $stock->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount') }}</span>$
                                                         @else
                                                             0
@@ -357,13 +359,13 @@
                                                 </td>
                                                 <td>
                                                     <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center dollar-cell"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.annual_discount')">
                                                         @if (!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
                                                             {{ $stock->add_stock_lines->where('used_currency', '!=', 2)->sum('annual_discount') }}
                                                             %
-                                                            <span class="dollar-cell">
+                                                            <span>
                                                                 {{ $stock->add_stock_lines->where('used_currency', 2)->sum('annual_discount') }}</span>$
                                                         @else
                                                             0

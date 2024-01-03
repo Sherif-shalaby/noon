@@ -54,7 +54,7 @@
                 style="animation-delay: 1.2s">
                 <div class="d-flex flex-column align-items-end col-md-7 customer_drop_down p-0">
                     <label class=" @if (app()->isLocale('ar')) d-block text-end @endif mx-2 h5 mb-1"
-                        style="font-size: 12px;font-weight: 500;" for="">العملاء</label>
+                        for="">العملاء</label>
                     <div class="input-wrapper mx-2">
 
                         <select class="form-control client select2" style="width: 80%" wire:model="client_id"

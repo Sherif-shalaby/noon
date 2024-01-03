@@ -595,7 +595,7 @@
                                         style="animation-delay: 1.5s">
                                         <label
                                             class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @endif"
-                                            style="font-size: 12px;font-weight: 500;"
+
                                             for="expenses_currency">@lang('lang.expenses_currency') </label>
                                         <div class="input-wrapper" style="width:100%">
                                             {!! Form::select('expenses_currency', $selected_currencies, $transaction_currency, [
@@ -830,8 +830,7 @@
 
                                         <label
                                             class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
-                                            for="due_date"
-                                            style="font-size: 12px;font-weight: 500;">@lang('lang.due')</label>
+                                            for="due_date">@lang('lang.due')</label>
                                         <input class="form-control m-0 initial-balance-input"
                                             placeholder="@lang('lang.due')" name="due_date" type="date"
                                             id="due_date" autocomplete="off" fdprocessedid="pipnea"

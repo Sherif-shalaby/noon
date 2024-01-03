@@ -53,8 +53,8 @@
             {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
             <div class="col-md-3 d-flex flex-column align-items-end mb-2 customer_drop_down animate__animated animate__bounceInLeft"
                 style="animation-delay: 1.2s">
-                <label for="" class=" @if (app()->isLocale('ar')) d-block text-end @endif mx-2 h5 mb-1"
-                    style="font-size: 12px;font-weight: 500;">العملاء</label>
+                <label for=""
+                    class=" @if (app()->isLocale('ar')) d-block text-end @endif mx-2 h5 mb-1">العملاء</label>
                 <div class="input-wrapper mx-2" style="width: 100%">
                     <select class="form-control client select2" style="width: 80%" wire:model="client_id" id="client_id"
                         data-name="client_id">
@@ -201,8 +201,7 @@
                         $city = \App\Models\City::find($customer_data->city_id);
                     }
                 @endphp
-                <div
-                    class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.phone_number') </span> :
                     <span class="mx-1"
                         style="font-weight: 500;font-size:12px;">{{ !empty($customer_data->phone) ? $customer_data->phone : '' }}</span>

@@ -12,12 +12,13 @@
             {!! Form::open(['url' => route('branches.store'), 'method' => 'post', 'id' => 'branch-form']) !!}
             <div class="modal-body">
                 <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label style='font-size: 12px;font-weight: 500;' for="job_title">@lang('lang.branch_name')</label>
-                            <input type="text" class="form-control" value="" name="name" id="name"
-                                required>
-                        </div>
+                    <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-end mr-1">
+
+                        <label class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                            for="job_title">@lang('lang.branch_name')</label>
+                        <input type="text" class="form-control initial-balance-input width-full" value=""
+                            name="name" id="name" required>
+
                     </div>
                     {{-- <div class="col-md-12">
                         <div class="form-group">

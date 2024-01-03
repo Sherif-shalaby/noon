@@ -8,7 +8,6 @@
             style="width: 160px">
             {!! Form::label('brand', __('lang.brand'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                'style' => 'font-weight:500;font-size:10px;color:#888',
             ]) !!}
             <div class="d-flex justify-content-center align-items-center"
                 style="background-color: #dedede;
@@ -40,7 +39,6 @@
             style="width: 375px">
             {!! Form::label('name', __('lang.product_name'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                'style' => 'font-weight:500;font-size:10px;color:#888',
             ]) !!}
             <div class="d-flex justify-content-center align-items-center"
                 style="background-color: #dedede; border: none;
@@ -84,7 +82,6 @@
             style="width: 75px">
             {!! Form::label('product_symbol', __('lang.product_symbol'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                'style' => 'font-weight:500;font-size:10px;color:#888',
             ]) !!}
             {!! Form::text('products[' . $key . '][product_symbol]', null, [
                 'class' => 'form-control initial-balance-input',
@@ -101,7 +98,6 @@
             style="width: 75px">
             {!! Form::label('product_sku', __('lang.product_code'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                'style' => 'font-weight:500;font-size:10px;color:#888',
             ]) !!}
             {!! Form::text('products[' . $key . '][product_sku]', null, [
                 'class' => 'form-control initial-balance-input',
@@ -118,7 +114,6 @@
             style="width: 100px">
             {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                'style' => 'font-weight:500;font-size:10px;color:#888',
             ]) !!}
             {!! Form::text('products[' . $key . '][balance_return_request]', null, [
                 'class' => 'form-control initial-balance-input',
@@ -152,7 +147,6 @@
                                 style="width: 75px">
                                 {!! Form::label('sku', __('lang.product_code'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
 
                                 {!! Form::text('products[' . $key . '][variations][0][sku]', $variation->sku ?? null, [
@@ -171,7 +165,6 @@
                                 class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                                 {!! Form::label('unit', __('lang.large_filling'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -241,7 +234,6 @@
                                 data-key="{{ $key }}" style="min-width: 135px;height: fit-content;">
                                 {!! Form::label('category', __('lang.category') . ' 1', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -279,7 +271,6 @@
                                 style="min-width: 135px;height: fit-content;">
                                 {!! Form::label('subcategory', __('lang.category') . ' 2', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -315,7 +306,6 @@
                                 style="min-width: 135px;height: fit-content;">
                                 {!! Form::label('subcategory', __('lang.category') . ' 3', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -351,7 +341,6 @@
                                 style="min-width: 135px;height: fit-content;">
                                 {!! Form::label('subcategory', __('lang.category') . ' 4', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -422,7 +411,6 @@
                     class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
                     {!! Form::label('variation', __('lang.basic_unit_for_import_product'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                        'style' => 'font-weight:500;font-size:10px;color:#888',
                     ]) !!}
                     <div class="input-wrapper" style="width: 100%">
 
@@ -438,7 +426,6 @@
                     class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                     {!! Form::label('length', __('lang.length'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                        'style' => 'font-weight:500;font-size:10px;color:#888',
                     ]) !!}
                     {!! Form::text(
                         'products[' . $key . '][length]',
@@ -461,7 +448,6 @@
                     class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                     {!! Form::label('width', __('lang.width'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                        'style' => 'font-weight:500;font-size:10px;color:#888',
                     ]) !!}
                     {!! Form::text(
                         'products[' . $key . '][width]',
@@ -484,7 +470,6 @@
                     class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                     {!! Form::label('height', __('lang.height'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                        'style' => 'font-weight:500;font-size:10px;color:#888',
                     ]) !!}
                     {!! Form::text(
                         'products[' . $key . '][height]',
@@ -506,7 +491,6 @@
                     class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                     {!! Form::label('size', __('lang.size'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                        'style' => 'font-weight:500;font-size:10px;color:#888',
                     ]) !!}
                     {!! Form::text(
                         'products[' . $key . '][size]',
@@ -528,7 +512,6 @@
                     class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                     {!! Form::label('weight', __('lang.weight'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                        'style' => 'font-weight:500;font-size:10px;color:#888',
                     ]) !!}
                     {!! Form::text(
                         'products[' . $key . '][weight]',

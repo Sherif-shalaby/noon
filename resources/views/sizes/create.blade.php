@@ -15,8 +15,7 @@
                 <div class="modal-body p-0">
                     <div
                         class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse mr-3 @else ml-3 @endif">
-                        <label class="modal-label-width" style="font-size: 12px;font-weight: 500;"
-                            for="name">@lang('sizes.sizename')</label>
+                        <label class="modal-label-width" for="name">@lang('sizes.sizename')</label>
                         <div
                             class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <input type="text" required style="width: 100%"

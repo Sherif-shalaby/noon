@@ -21,8 +21,7 @@
 
                                 <input id="fixed_wage" name="fixed_wage" type="checkbox" value="1"
                                     @if (!empty($employee->fixed_wage)) checked @endif class=" salary_checkbox">
-                                <label style="font-size: 12px;font-weight: 500;"
-                                    class="mx-2 mb-0 @if (app()->isLocale('ar')) d-block text-end @endif"
+                                <label class="mx-2 mb-0 @if (app()->isLocale('ar')) d-block text-end @endif"
                                     for="fixed_wage"><strong>@lang('lang.enter_the_fixed_wage')</strong></label>
                             </div>
                             <div class="input-wrapper mb-2 width-full">
@@ -59,8 +58,7 @@
                                     class="d-flex mb-2 @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                                     <input id="commission" name="commission" type="checkbox" value="1"
                                         @if (!empty($employee->commission)) checked @endif class="salary_checkbox">
-                                    <label style="font-size: 12px;font-weight: 500;"
-                                        class="mx-2 mb-0 @if (app()->isLocale('ar')) d-block text-end @endif"
+                                    <label class="mx-2 mb-0 @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="commission"><strong>@lang('lang.enter_the_commission_%')</strong></label>
                                 </div>
                                 <div class="input-wrapper mb-2 width-full">

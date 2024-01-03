@@ -43,10 +43,10 @@
                     ]) !!}
                     <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.1s">
                             {!! Form::label('site_title', __('lang.site_title'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('site_title', !empty($settings['site_title']) ? $settings['site_title'] : null, [
@@ -54,10 +54,10 @@
                             ]) !!}
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  hide d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  hide mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.15s">
                             {!! Form::label('developed_by', __('lang.developed_by'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('developed_by', !empty($settings['developed_by']) ? $settings['developed_by'] : null, [
@@ -65,10 +65,10 @@
                             ]) !!}
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.2s">
                             {!! Form::label('time_format', __('lang.time_format'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
@@ -81,10 +81,10 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.25s">
                             {!! Form::label('language', __('lang.language'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
@@ -94,10 +94,10 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.3s">
                             {!! Form::label('currency', __('lang.currency'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
@@ -109,10 +109,10 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.35s">
                             {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('dollar_exchange', !empty($settings['dollar_exchange']) ? $settings['dollar_exchange'] : null, [
@@ -120,20 +120,20 @@
                             ]) !!}
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.4s">
                             {!! Form::label('start_date', __('lang.start_date'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::date('start_date', !empty($settings['start_date']) ? $settings['start_date'] : date('Y-m-d'), [
                                 'class' => 'form-control required initial-balance-input m-0',
                             ]) !!}
                         </div>
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.45s">
                             {!! Form::label('end_date', __('lang.end_date'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::date('end_date', !empty($settings['end_date']) ? $settings['end_date'] : null, [
@@ -141,10 +141,10 @@
                             ]) !!}
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.5s">
                             {!! Form::label('default_payment_type', __('lang.default_payment_type'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
@@ -160,10 +160,10 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.55s">
                             {!! Form::label('tax', __('lang.tax'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('tax', !empty($settings['tax']) ? $settings['tax'] : null, [
@@ -171,10 +171,10 @@
                             ]) !!}
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.6s">
                             {!! Form::label('invoice_lang', __('lang.invoice_lang'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
@@ -188,10 +188,10 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.65s">
                             {!! Form::label('Watsapp Numbers', __('lang.watsapp_numbers'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('watsapp_numbers', !empty($settings['watsapp_numbers']) ? $settings['watsapp_numbers'] : null, [
@@ -200,10 +200,10 @@
                         </div>
 
                         {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.7s">
                             {!! Form::label('country_id', __('lang.country'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
@@ -214,16 +214,16 @@
                             </div>
                         </div>
                         {{--       product sku is start with              --}}
-                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.75s">
                             {!! Form::label('product_sku_start', __('lang.product_sku_start'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text(
                                 'product_sku_start',
                                 !empty($settings['product_sku_start']) ? $settings['product_sku_start'] : null,
-                                ['class' => 'form-control'],
+                                ['class' => 'form-control initial-balance-input m-0'],
                             ) !!}
                         </div>
 
