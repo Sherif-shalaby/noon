@@ -401,9 +401,10 @@ $(document).ready(function () {
         }, 500);
     });
 });
-
+// ++++++++++++++++++++++++ Customer Type Form +++++++++++++++++++++
 $(document).on("submit", "#quick_add_customer_form", function (e) {
     e.preventDefault();
+    console.log("Quick Add Customer Form");
     var data = $(this).serialize();
     $.ajax({
         method: "post",
@@ -500,6 +501,42 @@ $(document).on("submit", "#customer-quarter-form", function (e) {
                         console.log("data_html = "+data_html);
                         $("#quarter-dd").empty().append(data_html);
                         $("#quarter-dd").val(quarter_id).change();
+                    },
+                });
+            } else {
+                Swal.fire("Error", result.msg, "error");
+            }
+        },
+    });
+});
+// +++++++++++++++++++++++ customer_quarters_Dropdown ++++++++++++++++++++
+$(document).on("submit", "#customer-type-form2", function (e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+        method: "post",
+        url: $(this).attr("action"),
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            console.log("First Ajax Request : ",result);
+            if (result.success)
+            {
+                Swal.fire("Success", result.msg, "success");
+                $("#createCustomerTypesModal2").modal("hide");
+                var customer_type_id = result.customer_type_id;
+                console.log("Outer Second Ajax Request : ",result);
+                $.ajax({
+                    method: "get",
+                    url: "/customer/get-dropdown-customer-type/",
+                    data: {},
+                    contactType: "html",
+                    success: function (data_html) {
+                        // console.log("data_html = ", data_html);
+                        console.log("Inner Second Ajax Request : "+data_html);
+                        console.log("data_html = "+data_html);
+                        $("#customer_type_id").empty().append(data_html);
+                        $("#customer_type_id").val(customer_type_id).change();
                     },
                 });
             } else {

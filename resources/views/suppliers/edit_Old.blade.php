@@ -7,12 +7,12 @@
     <div class="breadcrumbbar">
         <div class="row align-items-center">
             <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.edit_supplier')</h4>
+                <h4 class="page-title">@lang('lang.add_supplier')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
                         <li class="breadcrumb-item"><a href="{{route('suppliers.index')}}">@lang('lang.suppliers')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.edit_supplier')</li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.add_supplier')</li>
                     </ol>
                 </div>
             </div>
@@ -181,8 +181,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- ++++++++++++++++ countries selectbox : الدولة : (countries table) +++++++++++++++++ --}}
-                                    <div class="col-md-4 mb-3">
+{{--                                    {-- ++++++++++++++++++++ country ++++++++++++++++++++ --}}
+                                    <div class="col-md-4">
                                         <label for="country-dd">@lang('lang.country')</label>
                                         <select id="country-dd" name="country" class="form-control" disabled>
                                             <option value="{{ $countryId }}">
@@ -190,44 +190,41 @@
                                             </option>
                                         </select>
                                     </div>
-                                    {{-- ++++++++++++++++ state selectbox : المحافظة : (states table) +++++++++++++++++ --}}
-                                    <div class="col-md-4 mb-3">
+                                    {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="state-dd">@lang('lang.state')</label>
-                                            <select id="state-dd" name="state_id" class="form-control select2">
+                                            <select id="state-dd" name="state_id" class="form-control select2" >
+                                                <option value=""> @lang('lang.please_select')</option>
                                                 @php
                                                     $states = \App\Models\State::where('country_id', $countryId)->get(['id','name']);
+                                                    if(!empty($supplier->state)){
+                                                        $cities = \App\Models\City::where('state_id', $supplier->state_id)->get(['id','name']);
+                                                    }
                                                 @endphp
                                                 @foreach ( $states as $state)
-                                                    <option value="{{ $state->id }}">
+                                                    <option value="{{ $state->id }}" {{ $supplier->state_id == $state->id ? 'selected' : '' }}>
                                                         {{ $state->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
+                                    {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="city-dd">@lang('lang.regions')</label>
-                                            <div class="d-flex justify-content-center">
-                                                <select id="city-dd" name="city_id" class="form-control select2"></select>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" id="cities_id" data-target="#createRegionModal">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="quarters_id">@lang('lang.quarters')</label>
-                                            <div class="d-flex justify-content-center">
-                                                <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </div>
+                                            <label for="city-dd">@lang('lang.city')</label>
+                                            <select id="city-dd" name="city_id" class="form-control select2">
+                                                <option value=""> @lang('lang.please_select')</option>
+                                                @if(isset($cities))
+                                                    @foreach ( $cities as $city)
+                                                        <option value="{{ $city->id }}" {{ $supplier->city_id == $city->id ? 'selected' : '' }}>
+                                                            {{ $city->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+
                                         </div>
                                     </div>
                                     {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
@@ -361,8 +358,6 @@
             </div>
             <!-- End col -->
             @include('categories.modalCrop')
-            {{-- ++++++++++++ Quick_Add "city","quarter" Modal ++++++++++++ --}}
-            @include('suppliers.partials.quick_add')
         </div>
     </div>
 @endsection
@@ -413,60 +408,27 @@
     $('.phone_tbody').on('click','.deleteRow_phone',function(){
         $(this).parent().parent().remove();
     });
-    // ++++++++++++++++++++++ Countries , State , Cities Selectbox ++++++++++++++++
+
+    // ++++++++++++++++++++++ Countries , State , Cities Selectbox +++++++++++++++++
     // ================ state selectbox ================
     $('#state-dd').change(function(event) {
-        // Capture the selected state value
         var idState = this.value;
         $('#city-dd').html('');
         $.ajax({
-            url: "/api/customers/fetch-cities",
+            url: "/api/fetch-cities",
             type: 'POST',
             dataType: 'json',
             data: {state_id: idState,_token:"{{ csrf_token() }}"},
             success:function(response)
             {
                 $('#city-dd').html('<option value="">Select State</option>');
+                console.log(response);
                 $.each(response.cities,function(index, val)
                 {
                     $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
                 });
             }
         })
-    });
-    // ================ city selectbox ================
-    // ++++++++++++ store "state_id" in hidden inputField in "cities modal" ++++++++++
-    $("#cities_id").on('click', function(){
-        var state_id = $("#state-dd").val();
-        $("#stateId").val(state_id);
-        console.log("+++++++++++++++++++++++++++ "+state_id+" +++++++++++++++++++++++++++");
-    });
-    // ================ quarter selectbox ================
-    $('#city-dd').change(function(event) {
-        // Capture the selected city value
-        var idCity = this.value;
-        $('#quarter-dd').html('');
-        $.ajax({
-            url: "/api/customers/fetch-quarters",
-            type: 'POST',
-            dataType: 'json',
-            data: {city_id: idCity,_token:"{{ csrf_token() }}"},
-            success:function(response)
-            {
-                console.log("Quarter = "+response.quarters);
-                $('#quarter-dd').html('<option value="">Select Quarter</option>');
-                $.each(response.quarters,function(index, val)
-                {
-                    $('#quarter-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
-                });
-            }
-        })
-    });
-    // ++++++++++++ store "cities_id" in hidden inputField in "quarter modal" ++++++++++
-    $("#add_quarters_btn_id").on('click', function(){
-        var city_id = $("#city-dd").val();
-        $("#cityId").val(city_id);
-        console.log("+++++++++++++++++++++++++++ "+city_id+" +++++++++++++++++++++++++++");
     });
 </script>
 @endpush
