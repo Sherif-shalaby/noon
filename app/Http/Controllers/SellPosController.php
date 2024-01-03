@@ -22,6 +22,7 @@ use Illuminate\Contracts\View\Factory;
 use App\Models\CashRegisterTransaction;
 use App\Models\PaymentTransactionSellLine;
 use App\Models\ReceiptTransactionSellLinesFiles;
+use App\Models\Store;
 use Illuminate\Contracts\Foundation\Application;
 
 class SellPosController extends Controller
@@ -321,5 +322,9 @@ class SellPosController extends Controller
             'balance',
             'amount'
         ));
+    }
+    public function editInvoice($id){
+        $stores=Store::latest()->pluck('name','id')->toArray();
+        return view('invoices.edit',compact('id','stores'));
     }
 }

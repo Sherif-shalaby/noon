@@ -5,6 +5,7 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="row">
+                    {{-- +++++++++++ brand filter +++++++++++ --}}
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('brand_id', __('lang.brand') . ':*', []) !!}
@@ -151,6 +152,31 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>
+                                {!! Form::checkbox('toggle_suppliers_dropdown', 1, false,['wire:model' => 'toggle_suppliers_dropdown']) !!}
+                                @lang('lang.toggle_suppliers_dropdown')
+                            </label>
+                        </div>
+                    </div>
+                    {{-- +++++++++++++++++ suppliers Dropdown +++++++++++++++++ --}}
+                    @if(!empty($toggle_suppliers_dropdown))
+                        <div class="col-md-3">
+                            {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
+                            <div class="d-flex justify-content-center">
+                            {!! Form::select('supplier_id', $suppliers, $supplier_id,
+                                ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
+                                'data-name' => 'supplier', 'wire:model' => 'supplier_id'
+                                ]) !!}
+                                {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
+                            </div>
+                            @error('supplier')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    @endif
                 </div>
 
                 </div>
@@ -205,13 +231,13 @@
                                     <span> @lang('lang.quarter') : {{ !empty($quarter) ? $quarter->name : '' }}</span>
                                 </div>
                                 <div class="col-md-2">
-                                    <span> @lang('lang.phone_number') : {{ !empty($customer_data->phone) ?? '' }}</span>
+                                    <span> @lang('lang.phone_number') : {{ !empty($customer_data->phone) ? $customer_data->phone: '' }}</span>
                                 </div>
                                 <div class="col-md-2">
-                                    <span> @lang('lang.email') : {{ !empty($customer_data->email) ?? '' }}</span>
+                                    <span> @lang('lang.email') : {{ !empty($customer_data->email) ? $customer_data->email :'' }}</span>
                                 </div>
                                 <div class="col-md-2">
-                                    <span> @lang('lang.notes') : {{ !empty($customer_data->notes) ?? '' }}</span>
+                                    <span> @lang('lang.notes') : {{ !empty($customer_data->notes) ? $customer_data->notes  : '' }}</span>
                                 </div>
                                 <div class="col-md-3">
                                     <button style="width: 100%; background: #5b808f" wire:click="redirectToCustomerDetails({{ $client_id }})"
@@ -393,7 +419,7 @@
 
 
 {{--<!-- This will be printed -->--}}
-<section class="invoice print_section print-only" id="receipt_section_print">fff </section>
+<section class="invoice print_section print-only" id="receipt_section_print"> </section>
 @push('javascripts')
     @if(empty($store_pos) || empty($stores))
         <script>

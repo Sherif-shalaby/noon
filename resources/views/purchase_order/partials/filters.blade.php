@@ -4,45 +4,51 @@
             {{-- ++++++++++++++++++ "main_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select('category_id', $categories,null, ['class' => 'form-control select2 category','placeholder'=>__('lang.category'),'id' => 'categoryId']
+                    {!! Form::label('category_id', __('lang.category').' 1')  !!}
+                    {!! Form::select('category_id', $categories,request()->category_id, ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select'),'id' => 'categoryId']
                     ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub1_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select( 'subcategory_id1', [],null,
-                        ['class' => 'form-control select2 subcategory1','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
+                    {!! Form::label('category_id', __('lang.category').' 2')  !!}
+                    {!! Form::select( 'subcategory_id1', $subcategories1,request()->subcategory_id1,
+                        ['class' => 'form-control select2 subcategory1','placeholder'=>__('lang.please_select'),'id' => 'subcategory_id1']
                     ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub2_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select( 'subcategory_id2', [] ,null,
-                            ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
+                    {!! Form::label('category_id', __('lang.category').' 3')  !!}
+                    {!! Form::select( 'subcategory_id2', $subcategories2 ,request()->subcategory_id2,
+                            ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.please_select'),'id' => 'subcategory_id2' ]
                     ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub3_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select('subcategory_id3', [] ,null,
-                        ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
+                    {!! Form::label('category_id', __('lang.category').' 4')  !!}
+                    {!! Form::select('subcategory_id3', $subcategories3 ,request()->subcategory_id3,
+                        ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.please_select') ,'id' => 'subcategory_id3']
                     ) !!}
                 </div>
             </div>
             {{-- +++++++++++++++ products filter +++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select('product_id', $products,null, ['class' => 'form-control select2 products','placeholder'=>__('lang.select_products'),'id' => 'product_id']
+                    {!! Form::label('category_id', __('lang.select_products'))  !!}
+                    {!! Form::select('product_id', $products,request()->product_id, ['class' => 'form-control select2 products','placeholder'=>__('lang.please_select'),'id' => 'product_id']
                     ) !!}
                 </div>
             </div>
             {{-- +++++++++++++++ purchase_type filter +++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select('purchase_type', [__('lang.local'), __('lang.export')] ,null, ['class' => 'form-control select2 purchase_type','placeholder'=>__('lang.purchase_type'),'id' => 'purchase_type_id']
+                    {!! Form::label('category_id', __('lang.purchase_type'))  !!}
+                    {!! Form::select('purchase_type', [__('lang.local'), __('lang.export')] ,request()->purchase_type, ['class' => 'form-control select2 purchase_type','placeholder'=>__('lang.please_select'),'id' => 'purchase_type_id']
                     ) !!}
                 </div>
             </div>

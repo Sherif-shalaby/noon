@@ -64,6 +64,10 @@ class ProductController extends Controller
 
   public function index(Request $request)
   {
+    $categories1 = Category::orderBy('name', 'asc')->where('parent_id',1)->pluck('name', 'id')->toArray();
+    $categories2 = Category::orderBy('name', 'asc')->where('parent_id',2)->pluck('name', 'id')->toArray();
+    $categories3 = Category::orderBy('name', 'asc')->where('parent_id',3)->pluck('name', 'id')->toArray();
+    $categories4 = Category::orderBy('name', 'asc')->where('parent_id',4)->pluck('name', 'id')->toArray();
     $stock_transaction_ids=StockTransaction::where('supplier_id',request()->supplier_id)->pluck('id');
     $products=Product::
         when(\request()->dont_show_zero_stocks =="on", function ($query) {
@@ -85,7 +89,7 @@ class ProductController extends Controller
         })
         ->when(\request()->store_id != null, function ($query) {
             $query->whereHas('product_stores', function ($query) {
-                $query->where('store_id',\request()->store_id);
+                $query->whereIn('store_id',\request()->store_id);
             });
         })
         ->when(\request()->supplier_id != null, function ($query) use ($stock_transaction_ids) {
@@ -94,7 +98,7 @@ class ProductController extends Controller
             });
         })
         ->when(\request()->brand_id != null, function ($query) {
-            $query->where('brand_id',\request()->brand_id);
+            $query->whereIn('brand_id',\request()->brand_id);
         })
         ->when(\request()->created_by != null, function ($query) {
             $query->where('created_by',\request()->created_by);
@@ -110,18 +114,16 @@ class ProductController extends Controller
     $branches = Branch::orderBy('created_at', 'desc')->pluck('name','id');
     $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
 
-      return view('products.index',compact('products','categories','branches','suppliers','brands','units','stores','users','subcategories'));
+    return view('products.index',compact('products','categories','branches','suppliers','brands','units','stores','users','subcategories','categories1','categories2','categories3','categories4'));
   }
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
   {
     $clear_all_input_form = System::getProperty('clear_all_input_stock_form');
-//    dd($clear_all_input_product_form, isset($clear_all_input_product_form) && $clear_all_input_product_form == '1');
     $recent_product=[];
     if(isset($clear_all_input_form) && $clear_all_input_form == '1') {
          $recent_product = Product::orderBy('created_at', 'desc')->first();
      }
-//     dd(isset($recent_product));
     $units=Unit::orderBy('created_at', 'desc')->get();
     $categories1 = Category::orderBy('name', 'asc')->where('parent_id',1)->pluck('name', 'id')->toArray();
     $categories2 = Category::orderBy('name', 'asc')->where('parent_id',2)->pluck('name', 'id')->toArray();
@@ -141,9 +143,10 @@ class ProductController extends Controller
         'clear_all_input_form','recent_product'));
   }
     /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        try {
+        try
+        {
                 DB::beginTransaction();
                 foreach ($request->products as $re_product) {
                     if ($re_product['name'] != null) {
@@ -227,7 +230,9 @@ class ProductController extends Controller
                     'success' => true,
                     'msg' => __('lang.success')
                 ];
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e)
+        {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
@@ -261,6 +266,25 @@ class ProductController extends Controller
 
         return $discount_customers;
     }
+    // // ============================= Products Categories : Real-Time Filters =============================
+    // // ++++++ fetch_sub_categories1() : Get Sub_Categories1 According to "selected main_categories" selectbox ++++++
+    // public function fetch_sub_categories1(Request $request)
+    // {
+    //     $data['subcategory_id1'] = Category::where('parent_id', $request->subcategories1_id)->get(['id','name']);
+    //     return response()->json($data);
+    // }
+    // // ++++++ fetch_sub_categories2() : Get Sub_Categories2 According to "selected sub_category1" selectbox ++++++
+    // public function fetch_sub_categories2(Request $request)
+    // {
+    //     $data['subcategory_id2'] = Category::where('parent_id', $request->subcategories2_id)->get(['id','name']);
+    //     return response()->json($data);
+    // }
+    // // ++++++ fetch_sub_categories3() : Get Sub_Categories3 According to "selected sub_category2" selectbox ++++++
+    // public function fetch_sub_categories3(Request $request)
+    // {
+    //     $data['subcategory_id3'] = Category::where('parent_id', $request->subcategories3_id)->get(['id','name']);
+    //     return response()->json($data);
+    // }
     /* ++++++++++++++++++++++ add_store() ++++++++++++++++++++++ */
     public function add_store(Request $request)
     {
@@ -390,12 +414,7 @@ class ProductController extends Controller
    */
   public function update($id,Request $request)
   {
-    // return $request->all();
-    //    $request->validate([
-    //     'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
-    //    ]);
     try{
-//        dd($request);
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],

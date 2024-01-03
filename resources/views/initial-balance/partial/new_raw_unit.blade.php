@@ -14,7 +14,7 @@
     <td>
         <div class="d-flex justify-content-center">
             <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id' data-index="{{ $index }}"
-                required class="form-control select2 " style="width: 100px;">
+                required class="form-control select2 unit_id{{$index}}" style="width: 100px;">
                 <option value="">{{ $index == 0 ? __('lang.choose_big_unit') : __('lang.choose_small_unit') }}</option>
                 @foreach ($units as $unit)
                     <option value="{{ $unit->id }}" {{ $rows[$index]['unit_id'] == $unit->id ? 'selected' : '' }}>
@@ -66,8 +66,8 @@
         <td>
             <input type="text" class="form-control dinar_sell_price"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
-                placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}" wire:change="changeIncrease({{$index}},{{$key}})">
-            <span>{{$rows[$index]['prices'][$key]['dollar_increase']}} $</span>
+                placeholder = "{{ $rows[$index]['prices'][$key]['customer_name']??'' }}" wire:change="changeIncrease({{$index}},{{$key}})">
+            <span>{{$rows[$index]['prices'][$key]['dollar_increase']??0}} $</span>
             @error('rows.' . $index.'prices'. $key . '.dinar_increase')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>

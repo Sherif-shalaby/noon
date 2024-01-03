@@ -122,23 +122,25 @@ class EmployeeController extends Controller
             ->when( $request->brand_id != null, function ($query) use ( $request ) {
                 $query->where('brand_id', $request->brand_id);
             })
-            // ->latest()->get();
-            ->orderBy("created_at","asc")->get();
+            ->latest()->get();
+            // ->orderBy("created_at","asc")->get();
             return $employee_products;
         }else{
             // $employee_products = $employee_products->latest()->get();
             $employee_products = $employee_products->orderBy("created_at","asc")->get();
         }
         // ++++++++++++++++++++++++++++ end : for "employee's products" Filters +++++++++++++++++++++++++++++
-        $categories= Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
-        $subcategories= Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $categories= Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories1= Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories2= Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories3= Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name','id');
         $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
         return view('employees.create')
             ->with(
                 compact('stores','jobs','leave_types' ,'employee_products',
                     'week_days','modulePermissionArray','subModulePermissionArray',
                     'payment_cycle','commission_type','commission_calculation_period',
-                    'products','customer_types','cashiers' ,'categories','subcategories','brands','branches'
+                    'products','customer_types','cashiers' ,'categories','subcategories1','subcategories2','subcategories3','brands','branches'
                 )
             );
 

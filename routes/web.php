@@ -169,11 +169,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/get-dropdown-store/', [ProductController::class,'getStoresDropdown']);
     // +++++++++++++++++++++ products filters +++++++++++++++++++++++++++
     // fetch "sub_categories1" of selected "main_category" selectbox
-    Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_product_sub_categories1']);
+    Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_sub_categories1']);
     // fetch "sub_categories2" of selected "sub_categories1" selectbox
-    Route::post('api/products/fetch_product_sub_categories2',[ProductController::class,'fetch_product_sub_categories2']);
+    Route::post('api/products/fetch_product_sub_categories2',[ProductController::class,'fetch_sub_categories2']);
     // fetch "sub_categories3" of selected "sub_categories2" selectbox
-    Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_product_sub_categories3']);
+    Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_sub_categories3']);
     Route::get('product/add_product_raw', [ProductController::class,'addProductRow']);
 
     Route::resource('products', ProductController::class);
@@ -206,11 +206,15 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // stocks
+    Route::get('recent_transactions', [AddStockController::class,'recentTransactions'])->name('recent_transactions');
     Route::get('add-stock/index', [AddStockController::class,'index'])->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
     Route::get('add-stock/show/{id}',[AddStockController::class , 'show'])->name('stocks.show');
     Route::get('add-stock/add-payment/{id}',[AddStockController::class , 'addPayment'])->name('stocks.addPayment');
+    Route::get('add-stock/receive_discount/{id}',[AddStockController::class , 'receive_discount_view'])->name('stocks.receive_discount_view');
+    Route::post('add-stock/receive_discount_store/{id}',[AddStockController::class , 'receive_discount'])->name('stocks.receive_discount');
+
     Route::post('add-stock/post-payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.storePayment');
     Route::delete('add-stock/{id}/delete',[AddStockController::class , 'destroy'])->name('stocks.delete');
 
@@ -276,9 +280,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Sell Screen
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
 
-    Route::get('invoices/edit/{invoice}', function ($id) {
-        return view('invoices.edit', compact('id'));
-    })->name('invoices.edit');
+    Route::get('invoices/edit/{invoice}', [SellPosController::class,'editInvoice'])->name('invoices.edit');
     // ++++++++++++ invoices : "delete all selected invoices" ++++++++++++
     Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
 
@@ -298,9 +300,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::get('customer_price_offer/create_invoice/{id}', [CustomerOfferPriceController::class, 'create_invoice'])->name('customer_price_offer.create_invoice');
     // Route::view('customer_price_offer/create_invoice/{id}', 'customer_price_offer.create_invoice')->name('customer_price_offer.create_invoice');
     // ################################# edit invoice #################################
-    Route::get('invoices/edit/{invoice}', function ($id) {
-        return view('invoices.edit', compact('id'));
-    })->name('invoices.edit');
+
     // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
     // ################################# Task : purchase_order : Livewire #################################
@@ -331,6 +331,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Returns
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
+    Route::get('sell-return/show/{id}', [SellReturnController::class,'show'])->name('sell_return.show');
 
     // supplier Returns
     Route::get('stock/return/product',[ReturnStockController::class,'show'])->name('suppliers.returns.products');
@@ -358,7 +359,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Branch
     Route::resource('branches',BranchController::class);
-    Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
+    Route::get('get_branch_stores/{ids}', [BranchController::class, 'getBranchStores']);
 
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
 

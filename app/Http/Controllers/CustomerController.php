@@ -101,12 +101,12 @@ class CustomerController extends Controller
    *
    * @return Response
    */
-    public function store(CustomerRequest $request)
+    public function store(Request $request)
     {
         // dd($request);
         try
         {
-            DB::beginTransaction();
+            // DB::beginTransaction();
             $data = $request->except('_token','phone','email');
             // ++++++++++++++ store phones in array ++++++++++++++++++
             $data['phone'] = json_encode($request->phone);
@@ -135,7 +135,7 @@ class CustomerController extends Controller
             if($request->quick_add){
                 return $output;
             }
-            DB::commit();
+            // DB::commit();
 
         } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
@@ -181,7 +181,7 @@ class CustomerController extends Controller
         catch (\Exception $e)
         {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-            // dd($e);
+             dd($e);
             $output = [
                 'success' => false,
                 // 'msg' => __('lang.something_went_wrong')

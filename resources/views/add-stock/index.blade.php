@@ -52,6 +52,12 @@
                                 <th class="sum">@lang('lang.paid_amount')</th>
                                 <th class="sum">@lang('lang.pending_amount')</th>
                                 <th>@lang('lang.due_date')</th>
+                                <th>@lang('lang.invoice_discount')</th>
+                                <th>@lang('lang.product_discount')</th>
+                                <th>@lang('lang.product_discount_percent')</th>
+                                <th>@lang('lang.cash_discount')</th>
+                                <th>@lang('lang.seasonal_discount')</th>
+                                <th>@lang('lang.annual_discount')</th>
                                 <th>@lang('lang.notes')</th>
                                 <th class="notexport">@lang('lang.action')</th>
                             </tr>
@@ -143,6 +149,50 @@
                                         {{ @num_format($pending) }}
                                     </td>
                                     <td>{{$stock->due_date ?? ''}}</td>
+                                    <td>{{$stock->discount_amount}}</td>
+                                    <td>
+                                        @if(!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                            {{$stock->add_stock_lines->where('used_currency', '!=' , 2)->sum('discount')}}
+                                            <span> {{$stock->add_stock_lines->where('used_currency', 2)->sum('discount')}}</span> $
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                            {{$stock->add_stock_lines->where('used_currency', '!=', 2)->sum('discount_percent')}} %
+                                            <span> {{$stock->add_stock_lines->where('used_currency', 2)->sum('discount_percent')}}</span> $
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                            {{$stock->add_stock_lines->where('used_currency', '!=', 2)->sum('cash_discount')}}
+                                            <span> {{$stock->add_stock_lines->where('used_currency', 2)->sum('cash_discount')}}</span> $
+
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                            {{$stock->add_stock_lines->where('used_currency', '!=', 2)->sum('seasonal_discount')}} %
+                                            <span> {{$stock->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount')}}</span>$
+
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(!empty($stock->add_stock_lines) && $stock->add_stock_lines->count() > 0)
+                                            {{$stock->add_stock_lines->where('used_currency', '!=', 2)->sum('annual_discount')}} %
+                                            <span> {{$stock->add_stock_lines->where('used_currency', 2)->sum('annual_discount')}}</span>$
+
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
                                     <td>{{$stock->notes ?? ''}}</td>
                                     <td>
                                         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -171,6 +221,16 @@
                                                    class="btn text-red delete_item"><i class="fa fa-trash"></i>
                                                     @lang('lang.delete')</a>
                                             </li>
+                                            @if ($stock->add_stock_lines->sum('seasonal_discount') > 0 || $stock->add_stock_lines->sum('annual_discount') > 0)
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href="{{route('stocks.receive_discount_view', $stock->id)}}" data-container=".view_modal"
+                                                       class="btn btn-modal">
+                                                        <i class="fa fa-money"></i>
+                                                        @lang('lang.receive_discount')
+                                                    </a>
+                                                </li>
+                                            @endif
                                             @if ($stock->payment_status != 'paid')
                                                 <li class="divider"></li>
                                                 <li>

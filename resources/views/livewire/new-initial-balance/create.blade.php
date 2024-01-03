@@ -15,7 +15,7 @@
                         $index = 0;
                     @endphp
                     <div class="row mt-2">
-                        <div class="col-md-9">
+                        <div class="col-md-7">
                             <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
                         </div>
                         <div class="col-md-3">
@@ -26,6 +26,15 @@
                                     <strong>
                                         @lang('lang.clear_all_input_form')
                                     </strong>
+                                </label>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ checkbox : Toggle Customer Dropdown ++++++++++++++ --}}
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>
+                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false,['wire:model' => 'toggle_customers_dropdown']) !!}
+                                    @lang('lang.toggle_customers_dropdown')
                                 </label>
                             </div>
                         </div>
@@ -75,6 +84,7 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+
 
                             <div class="col-md-1">
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
@@ -171,7 +181,7 @@
                             <div class="col-md-3">
                                 <div
                                     class="subcategory_id1 {{ $show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 ']) !!}
+                                    {!! Form::label('subcategory', __('lang.category') . ' 1', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id1', $subcategories1, $item[0]['subcategory_id1'], [
                                             'class' => 'form-control select2 subcategory1',
@@ -196,7 +206,7 @@
                             <div class="col-md-3">
                                 <div
                                     class="subcategory2 {{ $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 ']) !!}
+                                    {!! Form::label('subcategory', __('lang.category') . ' 2', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id2', $subcategories2, $item[0]['subcategory_id2'], [
                                             'class' => 'form-control select2 subcategory2',
@@ -224,7 +234,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="subcategory3 {{ $show_category3 == 0 ? 'd-none' : '' }}">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 ']) !!}
+                                    {!! Form::label('subcategory', __('lang.category') . ' 3', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id3', $subcategories3, $item[0]['subcategory_id3'], [
                                             'class' => 'form-control select2 subcategory3',
@@ -254,9 +264,8 @@
                                 {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select('store_id', $stores, $item[0]['store_id'], [
-                                        'class' => ' form-control select2 store_id',
+                                        'class' => 'form-control select2 store_id',
                                         'data-name' => 'store_id',
-                                        // 'multiple' => 'multiple',
                                         'required',
                                         'placeholder' => __('lang.please_select'),
                                         'wire:model' => 'item.0.store_id',
@@ -271,7 +280,22 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-
+                        {{-- ++++++++++++++++++++++++++++ customers Dropdown ++++++++++++++++++++++++++++ --}}
+                        @if(!empty($toggle_customers_dropdown))
+                        <div class="col-md-3">
+                            {!! Form::label('customer_id', __('lang.customers') . ':*', []) !!}
+                            <div class="d-flex justify-content-center">
+                            {!! Form::select('customer_id', $customers, $customer_id,
+                                ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'customer_id', 'placeholder' => __('lang.please_select'),
+                                'data-name' => 'customer_id', 'wire:model' => 'customer_id'
+                                ]) !!}
+                                {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
+                            </div>
+                            @error('customer_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        @endif
                         </div>
 
 
@@ -415,7 +439,7 @@
                                 <div class="row {{ $price['parent_price']==1?'d-none':''}}">
                                     <div class="col-md-1">
                                         <label for="fill_id" class="h5 pt-3">{{ __('lang.fill') . ':*' }}</label>
-                                        {!! Form::select('fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
+                                        {!! Form::select('prices.' . $key . '.fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
                                             'class' => ' form-control select2 fill_id',
                                             'data-name' => 'fill_id',
                                             'data-index' => $key,
@@ -425,7 +449,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('price', __('lang.quantity')) !!}
-                                        <input type="text" class="form-control discount_quantity"
+                                        <input type="text" class="form-control discount_quantity" name="prices.{{ $key }}.discount_quantity"
                                             wire:model="prices.{{ $key }}.discount_quantity"
                                             wire:change="changePrice({{ $key }}, 'quantity')"
                                             placeholder = "{{ __('lang.quantity') }}">
@@ -437,13 +461,13 @@
                                     <div class="col-md-1">
                                         {!! Form::label('price_category', __('lang.price_category'), ['style' => 'font-size: 10px;', 'class' => 'pt-2']) !!}
                                         <input type="text" class="form-control price_category"
-                                            name="price_category"
+                                            name="prices.{{ $key }}.price_category"
                                             wire:model="prices.{{ $key }}.price_category" maxlength="6">
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('b_qty', __('lang.b_qty')) !!}
                                         <input type="text" class="form-control bonus_quantity"
-                                            wire:model="prices.{{ $key }}.bonus_quantity"
+                                            wire:model="prices.{{ $key }}.bonus_quantity" name="prices.{{ $key }}.bonus_quantity"
                                             wire:change="changePrice({{ $key }}, 'quantity')"
                                             placeholder = "{{ __('lang.b_qty') }}">
                                         @error('prices.' . $key . '.bonus_quantity')
@@ -453,9 +477,9 @@
                                     </div>
                                     <div class="col-md-2">
                                         {!! Form::label('customer_type', __('lang.customer_type')) !!}
-                                        <select wire:model="prices.{{ $key }}.price_customer_types"
+                                        <select wire:model="prices.{{ $key }}.price_customer_types" name="prices.{{ $key }}.price_customer_types"
                                             data-name='price_customer_types' data-index="{{ $key }}"
-                                            data-key="{{ $key }}" class="form-control select2" wire:change="changePrice({{ $key }})"
+                                            data-key="{{ $key }}" class="form-control select2"
                                             placeholder="{{ __('lang.please_select') }}">
                                             @foreach ($customer_types as $type)
                                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -498,24 +522,24 @@
                                         </div>
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input"
-                                                name="discount_from_original_price" id="discount_from_original_price"
-                                                style="font-size: 0.75rem"
-                                                @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
-                                                wire:change="change_discount_from_original_price({{ $key }})">
+                                                name="discount_from_original_price" id="discount_from_original_price{{ $key }}"
+                                                style="font-size: 0.75rem" wire:model='prices.{{ $key }}.discount_from_original_price'
+
+                                                wire:change="changePrice({{ $key }})">
                                             <label class="custom-control-label"
-                                                for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
+                                                for="discount_from_original_price{{ $key }}">@lang('lang.discount_from_original_price')</label>
                                         </div>
-                                        @error('prices.' . $key . '.price_type')
+                                        {{-- @error('prices.' . $key . '.price_type')
                                             <br>
                                             <label class="text-danger error-msg">{{ $message }}</label>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label(
                                             'price',
                                             isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
                                         ) !!}
-                                        <input type="text" name="price" class="form-control price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_price" class="form-control price"
                                             wire:model="prices.{{ $key }}.dinar_price"
                                             wire:change="changePrice({{ $key }})"
                                             placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
@@ -526,7 +550,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('', __('lang.price')) !!}
-                                        <input type="text" name="" class="form-control price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_price_after_desc" class="form-control price"
                                             wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                             placeholder = "{{ __('lang.price') }}">
                                          <p>
@@ -535,7 +559,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('total_price', __('lang.total_price')) !!}
-                                        <input type="text" name="total_price" class="form-control total_price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_total_price" class="form-control total_price"
                                             wire:model="prices.{{ $key }}.dinar_total_price"
                                             placeholder = "{{ __('lang.total_price') }}">
                                          <p>
@@ -544,7 +568,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('piece_price', __('lang.piece_price')) !!}
-                                        <input type="text" name="piece_price" class="form-control piece_price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_piece_price" class="form-control piece_price"
                                             wire:model="prices.{{ $key }}.dinar_piece_price"
                                             placeholder = "{{ __('lang.total_price') }}">
 {{--                                             <span>{{$rows[$index]['prices'][$key]['dollar_piece_price']??0}} $</span>--}}
@@ -554,8 +578,8 @@
                                     </div>
                                     <div class="col-md-1">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input"
-                                                name="apply_on_all_customers" id="apply_on_all_customers{{ $key }}"
+                                            <input type="checkbox" class="custom-control-input" name="prices.{{ $key }}.apply_on_all_customers"
+                                                id="apply_on_all_customers{{ $key }}"
                                                 style="font-size: 0.75rem"
                                                 wire:model="prices.{{ $key }}.apply_on_all_customers"
                                                 wire:change="applyOnAllCustomers({{ $key }})">
