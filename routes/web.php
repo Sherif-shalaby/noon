@@ -196,6 +196,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('customer/get-dropdown-city/{id}', [CustomerController::class,'getDropdownCity']);
     // ++++++++++++ task 14-12-2023 : get "quarters" dropdown ++++++++++++
     Route::get('customer/get-dropdown-quarter/{id}', [CustomerController::class,'getDropdownQuarter']);
+    // ++++++++++++ task 02-01-2024 : get "customer types" dropdown ++++++++++++
+    Route::get('customer/get-dropdown-customer-type/', [CustomerController::class,'getDropdownCustomerType']);
     Route::get('customer/dues', [CustomerController::class,'get_due'])->name('dues');
     Route::get('customer/customer_dues/{id}', [CustomerController::class,'customer_dues'])->name('customer_dues');
 
