@@ -29,68 +29,59 @@
                         <h3 class="print-title">@lang('lang.cash')</h3>
                     </div>
                     {{-- +++++++++++++++++ Filters +++++++++++++++++ --}}
-                    {{-- <div class="col-md-12 card">
+                    <div class="col-md-12 card">
                         <form action="">
                             <div class="row">
+                                {{-- ========= start_date filter ========= --}}
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         {!! Form::label('start_date', __('lang.start_date'), []) !!}
                                         {!! Form::text('start_date', request()->start_date, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        {!! Form::label('start_time', __('lang.start_time'), []) !!}
-                                        {!! Form::text('start_time', request()->start_time, ['class' => 'form-control
-                                        time_picker sale_filter']) !!}
-                                    </div>
-                                </div>
+                                {{-- ========= end_date filter ========= --}}
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         {!! Form::label('end_date', __('lang.end_date'), []) !!}
                                         {!! Form::text('end_date', request()->end_date, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
+                                {{-- ========= stores filter ========= --}}
                                 <div class="col-md-2">
-                                    <div class="form-group">
-                                        {!! Form::label('end_time', __('lang.end_time'), []) !!}
-                                        {!! Form::text('end_time', request()->end_time, ['class' => 'form-control time_picker
-                                        sale_filter']) !!}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
                                     <div class="form-group">
                                         {!! Form::label('store_id', __('lang.store'), []) !!}
                                         {!! Form::select('store_id', $stores, request()->store_id, ['class' =>
                                         'form-control', 'placeholder' => __('lang.all'),'data-live-search'=>"true"]) !!}
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                {{-- ========= store_pos filter ========= --}}
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         {!! Form::label('store_pos_id', __('lang.pos'), []) !!}
                                         {!! Form::select('store_pos_id', $store_pos, request()->store_pos_id, ['class' =>
                                         'form-control', 'placeholder' => __('lang.all'),'data-live-search'=>"true"]) !!}
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                {{-- ========= users filter ========= --}}
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         {!! Form::label('user_id', __('lang.user'), []) !!}
                                         {!! Form::select('user_id', $users, request()->user_id, ['class' =>
                                         'form-control', 'placeholder' => __('lang.all'),'data-live-search'=>"true"]) !!}
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                {{-- ========= filter button ========= --}}
+                                <div class="col-md-2">
                                     <br>
                                     <button type="submit" class="btn btn-primary mt-2">
                                         <i class="fa fa-eye"></i>
                                         @lang('lang.filter')
                                     </button>
-                                    <a href="{{route('cash.index')}}" class="btn btn-danger mt-2 ml-2">@lang('lang.clear_filters')</a>
+                                    <a href="{{route('cash.index')}}" class="btn btn-danger mt-2">@lang('lang.clear_filters')</a>
                                 </div>
                             </div>
                         </form>
-                    </div> --}}
+                    </div>
                     {{-- +++++++++++++++++ Table +++++++++++++++++ --}}
                     <div class="card-body">
                         <div class="table-responsive">

@@ -8,6 +8,7 @@ use App\Models\System;
 use App\Models\StorePos;
 use App\Models\CashRegister;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class CashController extends Controller
@@ -42,36 +43,41 @@ class CashController extends Controller
         }
         return view('cash.index', compact('cash_registers', 'stores', 'users', 'store_pos'));
     }
-    /* ++++++++++++++++++++++ index() ++++++++++++++++++++++ */
+    /* ++++++++++++++++++++++ show() ++++++++++++++++++++++ */
     public function show($id)
     {
-        $default_currency_id = System::getProperty('currency');
-        // Retrieve data for dropdowns
-        $stores = Store::getDropdown();
-        $store_pos = StorePos::orderBy('name', 'asc')->pluck('name', 'id');
-        $users = User::Notview()->orderBy('name', 'asc')->pluck('name', 'id');
-        $cash_registers = CashRegister::with(['cashRegisterTransactions', 'cashier'])
-                                        ->where('id', $id)
-                                        ->orderBy('created_at', 'desc')->first();
-        // Iterate through each cash register
-        foreach ($cash_registers as $register)
-        {
-            // Access the calculated attributes using accessor methods
-            $totalSale = $register->totalSale;
-            $totalDiningIn = $register->totalDiningIn;
-            $totalDiningInCash = $register->totalDiningInCash;
-            $totalCashSales = $register->totalCashSales;
-            $totalRefundCash = $register->totalRefundCash;
-            $totalCardSales = $register->totalCardSales;
-            // Perform the manipulation within the controller
-            $register->total_cash_sales -= $register->total_refund_cash;
-            $register->total_card_sales -= $register->total_refund_card;
-            // Store the manipulated values back in the cash register model
-            $cr_data[$register->id]['cash_register'] = $register;
-        }
-        dd($cash_registers);
-        return view('cash.index', compact('cash_registers', 'stores', 'users', 'store_pos'));
+        $cash_register = CashRegister::withCount([
+            'cashRegisterTransactions as total_dining_in' => function ($query) {
+                $query->where('transaction_type', 'sell')
+                    ->where('pay_method', 'cash')
+                    ->where('type', 'credit')
+                    ->select(DB::raw("SUM(amount)"));
+            },
+            'cashRegisterTransactions as total_sale' => function ($query) {
+                $query->where('transaction_type', 'sell')
+                    ->select(DB::raw("SUM(amount)"));
+            },
+            'cashRegisterTransactions as total_refund' => function ($query) {
+                $query->where('transaction_type', 'refund')
+                    ->select(DB::raw("SUM(amount)"));
+            },
+            'cashRegisterTransactions as total_cash_sales' => function ($query) {
+                $query->where('transaction_type', 'sell')
+                    ->where('pay_method', 'cash')
+                    ->where('type', 'credit')
+                    ->select(DB::raw("SUM(amount)"));
+            },
+            'cashRegisterTransactions as total_refund_cash' => function ($query) {
+                $query->where('transaction_type', 'refund')
+                    ->where('pay_method', 'cash')
+                    ->where('type', 'debit')
+                    ->select(DB::raw("SUM(amount)"));
+            },
+        ])->findOrFail($id);
+
+        return view('cash.show', compact('cash_register'));
     }
+
 
     /**
      * Show the form for creating a new resource.
