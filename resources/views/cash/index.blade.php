@@ -116,7 +116,7 @@
                                         <th class="sum">@lang('lang.closing_cash')</th>
                                         <th class="sum">@lang('lang.closing_date_and_time')</th>
                                         <th>@lang('lang.cash_given_to')</th>
-                                        {{-- <th class="notexport">@lang('lang.action')</th> --}}
+                                        <th class="notexport">@lang('lang.action')</th>
                                     </tr>
                                 </thead>
                                 {{-- ++++++++++ tbody ++++++++++ --}}
@@ -148,7 +148,7 @@
                                         <td>@if(!empty($cash_register->closed_at)){{ @format_datetime($cash_register->closed_at) }}@endif</td>
                                         <td>{{ !empty($cash_register->cash_given) ? $cash_register->cash_given->name : '' }}</td>
                                         {{-- ++++++++++++ Actions ++++++++++++ --}}
-                                        {{-- <td>
+                                        <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('lang.action')
@@ -156,40 +156,39 @@
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
                                                 <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
-                                                    @if($cash_register->status == 'open')
-                                                        @can('cash.add_cash_in.create_and_edit')
-                                                            <li>
-                                                                <a data-href="{{ action('CashController@addCashIn', $cash_register->id) }}"
-                                                                   data-container=".view_modal" class="btn btn-modal"><i class="fa fa-arrow-down"></i>
-                                                                    @lang('lang.add_cash_in')</a>
-                                                            </li>
-                                                            <li class="divider"></li>
-                                                        @endcan
-                                                        @can('cash.add_cash_out.create_and_edit')
-                                                            <li>
-                                                                <a data-href="{{ action('CashController@addCashOut', $cash_register->id) }}"
-                                                                   data-container=".view_modal" class="btn btn-modal"><i class="fa fa-arrow-up"></i>
-                                                                    @lang('lang.add_cash_out')</a>
-                                                            </li>
-                                                            <li class="divider"></li>
-                                                        @endcan
-                                                        @can('cash.add_closing_cash.create_and_edit')
-                                                            <li>
-                                                                <a data-href="{{ action('CashController@addClosingCash', $cash_register->id) }}"
-                                                                   data-container=".view_modal" class="btn btn-modal"><i class="fa fa-window-close"></i>
-                                                                    @lang('lang.add_closing_cash')</a>
-                                                            </li>
-                                                            <li class="divider"></li>
-                                                        @endcan
-                                                    @endif
-                                                    @can('cash.view_details.view')
+                                                    <li>
+                                                        <a href="{{route('cash.show', $cash_register->id)}}" class="btn" target="_blank">
+                                                            <i class="fa fa-eye"></i>@lang('lang.view')
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        {{-- <td class="col18">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات                                            <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                    <li>
+                                                        <a href="{{route('customer_dues', $customer->id)}}" class="btn" target="_blank"><i class="dripicons-document-edit"></i> @lang('lang.dues')</a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a href="{{route('customers.show', $customer->id)}}" class="btn">
+                                                            <i class="fa fa-eye"></i>@lang('lang.view')
+                                                        </a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a href="{{route('customers.edit', $customer->id)}}" class="btn" target="_blank"><i class="dripicons-document-edit"></i> @lang('lang.update')</a>
+                                                    </li>
+                                                    <li class="divider"></li>
                                                         <li>
-                                                            <a data-href="{{ action('CashController@show', $cash_register->id) }}"
-                                                               data-container=".view_modal" class="btn btn-modal"><i class="fa fa-eye"></i>
-                                                                @lang('lang.view_details')</a>
-                                                        </li>
-                                                        <li class="divider"></li>
-                                                    @endcan
+                                                            <a data-href="{{route('customers.destroy', $customer->id)}}"
+                                                                class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                                @lang('lang.delete')</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td> --}}
