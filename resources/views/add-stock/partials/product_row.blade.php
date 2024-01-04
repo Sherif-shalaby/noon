@@ -341,9 +341,11 @@
         </td>
         <td>
             <div class="input-group-prepend">
-                    <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount" style="width: 100px;" wire:change="purchase_final({{$index}},'stores',{{$i}})" placeholder="amount">
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent" style="width: 100px;" wire:change="purchase_final({{$index}},'stores',{{$i}})" placeholder="%">
+                    <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount" style="width: 100px;" wire:change="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="amount">
+                <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent" style="width: 100px;" wire:change="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="%">
             </div>
+            <span> {{ $items[$index]['stores'][$i]['dollar_purchase_discount'] }} $</span>
+            <span> {{ $items[$index]['stores'][$i]['dollar_purchase_discount_percent'] }} $ </span>
             <div class="input-group-prepend">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}{{$i}}" id="discount_on_bonus_quantity{{$i}}"
@@ -352,6 +354,14 @@
                     <label class="custom-control-label" for="discount_on_bonus_quantity{{$i}}">@lang('lang.discount_from_original_price')</label>
                 </div>
             </div>
+        </td>
+        <td>
+        <span class="price_after_discount" >
+            {{ $items[$index]['stores'][$i]['purchase_after_discount'] ?? null }}
+        </span><br>
+            <span class="dollar_price_after_discount" >
+            {{ $items[$index]['stores'][$i]['dollar_purchase_after_discount'] ?? null }}
+        </span>
         </td>
         <td>
             <div class="d-flex justify-content-between">
