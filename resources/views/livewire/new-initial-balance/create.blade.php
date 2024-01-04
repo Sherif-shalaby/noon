@@ -402,7 +402,7 @@
                             </div>
                             <div class="col-md-2">
                                 {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
-                                <input type="text" wire:model='item.0.size' wire:change='changeSize()'
+                                <input type="text" wire:model='item.0.size' 
                                     class='form-control size' />
                                 <br>
                                 @error('item.0.size')
