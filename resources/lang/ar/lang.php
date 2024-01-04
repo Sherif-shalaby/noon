@@ -774,5 +774,23 @@ return array(
     'toggle_customers_dropdown' => 'إظهار العملاء',
     'print_date' => 'تاريخ الطباعه',
     'total_expenses'=>'اجمالى المصروفات',
+    // ++++++++++++ Task 03-01-2024 : Cash Module ++++++++++++++++
+    'cash' => 'نقدي',
+    'cash_sales' => 'البيع نقدا',
+    'cash_in' => 'التدفقات النقدية الداخلة',
+    'add_cash' => 'أضف نقودا',
+    'add_cash_in' => 'أضف نقودا',
+    'add_cash_out' => 'اعطي نقود',
+    'cash_out' => 'التدفقات النقدية الخارجة',
+    'add_closing_cash' => 'إضافة الإغلاق النقدي',
+    'expense' => 'مصروف',
+    'expenses' => 'نفقات',
+    'wages_and_compensation' => 'الأجور والتعويضات',
+    'current_cash' => 'النقدية الحالية',
+    'closing_cash' => 'إغلاق النقدية',
+    'closing_date_and_time' => 'تاريخ ووقت الإغلاق',
+    'cash_given_to' => 'النقدية الممنوحة ل',
+
+
 );
 

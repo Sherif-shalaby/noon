@@ -1,4 +1,4 @@
-<!-- Start Navigationbar -->
+    <!-- Start Navigationbar -->
 <div class="navigationbar no-print">
     <!-- Start container-fluid -->
     <div class="container-fluid">
@@ -29,6 +29,17 @@
                             <a target="_blank" href="{{route('pos.index')}}" ><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="apps"><span>{{__('lang.sells')}}</span></a>
                         </li>
                     @endif
+                {{-- @endcan --}}
+                {{-- ###################### Task 03-01-2024 : Cash : نقدي ###################### --}}
+                {{-- @can('cashier_module') --}}
+                    {{-- @if(!empty($module_settings['cashier_module'])) --}}
+                        <li class="scroll">
+                            <a target="_blank" href="{{ route('cash.index') }}">
+                                <img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="apps">
+                                <span>{{__('lang.cash')}}</span>
+                            </a>
+                        {{-- </li> --}}
+                    {{-- @endif --}}
                 {{-- @endcan --}}
                 {{-- ###################### Purchases : المشتريات ###################### --}}
                 {{-- @can('stock_module') --}}

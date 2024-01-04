@@ -53,7 +53,8 @@ class Create extends Component
         $this->store_pos_id = CashRegister::where('store_pos_id',$cash_register_id[0]->cash_register_id)->pluck('store_pos_id');
 
         // dd( $this->store_pos_id);
-        foreach ($this->sellines as $key => $product){
+        foreach ($this->sellines as $key => $product)
+        {
             $this->transaction_sell_line_id[$key] = $product->id;
 
             if(!empty($product->quantity_returned)){
