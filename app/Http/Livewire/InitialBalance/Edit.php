@@ -895,7 +895,7 @@ class Edit extends Component
                         'size' => !empty($this->item[0]['size']) ? $this->item[0]['size'] : 0,
                     ]);
                 }
-                $this->saveTransaction($product->id);
+                // $this->saveTransaction($product->id);
                 // DB::commit();
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
                 return redirect()->route('initial-balance.edit', $this->stockId);
