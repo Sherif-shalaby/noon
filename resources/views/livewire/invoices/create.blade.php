@@ -286,7 +286,7 @@
                                         @endphp
                                         @foreach ($items as $key => $item)
                                             <tr>
-                                                <td>{{$item['product']['product_symbol']}}</td>
+                                                <td>{{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}</td>
                                                 <td >
                                                     {{$item['product']['name']}}
                                                 </td>
@@ -309,7 +309,7 @@
                                                 </td>
                                                 <td>{{$item['extra_quantity']}}</td>
                                                 <td>
-                                                    <select class="form-control" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
+                                                    <select class="form-control select2" data-name="unit_id" data-index="{{$key}}" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
                                                         <option value="0.00">select</option>
                                                          @if(!empty($item['variation']))
                                                            @foreach($item['variation'] as $i=>$var)
@@ -323,11 +323,12 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="form-control" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
+                                                    <select class="form-control select2" style="height:30% !important;width:100px;" data-name="customer_type_id" data-index="{{$key}}" wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
                                                         <option value="0">select</option>
                                                          @if(!empty($item['customer_types']))
+                                                         {{-- {{dd($item['customer_types'])}} --}}
                                                            @foreach($item['customer_types'] as $x=>$var)
-                                                               @if(!empty($var['id']))
+                                                               @if(!empty($var) && !empty($var['id']))
                                                                     <option value="{{$var['id']}}" {{$x==0?'selected':''}}>
                                                                         {{$var['name']??''}}
                                                                     </option>
@@ -355,7 +356,7 @@
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
                                                 <td>
-                                                    <select class="form-control discount_category " style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}},'discount')">
+                                                    <select class="form-control discount_category select2" style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount" data-name="discount" data-index="{{$key}}" wire:change="subtotal({{$key}},'discount')">
                                                         <option selected value="0">select</option>
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
@@ -546,7 +547,21 @@
             });
 
         });
-
+        $(document).on('change', 'select', function(e) {
+            var name = $(this).data('name');
+            console.log(name)
+            if (name != undefined) {
+                var index = $(this).data('index');
+                var key = $(this).data('key');
+                var select2 = $(this);
+                Livewire.emit('listenerReferenceHere', {
+                    var1: name,
+                    var2: select2.select2("val"),
+                    var3: index,
+                    var4: key
+                });
+            }
+        });
     </script>
 
 @endpush
