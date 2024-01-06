@@ -478,6 +478,7 @@ class Edit extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs']);
             dd($e);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
         return redirect()->route('invoices.edit', $this->transaction_sell_line->id);
     }
 
@@ -557,11 +558,13 @@ class Edit extends Component
     {
         $this->status = 'draft';
         $this->submit();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function pendingStatus()
     {
         $this->payment_status = 'pending';
         $this->submit();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function getClient()
     {
@@ -769,6 +772,7 @@ class Edit extends Component
             }
         }
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
         //        $this->sumSubTotal();
     }
     public function cancel()
@@ -776,6 +780,7 @@ class Edit extends Component
         foreach ($this->items as $index => $item) {
             $this->delete_item($index);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function getUnits($product, $store)
@@ -852,6 +857,7 @@ class Edit extends Component
 
         $this->dollar_remaining = 0;
         // task : الباقي دينار
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function ChangeBillToDinar()
     {
@@ -893,6 +899,7 @@ class Edit extends Component
             $this->dinar_remaining = 0;
             $this->back_to_dollar = 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function increment($key)
     {
@@ -926,6 +933,7 @@ class Edit extends Component
         }
         unset($this->items[$key]);
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changePrice($key)
@@ -942,6 +950,7 @@ class Edit extends Component
             $this->items[$key]['dollar_price'] = 0;
         }
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeCustomerType($key)
     {
@@ -962,6 +971,7 @@ class Edit extends Component
         }
         $this->subtotal($key);
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function resetAll()
     {
@@ -999,6 +1009,7 @@ class Edit extends Component
         $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->items[$key]['quantity']) -
             ($this->items[$key]['quantity'] * (float)$this->num_uf($this->items[$key]['discount_price']));
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changeDiscount($key)
@@ -1023,6 +1034,7 @@ class Edit extends Component
         $this->dollar_final_total = $this->total_dollar - $this->discount_dollar;
         // Task : dollar_remaining : الباقي دولار
         $this->dollar_remaining = ($this->dollar_amount - $this->dollar_final_total);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changeReceivedDollar()
@@ -1063,6 +1075,7 @@ class Edit extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changeReceivedDinar()
@@ -1105,6 +1118,7 @@ class Edit extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     // calculate final_total : "النهائي دينار"
@@ -1114,6 +1128,7 @@ class Edit extends Component
         $this->final_total = round_250($this->total - $this->discount);
         // Task : dollar_remaining : الباقي دينار
         $this->dinar_remaining = round_250($this->amount - $this->final_total);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function ShowDollarCol()
@@ -1609,6 +1624,7 @@ class Edit extends Component
                 $this->items[$key]['quantity_available'] = $qty;
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id)
@@ -1748,6 +1764,7 @@ class Edit extends Component
             $this->items = [];
             $this->computeForAll();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
+            $this->dispatchBrowserEvent('componentRefreshed');
             // return $this->redirect('/invoices/create');
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);

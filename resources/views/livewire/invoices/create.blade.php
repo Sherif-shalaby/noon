@@ -431,7 +431,8 @@
                                     @foreach ($items as $key => $item)
                                         <tr style="height: 50px">
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
-                                                class="px-1 border-right ">{{ $item['product']['product_symbol'] }}
+                                                class="px-1 border-right ">
+                                                {{ !empty($item['product']['product_symbol']) ? $item['product']['product_symbol'] : $item['product']['sku'] }}
                                             </td>
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
@@ -486,6 +487,7 @@
                                                     <select class="form-control select2"
                                                         style="width:50px;font-size: 10px!important"
                                                         wire:model="items.{{ $key }}.unit_id"
+                                                        data-name="unit_id" data-index="{{ $key }}"
                                                         wire:change="changeUnit({{ $key }})">
                                                         <option value="0.00">select</option>
                                                         @if (!empty($item['variation']))
@@ -509,11 +511,12 @@
                                                     <select class="form-control select2"
                                                         style="height:30% !important;width:100px;font-size: 10px!important"
                                                         wire:model="items.{{ $key }}.customer_type_id"
+                                                        data-name="customer_type_id" data-index="{{ $key }}"
                                                         wire:change="changeCustomerType({{ $key }})">
                                                         <option value="0">select</option>
                                                         @if (!empty($item['customer_types']))
                                                             @foreach ($item['customer_types'] as $x => $var)
-                                                                @if (!empty($var['id']))
+                                                                @if (!empty($var) && !empty($var['id']))
                                                                     <option value="{{ $var['id'] }}"
                                                                         {{ $x == 0 ? 'selected' : '' }}>
                                                                         {{ $var['name'] ?? '' }}
@@ -583,6 +586,7 @@
                                                     <select class="form-control select2 discount_category "
                                                         style="width:100%;font-size:14px;"
                                                         wire:model="items.{{ $key }}.discount"
+                                                        data-name="discount" data-index="{{ $key }}"
                                                         wire:change="subtotal({{ $key }},'discount')">
                                                         <option selected value="0">select</option>
                                                         @if (!empty($item['discount_categories']))
@@ -799,6 +803,22 @@
                 }
             });
 
+        });
+
+        $(document).on('change', 'select', function(e) {
+            var name = $(this).data('name');
+            console.log(name)
+            if (name != undefined) {
+                var index = $(this).data('index');
+                var key = $(this).data('key');
+                var select2 = $(this);
+                Livewire.emit('listenerReferenceHere', {
+                    var1: name,
+                    var2: select2.select2("val"),
+                    var3: index,
+                    var4: key
+                });
+            }
         });
     </script>
 @endpush

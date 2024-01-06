@@ -230,6 +230,7 @@
                     {{-- ++++++++++++++++ product categories ++++++++++++++++ --}}
                     <div class="col-md-12 p-0">
                         <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
                             <div class=" px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 data-key="{{ $key }}" style="min-width: 135px;height: fit-content;">
                                 {!! Form::label('category', __('lang.category') . ' 1', [
@@ -372,6 +373,7 @@
                                     <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
+
                         </div>
                     </div>
                 </div>

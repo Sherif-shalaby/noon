@@ -141,18 +141,22 @@ class Edit extends Component
     public function changeSize()
     {
         $this->item[0]['size'] = $this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showDiscount()
     {
         $this->show_discount = !($this->show_discount);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showStore()
     {
         $this->show_store = !($this->show_store);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showDimensions()
     {
         $this->show_dimensions = !($this->show_dimensions);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory1()
     {
@@ -163,6 +167,7 @@ class Edit extends Component
             $this->show_category2 = 0;
             $this->show_category3 = 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory2()
     {
@@ -172,10 +177,12 @@ class Edit extends Component
             $this->show_category2 = 0;
             $this->show_category3 = 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory3()
     {
         $this->show_category3 = !($this->show_category3);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     protected $listeners = ['listenerReferenceHere', 'create', 'cancelCreateProduct'];
 
@@ -235,6 +242,7 @@ class Edit extends Component
             ]
         ];
         array_unshift($this->fill_stores, $new_store);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addStoreDataRow($index)
     {
@@ -244,6 +252,7 @@ class Edit extends Component
             'quantity' => '',
         ];
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addPrices()
     {
@@ -288,6 +297,7 @@ class Edit extends Component
             'dinar_piece_price' => null,
         ];
         array_unshift($this->prices, $new_price);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function  changeFill($index)
     {
@@ -299,6 +309,7 @@ class Edit extends Component
             $this->rows[$index]['prices'][$key]['percent'] = $this->rows[$index - 1]['prices'][$key]['percent'];
             $this->changePercent($index, $key);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeIncrease($index, $key)
     {
@@ -318,6 +329,7 @@ class Edit extends Component
                 $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function render()
     {
@@ -540,6 +552,7 @@ class Edit extends Component
     public function addRaw()
     {
         $this->addPrices();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeUnit($index)
     {
@@ -918,9 +931,10 @@ class Edit extends Component
                         'size' => !empty($this->item[0]['size']) ? $this->item[0]['size'] : 0,
                     ]);
                 }
-                $this->saveTransaction($product->id);
+                // $this->saveTransaction($product->id);
                 // DB::commit();
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
+                $this->dispatchBrowserEvent('componentRefreshed');
                 return redirect()->route('initial-balance.edit', $this->stockId);
             }
         } catch (\Exception $e) {
@@ -1124,6 +1138,7 @@ class Edit extends Component
         if ($product_exist) {
             $this->dispatchBrowserEvent('showCreateProductConfirmation');
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function create()
     {
@@ -1264,6 +1279,7 @@ class Edit extends Component
             $this->deleted_variations[] = $this->rows[$index]['id'];
         }
         unset($this->rows[$index]);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function convertDollarPrice($index)
@@ -1318,6 +1334,7 @@ class Edit extends Component
         $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
         $this->rows[$index]['prices'][$key]['dinar_sell_price'] = ($purchase_price * $percent) / 100;
         $this->rows[$index]['prices'][$key]['dollar_sell_price'] = $this->rows[$index]['prices'][$key]['dinar_sell_price']  / $this->num_uf($this->exchange_rate);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeExchangeRateBasedPrices()
     {
@@ -1329,6 +1346,7 @@ class Edit extends Component
                 $this->dollar_sub_total($index);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeFilling($index)
     {
@@ -1394,6 +1412,7 @@ class Edit extends Component
     {
         $this->deteted_prices[] = $this->prices[$key]['id'];
         unset($this->prices[$key]);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_store_raw($key)
     {
@@ -1401,6 +1420,7 @@ class Edit extends Component
             $this->deleted_stocks[] = $this->fill_stores[$key]['stock_id'];
         }
         unset($this->fill_stores[$key]);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_store_data_raw($index, $key)
     {
@@ -1408,6 +1428,7 @@ class Edit extends Component
             $this->deleted_fill_stocks[] = $this->fill_stores[$index]['data'][$key]['stock_line_id'];
         }
         unset($this->fill_stores[$index]['data'][$key]);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     // public function changePrice($index, $key, $via = 'price')
     // {
@@ -1494,6 +1515,7 @@ class Edit extends Component
             $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * $this->num_uf($this->prices[$index]['discount_quantity']));
             $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity) : 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function getKey($fill_id)
     {

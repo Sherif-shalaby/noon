@@ -449,85 +449,157 @@
 
                 </div>
 
-                <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                    style="margin-top: -5px; position: relative;z-index:999 ;">
-                    <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {{-- ++++++++++++++++ product categories ++++++++++++++++ --}}
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-3" data-key="0">
-                                    {!! Form::label('category', __('lang.category') . ' 1', ['class' => 'h5 pt-3']) !!}
-                                    <div class="d-flex justify-content-center">
-                                        {!! Form::select('products[0][category_id]', $categories1, $product->category_id ?? null, [
-                                            'class' => 'form-control select2 category',
-                                            'placeholder' => __('lang.please_select'),
-                                            'id' => 'categoryId0',
-                                        ]) !!}
-                                        <a data-href="{{ route('categories.sub_category_modal') }}"
-                                            data-container=".view_modal"
-                                            class="btn btn-primary text-white btn-sm ml-2 openCategoryModal"
-                                            data-toggle="modal" data-select_category="0"><i class="fas fa-plus"></i>
-                                        </a>
-                                    </div>
-                                    @error('products.0.category_id')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
+                <div class="d-flex mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                    style="">
+                    <div class="accordion animate__animated  animate__bounceInLeft">
+                        <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="border: none">
+                            <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
+                                <div class="accordion-button"
+                                    style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;font-size: 14px;font-weight: 500;margin-top: 14px"
+                                    onclick="toggleProductAccordion(`editProductCategories`)">
+                                    <span class="editProductCategories mx-2">
+                                        <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
+                                            style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                                    </span>
+                                    {{ __('lang.categories') }}
                                 </div>
-                                <div class="col-md-3">
-                                    {!! Form::label('subcategory', __('lang.category') . ' 2', ['class' => 'h5 pt-3']) !!}
-                                    <div class="d-flex justify-content-center">
-                                        {!! Form::select('products[0][subcategory_id1]', $categories2, $product->subcategory_id1 ?? null, [
-                                            'class' => 'form-control select2 subcategory',
-                                            'placeholder' => __('lang.please_select'),
-                                            'id' => 'subcategory_id10',
-                                            'data-key' => 0,
-                                        ]) !!}
-                                        <a data-href="{{ route('categories.sub_category_modal') }}" data-key="0"
-                                            data-container=".view_modal"
-                                            class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal"
-                                            data-toggle="modal" data-select_category="1"><i class="fas fa-plus"></i></a>
-                                    </div>
-                                    @error('products.0.category_id')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
-                                </div>
+                            </h2>
+                            <div id="editProductCategories" class="accordion-content p-0">
+                                <div class="accordion-body d-flex p-0">
+                                    {{-- ++++++++++++++++ product categories ++++++++++++++++ --}}
+                                    <div class="col-md-12 p-0">
+                                        <div
+                                            class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div class=" px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                style="min-width: 135px;height: fit-content;" data-key="0">
+                                                {!! Form::label('category', __('lang.category') . ' 1', [
+                                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                ]) !!}
+                                                <div class="d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dedede; border: none;
+                                                            border-radius: 16px;
+                                                            color: #373737;
+                                                            box-shadow: 0 8px 6px -5px #bbb;
+                                                            width: 100%;
+                                                            height: 30px;
+                                                            flex-wrap: nowrap;
+                                                            ">
+                                                    {!! Form::select('products[0][category_id]', $categories1, $product->category_id ?? null, [
+                                                        'class' => 'form-control select2 category',
+                                                        'style' => 'font-size: 12px !important;font-weight: 500;',
+                                                        'placeholder' => __('lang.category'),
+                                                        'id' => 'categoryId0',
+                                                    ]) !!}
+                                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                                        data-container=".view_modal" style="cursor: pointer"
+                                                        class="btn-add-modal text-white add-button  d-flex justify-content-center align-items-center  openCategoryModal"
+                                                        data-toggle="modal" data-select_category="0"><i
+                                                            class="fas fa-plus"></i>
+                                                    </a>
+                                                </div>
+                                                @error('products.0.category_id')
+                                                    <label
+                                                        class="text-danger validation-error error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
 
-                                <div class="col-md-3">
-                                    {!! Form::label('subcategory', __('lang.category') . ' 3', ['class' => 'h5 pt-3']) !!}
-                                    <div class="d-flex justify-content-center">
-                                        {!! Form::select('products[0][subcategory_id2]', $categories3, $product->subcategory_id2 ?? null, [
-                                            'class' => 'form-control select2 subcategory2',
-                                            'placeholder' => __('lang.please_select'),
-                                            'id' => 'subCategoryId20',
-                                            'data-key' => 0,
-                                        ]) !!}
-                                        <a data-href="{{ route('categories.sub_category_modal') }}" data-key="0"
-                                            data-container=".view_modal"
-                                            class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal"
-                                            data-toggle="modal" data-select_category="2"><i class="fas fa-plus"></i></a>
-                                    </div>
-                                    @error('products.0.subcategory_id2')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
-                                </div>
+                                            <div class=" px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                style="min-width: 135px;height: fit-content;">
+                                                {!! Form::label('subcategory', __('lang.category') . ' 2', [
+                                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                ]) !!}
+                                                <div class="d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dedede; border: none;
+                                                            border-radius: 16px;
+                                                            color: #373737;
+                                                            box-shadow: 0 8px 6px -5px #bbb;
+                                                            width: 100%;
+                                                            height: 30px;
+                                                            flex-wrap: nowrap;">
+                                                    {!! Form::select('products[0][subcategory_id1]', $categories2, $product->subcategory_id1 ?? null, [
+                                                        'class' => 'form-control select2 subcategory',
+                                                        'placeholder' => __('lang.subcategory'),
+                                                        'id' => 'subcategory_id10',
+                                                        'data-key' => 0,
+                                                    ]) !!}
+                                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                                        data-key="0" data-container=".view_modal"
+                                                        style="cursor: pointer"
+                                                        class="text-white add-button   btn-add-modal d-flex justify-content-center align-items-center btn-modal openCategoryModal"
+                                                        data-toggle="modal" data-select_category="1"><i
+                                                            class="fas fa-plus"></i></a>
+                                                </div>
+                                                @error('products.0.category_id')
+                                                    <label
+                                                        class="text-danger  validation-error error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
 
-                                <div class="col-md-3">
-                                    {!! Form::label('subcategory', __('lang.category') . ' 4', ['class' => 'h5 pt-3']) !!}
-                                    <div class="d-flex justify-content-center">
-                                        {!! Form::select('products[0][subcategory_id3]', $categories4, $product->subcategory_id3 ?? null, [
-                                            'class' => 'form-control select2 subcategory3',
-                                            'placeholder' => __('lang.please_select'),
-                                            'id' => 'subCategoryId30',
-                                            'data-key' => 0,
-                                        ]) !!}
-                                        <a data-href="{{ route('categories.sub_category_modal') }}" data-key="0"
-                                            data-container=".view_modal"
-                                            class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal"
-                                            data-toggle="modal" data-select_category="3"><i class="fas fa-plus"></i></a>
+                                            <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                style="min-width: 135px;height: fit-content;">
+                                                {!! Form::label('subcategory', __('lang.category') . ' 3', [
+                                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                ]) !!}
+                                                <div class="d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dedede; border: none;
+                                                            border-radius: 16px;
+                                                            color: #373737;
+                                                            box-shadow: 0 8px 6px -5px #bbb;
+                                                            width: 100%;
+                                                            height: 30px;
+                                                            flex-wrap: nowrap;">
+                                                    {!! Form::select('products[0][subcategory_id2]', $categories3, $product->subcategory_id2 ?? null, [
+                                                        'class' => 'form-control select2 subcategory2',
+                                                        'placeholder' => __('lang.subcategory'),
+                                                        'id' => 'subCategoryId20',
+                                                        'data-key' => 0,
+                                                    ]) !!}
+                                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                                        data-key="0" data-container=".view_modal"
+                                                        style="cursor: pointer"
+                                                        class=" text-white add-button btn-add-modal  d-flex justify-content-center align-items-center openCategoryModal"
+                                                        data-toggle="modal" data-select_category="2"><i
+                                                            class="fas fa-plus"></i></a>
+                                                </div>
+                                                @error('products.0.subcategory_id2')
+                                                    <label
+                                                        class="text-danger  validation-error  error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
+
+                                            <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                style="min-width: 135px;height: fit-content;">
+                                                {!! Form::label('subcategory', __('lang.category') . ' 4', [
+                                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                ]) !!}
+                                                <div class="d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dedede; border: none;
+                                                            border-radius: 16px;
+                                                            color: #373737;
+                                                            box-shadow: 0 8px 6px -5px #bbb;
+                                                            width: 100%;
+                                                            height: 30px;
+                                                            flex-wrap: nowrap;">
+                                                    {!! Form::select('products[0][subcategory_id3]', $categories4, $product->subcategory_id3 ?? null, [
+                                                        'class' => 'form-control select2 subcategory3',
+                                                        'placeholder' => __('lang.subcategory'),
+                                                        'id' => 'subCategoryId30',
+                                                        'data-key' => 0,
+                                                    ]) !!}
+                                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                                        data-key="0" data-container=".view_modal"
+                                                        style="cursor: pointer"
+                                                        class=" text-white add-button   btn-add-modal d-flex justify-content-center align-items-center openCategoryModal"
+                                                        data-toggle="modal" data-select_category="3"><i
+                                                            class="fas fa-plus"></i></a>
+                                                </div>
+                                                @error('products.0.subcategory_id3')
+                                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
-                                    @error('products.0.subcategory_id3')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
                                 </div>
                             </div>
                         </div>

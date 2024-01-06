@@ -4,6 +4,7 @@
     aria-labelledby="exampleStandardModalLabel" style="display: none;opacity: 0;" aria-hidden="true">
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
+
             <div
                 class="modal-header d-flex justify-content-between py-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <h5 class="modal-title" id="exampleStandardModalLabel">{{ __('lang.add_category') }}</h5>
@@ -33,10 +34,9 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                         <input type="text" required
-                            class='form-control category-name form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @else text-start @endif'
+                            class='form-control category-name initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @else text-start @endif'
                             style="width: 100%; margin-right: 0" placeholder="@lang('categories.categorie_name')" name="name"
                             value="{{ old('name') }}">
-
                         <button class="add-button d-flex justify-content-center align-items-center" type="button"
                             data-toggle="collapse" data-target="#translation_table_category" aria-expanded="false"
                             aria-controls="collapseExample">
