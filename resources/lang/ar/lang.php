@@ -809,5 +809,14 @@ return array(
     'closing_cash' => 'إغلاق النقدية',
     'closing_date_and_time' => 'تاريخ ووقت الإغلاق',
     'cash_given_to' => 'النقدية الممنوحة ل',
-
+    'total_sales' => 'إجمالي المبيعات',
+    'cash_sales' => 'البيع نقدا',
+    'cash_in' => 'التدفقات النقدية الداخلة',
+    'total_cash_sale' => 'إجمالي البيع النقدي',
+    'total_card_sale' => 'إجمالي بيع البطاقة',
+    'total_cheque_sale' => 'إجمالي المبيعات بالشيكات النبكية',
+    'total_bank_transfer_sale' => 'إجمالي بيع بالتحويل المصرفي',
+    'total_gift_card_sale' => 'إجمالي بيع بطاقات الهدايا',
+    'credit_card_sales' => 'مبيعات بطاقات الائتمان',
+    'return_sales' => 'المبيعات المرتجعة',
 );

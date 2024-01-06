@@ -58,8 +58,9 @@
             <span class="text-center">
                 {{ $product['product']['sku'] }}
             </span>
-
         </div>
+
+
 
         <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
             style="width: 120px;min-height: 60px">
@@ -106,7 +107,7 @@
                     </select>
                 </div>
             @else
-                <span>@lang('lang.no_units')</span>
+                <span style='font-weight:500;font-size:10px;color:#888'>@lang('lang.no_units')</span>
             @endif
             @error('items.' . $index . '.variation_id')
                 <span class="error  validation-error text-danger">{{ $message }}</span>
@@ -165,7 +166,6 @@
             @error('items.{{ $index }}.bonus_quantity')
                 <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
-
         </div>
 
         <div id="panelsStayOpen-collapse{{ $index }}unit-details"
@@ -191,6 +191,9 @@
             </div>
         </div>
 
+
+
+
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
             style="width: 80px;min-height: 60px">
             <label for="purchase_price"
@@ -199,11 +202,10 @@
             <input type="text" class="form-control initial-balance-input width-full"
                 wire:model="items.{{ $index }}.purchase_price"
                 wire:change="convertPurchasePrice({{ $index }})" required>
-            {{-- <span>{{ $product['purchase_price_span'] }}</span> --}}
-            <span class="d-block width-full dollar-cell"
-                style='font-weight:500;font-size:10px;color:#888;text-align: center'>{{ $product['dollar_purchase_price'] ?? 0 }}$</span>
+            <span class="dollar-cell"
+                style='font-weight:500;font-size:10px;color:#888'>{{ $product['dollar_purchase_price'] ?? 0 }}$</span>
             @error('items.' . $index . '.purchase_price')
-                <span class="error  validation-error text-danger">{{ $message }}</span>
+                <span class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -213,16 +215,84 @@
                 <label for="sub_total"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.sub_total') }}</label>
-                <span style="font-weight: 500" class="text-center sub_total_span">
+                <span style='font-weight:500;font-size:10px;color:#888' class="text-center sub_total_span">
                     {{ $this->sub_total($index) }}
                 </span>
-                <span style="font-weight: 500" class="text-center sub_total_span dollar-cell">
+                <span style='font-weight:500;font-size:10px;color:#888'
+                    class="text-center sub_total_span dollar-cell">
                     {{ $this->dollar_sub_total($index) }}$
                 </span>
             </div>
         @endif
 
-        <div class=" animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
+        <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+            style="width: 150px;min-height: 60px">
+            <label for="%"
+                class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
+                style='font-weight:500;font-size:10px;color:#888'>%</label>
+            <div class="d-flex width-full">
+                <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
+                    wire:model="items.{{ $index }}.purchase_discount" style='font-weight:500;font-size:10px;'
+                    wire:change="changePurchasePrice({{ $index }})" placeholder="amount">
+                <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
+                    wire:model="items.{{ $index }}.purchase_discount_percent"
+                    style='font-weight:500;font-size:10px;' wire:change="changePurchasePrice({{ $index }})"
+                    placeholder="%">
+            </div>
+            <div class="d-flex width-full dollar-cell">
+                <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0">
+                    {{ $product['dollar_purchase_discount'] }} $</span>
+                <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0">
+                    {{ $product['dollar_purchase_discount_percent'] }} $ </span>
+            </div>
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input"
+                    name="discount_on_bonus_quantity{{ $index }}"
+                    id="discount_on_bonus_quantity_{{ $index }}"
+                    wire:model="items.{{ $index }}.discount_on_bonus_quantity"
+                    wire:change="changePurchasePrice({{ $index }})" style="font-size: 0.75rem"
+                    value="true">
+                <label class="custom-control-label"
+                    for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_from_original_price')</label>
+            </div>
+        </div>
+
+        <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+            style="width: 150px;min-height: 60px">
+            <label for="purchase_price"
+                class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
+                style='font-weight:500;font-size:10px;color:#888'>label here</label>
+            <div class="d-flex width-full">
+                <span class="price_after_discount width-full col-6 p-0"
+                    style='font-weight:500;font-size:10px;color:#888'>
+                    {{ $product['purchase_after_discount'] }}
+                </span>
+                <span class="dollar_price_after_discount dollar-cell width-full col-6 p-0"
+                    style='font-weight:500;font-size:10px;color:#888'>
+                    {{ $product['dollar_purchase_after_discount'] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+            style="width: 150px;min-height: 60px">
+            <label for="purchase_price"
+                class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
+                style='font-weight:500;font-size:10px;color:#888'>@lang('lang.discount_amount')</label>
+            <div class="d-flex  width-full">
+
+                <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
+                    wire:model="items.{{ $index }}.discount_percent" style='font-weight:500;font-size:10px;'
+                    wire:change="purchase_final({{ $index }})" placeholder="%">
+                <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
+                    wire:model="items.{{ $index }}.discount" style='font-weight:500;font-size:10px;'
+                    wire:change="purchase_final({{ $index }})" placeholder="discount amount">
+            </div>
+        </div>
+
+
+
+        {{-- <div class=" animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
             style="width: 50px;min-height: 60px">
             <label for="%"
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
@@ -230,9 +300,9 @@
             <input type="text" class="form-control initial-balance-input width-full mx-0"
                 wire:model="items.{{ $index }}.discount_percent"
                 wire:change="purchase_final({{ $index }})" placeholder="%">
-        </div>
+        </div> --}}
 
-        <div class=" animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+        {{-- <div class=" animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
             style="width: 100px;min-height: 60px">
             <label for="discount amount"
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
@@ -246,12 +316,11 @@
                     id="discount_on_bonus_quantity_{{ $index }}"
                     wire:model="items.{{ $index }}.discount_on_bonus_quantity"
                     wire:change="purchase_final({{ $index }})" style="font-size: 0.75rem" value="true">
-                {{-- wire:change="changePrice({{ $index }}, {{ $key }})"> --}}
                 <label class="custom-control-label"
                     style='font-weight:500;font-size:9px !important;color:#888;max-width: 70px'
                     for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_on_bonus_quantity')</label>
             </div>
-        </div>
+        </div> --}}
 
         <div class="accordion mr-1 mb-2 d-flex justify-content-center align-items-center"
             id="accordionPanelsStayOpenExampleDiscountDetails{{ $index }}">
@@ -301,24 +370,22 @@
                         wire:change="purchase_final({{ $index }})" placeholder="@lang('lang.seasonal_discount')">
                 </div>
 
-                <div class=" animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+                <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                     style="width: 100px;min-height: 60px">
-                    <label for="cash discount"
+                    <label for="purchase_price"
                         class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.cash_discount')</label>
-                    <input type="text" class="form-control initial-balance-input width-full"
+                    <input type="text" class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.cash_discount"
                         wire:change="purchase_final({{ $index }})" placeholder="@lang('lang.cash_discount')">
-                    <div class="custom-control custom-switch d-flex justify-content-center align-items-center">
+                    <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input"
                             name="discount_dependency{{ $index }}"
                             id="discount_dependency_{{ $index }}"
                             wire:model="items.{{ $index }}.discount_dependency"
                             wire:change="purchase_final({{ $index }})" style="font-size: 0.75rem"
                             value="true">
-                        {{-- wire:change="changePrice({{ $index }}, {{ $key }})"> --}}
                         <label class="custom-control-label"
-                            style='font-weight:500;font-size:9px !important;color:#888;max-width: 70px'
                             for="discount_dependency_{{ $index }}">@lang('lang.discount_dependency')</label>
                     </div>
                 </div>
@@ -437,7 +504,7 @@
 
 
 
-<div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
+<div class="d-flex justify-content-start align-items-center mt-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
     style="overflow-x: auto;">
     <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
         @foreach ($product['customer_prices'] as $key => $price)
@@ -507,24 +574,25 @@
 
 @include('add-stock.partials.accordions')
 
-
 @foreach ($product['stores'] as $i => $store)
     <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
         style="overflow-x: auto">
         <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
 
             <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
                 style="width: 120px;min-height: 60px;">
                 <label for="store"
                     class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') }}</label>
+
                 <div class="input-wrapper" style="width: 100% !important">
                     {!! Form::select('stores.' . $i . '.store_id', $stores, $store_id, [
                         'class' => 'form-select store_id' . $index . $i,
                         'data-live-search' => 'true',
                         'required',
-                        'style' => 'width:70% !important',
                         'placeholder' => __('lang.please_select'),
+                        'style' => 'width:70% !important',
                         'wire:model' => 'items.' . $index . '.stores.' . $i . '.store_id',
                     ]) !!}
                     <button type="button"
@@ -535,7 +603,7 @@
                     </button>
                 </div>
                 @error('items.' . $index . '.stores' . $i . '.store_id')
-                    <span class="error  validation-error text-danger">{{ $message }}</span>
+                    <span class="error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -547,7 +615,7 @@
                 @if (isset($store['variations']) && count($store['variations']) > 0)
                     <div class="input-wrapper" style="width: 100%!important">
                         <select name="items.{{ $index }}.stores.{{ $i }}.variation_id"
-                            class="form-control select ."
+                            class="form-select"
                             wire:model="items.{{ $index }}.stores.{{ $i }}.variation_id"
                             wire:change="getVariationData({{ $index }},'stores',{{ $i }})">
                             <option value="" selected>{{ __('lang.please_select') }}</option>
@@ -559,11 +627,26 @@
                             @endforeach
                         </select>
                     </div>
+
+                    {{-- Iterate through units and display each unit name and value as a span --}}
+                    @if (isset($items[$index]['stores'][$i]['units']))
+                        @foreach ($items[$index]['stores'][$i]['units'] as $unitName => $unitValue)
+                            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+                                style="width: 80px;min-height: 60px">
+                                <label
+                                    class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                                    style='font-weight:500;font-size:10px;color:#888'>{{ $unitValue }}</label>
+
+                                <input type="text" class="form-control quantity initial-balance-input width-full"
+                                    value="{{ $unitName }}" readonly>
+                            </div>
+                        @endforeach
+                    @endif
                 @else
-                    <span>@lang('lang.no_units')</span>
+                    <span style='font-weight:500;font-size:10px;color:#888'>@lang('lang.no_units')</span>
                 @endif
                 @error('items.' . $index . '.stores' . $i . '.variation_id')
-                    <span class="error  validation-error text-danger">{{ $message }}</span>
+                    <span class="error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -573,117 +656,144 @@
                     'style' => 'font-weight:700;font-size: 10px;',
                     'class' => 'mx-2 mb-0 d-block text-end ',
                 ]) !!}
-                <input type="text" class="form-control initial-balance-input width-full discount_quantity" required
+                <input type="text" class="form-control initial-balance-input width-full quantity" required
                     wire:model="items.{{ $index }}.stores.{{ $i }}.quantity"
                     wire:change="changeCurrentStock({{ $index }},'stores',{{ $i }})">
                 @error('items.{{ $index }}.quantity')
-                    <span class="error  validation-error text-danger">{{ $message }}</span>
+                    <span class="error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
             <div class=" animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                 style="width: 80px;min-height: 60px">
                 {!! Form::label('b_qty', __('lang.b_qty'), [
+                    'style' => 'font-weight:500;font-size:10px;color:#888',
                     'class' => 'mx-2 mb-0 d-block text-end',
                 ]) !!}
-                <input style="height:30px;font-size:12px;" type="text"
-                    class="form-control initial-balance-input width-full bonus_quantity"
-                    placeholder="@lang('lang.b_qty')"
+                <input type="text" class="form-control initial-balance-input width-full bonus_quantity"
+                    placeholder="bonus_quantity"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.bonus_quantity"
                     wire:change="changeCurrentStock({{ $index }},'stores',{{ $i }})">
                 @error('items.' . $index . '.stores' . $i . '.bonus_quantity')
-                    <span class="error  validation-error text-danger">{{ $message }}</span>
+                    <span class="error text-danger">{{ $message }}</span>
                 @enderror
             </div>
-
-            @if (isset($items[$index]['stores'][$i]['units']))
-                @foreach ($items[$index]['stores'][$i]['units'] as $unitName => $unitValue)
-                    <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
-                        style="width: 80px;min-height: 60px">
-                        {{-- Iterate through units and display each unit name and value as a span --}}
-
-                        <label
-                            class= "@if (app()->isLocale('ar')) d-block text-center mt-1  width-full mb-0 @else mt-1 text-center width-full mb-0 @endif"
-                            style='font-weight:500;font-size:12px!important;color:#888'>{{ $unitValue }}</label>
-
-                        <input type="text" class="form-control mt-0 quantity initial-balance-input width-full"
-                            value="{{ $unitName }}" readonly>
-                    </div>
-                @endforeach
-            @endif
 
             <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                 style="width: 80px;min-height: 60px">
                 <label for="purchase_price"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.purchase_price') }}</label>
-                <input type="number" class="form-control purchase_price initial-balance-input width-full mb-0"
-                    wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price" required>
-                <span class="d-block width-full dollar-cell"
-                    style='font-weight:500;font-size:10px;color:#888;text-align: center'>{{ $items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
+                <input type="number" class="form-control initial-balance-input width-full purchase_price"
+                    wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price"
+                    wire:change="convertPurchasePrice({{ $index }},'stores',{{ $i }})" required>
+                <span style='font-weight:500;font-size:10px;color:#888'
+                    class="dollar-cell">{{ $items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
                 @error('items.' . $index . '.stores' . $i . '.purchase_price')
-                    <span class="error  validation-error text-danger">{{ $message }}</span>
+                    <span class="error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
-            @if (!empty($product['quantity']) && (!empty($product['purchase_price']) || !empty($product['dollar_purchase_price'])))
-                <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+            @if (!empty($store['quantity']) && (!empty($store['purchase_price']) || !empty($store['dollar_purchase_price'])))
+                <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
                     style="width: 150px;min-height: 60px">
                     <label for="sub_total"
                         class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.sub_total') }}</label>
-                    <span style="font-weight: 500" class="sub_total_span">
+                    <span style='font-weight:500;font-size:10px;color:#888' class="sub_total_span">
                         {{ $this->sub_total($index, 'stores', $i) }}
                     </span>
-                    <span style="font-weight: 500" class="sub_total_span dollar-cell">
+                    <span style='font-weight:500;font-size:10px;color:#888' class="sub_total_span dollar-cell">
                         {{ $this->dollar_sub_total($index, 'stores', $i) }}$
                     </span>
                 </div>
             @endif
 
-            <div class=" animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-                style="width: 50px;min-height: 60px">
+            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+                style="width: 150px;min-height: 60px">
                 <label for="%"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>%</label>
-                <input type="text" class="form-control initial-balance-input width-full m-0"
-                    wire:model="items.{{ $index }}.stores.{{ $i }}.discount_percent"
-                    wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
-                    placeholder="%">
-            </div>
+                <div class="d-flex width-full">
+                    <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
+                        wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount"
+                        style='font-weight:500;font-size:10px;'
+                        wire:change="changePurchasePrice({{ $index }},'stores',{{ $i }})"
+                        placeholder="amount">
+                    <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
+                        wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent"
+                        style='font-weight:500;font-size:10px;'
+                        wire:change="changePurchasePrice({{ $index }},'stores',{{ $i }})"
+                        placeholder="%">
 
-            <div class=" animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
-                style="width: 100px;min-height: 60px">
-                <label for="discount amount"
-                    class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
-                    style='font-weight:500;font-size:10px;color:#888'>@lang('lang.discount_amount')</label>
-                <input type="text"class="form-control initial-balance-input width-full"
-                    wire:model="items.{{ $index }}.stores.{{ $i }}.discount"
-                    wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
-                    placeholder="@lang('lang.discount_amount')">
-                <div class="custom-control custom-switch  d-flex justify-content-center align-items-center">
+                </div>
+                <div class="d-flex width-full dollar-cell">
+                    <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0">
+                        {{ $items[$index]['stores'][$i]['dollar_purchase_discount'] }} $</span>
+                    <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0">
+                        {{ $items[$index]['stores'][$i]['dollar_purchase_discount_percent'] }} $ </span>
+                </div>
+
+                <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input"
                         name="discount_on_bonus_quantity{{ $index }}{{ $i }}"
                         id="discount_on_bonus_quantity{{ $i }}"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.discount_on_bonus_quantity"
-                        wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
+                        wire:change="changePurchasePrice({{ $index }}, 'stores', {{ $i }})"
                         style="font-size: 0.75rem" value="true">
                     <label class="custom-control-label"
-                        style='font-weight:500;font-size:9px !important;color:#888;max-width: 70px'
-                        for="discount_on_bonus_quantity{{ $i }}">@lang('lang.discount_on_bonus_quantity')</label>
+                        for="discount_on_bonus_quantity{{ $i }}">@lang('lang.discount_from_original_price')</label>
+                </div>
+
+            </div>
+
+            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+                style="width: 150px;min-height: 60px">
+                <label for="purchase_price"
+                    class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
+                    style='font-weight:500;font-size:10px;color:#888'>label here</label>
+                <div class="d-flex width-full">
+                    <span class="price_after_discount price_after_discount width-full col-6 p-0"
+                        style='font-weight:500;font-size:10px;color:#888'>
+                        {{ $items[$index]['stores'][$i]['purchase_after_discount'] ?? null }}
+                    </span><br>
+                    <span class="dollar_price_after_discount dollar-cell price_after_discount width-full col-6 p-0"
+                        style='font-weight:500;font-size:10px;color:#888'>
+                        {{ $items[$index]['stores'][$i]['dollar_purchase_after_discount'] ?? null }}
+                    </span>
                 </div>
             </div>
 
-            <div class=" animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+                style="width: 150px;min-height: 60px">
+                <label for="purchase_price"
+                    class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
+                    style='font-weight:500;font-size:10px;color:#888'>@lang('lang.discount_amount')</label>
+                <div class="d-flex  width-full">
+                    <input type="text" class="form-control   initial-balance-input width-full col-6 p-0 px-2"
+                        style='font-weight:500;font-size:10px;'
+                        wire:model="items.{{ $index }}.stores.{{ $i }}.discount_percent"
+                        wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
+                        placeholder="%">
+                    <input type="text" class="form-control   initial-balance-input width-full col-6 p-0 px-2"
+                        style='font-weight:500;font-size:10px;'
+                        wire:model="items.{{ $index }}.stores.{{ $i }}.discount"
+                        wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
+                        placeholder="discount amount">
+                </div>
+            </div>
+
+            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                 style="width: 100px;min-height: 60px">
-                <label for="cash discount"
+                <label for="purchase_price"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>@lang('lang.cash_discount')</label>
-                <input type="text" class="form-control initial-balance-input width-full "
+                <input type="text" class="form-control  initial-balance-input width-full mx-0"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.cash_discount"
+                    style="width: 100px;"
                     wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
                     placeholder="@lang('lang.cash_discount')">
-                <div class="custom-control custom-switch d-flex justify-content-center align-items-center">
+                <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input"
                         name="discount_dependency{{ $index }}{{ $i }}"
                         id="discount_dependency{{ $i }}"
@@ -691,17 +801,17 @@
                         wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
                         style="font-size: 0.75rem" value="true">
                     <label class="custom-control-label"
-                        style='font-weight:500;font-size:9px !important;color:#888;max-width: 70px'
                         for="discount_dependency{{ $i }}">@lang('lang.discount_dependency')</label>
+
                 </div>
             </div>
 
             <div class=" animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-                style="width: 105px;min-height: 60px">
+                style="width: 100px;min-height: 60px">
                 <label for="seasonal discount"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>@lang('lang.seasonal_discount')</label>
-                <input type="text" class="form-control initial-balance-input width-full mx-0"
+                <input type="text" class="form-control initial-balance-input width-full mx-0""
                     wire:model="items.{{ $index }}.stores.{{ $i }}.seasonal_discount"
                     wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
                     placeholder="@lang('lang.seasonal_discount')">
@@ -709,7 +819,7 @@
 
             <div class="animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                 style="width: 100px;min-height: 60px">
-                <label for="annual discount"
+                <label for="Annual discount"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>@lang('lang.annual_discount')</label>
                 <input type="text" class="form-control initial-balance-input width-full mx-0"
@@ -720,56 +830,74 @@
 
             @if (!empty($store['quantity']) && !empty($store['purchase_price']))
                 <div class=" animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
-                    style="width: 155px;min-height: 60px">
+                    style="width: 150px;min-height: 60px">
                     <label for="final purchase"
-                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                        class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase') }}</label>
                     <span style="font-weight: 500" class="final_total_span" aria-placeholder="final purchase">
                         {{ $this->purchase_final($index, 'stores', $i) }}
                     </span>
-                    <span style="font-weight: 500" class="final_total_span dollar-cell"
-                        aria-placeholder="final purchase">
+                    <span style="font-weight: 500" class="final_total_span" aria-placeholder="final purchase">
                         {{ $this->purchase_final_dollar($index, 'stores', $i) }} $
                     </span>
                 </div>
             @endif
 
             @if (!empty($store['quantity']) && !empty($store['purchase_price']))
-                <div class="animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
-                    style="width: 150px;min-height: 60px"> <label for="final purchase for piece"
-                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                <div class=" animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+                    style="width: 150px;min-height: 60px">
+                    <label for="final purchase for piece"
+                        class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase for piece') }}</label>
-                    <span style="font-weight: 500" class="final_total_span dollar-cell"
+                    <span style="font-weight: 500" class="final_total_span"
                         aria-placeholder="final purchase for piece">
                         {{ $this->final_purchase_for_piece($index, 'stores', $i) }}
                     </span>
-                    <span style="font-weight: 500" class="final_total_span dollar-cell"
+                    <span style="font-weight: 500" class="final_total_span"
                         aria-placeholder="final purchase for piece">
                         {{ $this->dollar_final_purchase_for_piece($index, 'stores', $i) }} $
                     </span>
                 </div>
             @endif
 
-            <div
-                class=" animate__animated  animate__bounceInLeft d-flex flex-column align-items-center pl-1 mx-1 mt-1">
-                <button class="btn btn-primary" style="font-weight: 500;font-size: 12px"
-                    wire:click="addStoreRow({{ $index }})" type="button">
-                    <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
-                </button>
-            </div>
-            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center pl-1 mx-1 mt-1"
-                style="width: 40px;">
-                <div class="btn btn-sm btn-danger py-0 px-1"
-                    wire:click="delete_product({{ $index }},'stores',{{ $i }})">
-                    <i class="fa fa-trash"></i>
+            @if (!empty($store['quantity']) && !empty($store['purchase_price']))
+                <div class="  animate__animated  animate__bounceInLeft dollar-cell d-flex flex-column align-items-center mr-1"
+                    style="width: 150px;min-height: 60px">
+                    <label for="cost"
+                        class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.cost') }}</label>
+                    {{ $this->cost($index, 'stores', $i) }}
+                    <span class="cost_span" style="font-weight: 500" aria-placeholder="final purchase for piece">
+                        {{ $store['cost'] }}
+                    </span>
+                    <span class="cost_span dollar-cell" style="font-weight: 500"
+                        aria-placeholder="final purchase for piece">
+                        {{ $store['dollar_cost'] }} $
+                    </span>
+                </div>
+            @endif
+
+            <div class="d-flex align-items-center mt-2" style="height: fit-content">
+                <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-start align-items-center pl-1 mx-1 mt-1"
+                    style="width: 40px;">
+                    <div class="btn btn-sm btn-danger py-0 px-1"
+                        wire:click="delete_product({{ $index }},'stores',{{ $i }})">
+                        <i class="fa fa-trash"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-start @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1 mx-1 mt-1">
+                    <button class="btn btn-primary" style="font-weight: 500;font-size: 12px;min-width:140px"
+                        wire:click="addStoreRow({{ $index }})" type="button">
+                        <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
+                    </button>
                 </div>
             </div>
+
         </div>
     </div>
-
-
-
-    <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
+    <div class="d-flex justify-content-start align-items-center mt-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
         style="overflow-x: auto;">
         <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             @foreach ($store['customer_prices'] as $key => $price)
@@ -779,15 +907,14 @@
                         class="form-control initial-balance-input width-full mx-0 percent{{ $index }}{{ $key }}{{ $i }}"
                         id="percent{{ $i }}"
                         name="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.percent"
-                        wire:change="changePercent({{ $index }},{{ $key }},'stores',{{ $i }})"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.percent"
+                        wire:change="changePercent({{ $index }},{{ $key }},'stores',{{ $i }})"
                         maxlength="6" placeholder="%">
                 </div>
 
                 <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
                     style="width: 60px;min-height: 40px">
-                    <input type="text"
-                        class="form-control mb-0 initial-balance-input width-full mx-0 dinar_sell_price"
+                    <input type="text" class="form-control initial-balance-input width-full mx-0  dinar_sell_price"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.dinar_increase"
                         placeholder = "{{ $items[$index]['stores'][$i]['customer_prices'][$key]['customer_name'] }}"
                         wire:change="changeIncrease({{ $index }},{{ $key }},'stores',{{ $i }})">
@@ -795,39 +922,29 @@
                         style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] }}
                         $</span>
                     @error('items.' . $index . '.stores' . $i . 'customer_prices' . $key . '.dinar_increase')
-                        <label class="text-danger  validation-error error-msg">{{ $message }}</label>
+                        <br>
+                        <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
 
                 <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
                     style="width: 60px;min-height: 40px">
                     <input type="text"
-                        class="form-control mb-0 initial-balance-input width-full mx-0 dinar_sell_price"
+                        class="form-control  mb-0 initial-balance-input width-full mx-0  dinar_sell_price"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.dinar_sell_price"
                         placeholder = "{{ $items[$index]['stores'][$i]['customer_prices'][$key]['customer_name'] }}">
                     <span class="dollar-cell"
                         style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['stores'][$i]['customer_prices'][$key]['dollar_sell_price'] }}
                         $</span>
                     @error('items.' . $index . '.stores' . $i . 'customer_prices' . $key . '.dinar_sell_price')
-                        <label class="text-danger  validation-error error-msg">{{ $message }}</label>
+                        <br>
+                        <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
             @endforeach
 
-            <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-row justify-content-center @if (app()->isLocale('ar')) align-items-center @else align-items-start @endif pl-1 mx-1 mt-1"
-                style="width: 100px;">
-                @if (!empty($store['quantity']) && !empty($store['purchase_price']))
-                    {{ $this->cost($index, 'stores', $i) }}
-                    <span class="cost_span" aria-placeholder="final purchase for piece">
-                        {{ $store['cost'] }}
-                    </span>
-                    <span class="cost_span" aria-placeholder="final purchase for piece">
-                        {{ $store['dollar_cost'] }} $
-                    </span>
-                @endif
-            </div>
-            <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center align-items-center pl-1 mx-1 mt-1"
-                style="width: 100px;background-color: #596fd7;color: white;border-radius: 6px">
+            <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center align-items-center mt-1"
+                style="width: 85px;background-color: #596fd7;color: white;border-radius: 6px">
                 <label for="purchase_price"
                     class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                     style='font-weight:500;font-size:10px;color:white!important'>{{ __('lang.new_stock') }}</label>
@@ -836,7 +953,8 @@
                 </span>
             </div>
 
-            <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-row justify-content-center @if (app()->isLocale('ar')) align-items-center @else align-items-start @endif pl-1 mx-1 mt-1"
+
+            <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-row justify-content-center @if (app()->isLocale('ar')) align-items-center @else align-items-start @endif pl-1 mx-1  mt-1"
                 style="width: 100px;">
                 <label for="">{{ __('lang.change_current_stock') }}</label>
                 <input type="checkbox" name="change_price"

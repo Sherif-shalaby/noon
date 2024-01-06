@@ -453,7 +453,7 @@
                                                     <div class="d-flex flex-column">
                                                         <input
                                                             class="form-control p-1 text-center initial-balance-input mb-0"
-                                                            style="width: 50px font-size: 12px;font-weight: 700;border:2px solid #cecece"
+                                                            style="width: 60px;font-size: 12px;font-weight: 700;border:2px solid #cecece"
                                                             type="text" min="1"
                                                             wire:model="items.{{ $key }}.quantity"
                                                             Wire:change="subtotal({{ $key }})">

@@ -644,7 +644,7 @@
                                         {!! Form::label('size', __('lang.size'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         ]) !!}
-                                        <input type="text" wire:model='item.0.size' wire:change='changeSize()'
+                                        <input type="text" wire:model='item.0.size'
                                             class='form-control  initial-balance-input m-0  size'
                                             style="border:2px solid #ccc;width: 75px;font-size:12px"
                                             placeholder={{ __('lang.size') }} />

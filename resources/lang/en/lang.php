@@ -739,6 +739,15 @@ return [
     'closing_cash' => 'Closing Cash',
     'closing_date_and_time' => 'Closing Date and Time',
     'cash_given_to' => 'Cash Given To',
-
+    'total_sales' => 'Total Sales',
+    'cash_sales' => 'Cash Sales',
+    'cash_in' => 'Cash In',
+    'total_cash_sale' => 'Total Cash Sale',
+    'total_card_sale' => 'Total Card Sale',
+    'total_cheque_sale' => 'Total Cheque Sale',
+    'total_bank_transfer_sale' => 'Total Bank Transfer Sale',
+    'total_gift_card_sale' => 'Total Gift Card Sale',
+    'credit_card_sales' => 'Credit Card Sales',
+    'return_sales' => 'Return Sales',
 
 ];

@@ -1,4 +1,4 @@
-<div class="d-flex flex-column mb-2 @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
+<div class="d-flex flex-column mb-2 mt-3 @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
     style="width: 100%">
 
 
