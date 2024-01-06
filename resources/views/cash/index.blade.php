@@ -17,7 +17,6 @@
    </div>
 @endsection
 @section('content')
-     <!-- End Breadcrumbbar -->
     <!-- Start Contentbar -->
     <div class="contentbar">
         <!-- Start row -->
@@ -31,19 +30,19 @@
                     {{-- +++++++++++++++++ Filters +++++++++++++++++ --}}
                     <div class="col-md-12 card">
                         <form action="">
-                            <div class="row">
+                            <div class="row mt-2">
                                 {{-- ========= start_date filter ========= --}}
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         {!! Form::label('start_date', __('lang.start_date'), []) !!}
-                                        {!! Form::text('start_date', request()->start_date, ['class' => 'form-control']) !!}
+                                        {!! Form::date('start_date', request()->start_date, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                                 {{-- ========= end_date filter ========= --}}
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         {!! Form::label('end_date', __('lang.end_date'), []) !!}
-                                        {!! Form::text('end_date', request()->end_date, ['class' => 'form-control']) !!}
+                                        {!! Form::date('end_date', request()->end_date, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                                 {{-- ========= stores filter ========= --}}
@@ -92,6 +91,7 @@
                                         <th>@lang('lang.date_and_time')</th>
                                         <th>@lang('lang.user')</th>
                                         <th>@lang('lang.pos')</th>
+                                        <th>@lang('lang.store')</th>
                                         <th>@lang('lang.notes')</th>
                                         <th>@lang('lang.status')</th>
                                         <th class="sum">@lang('lang.cash_sales')</th>
@@ -117,6 +117,7 @@
                                         <td>{{ @format_datetime($cash_register->created_at) }}</td>
                                         <td>{{ ucfirst($cash_register->cashier->name ?? '') }}</td>
                                         <td>{{ ucfirst($cash_register->store_pos->name ?? '') }}</td>
+                                        <td>{{ ucfirst($cash_register->store->name ?? '') }}</td>
                                         <td>{{ ucfirst($cash_register->notes) }}</td>
                                         <td>{{ ucfirst($cash_register->status) }}</td>
                                         <td>{{ @num_format($cash_register->totalCashSales - $cash_register->totalRefundCash - $cash_register->totalSellReturn) }}</td>
