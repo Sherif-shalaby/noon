@@ -4,6 +4,7 @@ use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GetDueReport;
+use App\Http\Controllers\CashController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\UnitController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellCarController;
 use App\Http\Controllers\SellPosController;
@@ -30,27 +32,26 @@ use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SellReturnController;
+use App\Http\Controllers\ReturnStockController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\GetDueReportController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\InitialBalanceController;
+use App\Http\Controllers\RepresentativeController;
 use App\Http\Controllers\SupplierReportController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\PurchasesReportController;
+use App\Http\Controllers\RequiredProductController;
+use App\Http\Controllers\NewInitialBalanceController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
-use App\Http\Controllers\NewInitialBalanceController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\RepresentativeController;
+use App\Http\Controllers\TransactionPaymentController;
+use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
-use App\Http\Controllers\RequiredProductController;
-use App\Http\Controllers\ReturnStockController;
-use App\Http\Controllers\SalesPerEmployeeReportController;
-use App\Http\Controllers\TransactionPaymentController;
-use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -388,6 +389,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('reports/daily_sales_report',[ReportController::class,'dailySalesReport'])->name('reports.daily_sales_report');
     // Daily purchase Report
     Route::get('reports/daily_purchase_report',[ReportController::class,'dailyPurchaseReport'])->name('reports.daily_purchase_report');
+    // ++++++++++++++++++ Task 03-01-2024 : Cash +++++++++++++++++++++
+    Route::resource('cash', CashController::class);
 
 
 });

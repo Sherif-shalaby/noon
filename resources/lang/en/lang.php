@@ -695,6 +695,35 @@ return [
     'toggle_customers_dropdown' => 'toggle customers dropdown' ,
     'print_date' => 'Print Date',
     'total_expenses'=>'Total Expenses',
+    // ++++++++++++ Task 03-01-2024 : Cash Module ++++++++++++++++
+    'cash' => 'Cash',
+    'cash_sales' => 'Cash Sales',
+    'cash_in' => 'Cash In',
+    'add_cash' => 'Add Cash',
+    'add_cash_in' => 'Add Cash',
+    'add_cash_out' => 'Add Cash Out',
+    'cash_out' => 'Cash Out',
+    'add_closing_cash' => 'Add Closing Cash',
+    'expense' => 'Expense',
+    'expenses' => 'Expenses',
+    'wages_and_compensation' => 'Wages and Compensation',
+    'current_cash' => 'Current Cash',
+    'closing_cash' => 'Closing Cash',
+    'closing_date_and_time' => 'Closing Date and Time',
+    'cash_given_to' => 'Cash Given To',
+    'total_sales' => 'Total Sales',
+    'cash_sales' => 'Cash Sales',
+    'cash_in' => 'Cash In',
+    'total_cash_sale' => 'Total Cash Sale',
+    'total_card_sale' => 'Total Card Sale',
+    'total_cheque_sale' => 'Total Cheque Sale',
+    'total_bank_transfer_sale' => 'Total Bank Transfer Sale',
+    'total_gift_card_sale' => 'Total Gift Card Sale',
+    'credit_card_sales' => 'Credit Card Sales',
+    'return_sales' => 'Return Sales',
+
+
+
 ];
 
 
