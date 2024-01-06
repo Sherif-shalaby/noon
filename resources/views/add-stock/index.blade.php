@@ -2,23 +2,61 @@
 @section('title', __('lang.stock'))
 @section('breadcrumbbar')
     <style>
-        .table-top-head {
-            top: 305px;
+        th {
+            padding: 10px 25px !important;
+            font-weight: 700 !important;
+            font-size: 11px !important;
+            width: fit-content !important;
+            text-align: center;
+            border: 1px solid white !important;
+            color: #fff !important;
+            background-color: #596fd7 !important;
+            text-transform: uppercase;
         }
 
-        .wrapper1 {
-            margin-top: 25px;
+        .table-top-head {
+            top: 300px !important;
+        }
+
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
+            }
+        }
+
+        @media(max-width:991px) {
+            .table-top-head {
+                top: 300px !important
+            }
         }
 
         @media(max-width:768px) {
             .table-top-head {
-                top: 620px !important
-            }
-
-            .wrapper1 {
-                margin-top: 110px !important;
+                top: 650px !important
             }
         }
+
+        @media(max-width:575px) {
+            .table-top-head {
+                top: 650px !important
+            }
+        }
+
+        .wrapper1 {
+            margin-top: 45px;
+        }
+
+        @media(max-width:767px) {
+            .wrapper1 {
+                margin-top: 95px;
+            }
+        }
+
+
 
         .select2-selection__rendered {
             display: flex !important;
@@ -50,29 +88,33 @@
             background-color: white !important;
         }
     </style>
-    <div class="breadcrumbbar m-0 px-3 py-0">
-        <div
-            class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-            <div>
-                <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.stock')
-                </h4>
-                <div class="breadcrumb-list">
-                    <ul
-                        class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                @lang('lang.dashboard')</a>
-                        </li>
-                        {{--                        <li class="breadcrumb-item"><a href="#">@lang('lang.employees')</a></li> --}}
-                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                            aria-current="page">@lang('lang.stock')</li>
-                    </ul>
+    <div class="animate-in-page">
+
+        <div class="breadcrumbbar m-0 px-3 py-0">
+            <div
+                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div>
+                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        @lang('lang.stock')
+                    </h4>
+                    <div class="breadcrumb-list">
+                        <ul
+                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                    @lang('lang.dashboard')</a>
+                            </li>
+                            {{--                        <li class="breadcrumb-item"><a href="#">@lang('lang.employees')</a></li> --}}
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
+                                aria-current="page">@lang('lang.stock')</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div
-                    class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                    <a type="button" class="btn btn-primary" href="{{ route('stocks.create') }}">@lang('lang.add-stock')</a>
+                <div class="col-md-4">
+                    <div
+                        class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+                        <a type="button" class="btn btn-primary" href="{{ route('stocks.create') }}">@lang('lang.add-stock')</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,7 +137,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:25px ">
+                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" >
                         <div class="div1"></div>
                     </div>
                     <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">

@@ -23,8 +23,34 @@ class CashController extends Controller
         $users = User::Notview()->orderBy('name', 'asc')->pluck('name', 'id');
 
         // Retrieve cash registers with related transactions and cashier
-        $cash_registers = CashRegister::with(['cashRegisterTransactions', 'cashier'])->orderBy('created_at', 'desc')->get();
-
+        $query = CashRegister::with(['cashRegisterTransactions', 'cashier']);
+        // +++++++ filters +++++++
+        // 1- start_date filter
+        if (!empty(request()->start_date))
+        {
+            $query->whereDate('created_at', '>=', request()->start_date);
+        }
+        // 2- end_date filter
+        if (!empty(request()->end_date))
+        {
+            $query->whereDate('created_at', '<=', request()->end_date);
+        }
+        // 3- store_pos filter
+        if (!empty(request()->store_pos_id))
+        {
+            $query->where('store_pos_id', request()->store_pos_id);
+        }
+        // 4- store filter
+        if (!empty(request()->store_id))
+        {
+            $query->where('store_id', request()->store_id);
+        }
+        // 5- users filter
+        if (!empty(request()->user_id))
+        {
+            $query->where('user_id', request()->user_id);
+        }
+        $cash_registers = $query->orderBy('created_at', 'desc')->get();
         // Iterate through each cash register
         foreach ($cash_registers as $register)
         {
