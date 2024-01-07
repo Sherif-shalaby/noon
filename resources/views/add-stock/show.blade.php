@@ -44,7 +44,7 @@
                         <div class="card">
                             <div
                                 class="card-header  d-flex align-items-center no-print @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                                <h4>@lang('lang.invoice_no'): {{ $add_stock->invoice_no }}</h4>
+                                <h6>@lang('lang.invoice_no'): {{ $add_stock->invoice_no }}</h6>
                             </div>
 
                             <div class="card-body">

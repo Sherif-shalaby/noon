@@ -58,7 +58,7 @@
                 <div class="card mb-0">
                     <div
                         class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                        <h4>@lang('lang.daily_purchase_report')</h4>
+                        <h6>@lang('lang.daily_purchase_report')</h6>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">

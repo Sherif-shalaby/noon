@@ -6,7 +6,7 @@
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header">
-                    <h5 class="card-title">@lang('lang.products')</h5>
+                    <h6 class="card-title">@lang('lang.products')</h6>
                 </div>
                 <div class="card-body">
                     {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
@@ -14,10 +14,10 @@
                         {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
                         <table id="datatable-buttons" class="table table-striped table-bordered">
                             <thead>
-                            <tr>
+                                <tr>
 
-                                <th class="col12">@lang('lang.action')</th>
-                            </tr>
+                                    <th class="col12">@lang('lang.action')</th>
+                                </tr>
                             </thead>
                             <tbody>
 

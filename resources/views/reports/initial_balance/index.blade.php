@@ -81,11 +81,11 @@
     <div class="animate-in-page">
         <section class="mb-0">
             <div class="col-md-22">
-                <div class="card mt-3 mb-0">
+                <div class="card mt-1 mb-0">
                     <div
                         class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                        <h5 class="print-title ">
-                            @lang('lang.initial_balance')</h5>
+                        <h6 class="print-title ">
+                            @lang('lang.initial_balance')</h6>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">

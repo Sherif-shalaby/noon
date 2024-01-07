@@ -2,11 +2,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card mt-3">
+                <div class="card">
                     <div class="card-header animate__animated animate__fadeInUp d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif"
                         style="animation-delay: 1.1s">
-                        <h4>@lang('lang.add-stock')
-                        </h4>
+                        <h6 style="font-weight: 500">@lang('lang.add-stock')
+                        </h6>
                     </div>
                     <div
                         class="row justify-content-between py-1 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

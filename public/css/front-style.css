@@ -29,7 +29,20 @@ label {
     border: none !important;
 }
 
+.contentbar {
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
 
+.card-header {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.card-header h6 {
+    font-weight: 500 !important;
+}
 
 .input-wrapper {
     display: flex;

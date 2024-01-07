@@ -60,7 +60,7 @@
                     <div class="card">
                         <div
                             class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                            <h4>@lang('lang.edit_employee')</h4>
+                            <h6>@lang('lang.edit_employee')</h6>
                         </div>
                         <div class="card-body">
                             {!! Form::open([

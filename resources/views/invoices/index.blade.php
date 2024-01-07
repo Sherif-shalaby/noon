@@ -50,7 +50,7 @@
         }
 
         .table-top-head {
-            top: 105px !important;
+            top: 85px !important;
         }
 
         .table-scroll-wrapper {
@@ -67,13 +67,13 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 105px !important
+                top: 85px !important
             }
         }
 
         @media(max-width:768px) {
             .table-top-head {
-                top: 400px !important
+                top: 80px !important
             }
         }
 

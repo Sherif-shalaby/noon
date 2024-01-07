@@ -46,8 +46,8 @@
                 <div class="col-lg-12">
                     <div class="card m-b-30">
                         <div class="card-header">
-                            <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                                @lang('units.units')</h5>
+                            <h6 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('units.units')</h6>
                         </div>
                         <div class="card-body">
                             @if (@isset($units) && !@empty($units) && count($units) > 0)

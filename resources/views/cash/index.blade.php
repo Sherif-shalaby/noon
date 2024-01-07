@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('title', __('lang.cash'))
 @section('breadcrumbbar')
-<style>
-            th {
+    <style>
+        th {
             padding: 10px 25px !important;
             font-weight: 700 !important;
             font-size: 11px !important;
@@ -45,10 +45,7 @@
                 top: 415px !important
             }
         }
-
-
-
-</style>
+    </style>
 
     <div class="animate-in-page">
 
@@ -86,8 +83,8 @@
                 <div class="col-lg-12">
                     <div class="card mb-0">
                         <div class="card-header">
-                            <h5 class="print-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                                @lang('lang.cash')</h5>
+                            <h6 class="print-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.cash')</h6>
                         </div>
                         {{-- +++++++++++++++++ Filters +++++++++++++++++ --}}
                         <div class="col-md-12">
@@ -345,7 +342,7 @@
                                                                         $cash_register->totalPurchases -
                                                                         $cash_register->totalExpenses -
                                                                         $cash_register->totalWagesAndCompensation -
-                                                                        $cash_register->totalSellReturn
+                                                                        $cash_register->totalSellReturn,
                                                                 ) }}
                                                             </span>
                                                         </td>

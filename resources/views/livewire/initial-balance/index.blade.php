@@ -1,11 +1,11 @@
 <div class="animate-in-page">
     <section class="">
         <div class="col-md-22">
-            <div class="card mt-3">
+            <div class="card mt-1">
                 <div class="card-header">
-                    <h4 class="print-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                    <h6 class="print-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
 
-                        @lang('lang.initial_balance')</h4>
+                        @lang('lang.initial_balance')</h6>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">

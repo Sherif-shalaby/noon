@@ -58,8 +58,8 @@
                 <div class="col-lg-12">
                     <div class="card m-b-30">
                         <div class="card-header">
-                            <h5 class="card-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                                @lang('lang.moneysafe')</h5>
+                            <h6 class="card-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.moneysafe')</h6>
                         </div>
                         <div class="card-body">
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}

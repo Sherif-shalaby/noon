@@ -1,4 +1,4 @@
-<div class="card-body">
+<div class="card-body py-0">
     <form action="{{ route('products.index') }}" method="get" id="filters_form">
         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {{-- ++++++++++++++++++++ branches filter ++++++++++++++++++++ --}}

@@ -132,7 +132,7 @@
                             <input type="hidden" id="raw_product_index" value="2" />
                         </div>
                         <div class="col-md-12 mb-3 d-flex justify-content-end">
-                            <button class="btn btn btn-success add_product_row" type="button">
+                            <button class="btn btn btn-primary add_product_row" type="button">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>

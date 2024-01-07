@@ -45,7 +45,7 @@
                     <div class="card">
                         <div
                             class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                            <h4>@lang('lang.attendance')</h4>
+                            <h6>@lang('lang.attendance')</h6>
                         </div>
                         <div class="card-body pt-0">
                             <div class="row">
@@ -179,7 +179,7 @@
             if (checkInValue && checkOutValue) {
                 // Set the value of the status select box to "present"
                 $('#status_id').val('present').trigger(
-                'change'); // Use trigger('change') to trigger the change event
+                    'change'); // Use trigger('change') to trigger the change event
             }
         });
     </script>

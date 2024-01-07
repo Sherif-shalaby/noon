@@ -83,11 +83,11 @@
     <div class="animate-in-page">
         {{-- @livewire('add-stock.add-payment') --}}
         <div class="col-md-22">
-            <div class="card mt-3 mb-0">
+            <div class="card mt-1 mb-0">
                 <div
                     class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                    <h3 class="print-title">
-                        @lang('lang.stock')</h3>
+                    <h6 class="print-title">
+                        @lang('lang.stock')</h6>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">

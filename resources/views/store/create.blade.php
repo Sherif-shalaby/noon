@@ -18,7 +18,7 @@
                     <div
                         class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                         {!! Form::label('branch_id', __('lang.branch'), [
-                            'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => 'mb-0',
                         ]) !!}
                         <div class="input-wrapper width-full">
                             {!! Form::select('branch_id', $branches, null, [
@@ -33,7 +33,7 @@
                         <input type="hidden" name="quick_add"
                             value="{{ isset($quick_add) && $quick_add ? $quick_add : '' }}">
                         {!! Form::label('name', __('lang.name') . '*', [
-                            'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => 'mb-0',
                         ]) !!}
                         <div class="input-wrapper width-full">
                             {!! Form::text('name', null, [
@@ -46,7 +46,7 @@
                     <div
                         class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                         {!! Form::label('phone_number', __('lang.phone_number'), [
-                            'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => 'mb-0',
                         ]) !!}
                         <div class="input-wrapper width-full">
                             {!! Form::text('phone_number', null, [
@@ -58,7 +58,7 @@
                     <div
                         class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                         {!! Form::label('email', __('lang.name'), [
-                            'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => 'mb-0',
                         ]) !!}
                         <div class="input-wrapper width-full">
                             {!! Form::text('email', null, [
@@ -70,7 +70,7 @@
                     <div
                         class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                         {!! Form::label('manager_name', __('lang.manager_name'), [
-                            'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => 'mb-0',
                         ]) !!}
                         <div class="input-wrapper width-full">
                             {!! Form::text('manager_name', null, [
@@ -82,7 +82,7 @@
                     <div
                         class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                         {!! Form::label('manager_mobile_number', __('lang.manager_mobile_number'), [
-                            'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => 'mb-0',
                         ]) !!}
                         <div class="input-wrapper width-full">
                             {!! Form::text('manager_mobile_number', null, [
@@ -95,7 +95,7 @@
                     <div
                         class="mb-2 col-md-12 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                         {!! Form::label('details', __('lang.details'), [
-                            'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => 'mb-0',
                         ]) !!}
                         {!! Form::textarea('email', null, [
                             'class' => 'form-control width-full initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',

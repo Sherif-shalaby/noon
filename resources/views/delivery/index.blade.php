@@ -49,10 +49,10 @@
     <div class="animate-in-page">
         <div class="container-fluid">
             <div class="col-md-12  no-print">
-                <div class="card mt-3">
+                <div class="card mt-1">
                     <div
                         class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                        <h4 class="print-title">@lang('lang.delivery')</h4>
+                        <h6 class="print-title">@lang('lang.delivery')</h6>
                     </div>
                     <div class="card-body">
                         <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:55px ">

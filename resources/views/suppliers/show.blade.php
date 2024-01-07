@@ -43,7 +43,7 @@
         <div class="card">
             <div
                 class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                <h4>@lang('lang.supplier_details')</h4>
+                <h6>@lang('lang.supplier_details')</h6>
             </div>
             {{-- ++++++++++++++++++++++++ Filters ++++++++++++++++++++++++ --}}
             {{-- <form action="">

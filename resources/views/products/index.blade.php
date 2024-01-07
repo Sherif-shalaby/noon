@@ -16,7 +16,7 @@
         }
 
         .table-top-head {
-            top: 235px !important;
+            top: 190px !important;
         }
 
         .table-scroll-wrapper {
@@ -31,13 +31,13 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 235px !important
+                top: 190px !important
             }
         }
 
         @media(max-width:768px) {
             .table-top-head {
-                top: 388px !important
+                top: 415px !important
             }
         }
 
@@ -55,25 +55,6 @@
             .wrapper1 {
                 margin-top: 115px;
             }
-        }
-
-
-        .form-select {
-            height: 100%;
-            padding-bottom: 0;
-            padding-top: 0;
-            background-color: #dedede !important;
-            border-radius: 16px;
-            border: 2px solid #cececf;
-            font-size: 14px;
-            font-weight: 500
-        }
-
-        .form-select:focus {
-            border-color: #cececf !important;
-            outline: 0;
-            box-shadow: 0 0 0 0 !important;
-            background-color: white !important;
         }
 
         /* +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++  */
@@ -178,10 +159,10 @@
                 <div class="col-lg-12">
                     <div class="card mb-0">
                         <div class="card-header">
-                            <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                                @lang('lang.products')</h5>
+                            <h6 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.products')</h6>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body py-0">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="container-fluid">

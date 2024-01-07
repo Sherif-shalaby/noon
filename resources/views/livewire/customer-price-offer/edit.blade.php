@@ -2,10 +2,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card mt-3">
+                <div class="card mt-1">
                     <div
                         class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @endif">
-                        <h4>@lang('lang.edit_customer_price_offer')</h4>
+                        <h6>@lang('lang.edit_customer_price_offer')</h6>
                     </div>
                     <div class="row align-items-center mb-2">
                         {{-- <div class="col-md-9">

@@ -36,8 +36,8 @@
                 <div class="col-lg-12">
                     <div class="card m-b-30">
                         <div class="card-header">
-                            <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                                @lang('lang.products')</h5>
+                            <h6 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.products')</h6>
                         </div>
                         <div class="card-body">
                             <div class="row">

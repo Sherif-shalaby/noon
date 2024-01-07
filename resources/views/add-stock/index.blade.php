@@ -124,10 +124,10 @@
     {{-- @livewire('add-stock.add-payment') --}}
     <section class="">
         <div class="col-md-22">
-            <div class="card mt-3 mb-0">
+            <div class="card mt-1 mb-0">
                 <div
                     class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                    <h4 class="print-title">@lang('lang.stock')</h4>
+                    <h6 class="print-title">@lang('lang.stock')</h6>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -137,7 +137,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" >
+                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                         <div class="div1"></div>
                     </div>
                     <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">

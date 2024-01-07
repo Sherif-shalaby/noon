@@ -3,7 +3,7 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 85px;
+            top: 35px;
         }
     </style>
     <div class="animate-in-page">
@@ -43,13 +43,13 @@
 
         <div class="container-fluid">
             <div class="col-md-12  no-print">
-                <div class="card mt-3">
+                <div class="card mt-1">
                     <div
                         class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                        <h4>@lang('lang.sell_car')</h4>
+                        <h6>@lang('lang.sell_car')</h6>
                     </div>
                     <div class="card-body">
-                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:55px ">
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:25px ">
                             <div class="div1"></div>
                         </div>
                         <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">

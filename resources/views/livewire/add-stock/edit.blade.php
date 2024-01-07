@@ -2,9 +2,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card mt-3">
+                <div class="card mt-1">
                     <div class="card-header d-flex align-items-center">
-                        <h4>@lang('lang.add-stock')</h4>
+                        <h6>@lang('lang.add-stock')</h6>
                     </div>
                     <div class="row ">
                         {{-- <div class="col-md-9">

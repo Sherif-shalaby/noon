@@ -35,10 +35,10 @@
     <div class="contentbar">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card m-b-30">
+                <div class="card mb-0">
                     <div class="card-header">
-                        <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            @lang('lang.suppliers')</h5>
+                        <h6 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                            @lang('lang.suppliers')</h6>
                     </div>
                     <div class="card-body">
                         <form class="form" action="{{ route('suppliers.update', $supplier->id) }}" method="post"

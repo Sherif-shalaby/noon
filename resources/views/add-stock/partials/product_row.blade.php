@@ -41,7 +41,7 @@
                     'class' => 'form-select',
                     'placeholder' => __('lang.choose_currency'),
                     'data-live-search' => 'true',
-                    'required',
+                    'required' => 'required',
                     'wire:model' => 'items.' . $index . '.used_currency',
                 ]) !!}
             </div>

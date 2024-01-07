@@ -38,7 +38,7 @@
                 <div class="card">
                     <div
                         class="card-header  d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                        <h3 class="print-title">@lang('lang.cash')</h3>
+                        <h6 class="print-title">@lang('lang.cash')</h6>
                     </div>
                     <div class="card-body">
                         <h4 class="modal-title">@lang('lang.cash_details')</h4>

@@ -5,10 +5,10 @@
         <div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card mt-3">
+                    <div class="card mt-1">
                         <div class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif  animate__animated animate__fadeInUp"
                             style="animation-delay: 1.1s">
-                            <h4>@lang('lang.purchase_order')</h4>
+                            <h6>@lang('lang.purchase_order')</h6>
                         </div>
                         <div class="row ">
                             {{-- <div class="col-md-9 animate__animated animate__bounceInRight" style="animation-delay: 1.1s">

@@ -7,18 +7,18 @@
             <h4 class="page-title">@lang('lang.add_employee')</h4>
             <div class="breadcrumb-list">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                    <li class="breadcrumb-item active"><a href="{{route('employees.index')}}">@lang('lang.employees')</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
+                    <li class="breadcrumb-item active"><a href="{{ route('employees.index') }}">@lang('lang.employees')</a></li>
                     <li class="breadcrumb-item active" aria-current="page">@lang('lang.add_employee')</li>
                 </ol>
             </div>
         </div>
         {{-- ///////// right side //////////// --}}
         <div class="widgetbar">
-            <a  class="btn btn-primary" href="{{route('employees.index')}}">@lang('lang.employee')</a>
-            {{--  <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
-            {{--             class="dripicons-plus"></i>--}}
-            {{--              @lang('lang.add_new_employee')</a>--}}
+            <a class="btn btn-primary" href="{{ route('employees.index') }}">@lang('lang.employee')</a>
+            {{--  <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i --}}
+            {{--             class="dripicons-plus"></i> --}}
+            {{--              @lang('lang.add_new_employee')</a> --}}
         </div>
     </div>
 @endsection
@@ -28,30 +28,34 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header d-flex align-items-center">
-                        <h4>@lang('lang.add_employee')</h4>
+                        <h6>@lang('lang.add_employee')</h6>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <form class="form-group" id="productForm"
-                                      action="{{ route('employees.store') }}" method="POST"
-                                      enctype="multipart/form-data">
+                                <form class="form-group" id="productForm" action="{{ route('employees.store') }}"
+                                    method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label for="fname">@lang('lang.name'):*</label>
-                                            <input type="text" class="form-control" name="name" id="name" required
-                                                   placeholder="Name">
+                                            <input type="text" class="form-control" name="name" id="name"
+                                                required placeholder="Name">
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="store_id">@lang('lang.stores')</label>
-                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                            {!! Form::select(
+                                                'store_id[]',
+                                                $stores,
+                                                !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false,
+                                                ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id'],
+                                            ) !!}
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="email">@lang('lang.email'):*
                                                 <small>(@lang('lang.it_will_be_used_for_login'))</small></label>
-                                            <input type="email" class="form-control" name="email" id="email" required
-                                                   placeholder="Email">
+                                            <input type="email" class="form-control" name="email" id="email"
+                                                required placeholder="Email">
                                         </div>
                                     </div>
 
@@ -60,12 +64,12 @@
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
-                                                   required placeholder="Create New Password">
+                                                required placeholder="Create New Password">
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="pass">@lang('lang.confirm_password'):*</label>
                                             <input type="password" class="form-control" id="password_confirmation"
-                                                   name="password_confirmation" required placeholder="Conform Password">
+                                                name="password_confirmation" required placeholder="Conform Password">
                                         </div>
 
                                     </div>
@@ -73,14 +77,13 @@
 
                                         <div class="col-sm-6">
                                             <label for="date_of_start_working">@lang('lang.date_of_start_working')</label>
-                                            <input type="date" class="form-control"
-                                                   name="date_of_start_working" id="date_of_start_working"
-                                                   placeholder="@lang('lang.date_of_start_working')">
+                                            <input type="date" class="form-control" name="date_of_start_working"
+                                                id="date_of_start_working" placeholder="@lang('lang.date_of_start_working')">
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="date_of_birth">@lang('lang.date_of_birth')</label>
                                             <input type="date" class="form-control" name="date_of_birth"
-                                                   id="date_of_birth" placeholder="@lang('lang.date_of_birth')">
+                                                id="date_of_birth" placeholder="@lang('lang.date_of_birth')">
                                         </div>
 
                                     </div>
@@ -88,12 +91,16 @@
 
                                         <div class="col-sm-6">
                                             <label for="job_type">@lang('lang.jobs')</label>
-                                            {!! Form::select('job_type_id', $jobs, null, ['class' => 'form-control selectpicker', 'placeholder' => __('lang.select_job_type'), 'data-live-search' => 'true']) !!}
+                                            {!! Form::select('job_type_id', $jobs, null, [
+                                                'class' => 'form-control selectpicker',
+                                                'placeholder' => __('lang.select_job_type'),
+                                                'data-live-search' => 'true',
+                                            ]) !!}
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="mobile">@lang('lang.phone_number'):*</label>
-                                            <input type="mobile" class="form-control" name="mobile" id="mobile" required
-                                                   placeholder="@lang('lang.mobile')">
+                                            <input type="mobile" class="form-control" name="mobile" id="mobile"
+                                                required placeholder="@lang('lang.mobile')">
                                         </div>
 
                                     </div>
@@ -115,14 +122,14 @@
                                                 <div class="form-group">
                                                     <div class="i-checks">
                                                         <input id="number_of_leaves{{ $leave_type->id }}"
-                                                               name="number_of_leaves[{{ $leave_type->id }}][enabled]"
-                                                               type="checkbox" value="1">
+                                                            name="number_of_leaves[{{ $leave_type->id }}][enabled]"
+                                                            type="checkbox" value="1">
                                                         <label
                                                             for="number_of_leaves{{ $leave_type->id }}"><strong>{{ $leave_type->name }}</strong></label>
                                                         <input type="number" class="form-control"
-                                                               name="number_of_leaves[{{ $leave_type->id }}][number_of_days]"
-                                                               id="number_of_leaves" placeholder="{{ $leave_type->name }}"
-                                                               readonly value="{{ $leave_type->number_of_days_per_year }}">
+                                                            name="number_of_leaves[{{ $leave_type->id }}][number_of_days]"
+                                                            id="number_of_leaves" placeholder="{{ $leave_type->name }}"
+                                                            readonly value="{{ $leave_type->number_of_days_per_year }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -131,7 +138,7 @@
                                     <div class="row mt-4">
                                         <!-- Button salary modal -->
                                         <button type="button" style="margin-left: 15px;" class="btn btn-primary"
-                                                data-toggle="modal" data-target="#salary_details">
+                                            data-toggle="modal" data-target="#salary_details">
                                             @lang('lang.salary_details')
                                         </button>
                                         @include('employees.partials.salary_details')
@@ -141,8 +148,7 @@
                                     {{-- +++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++ --}}
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label
-                                                for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
+                                            <label for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
                                             <table>
                                                 <thead>
                                                     <tr>
@@ -161,36 +167,53 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <div class="i-checks">
-                                                                        <input id="working_day_per_week{{ $key }}" name="working_day_per_week[{{ $key }}]" type="checkbox" value="1">
-                                                                        <label for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                                                        <input
+                                                                            id="working_day_per_week{{ $key }}"
+                                                                            name="working_day_per_week[{{ $key }}]"
+                                                                            type="checkbox" value="1">
+                                                                        <label
+                                                                            for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             {{-- "check_in" inputField --}}
                                                             <td>
                                                                 {{-- {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker']) !!}  --}}
-                                                                <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}">
+                                                                <input type="datetime-local" class="form-control"
+                                                                    name="check_in[{{ $key }}]"
+                                                                    id="input10{{ $key }}">
                                                             </td>
                                                             {{-- "check_out" inputField --}}
                                                             <td>
-                                                                <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}">
+                                                                <input type="datetime-local" class="form-control"
+                                                                    name="check_out[{{ $key }}]"
+                                                                    id="input20{{ $key }}">
                                                                 {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
                                                             </td>
                                                             {{-- ++++++++++++++++++ Evening Shift +++++++++++++++ --}}
-                                                            <td >
-                                                                <input type="checkbox" class="checkbox-toggle" id="checkbox2{{ $key }}" name="evening_shift_checkbox[{{ $key }}]">
+                                                            <td>
+                                                                <input type="checkbox" class="checkbox-toggle"
+                                                                    id="checkbox2{{ $key }}"
+                                                                    name="evening_shift_checkbox[{{ $key }}]">
                                                             </td>
                                                             {{--  "تسجيل الدخول" , "تسجيل الخروج" --}}
                                                             <td>
-                                                                <table class="hidden inputFields_evening_shift" id="inputFields_evening_shift{{ $key }}">
+                                                                <table class="hidden inputFields_evening_shift"
+                                                                    id="inputFields_evening_shift{{ $key }}">
                                                                     <tr>
                                                                         {{-- تسجيل الدخول --}}
                                                                         <td>
-                                                                            <input type="datetime-local" class="form-control" name="evening_shift_check_in[{{ $key }}]" id="input1{{ $key }}">
+                                                                            <input type="datetime-local"
+                                                                                class="form-control"
+                                                                                name="evening_shift_check_in[{{ $key }}]"
+                                                                                id="input1{{ $key }}">
                                                                         </td>
                                                                         {{-- تسجيل الخروج --}}
                                                                         <td>
-                                                                            <input type="datetime-local" class="form-control" name="evening_shift_check_out[{{ $key }}]" id="input2{{ $key }}">
+                                                                            <input type="datetime-local"
+                                                                                class="form-control"
+                                                                                name="evening_shift_check_out[{{ $key }}]"
+                                                                                id="input2{{ $key }}">
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -230,7 +253,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     {{-- "select_all" checkbox --}}
-                                                    <th> <input type="checkbox" id="select_all_ids"/> </th>
+                                                    <th> <input type="checkbox" id="select_all_ids" /> </th>
                                                     <th>@lang('lang.product_name')</th>
                                                     <th>@lang('lang.sku')</th>
                                                     <th>@lang('lang.category')</th>
@@ -239,23 +262,24 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($employee_products as $index=>$product)
+                                                @foreach ($employee_products as $index => $product)
                                                     <tr>
-                                                        <td>{{ $index+1 }}</td>
+                                                        <td>{{ $index + 1 }}</td>
                                                         {{-- "select" checkbox --}}
                                                         <td>
                                                             {{-- get "all checked products" --}}
-                                                            <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$product->id}}" />
+                                                            <input type="checkbox" name="ids[]" class="checkbox_ids"
+                                                                value="{{ $product->id }}" />
                                                         </td>
-                                                        <td>{{$product->name}}</td>
-                                                        <td>{{$product->sku}}</td>
-                                                        <td>{{$product->category->name??''}}</td>
+                                                        <td>{{ $product->name }}</td>
+                                                        <td>{{ $product->sku }}</td>
+                                                        <td>{{ $product->category->name ?? '' }}</td>
                                                         <td>
-                                                            {{$product->subCategory1->name??''}} <br>
-                                                            {{$product->subCategory2->name??''}} <br>
-                                                            {{$product->subCategory3->name??''}}
+                                                            {{ $product->subCategory1->name ?? '' }} <br>
+                                                            {{ $product->subCategory2->name ?? '' }} <br>
+                                                            {{ $product->subCategory3->name ?? '' }}
                                                         </td>
-                                                        <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
+                                                        <td>{{ !empty($product->brand) ? $product->brand->name : '' }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -266,7 +290,7 @@
                                         <div class="col-sm-12">
                                             <div class="text-right">
                                                 <input type="submit" id="submit-btn" class="btn btn-primary"
-                                                       value="@lang('lang.save')" name="submit">
+                                                    value="@lang('lang.save')" name="submit">
                                             </div>
                                         </div>
                                     </div>
@@ -284,7 +308,7 @@
 @section('javascript')
 
     <script>
-        $(document ).ready(function() {
+        $(document).ready(function() {
             $('.checked_all').change(function() {
                 tr = $(this).closest('tr');
                 var checked_all = $(this).prop('checked');
@@ -368,14 +392,12 @@
             const label1 = document.getElementById('label1');
             const label2 = document.getElementById('label2');
             // when checkbox of "evening shift" is "checked" then appear "two input fields"
-            checkboxes.forEach((checkbox, index) =>
-            {
-                checkbox.addEventListener('change', function ()
-                {
-                    if (checkbox.checked){
+            checkboxes.forEach((checkbox, index) => {
+                checkbox.addEventListener('change', function() {
+                    if (checkbox.checked) {
                         inputFields[index].classList.remove('hidden');
                         updateLabelsVisibility();
-                    }else{
+                    } else {
                         inputFields[index].classList.add('hidden');
                         updateLabelsVisibility();
                     }
@@ -384,16 +406,14 @@
                 if (checkbox.checked) {
                     label1.classList.remove('hidden');
                     label2.classList.remove('hidden');
-                }else{
+                } else {
                     label1.classList.add('hidden');
                     label2.classList.add('hidden');
                 }
                 // ++++++++++++++++++++ updateLabelsVisibility() ++++++++++++++++++++
-                function updateLabelsVisibility()
-                {
+                function updateLabelsVisibility() {
                     let anyCheckboxChecked = false;
-                    checkboxes.forEach(function(checkbox)
-                    {
+                    checkboxes.forEach(function(checkbox) {
                         if (checkbox.checked) {
                             anyCheckboxChecked = true;
                         }
@@ -401,7 +421,7 @@
                     if (anyCheckboxChecked) {
                         label1.classList.remove('hidden');
                         label2.classList.remove('hidden');
-                    }else {
+                    } else {
                         label1.classList.add('hidden');
                         label2.classList.add('hidden');
                     }

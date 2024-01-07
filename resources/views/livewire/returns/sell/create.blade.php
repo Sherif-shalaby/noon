@@ -4,7 +4,7 @@
             <div class="card m-b-30 mt-4">
                 <div
                     class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                    <h4>@lang('lang.return_sell')</h4>
+                    <h6>@lang('lang.return_sell')</h6>
                 </div>
                 <div class="card-body">
                     {!! Form::open(['method' => 'post', 'files' => true, 'class' => 'pos-form', 'id' => 'sell_return_form']) !!}

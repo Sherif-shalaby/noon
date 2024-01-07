@@ -44,7 +44,7 @@
                     <div class="card">
                         <div
                             class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                            <h4 class="print-title">@lang('lang.attendance_list')</h4>
+                            <h6 class="print-title">@lang('lang.attendance_list')</h6>
                         </div>
                         <div class="card-body">
                             <div class="row">

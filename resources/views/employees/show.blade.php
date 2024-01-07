@@ -61,7 +61,7 @@
                     <div class="card">
                         <div
                             class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                            <h4>@lang('lang.employee') </h4>
+                            <h6>@lang('lang.employee') </h6>
                             {{--                        <a href="{{action('EmployeeController@sendLoginDetails', $employee->id)}}" --}}
                             {{--                            class="btn btn-primary btn-xs" style="margin-left: 10px;"><i class="fa fa-paper-plane"></i> @lang('lang.send_credentials')</a> --}}
                         </div>

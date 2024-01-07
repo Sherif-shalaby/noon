@@ -2,13 +2,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card mt-3  mb-1">
+                <div class="card mt-1  mb-1">
                     <div class="card-header">
 
                         @if (!empty($is_raw_material))
-                            <h4>@lang('lang.add_stock_for_raw_material')</h4>
+                            <h6>@lang('lang.add_stock_for_raw_material')</h6>
                         @else
-                            <h4>@lang('lang.add_initial_balance')</h4>
+                            <h6>@lang('lang.add_initial_balance')</h6>
                         @endif
                     </div>
                     @php

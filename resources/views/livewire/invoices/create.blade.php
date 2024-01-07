@@ -86,7 +86,8 @@
             </div>
 
             {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
-            <div class="col-md-1  d-flex align-items-center justify-content-center flex-row-reverse p-0">
+            <div class="col-md-1  d-flex align-items-center justify-content-center flex-row-reverse p-0 animate__animated animate__bounceInLeft"
+                style="animation-delay: 1.2s">
                 <label class=" d-flex align-items-center justify-content-center flex-column p-0">
                     {!! Form::checkbox('toggle_suppliers_dropdown', 1, false, ['wire:model' => 'toggle_suppliers_dropdown']) !!}
                     <span class="mx-1 text-center ">
@@ -201,7 +202,8 @@
                         $city = \App\Models\City::find($customer_data->city_id);
                     }
                 @endphp
-                <div class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div
+                    class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.phone_number') </span> :
                     <span class="mx-1"
                         style="font-weight: 500;font-size:12px;">{{ !empty($customer_data->phone) ? $customer_data->phone : '' }}</span>
