@@ -5,14 +5,20 @@
     </td>
     <td>
         <div class="col-md-2">
-            {!! Form::select('invoice_currency', $selected_currencies, null,
-                ['class' => 'form-control select','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
-                    'required', 'wire:model' => 'items.' . $index . '.used_currency',]) !!}
+            {!! Form::select('invoice_currency', $selected_currencies, null, [
+                'class' => 'form-control select',
+                'placeholder' => __('lang.please_select'),
+                'data-live-search' => 'true',
+                'required' => 'required',
+                'wire:model' => 'items.' . $index . '.used_currency',
+               
+            ]) !!}
             @error('items.'.$index.'.used_currency')
-            <span class="error text-danger">{{ $message }}</span>
+                <span class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
     </td>
+    
     <td title="{{__('lang.products')}}">
         {{ $product['product']['name'] }}
         <br>
