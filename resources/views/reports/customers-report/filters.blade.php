@@ -1,11 +1,13 @@
 <form action="{{ route('customers-report.index') }}">
     <div class="row pb-3">
+        {{-- ++++++++++++++ start_date filter ++++++++++++++ --}}
         <div class="col-md-2">
             <div class="form-group">
                 {!! Form::label('start_date', __('lang.start_date'), []) !!}
                 {!! Form::date('start_date', request()->start_date, ['class' => 'form-control sale_filter']) !!}
             </div>
         </div>
+        {{-- ++++++++++++++ start_time filter ++++++++++++++ --}}
         <div class="col-md-2">
             <div class="form-group">
                 {!! Form::label('start_time', __('lang.start_time'), []) !!}
@@ -15,12 +17,14 @@
                 ]) !!}
             </div>
         </div>
+        {{-- ++++++++++++++ end_date filter ++++++++++++++ --}}
         <div class="col-md-2">
             <div class="form-group">
                 {!! Form::label('end_date', __('lang.end_date'), []) !!}
                 {!! Form::date('end_date', request()->end_date, ['class' => 'form-control sale_filter']) !!}
             </div>
         </div>
+        {{-- ++++++++++++++ end_time filter ++++++++++++++ --}}
         <div class="col-md-2">
             <div class="form-group">
                 {!! Form::label('end_time', __('lang.end_time'), []) !!}
@@ -30,7 +34,7 @@
                 ]) !!}
             </div>
         </div>
-
+        {{-- ++++++++++++++ customers filter ++++++++++++++ --}}
         <div class="col-md-2">
             <div class="form-group">
                 {!! Form::label('customer_id', __('lang.customer'), []) !!}
