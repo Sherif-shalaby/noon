@@ -45,25 +45,29 @@
                                             <div class="col-2">
                                                 <div class="form-group">
                                                     {!! Form::label('branch_id' ,__('lang.branch')) !!}
-                                                    {!! Form::select('branch_id',$branches,request()->brach_id,
+                                                    {!! Form::select('branch_id',$branches,request()->branch_id,
                                                         ['class' => 'form-control select2 store','placeholder'=>__('lang.please_select'), 'id' => 'branch_id']
                                                     ) !!}
                                                 </div>
                                             </div>
                                             {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
-                                            <div class="col-2">
+                                            {{-- <div class="col-2">
                                                 <div class="form-group">
                                                     {!! Form::label('store_id' ,__('lang.store')) !!}
                                                     {!! Form::select(
                                                         'store_id',[],request()->store_id,['class' => 'form-control select2 store','placeholder'=>__('lang.please_select'), 'id' => 'store_id']
                                                     ) !!}
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-2 mt-4">
                                                 <div class="form-group">
-                                                    <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
-                                                        <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>
+                                                    <button type="submit" name="submit" class="btn btn-primary" title="search">
+                                                        <i class="fa fa-eye"></i> {{ __('lang.filter') }}
+                                                    </button>
                                                 </div>
+                                            </div>
+                                            <div class="col-2 mt-4">
+                                                <a href="{{route('store.index')}}" class="btn btn-danger">@lang('lang.clear_filters')</a>
                                             </div>
                                         </div>
                                     </form>

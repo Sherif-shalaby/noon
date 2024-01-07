@@ -35,8 +35,8 @@ class StoreController extends Controller
    */
   public function index()
   {
-      $stores = Store::when(request()->store_id != null, function ($query) {
-                        $query->where('id',request()->store_id);
+      $stores = Store::when(request()->branch_id != null, function ($query) {
+                        $query->where('branch_id',request()->branch_id);
                 })->orderBy('created_by','desc')->get();
       $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
 
