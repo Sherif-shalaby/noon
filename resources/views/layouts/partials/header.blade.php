@@ -20,11 +20,11 @@
                 {{-- ###################### Dashboard : نظرة عامة ###################### --}}
                 {{-- @can('dashboard')  --}}
                 @if (!empty($module_settings['dashboard']))
-                    <li class="scroll mx-2 mb-0 p-0">
+                    <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a target="_blank"
                             class="home-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center"
-                            href="{{ url('/') }}" style="cursor: pointer;text-decoration: none">
-                            <div style="width: 25px">
+                            href="{{ url('/') }}" style="cursor: pointer;text-decoration: none;height: 100%;">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 64 64">
                                     <defs>
                                         <style>
@@ -92,11 +92,11 @@
                 {{-- ###################### Products : المنتجات ###################### --}}
                 {{-- @can('product_module')  --}}
                 @if (!empty($module_settings['product_module']))
-                    <li class="scroll mx-2 mb-0 p-0">
+                    <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a class="products-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center"
                             href="{{ route('products.create') }}" target="_blank"
-                            style="cursor: pointer;text-decoration: none">
-                            <div style="width: 25px">
+                            style="cursor: pointer;text-decoration: none;height: 100%;">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                     <g data-name="product analytic">
                                         <path style="fill:#edb996" d="M1 4h32v32H1z" />
@@ -138,14 +138,14 @@
                 {{-- ###################### Cashier : المبيعات ###################### --}}
                 {{-- @can('cashier_module') --}}
                 @if (!empty($module_settings['cashier_module']))
-                    <li class="scroll mx-2 mb-0 p-0">
+                    <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a class="cashier-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             target="_blank" href="{{ route('pos.index') }}"
-                            style="cursor: pointer;text-decoration: none">
+                            style="cursor: pointer;text-decoration: none;height: 100%;">
                             {{-- <img
                             src="{{ asset('images/topbar/cashier-machine.png') }}" class="img-fluid pl-1"
                             alt="apps"> --}}
-                            <div style="width: 25px">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 64 64">
                                     <g data-name="28-Cash register">
                                         <path style="fill:#a8b7d4" d="M29 34v3H7v-3h22z" />
@@ -201,11 +201,11 @@
                 {{-- ###################### Task 03-01-2024 : Cash : نقدي ###################### --}}
                 {{-- @can('cashier_module') --}}
                 {{-- @if (!empty($module_settings['cashier_module'])) --}}
-                <li class="scroll  mx-2 mb-0 p-0">
+                <li class="scroll  mx-2 mb-0 p-0" style="height: 40px;">
                     <a target="_blank"
                         class="cash-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                        href="{{ route('cash.index') }}" style="cursor: pointer;text-decoration: none">
-                        <div style="width: 25px">
+                        href="{{ route('cash.index') }}" style="cursor: pointer;text-decoration: none;height: 100%;">
+                        <div style="width: 25px" class="d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512"
                                 style="enable-background:new 0 0 512 512" xml:space="preserve">
                                 <path style="fill:#ace5ac"
@@ -223,64 +223,66 @@
                         </div>
                         <span class="mx-2" style="font-weight: 600">{{ __('lang.cash') }}</span>
                     </a>
-                    {{-- </li> --}}
-                    {{-- @endif --}}
-                    {{-- @endcan --}}
-                    {{-- ###################### Purchases : المشتريات ###################### --}}
-                    {{-- @can('stock_module') --}}
-                    @if (!empty($module_settings['stock_module']))
-                <li class="scroll mx-2 mb-0 p-0">
-                    <a target="_blank"
-                        class="purchases-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                        href="{{ route('stocks.create') }}" style="cursor: pointer;text-decoration: none">
-                        <div style="width: 25px">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512"
-                                style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                <path style="fill:#ff5948" d="M222.584 82.202h84.093v58.734h-84.093z" />
-                                <path style="fill:#d44a3c" d="M222.584 82.202h20.898v58.734h-20.898z" />
-                                <path style="fill:#ff5948" d="M333.312 82.202h84.093v58.734h-84.093z" />
-                                <path style="fill:#d44a3c" d="M333.312 82.202h20.898v58.734h-20.898z" />
-                                <path style="fill:#cca38d" d="M40.42 164.122h431.156v265.676H40.42z" />
-                                <path style="fill:#a68472" d="M40.42 164.122h20.898v265.676H40.42z" />
-                                <path style="fill:#5e5456" d="M199.576 201.394h239.282v228.404H199.576z" />
-                                <path style="fill:#ff5948"
-                                    d="M199.576 201.394h239.282v41.788H199.576zM84.02 243.179h84.093v186.619H84.02z" />
-                                <path style="fill:#d44a3c" d="M84.02 243.179h20.898v186.619H84.02z" />
-                                <path style="fill:#ff5948" d="M8.662 225.771h43.886v85.68H8.662z" />
-                                <path style="fill:#ffd359" d="M20.126 130.341h471.751v50.153H20.126z" />
-                                <path style="fill:#db9840" d="M20.126 130.341h20.898v50.153H20.126z" />
-                                <path style="fill:#cca38d"
-                                    d="M307.475 429.801h-72.379c-.65 0-1.177-.527-1.177-1.177v-75.317c0-.65.527-1.177 1.177-1.177h72.379c.65 0 1.177.527 1.177 1.177v75.317a1.178 1.178 0 0 1-1.177 1.177z" />
-                                <path style="fill:#a68472"
-                                    d="M254.816 428.624v-75.317c0-.65.527-1.177 1.177-1.177h-20.898c-.65 0-1.177.527-1.177 1.177v75.317c0 .65.527 1.177 1.177 1.177h20.898a1.178 1.178 0 0 1-1.177-1.177z" />
-                                <path style="fill:#cca38d"
-                                    d="M402.912 429.801h-72.379c-.65 0-1.177-.527-1.177-1.177v-75.317c0-.65.527-1.177 1.177-1.177h72.379c.65 0 1.177.527 1.177 1.177v75.317a1.178 1.178 0 0 1-1.177 1.177z" />
-                                <path style="fill:#a68472"
-                                    d="M350.253 428.624v-75.317c0-.65.527-1.177 1.177-1.177h-20.898c-.65 0-1.177.527-1.177 1.177v75.317c0 .65.527 1.177 1.177 1.177h20.898c-.65 0-1.177-.527-1.177-1.177z" />
-                                <path style="fill:#cca38d"
-                                    d="M402.912 352.131h-72.379c-.65 0-1.177-.527-1.177-1.177v-75.317c0-.65.527-1.177 1.177-1.177h72.379c.65 0 1.177.527 1.177 1.177v75.317a1.178 1.178 0 0 1-1.177 1.177z" />
-                                <path style="fill:#a68472"
-                                    d="M350.253 350.954v-75.317c0-.65.527-1.177 1.177-1.177h-20.898c-.65 0-1.177.527-1.177 1.177v75.317c0 .65.527 1.177 1.177 1.177h20.898c-.65 0-1.177-.527-1.177-1.177z" />
-                                <path
-                                    d="M283.194 96.497h-37.616c-4.328 0-7.837 3.512-7.837 7.844s3.509 7.844 7.837 7.844h37.616c4.328 0 7.837-3.512 7.837-7.844 0-4.332-3.509-7.844-7.837-7.844zM393.927 96.497H356.31c-4.328 0-7.837 3.512-7.837 7.844s3.509 7.844 7.837 7.844h37.616c4.328 0 7.837-3.512 7.837-7.844 0-4.332-3.509-7.844-7.836-7.844z" />
-                                <ellipse cx="143.496" cy="323.5" rx="7.837" ry="7.844" />
-                                <path
-                                    d="M504.163 422.123H479.42V291.559c0-4.332-3.509-7.844-7.837-7.844-4.328 0-7.837 3.512-7.837 7.844V422.12h-17.053V201.338c0-4.332-3.509-7.844-7.837-7.844h-239.28c-4.328 0-7.837 3.512-7.837 7.844V422.12h-15.794V243.165c0-4.332-3.509-7.844-7.837-7.844H84.015c-4.328 0-7.837 3.512-7.837 7.844V422.12H48.253V319.349h4.295c4.328 0 7.837-3.512 7.837-7.844v-85.763c0-4.332-3.509-7.844-7.837-7.844h-4.295v-29.639h415.493v64.497c0 4.332 3.509 7.844 7.837 7.844 4.328 0 7.837-3.512 7.837-7.844v-64.497h12.454c4.328 0 7.837-3.512 7.837-7.844v-50.201c0-4.332-3.509-7.844-7.837-7.844h-66.632V82.032c0-4.332-3.509-7.844-7.837-7.844h-84.093c-4.328 0-7.837 3.512-7.837 7.844v40.337h-10.961V82.032c0-4.332-3.509-7.844-7.837-7.844h-84.093c-4.328 0-7.837 3.512-7.837 7.844v40.337h-63.412c-4.328 0-7.837 3.512-7.837 7.844 0 4.332 3.509 7.844 7.837 7.844h71.167c.027 0 .053.004.08.004.027 0 .053-.004.08-.004h83.931c.027 0 .053.004.08.004.027 0 .053-.004.08-.004h26.472c.027 0 .053.004.08.004.027 0 .053-.004.08-.004h83.931c.027 0 .053.004.08.004s.053-.004.08-.004h66.551v34.512h-12.374c-.027 0-.053-.004-.08-.004s-.053.004-.08.004H40.498c-.027 0-.053-.004-.08-.004-.027 0-.053.004-.08.004H27.963v-34.512h82.797c4.328 0 7.837-3.512 7.837-7.844 0-4.332-3.509-7.844-7.837-7.844H20.126c-4.328 0-7.837 3.512-7.837 7.844v50.201c0 4.332 3.509 7.844 7.837 7.844H32.58v29.639H8.663c-4.328 0-7.837 3.512-7.837 7.844v23.458c0 4.332 3.509 7.844 7.837 7.844s7.837-3.512 7.837-7.844v-15.614h28.212v70.074H16.5v-17.331c0-4.332-3.509-7.844-7.837-7.844s-7.837 3.512-7.837 7.844v25.175c0 4.332 3.509 7.844 7.837 7.844h23.918v102.775H7.837c-4.328 0-7.837 3.512-7.837 7.844 0 4.334 3.509 7.846 7.837 7.846H504.162c4.328 0 7.837-3.512 7.837-7.844.001-4.332-3.508-7.845-7.836-7.845zM341.149 89.877h68.42v32.492h-68.42V89.877zm-110.728 0h68.42v32.492h-68.42V89.877zm147.176 301.218 18.655-19.407v38.814l-18.655-19.407zm8.073 31.025h-37.895l18.948-19.712 18.947 19.712zm-18.948-42.338-18.951-19.715h37.903l-18.952 19.715zm-18.952-35.405 18.951-19.715 18.951 19.715H347.77zm8.076 46.718-18.655 19.407v-38.814l18.655 19.407zm40.405-58.34-18.655-19.407 18.655-19.407v38.814zm-29.529-30.72L347.77 282.32h37.903l-18.951 19.715zm-10.876 11.314-18.655 19.407v-38.814l18.655 19.407zM252.338 422.12l18.948-19.712 18.948 19.712h-37.896zm48.478-11.618-18.655-19.407 18.655-19.407v38.814zm-29.531-30.72-18.951-19.715h37.903l-18.952 19.715zm-10.875 11.313-18.655 19.407v-38.814l18.655 19.407zm-52.998-160.999H431.02v5.226H207.412v-5.226zm223.608-20.914v5.224H207.412v-5.224H431.02zm-223.608 41.829H431.02V422.12h-19.095V353.4c0-.183-.017-.362-.027-.541.007-.088.006-.176.01-.262a7.822 7.822 0 0 0 0-.749c-.004-.088-.004-.176-.01-.262.01-.18.027-.358.027-.541v-75.389c0-.183-.017-.362-.027-.541a7.829 7.829 0 0 0-8.389-8.451c-.199-.014-.396-.03-.597-.03h-72.38c-.202 0-.399.017-.598.03a7.829 7.829 0 0 0-8.388 8.451c-.01.18-.027.358-.027.541v75.389c0 .183.017.362.027.541-.007.088-.006.176-.01.262a7.815 7.815 0 0 0 0 .749c.004.088.004.176.01.262-.01.18-.027.358-.027.541v68.72h-5.029V353.4c0-.183-.017-.362-.027-.541a7.829 7.829 0 0 0-8.388-8.451c-.199-.014-.396-.03-.599-.03h-72.38c-.202 0-.4.017-.599.03a7.829 7.829 0 0 0-8.388 8.451c-.01.18-.027.358-.027.541v68.72h-18.668V251.011zm-115.56 0h68.42V422.12h-68.42V251.011z" />
-                            </svg>
-                        </div>
-                        {{-- <img
+                </li>
+                {{-- </li> --}}
+                {{-- @endif --}}
+                {{-- @endcan --}}
+                {{-- ###################### Purchases : المشتريات ###################### --}}
+                {{-- @can('stock_module') --}}
+                @if (!empty($module_settings['stock_module']))
+                    <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
+                        <a target="_blank"
+                            class="purchases-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            href="{{ route('stocks.create') }}"
+                            style="cursor: pointer;text-decoration: none;height: 100%;">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512"
+                                    style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                    <path style="fill:#ff5948" d="M222.584 82.202h84.093v58.734h-84.093z" />
+                                    <path style="fill:#d44a3c" d="M222.584 82.202h20.898v58.734h-20.898z" />
+                                    <path style="fill:#ff5948" d="M333.312 82.202h84.093v58.734h-84.093z" />
+                                    <path style="fill:#d44a3c" d="M333.312 82.202h20.898v58.734h-20.898z" />
+                                    <path style="fill:#cca38d" d="M40.42 164.122h431.156v265.676H40.42z" />
+                                    <path style="fill:#a68472" d="M40.42 164.122h20.898v265.676H40.42z" />
+                                    <path style="fill:#5e5456" d="M199.576 201.394h239.282v228.404H199.576z" />
+                                    <path style="fill:#ff5948"
+                                        d="M199.576 201.394h239.282v41.788H199.576zM84.02 243.179h84.093v186.619H84.02z" />
+                                    <path style="fill:#d44a3c" d="M84.02 243.179h20.898v186.619H84.02z" />
+                                    <path style="fill:#ff5948" d="M8.662 225.771h43.886v85.68H8.662z" />
+                                    <path style="fill:#ffd359" d="M20.126 130.341h471.751v50.153H20.126z" />
+                                    <path style="fill:#db9840" d="M20.126 130.341h20.898v50.153H20.126z" />
+                                    <path style="fill:#cca38d"
+                                        d="M307.475 429.801h-72.379c-.65 0-1.177-.527-1.177-1.177v-75.317c0-.65.527-1.177 1.177-1.177h72.379c.65 0 1.177.527 1.177 1.177v75.317a1.178 1.178 0 0 1-1.177 1.177z" />
+                                    <path style="fill:#a68472"
+                                        d="M254.816 428.624v-75.317c0-.65.527-1.177 1.177-1.177h-20.898c-.65 0-1.177.527-1.177 1.177v75.317c0 .65.527 1.177 1.177 1.177h20.898a1.178 1.178 0 0 1-1.177-1.177z" />
+                                    <path style="fill:#cca38d"
+                                        d="M402.912 429.801h-72.379c-.65 0-1.177-.527-1.177-1.177v-75.317c0-.65.527-1.177 1.177-1.177h72.379c.65 0 1.177.527 1.177 1.177v75.317a1.178 1.178 0 0 1-1.177 1.177z" />
+                                    <path style="fill:#a68472"
+                                        d="M350.253 428.624v-75.317c0-.65.527-1.177 1.177-1.177h-20.898c-.65 0-1.177.527-1.177 1.177v75.317c0 .65.527 1.177 1.177 1.177h20.898c-.65 0-1.177-.527-1.177-1.177z" />
+                                    <path style="fill:#cca38d"
+                                        d="M402.912 352.131h-72.379c-.65 0-1.177-.527-1.177-1.177v-75.317c0-.65.527-1.177 1.177-1.177h72.379c.65 0 1.177.527 1.177 1.177v75.317a1.178 1.178 0 0 1-1.177 1.177z" />
+                                    <path style="fill:#a68472"
+                                        d="M350.253 350.954v-75.317c0-.65.527-1.177 1.177-1.177h-20.898c-.65 0-1.177.527-1.177 1.177v75.317c0 .65.527 1.177 1.177 1.177h20.898c-.65 0-1.177-.527-1.177-1.177z" />
+                                    <path
+                                        d="M283.194 96.497h-37.616c-4.328 0-7.837 3.512-7.837 7.844s3.509 7.844 7.837 7.844h37.616c4.328 0 7.837-3.512 7.837-7.844 0-4.332-3.509-7.844-7.837-7.844zM393.927 96.497H356.31c-4.328 0-7.837 3.512-7.837 7.844s3.509 7.844 7.837 7.844h37.616c4.328 0 7.837-3.512 7.837-7.844 0-4.332-3.509-7.844-7.836-7.844z" />
+                                    <ellipse cx="143.496" cy="323.5" rx="7.837" ry="7.844" />
+                                    <path
+                                        d="M504.163 422.123H479.42V291.559c0-4.332-3.509-7.844-7.837-7.844-4.328 0-7.837 3.512-7.837 7.844V422.12h-17.053V201.338c0-4.332-3.509-7.844-7.837-7.844h-239.28c-4.328 0-7.837 3.512-7.837 7.844V422.12h-15.794V243.165c0-4.332-3.509-7.844-7.837-7.844H84.015c-4.328 0-7.837 3.512-7.837 7.844V422.12H48.253V319.349h4.295c4.328 0 7.837-3.512 7.837-7.844v-85.763c0-4.332-3.509-7.844-7.837-7.844h-4.295v-29.639h415.493v64.497c0 4.332 3.509 7.844 7.837 7.844 4.328 0 7.837-3.512 7.837-7.844v-64.497h12.454c4.328 0 7.837-3.512 7.837-7.844v-50.201c0-4.332-3.509-7.844-7.837-7.844h-66.632V82.032c0-4.332-3.509-7.844-7.837-7.844h-84.093c-4.328 0-7.837 3.512-7.837 7.844v40.337h-10.961V82.032c0-4.332-3.509-7.844-7.837-7.844h-84.093c-4.328 0-7.837 3.512-7.837 7.844v40.337h-63.412c-4.328 0-7.837 3.512-7.837 7.844 0 4.332 3.509 7.844 7.837 7.844h71.167c.027 0 .053.004.08.004.027 0 .053-.004.08-.004h83.931c.027 0 .053.004.08.004.027 0 .053-.004.08-.004h26.472c.027 0 .053.004.08.004.027 0 .053-.004.08-.004h83.931c.027 0 .053.004.08.004s.053-.004.08-.004h66.551v34.512h-12.374c-.027 0-.053-.004-.08-.004s-.053.004-.08.004H40.498c-.027 0-.053-.004-.08-.004-.027 0-.053.004-.08.004H27.963v-34.512h82.797c4.328 0 7.837-3.512 7.837-7.844 0-4.332-3.509-7.844-7.837-7.844H20.126c-4.328 0-7.837 3.512-7.837 7.844v50.201c0 4.332 3.509 7.844 7.837 7.844H32.58v29.639H8.663c-4.328 0-7.837 3.512-7.837 7.844v23.458c0 4.332 3.509 7.844 7.837 7.844s7.837-3.512 7.837-7.844v-15.614h28.212v70.074H16.5v-17.331c0-4.332-3.509-7.844-7.837-7.844s-7.837 3.512-7.837 7.844v25.175c0 4.332 3.509 7.844 7.837 7.844h23.918v102.775H7.837c-4.328 0-7.837 3.512-7.837 7.844 0 4.334 3.509 7.846 7.837 7.846H504.162c4.328 0 7.837-3.512 7.837-7.844.001-4.332-3.508-7.845-7.836-7.845zM341.149 89.877h68.42v32.492h-68.42V89.877zm-110.728 0h68.42v32.492h-68.42V89.877zm147.176 301.218 18.655-19.407v38.814l-18.655-19.407zm8.073 31.025h-37.895l18.948-19.712 18.947 19.712zm-18.948-42.338-18.951-19.715h37.903l-18.952 19.715zm-18.952-35.405 18.951-19.715 18.951 19.715H347.77zm8.076 46.718-18.655 19.407v-38.814l18.655 19.407zm40.405-58.34-18.655-19.407 18.655-19.407v38.814zm-29.529-30.72L347.77 282.32h37.903l-18.951 19.715zm-10.876 11.314-18.655 19.407v-38.814l18.655 19.407zM252.338 422.12l18.948-19.712 18.948 19.712h-37.896zm48.478-11.618-18.655-19.407 18.655-19.407v38.814zm-29.531-30.72-18.951-19.715h37.903l-18.952 19.715zm-10.875 11.313-18.655 19.407v-38.814l18.655 19.407zm-52.998-160.999H431.02v5.226H207.412v-5.226zm223.608-20.914v5.224H207.412v-5.224H431.02zm-223.608 41.829H431.02V422.12h-19.095V353.4c0-.183-.017-.362-.027-.541.007-.088.006-.176.01-.262a7.822 7.822 0 0 0 0-.749c-.004-.088-.004-.176-.01-.262.01-.18.027-.358.027-.541v-75.389c0-.183-.017-.362-.027-.541a7.829 7.829 0 0 0-8.389-8.451c-.199-.014-.396-.03-.597-.03h-72.38c-.202 0-.399.017-.598.03a7.829 7.829 0 0 0-8.388 8.451c-.01.18-.027.358-.027.541v75.389c0 .183.017.362.027.541-.007.088-.006.176-.01.262a7.815 7.815 0 0 0 0 .749c.004.088.004.176.01.262-.01.18-.027.358-.027.541v68.72h-5.029V353.4c0-.183-.017-.362-.027-.541a7.829 7.829 0 0 0-8.388-8.451c-.199-.014-.396-.03-.599-.03h-72.38c-.202 0-.4.017-.599.03a7.829 7.829 0 0 0-8.388 8.451c-.01.18-.027.358-.027.541v68.72h-18.668V251.011zm-115.56 0h68.42V422.12h-68.42V251.011z" />
+                                </svg>
+                            </div>
+                            {{-- <img
                             src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid pl-1"
                             alt="components"> --}}
-                        <span class="mx-2" style="font-weight: 600">{{ __('lang.stock') }}</span>
-                    </a>
-                </li>
+                            <span class="mx-2" style="font-weight: 600">{{ __('lang.stock') }}</span>
+                        </a>
+                    </li>
                 @endif
                 @if (!empty($module_settings['stock_module']))
-                    <li class="scroll mx-2 mb-0 p-0">
+                    <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a target="_blank"
                             class="initial-balance-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             href="{{ route('new-initial-balance.create') }}"
-                            style="cursor: pointer;text-decoration: none">
+                            style="cursor: pointer;text-decoration: none;height: 100%;">
                             <span style="width: 25px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 60 60">
                                     <g data-name="19-Warehouse">
@@ -344,11 +346,11 @@
                 @endif
                 {{-- @endcan --}}
                 {{-- ###################### Purchase_Order : امر شراء ###################### --}}
-                <li class="scroll mx-2 mb-0 p-0 dropdown">
+                <li class="scroll mx-2 mb-0 p-0 dropdown" style="height: 40px;">
                     <a href="javaScript:void();"
                         class="d-flex align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                        data-toggle="dropdown">
-                        <div style="width: 25px">
+                        style="height: 100%;" data-toggle="dropdown">
+                        <div style="width: 25px" class="d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                 <g data-name="box exchange money">
                                     <path
@@ -391,12 +393,12 @@
                 {{-- ###################### Returns : المرتجعات ###################### --}}
                 {{-- @can('return_module')  --}}
                 @if (!empty($module_settings['return_module']))
-                    <li class="scroll mx-2 mb-0 p-0 dropdown">
+                    <li class="scroll mx-2 mb-0 p-0 dropdown" style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                            data-toggle="dropdown">
+                            style="height: 100%;" data-toggle="dropdown">
                             {{-- <img src="{{ asset('images/topbar/return.png') }}" class="img-fluid pl-1" alt="pages"> --}}
-                            <div style="width: 25px">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg version="1.1" id="Layer_1" style="width: 100%"
                                     xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 64 64"
                                     style="enable-background:new 0 0 64 64" xml:space="preserve">
@@ -448,45 +450,36 @@
                 {{-- @endcan  --}}
                 {{-- ###################### Supplier Returns :  المرتجعات للموردين ###################### --}}
                 @if (!empty($module_settings['return_module']))
-                    <li class="scroll mx-2 mb-0 p-0 dropdown">
+                    <li class="scroll mx-2 mb-0 p-0 dropdown" style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                            data-toggle="dropdown">
-                            <div style="width: 25px">
-                                <svg version="1.1" id="Layer_1" style="width: 100%"
-                                    xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 64 64"
-                                    style="enable-background:new 0 0 64 64" xml:space="preserve">
-                                    <style>
-                                        .st1 {
-                                            fill: #81d4fa;
-                                            stroke: #0277bd;
-                                            stroke-linecap: round;
-                                            stroke-linejoin: round;
-                                            stroke-miterlimit: 10
-                                        }
-                                    </style>
-                                    <g id="Easy_Returns">
-                                        <path class="st1"
-                                            d="M32 61.5C17.4 61.5 5.5 49.6 5.5 35c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5C8.5 48 19 58.5 32 58.5S55.5 48 55.5 35 45 11.5 32 11.5c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5c14.6 0 26.5 11.9 26.5 26.5S46.6 61.5 32 61.5z" />
-                                        <path class="st1"
-                                            d="M35 17.5c-.4 0-.8-.1-1.1-.4l-6-6c-.6-.6-.6-1.5 0-2.1l6-6c.6-.6 1.5-.6 2.1 0 .6.6.6 1.5 0 2.1L31.1 10l4.9 4.9c.6.6.6 1.5 0 2.1-.2.4-.6.5-1 .5z" />
-                                        <path d="M46 48.5H18c-.6 0-1-.4-1-1v-17h30v17c0 .6-.4 1-1 1z"
-                                            style="fill:#ffa726;stroke:#0277bd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
-                                        <path d="M19 46.5h26"
-                                            style="fill:none;stroke:#f57c00;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
-                                        <path d="M19 32.5h26"
-                                            style="fill:none;stroke:#ffcc80;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
-                                        <path
-                                            style="fill:#eee;stroke:#0277bd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
-                                            d="M20 40.5h6v4h-6z" />
-                                        <path
-                                            d="M16 22.5v7c0 .6.4 1 1 1h30c.6 0 1-.4 1-1v-7c0-.6-.4-1-1-1H17c-.6 0-1 .4-1 1z"
-                                            style="fill:#ec407a;stroke:#0277bd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
-                                        <path d="M18 23.5h28"
-                                            style="fill:none;stroke:#f48fb1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
-                                        <path d="M18 28.5h28"
-                                            style="fill:none;stroke:#d81b60;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
-                                    </g>
+                            style="height: 100%;" data-toggle="dropdown">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512">
+                                    <path d="M386.2 45.62v432.66H88.59a35.69 35.69 0 0 1-35.69-35.69v-397z"
+                                        style="fill:#def1f9" />
+                                    <path style="fill:#9dc0d1"
+                                        d="M386.2 114.27v21.82H161.32l17.49 17.49-8.49 8.48-37.05-37.04 36.95-36.96 8.49 8.5L161 114.27h225.2zM85.72 478.28a36.56 36.56 0 0 0 36.55-36.56h318a36.55 36.55 0 0 1-36.55 36.56h-318z" />
+                                    <path style="fill:#3dc9c9"
+                                        d="M91.95 225.67h40.32v40.32H91.95zM91.95 295.72h40.32v40.32H91.95zM91.95 365.7h40.32v40.32H91.95z" />
+                                    <path style="fill:#83afc6"
+                                        d="M175 410.39h76.67v12H175zM175 389.45h76.67v12H175zM175.04 368.08h41.31v12h-41.31zM264.33 410.39h44.16v12h-44.16zM264.33 389.45h44.16v12h-44.16z" />
+                                    <path
+                                        d="M111.66 181.25c-5.36 0-9.18 3.92-9.18 9.39s3.71 9.39 9.18 9.39 9.29-4 9.29-9.39-3.72-9.39-9.29-9.39zM113.11 128.21a35.32 35.32 0 0 0-17.23 4.24l3.5 11.24a19.48 19.48 0 0 1 10.22-3.09c5.16.2 7.53 2.58 7.53 6.19s-2.68 6.81-6 10.73c-4.65 5.57-6.4 10.94-6.09 16.2l.1 2.68h13.72v-1.86c-.1-4.64 1.45-8.66 5.27-12.89s8.77-9.5 8.77-17.34c.02-8.56-6.17-16.1-19.79-16.1zM198.26 202.97v94.39l37.21 21.49 5.75 3.31 38.79 22.4 81.75-47.19v-94.4l-81.75-47.2-81.75 47.2z"
+                                        style="fill:#f47a53" />
+                                    <path style="fill:#ffaf9f"
+                                        d="m361.75 202.74-81.74 47.2-81.74-47.2 81.74-47.2 81.74 47.2z" />
+                                    <path style="fill:#def1f9"
+                                        d="M332.92 219.46v94.39l-24.63 14.22v-95.04l-81.19-46.87 24.07-13.9 81.75 47.2z" />
+                                    <path
+                                        d="M361.12 262.7h53.47c21.38 0 40.73-9.5 54.74-24.85l8.67-11.31a90.21 90.21 0 0 0 14-48.69C492 131 457.35 93 414.59 93H154l-12.26 10.75L154 114.83h256.33c33 0 59.67 28.22 59.67 63 0 34.81-26.71 63-59.67 63H361z"
+                                        style="fill:#3dc9c9" />
+                                    <path
+                                        d="M116.95 232.53v-12H86.74v50.74h50.74v-34.33l10.69-10.69-8.48-8.49-23.81 23.8-6.83-6.82-8.48 8.48 15.31 15.32 9.6-9.6v10.33H98.74v-26.74h18.21zM86.74 341.25h50.74v-34.33l10.69-10.7-8.48-8.48-23.81 23.8-6.83-6.83-8.48 8.49 15.31 15.31 9.6-9.59v10.33H98.74v-26.74h18.21v-12H86.74v50.74zM86.74 411.23h50.74v-34.34l10.69-10.69-8.48-8.49-23.81 23.81-6.83-6.83-8.48 8.49 15.31 15.31 9.6-9.6v10.34H98.74v-26.74h18.21v-12H86.74v50.74z" />
+                                    <path
+                                        d="M414.59 87H392.2V39.62H46.9v309.13h12V51.62h321.3V87H167l11.71-11.71-8.49-8.49-36.95 37 37 37.05 8.49-8.48-11.49-11.49h61.23v-12h-73.18l-5.08-5.08L155 99h225.2v9.83h-19.7v12h19.7v98.67h12v-98.67h18.13c29.59 0 53.67 25.58 53.67 57s-24.08 57-53.67 57h-42.47v-35.5L280 148.61l-87.85 50.72v101.44L280 351.49l87.85-50.72V268.7h12.35v167H116.27v6a30.58 30.58 0 0 1-28.64 30.49 30.68 30.68 0 0 1-28.73-30.46v-76h-12v76a42.76 42.76 0 0 0 38.82 42.37v.18h318.01a42.6 42.6 0 0 0 42.55-42.56v-6H392.2v-167h22.39c22.39 0 43.4-9.52 59.18-26.81l-8.87-8.08c-13.47 14.76-31.34 22.89-50.31 22.89h-46.73v-9.83h42.47c36.21 0 65.67-31 65.67-69s-29.46-69-65.67-69H392.2V99h22.39C454 99 486 134.37 486 177.85a84 84 0 0 1-13 45.45l10.11 6.47A96 96 0 0 0 498 177.85C498 127.76 460.59 87 414.59 87zm-10.86 385.28H115.3a42.53 42.53 0 0 0 12.55-24.56h305.84a30.59 30.59 0 0 1-29.96 24.56zM349.86 202.8 333 212.51l-69.85-40.33 16.85-9.71zM280 243.12l-69.84-40.32 17-9.84 69.85 40.32zm6 10.4 16.5-9.52v80.65l-16.5 9.52zm28.49-16.45 12.51-7.24v80.65l-12.54 7.24zm-5.45-10.71L239.2 186l12-6.92 69.8 40.36zm-104.88-13.17L274 253.52v80.65l-69.85-40.33zM339 303.56V222.9l16.82-9.71v80.65z" />
+                                    <path
+                                        d="M241.5 108.83h106.25v12H241.5zM175 399.23h76.67v12H175zM175 378.28h76.67v12H175zM175.04 356.92h41.31v12h-41.31zM264.33 399.23h44.16v12h-44.16zM264.33 378.28h44.16v12h-44.16z" />
                                 </svg>
                             </div>
                             <span class="mx-2" style="font-weight: 600">{{ __('lang.supplier_returns') }}</span>
@@ -514,14 +507,14 @@
                 {{-- ###################### Employees : الموظفين ###################### --}}
                 {{-- @can('employee_module')  --}}
                 @if (!empty($module_settings['employee_module']))
-                    <li class="dropdown scroll mx-2 mb-0 p-0 ">
+                    <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                            data-toggle="dropdown">
+                            style="height: 100%;" data-toggle="dropdown">
                             {{-- <img
                             src="{{ asset('images/topbar/employee.png') }}" class="img-fluid pl-1"
                             alt="widgets"> --}}
-                            <div style="width: 25px">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                     <defs>
                                         <style>
@@ -611,13 +604,13 @@
                 {{-- ###################### Customers : العملاء ###################### --}}
                 {{-- @can('customer_module')  --}}
                 @if (!empty($module_settings['customer_module']))
-                    <li class="dropdown scroll mx-2 mb-0 p-0 ">
+                    <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                            style="font-weight: 600" data-toggle="dropdown">
+                            style="height: 100%;font-weight: 600" data-toggle="dropdown">
                             {{-- <img src="{{ asset('images/topbar/customer-feedback.png') }}"
                             class="img-fluid pl-1" alt="layouts"> --}}
-                            <div style="width: 25px">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512"
                                     style="enable-background:new 0 0 512 512" xml:space="preserve">
                                     <path style="fill:#d29b6e"
@@ -667,13 +660,13 @@
                 {{-- ###################### customer_price_offer : عرض سعر للعملاء ###################### --}}
                 {{-- @can('customer_module')  --}}
                 @if (!empty($module_settings['customer_module']))
-                    <li class="scroll mx-2 mb-0 p-0 ">
+                    <li class="scroll mx-2 mb-0 p-0 " style="height: 40px;">
                         <a class="customer-price-offer-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             href="{{ route('customer_price_offer.create') }}"
-                            style="cursor: pointer;font-weight: 600;text-decoration: none">
+                            style="cursor: pointer;font-weight: 600;text-decoration: none;height: 100%;">
                             {{-- <img src="{{ asset('images/topbar/customer-feedback.png') }}" class="img-fluid pl-1"
                             alt="layouts"> --}}
-                            <div style="width: 25px">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg version="1.1" style="width: 100%" id="Layer_1"
                                     xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 256 256"
                                     style="enable-background:new 0 0 256 256" xml:space="preserve">
@@ -767,14 +760,14 @@
                 {{-- ###################### suppliers : الموردين ###################### --}}
                 {{-- @can('supplier_module')  --}}
                 @if (!empty($module_settings['supplier_module']))
-                    <li class="scroll mx-2 mb-0 p-0 ">
+                    <li class="scroll mx-2 mb-0 p-0 " style="height: 40px;">
                         <a class="suppliers-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                             href="{{ route('suppliers.create') }}" target="_blank"
-                            style="cursor: pointer;font-weight: 600;text-decoration: none">
+                            style="cursor: pointer;font-weight: 600;text-decoration: none;height: 100%;">
                             {{-- <img
                             src="{{ asset('images/topbar/inventory.png') }}" class="img-fluid pl-1"
                             alt="widgets"> --}}
-                            <div style="width: 25px">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg version="1.1" style="width: 100%" id="ecommerce_1_"
                                     xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 115 115"
                                     style="enable-background:new 0 0 115 115" xml:space="preserve">
@@ -935,11 +928,11 @@
                 @endif
                 {{-- @endcan --}}
                 {{-- ###################### Delivery : التوصيل ###################### --}}
-                <li class="dropdown scroll mx-2 mb-0 p-0 ">
+                <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
                     <a href="javaScript:void();"
                         class="d-flex align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                        style="font-weight: 600" data-toggle="dropdown">
-                        <div style="width: 25px">
+                        style="height: 100%;font-weight: 600" data-toggle="dropdown">
+                        <div style="width: 25px" class="d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 64 64"
                                 style="enable-background:new 0 0 64 64" xml:space="preserve">
                                 <style>
@@ -1164,11 +1157,11 @@
                     </ul>
                 </li>
                 {{-- ###################### sell car : عربة بيع ###################### --}}
-                <li class="dropdown scroll mx-2 mb-0 p-0 ">
+                <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
                     <a href="javaScript:void();"
                         class="d-flex align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                        style="font-weight: 600" data-toggle="dropdown">
-                        <div style="width: 25px">
+                        style="height: 100%;font-weight: 600" data-toggle="dropdown">
+                        <div style="width: 25px" class="d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                 <defs>
                                     <style>
@@ -1241,11 +1234,11 @@
                     </ul>
                 </li>
                 {{-- ###################### sell car : عربة بيع ###################### --}}
-                <li class="dropdown scroll mx-2 mb-0 p-0 ">
+                <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
                     <a href="javaScript:void();"
                         class="d-flex align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                        style="font-weight: 600" data-toggle="dropdown">
-                        <div style="width: 25px">
+                        style="height: 100%;font-weight: 600" data-toggle="dropdown">
+                        <div style="width: 25px" class="d-flex align-items-center">
                             <svg version="1.1" style="width: 100%" id="Layer_1"
                                 xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 256 256"
                                 style="enable-background:new 0 0 256 256" xml:space="preserve">
@@ -1380,13 +1373,13 @@
                 {{-- ###################### settings : الاعدادات ###################### --}}
                 {{-- @can('settings_module') --}}
                 @if (!empty($module_settings['settings_module']))
-                    <li class="dropdown menu-item-has-mega-menu scroll mx-2 mb-0 p-0">
+                    <li class="dropdown menu-item-has-mega-menu scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                            data-toggle="dropdown" style="font-weight: 600">
+                            style="height: 100%;font-weight: 600" data-toggle="dropdown">
                             {{-- <img src="{{ asset('images/topbar/settings.png') }}"
                             class="img-fluid pl-1" alt="basic"> --}}
-                            <div style="width: 25px">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                     <defs>
                                         <style>
@@ -1574,12 +1567,12 @@
                 {{-- ###################### reports : التقرير ###################### --}}
                 {{-- @can('reports_module') --}}
                 @if (!empty($module_settings['reports_module']))
-                    <li class="dropdown scroll mx-2 mb-0 p-0">
+                    <li class="dropdown scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                            data-toggle="dropdown" style="font-weight: 600">
+                            style="height: 100%;font-weight: 600" data-toggle="dropdown">
                             {{-- <img src="{{ asset('images/topbar/report.png') }}" class="img-fluid pl-1" alt="advanced"> --}}
-                            <div style="width: 25px">
+                            <div style="width: 25px" class="d-flex align-items-center">
                                 <svg style="width: 100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
                                     xml:space="preserve">
                                     <path fill="#CECECE"
@@ -1785,12 +1778,39 @@
                     </li>
                 @endif
                 {{-- @endcan --}}
-                <li>
-                    <a class="due-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                        style="cursor: pointer;font-weight: 600;text-decoration: none" target="_blank"
+                <li class="scroll  mx-2 mb-0 p-0" style="height: 40px;">
+                    <a class="due-button align-items-center d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                        style="cursor: pointer;font-weight: 600;text-decoration: none;height: 100%;" target="_blank"
                         href="{{ route('dues') }}">
+                        <div style="width: 25px" class="d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg"style="width:100%" viewBox="0 0 256 256"
+                                xml:space="preserve">
+                                <path fill="#AFAFAF"
+                                    d="M232.63 155.041c-4.49 12.366-11.121 23.708-19.416 33.585a4.572 4.572 0 0 1-5.793 1.012l-10.4-6.002c-12.296 12.738-28.106 22.091-45.847 26.5v11.983a4.59 4.59 0 0 1-3.794 4.516c-2.497.441-5.017.801-7.548 1.068v-13.716a5.817 5.817 0 0 0-5.817-5.817h-12.029a5.817 5.817 0 0 0-5.817 5.817v13.716a109.272 109.272 0 0 1-7.548-1.068 4.59 4.59 0 0 1-3.794-4.516v-11.983c-17.741-4.409-33.55-13.762-45.847-26.5l-10.4 6.002a4.57 4.57 0 0 1-5.793-1.012c-8.295-9.877-14.926-21.219-19.416-33.585a4.603 4.603 0 0 1 2.024-5.538l10.389-5.991c-4.909-17.113-4.967-35.645 0-52.955l-10.389-6.002a4.588 4.588 0 0 1-2.024-5.526c4.49-12.367 11.121-23.709 19.416-33.585a4.588 4.588 0 0 1 5.793-1.024l10.4 6.002c12.296-12.738 28.106-22.08 45.847-26.489V11.94a4.578 4.578 0 0 1 3.781-4.502 111.929 111.929 0 0 1 38.785 0 4.577 4.577 0 0 1 3.781 4.502v11.994c17.741 4.409 33.55 13.751 45.847 26.489l10.4-6.002a4.587 4.587 0 0 1 5.793 1.024c8.295 9.876 14.926 21.219 19.416 33.585a4.588 4.588 0 0 1-2.024 5.526l-10.389 6.002c4.909 17.101 4.967 35.645 0 52.955l10.389 5.991a4.602 4.602 0 0 1 2.024 5.537z" />
+                                <circle fill="#FC5D3D" cx="128" cy="117.033" r="67.169" />
+                                <circle fill="#EFEFEF" cx="128" cy="117.033" r="49.917" />
+                                <path fill="#13BF6C"
+                                    d="m142.99 98.773-20.91 20.91-9.07-9.07a7.36 7.36 0 0 0-10.408 10.408l14.274 14.274a7.36 7.36 0 0 0 10.408 0l26.114-26.114a7.36 7.36 0 0 0 0-10.408 7.358 7.358 0 0 0-10.408 0z" />
+                                <path fill="#FC5D3D"
+                                    d="M139.831 213.987v37.68h-23.662v-37.68a5.817 5.817 0 0 1 5.817-5.817h12.029a5.816 5.816 0 0 1 5.816 5.817z" />
+                                <path fill="#EFEFEF"
+                                    d="M140.126 199.14a2.5 2.5 0 0 1 2.028-2.896c37.96-6.689 67.004-39.718 67.004-79.923 0-15.788-4.528-31.084-13.095-44.233a2.5 2.5 0 1 1 4.189-2.729c9.097 13.963 13.905 30.202 13.905 46.962 0 42.675-30.827 77.744-71.137 84.847a2.5 2.5 0 0 1-2.894-2.028zM190.299 64.3a82.374 82.374 0 0 0-4.911-5.363 2.5 2.5 0 1 1 3.535-3.537 87.253 87.253 0 0 1 5.21 5.691 2.498 2.498 0 0 1-.313 3.521 2.497 2.497 0 0 1-3.521-.312zM110.26 200.645a85.362 85.362 0 0 1-30.501-12.918 2.5 2.5 0 0 1 2.804-4.141 80.36 80.36 0 0 0 28.723 12.164 2.5 2.5 0 0 1-1.026 4.895zm-38.664-19.188a87.984 87.984 0 0 1-4.518-4.211 2.498 2.498 0 0 1 0-3.535 2.498 2.498 0 0 1 3.535 0 83.067 83.067 0 0 0 4.26 3.969 2.502 2.502 0 0 1 .25 3.527 2.502 2.502 0 0 1-3.527.25z" />
+                                <path fill="#FFCBC3"
+                                    d="M130.112 246.066a2.5 2.5 0 0 1-2.5-2.5v-9.404a2.5 2.5 0 1 1 5 0v9.404a2.5 2.5 0 0 1-2.5 2.5zm0-19.404a2.5 2.5 0 0 1-2.5-2.5v-4a2.5 2.5 0 1 1 5 0v4a2.5 2.5 0 0 1-2.5 2.5z" />
+                                <path
+                                    d="M139.46 118.87a2.496 2.496 0 0 0 0 3.529 2.508 2.508 0 0 0 3.54 0 2.5 2.5 0 0 0 0-3.529c-.94-.951-2.589-.951-3.54 0z" />
+                                <path
+                                    d="M146.541 111.799c-1.003.98-.968 2.572-.01 3.53.949.95 2.6.95 3.539 0l5.091-5.09c3.801-3.803 3.904-10.056 0-13.94-3.82-3.84-10.091-3.87-13.94 0l-19.14 19.14-7.3-7.31c-3.747-3.747-10.025-3.936-13.95.01-3.771 3.772-3.915 10.004 0 13.94l14.28 14.27c3.69 3.71 9.95 3.991 13.94 0l6.88-6.88c.97-.97.97-2.56 0-3.53-.939-.939-2.59-.949-3.53 0l-6.879 6.88a4.873 4.873 0 0 1-6.88 0l-14.27-14.279a4.862 4.862 0 0 1 0-6.87 4.85 4.85 0 0 1 6.87 0l9.07 9.07c.95.939 2.59.939 3.54 0l20.91-20.91c1.867-1.887 4.966-1.904 6.87 0 1.938 1.938 1.85 5.039 0 6.87l-5.091 5.099zM76.57 38.33a2.512 2.512 0 0 0 .71-3.471c-.73-1.109-2.35-1.449-3.46-.71a2.512 2.512 0 0 0-.71 3.471 2.503 2.503 0 0 0 3.46.71z" />
+                                <path
+                                    d="M21.021 155.179c4.54 12.51 11.22 24.07 19.85 34.34 2.212 2.638 5.99 3.282 8.97 1.57l8.72-5.03c12.15 12.101 27.29 20.851 43.77 25.3v10.051a7.08 7.08 0 0 0 5.86 6.979c1.84.325 3.669.584 5.48.813v21.757a2.5 2.5 0 0 0 5 0v-37.68c0-1.83 1.49-3.32 3.32-3.32h12.03c1.82 0 3.311 1.49 3.311 3.32v37.68a2.5 2.5 0 0 0 5 0v-21.757a112.58 112.58 0 0 0 5.479-.813 7.089 7.089 0 0 0 5.86-6.979v-10.051c16.479-4.449 31.61-13.199 43.77-25.3l8.73 5.03c2.895 1.677 6.7 1.119 8.96-1.56 8.63-10.28 15.31-21.83 19.85-34.341a7.12 7.12 0 0 0-3.12-8.56l-8.72-5.03a98.489 98.489 0 0 0 3.28-25.27c0-8.57-1.101-17.08-3.28-25.28l8.72-5.04c2.962-1.724 4.286-5.336 3.12-8.54-4.54-12.51-11.22-24.07-19.85-34.35a7.084 7.084 0 0 0-8.96-1.57l-8.73 5.03c-12.149-12.101-27.279-20.84-43.77-25.29V11.229c0-3.439-2.46-6.37-5.851-6.96-12.96-2.3-26.64-2.31-39.649 0a7.053 7.053 0 0 0-5.84 6.96V21.29a97.725 97.725 0 0 0-19.67 7.67c-1.171.586-1.732 2.087-1.07 3.37.676 1.304 2.271 1.657 3.37 1.06a93.165 93.165 0 0 1 20.47-7.74 2.5 2.5 0 0 0 1.9-2.43V11.23c-.01-1 .73-1.87 1.71-2.04 12.41-2.199 25.5-2.199 37.91 0 .989.17 1.729 1.04 1.72 2.04v11.99c0 1.15.78 2.15 1.899 2.43 16.99 4.22 32.43 13.14 44.65 25.8.771.8 2.09.979 3.05.43l10.4-6.01c.87-.49 2-.28 2.63.47 8.26 9.83 14.64 20.88 18.98 32.83.345.958-.082 2.02-.931 2.51l-10.39 6a2.52 2.52 0 0 0-1.15 2.86c2.4 8.33 3.61 17.01 3.61 25.79a93.21 93.21 0 0 1-3.61 25.779c-.31 1.11.16 2.28 1.16 2.86l10.39 5.99c.899.52 1.258 1.638.91 2.53-4.33 11.949-10.71 22.989-18.97 32.819-.632.763-1.76.96-2.62.46l-10.41-6.01c-.97-.56-2.279-.37-3.05.43-12.229 12.67-27.67 21.591-44.65 25.811a2.491 2.491 0 0 0-1.899 2.42v11.99c.01 1.01-.72 1.88-1.73 2.05-1.548.273-3.085.5-4.609.704V213.28c0-4.591-3.73-8.32-8.311-8.32h-3.52v-19.031c37.48-1.308 67.17-32.098 67.17-69.61 0-38.426-31.133-69.659-69.67-69.659-5.78 0-11.53.71-17.1 2.109-1.33.34-2.15 1.7-1.81 3.04.33 1.311 1.72 2.141 3.04 1.811A64.856 64.856 0 0 1 128 51.649c35.896.022 64.67 29.079 64.67 64.67 0 35.71-28.89 64.671-64.67 64.671-35.723 0-64.67-28.912-64.67-64.671 0-22.77 11.64-43.439 31.12-55.289a2.508 2.508 0 0 0 .84-3.44 2.495 2.495 0 0 0-3.44-.83C71.609 69.057 58.33 91.3 58.33 116.319c0 37.342 29.524 68.296 67.17 69.61v19.031h-3.51c-4.59 0-8.32 3.729-8.32 8.32v10.885c-1.518-.2-3.053-.426-4.61-.705a2.072 2.072 0 0 1-1.73-2.05v-11.99c0-1.15-.78-2.14-1.9-2.42-16.99-4.22-32.43-13.15-44.65-25.811-.78-.8-2.09-.989-3.05-.43l-10.4 6c-.897.534-2.009.287-2.63-.46-8.26-9.82-14.64-20.87-18.98-32.82a2.1 2.1 0 0 1 .93-2.52l10.38-5.99c1-.58 1.47-1.75 1.16-2.86-2.4-8.34-3.61-17.01-3.61-25.79 0-8.779 1.21-17.449 3.6-25.779.32-1.11-.15-2.28-1.15-2.86l-10.38-6a2.077 2.077 0 0 1-.93-2.5c4.34-11.96 10.73-23.01 18.98-32.84a2.097 2.097 0 0 1 2.63-.47l10.4 6.01c.96.55 2.28.37 3.05-.43a93.39 93.39 0 0 1 7.96-7.341c1.082-.911 1.207-2.492.34-3.52-.84-1.03-2.49-1.19-3.52-.35a99.806 99.806 0 0 0-7 6.34l-8.73-5.03a7.084 7.084 0 0 0-8.96 1.57c-8.63 10.279-15.31 21.83-19.85 34.35-1.147 3.108.09 6.778 3.13 8.54l8.71 5.04c-2.18 8.2-3.28 16.7-3.28 25.27s1.1 17.07 3.28 25.28l-8.71 5.03c-2.911 1.688-4.314 5.253-3.129 8.55z" />
+                                <path
+                                    d="M75.58 116.33c0 28.916 23.452 52.41 52.42 52.41 28.941 0 52.41-23.446 52.41-52.41 0-1.38-1.12-2.5-2.49-2.5a2.5 2.5 0 0 0-2.5 2.5c-.02 26.194-21.201 47.41-47.42 47.41-26.173 0-47.42-21.19-47.42-47.41 0-26.157 21.158-47.42 47.43-47.42 19.71 0 37.58 12.409 44.45 30.899.46 1.25 1.95 1.94 3.21 1.471a2.507 2.507 0 0 0 1.479-3.221C169.78 78.274 150.693 63.91 128 63.91c-28.898 0-52.42 23.416-52.42 52.42z" />
+                                <path
+                                    d="M174.85 108.979a2.492 2.492 0 0 0 2.86 2.08 2.498 2.498 0 0 0 2.08-2.85 2.505 2.505 0 0 0-2.851-2.09c-1.37.204-2.295 1.495-2.089 2.86zM103.01 56.66c1.27-.53 1.87-2 1.34-3.271-.52-1.229-2.02-1.859-3.26-1.34h-.01c-1.27.53-1.88 2-1.34 3.27a2.481 2.481 0 0 0 3.27 1.341z" />
+                            </svg>
+                        </div>
                         {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid" alt="components"> --}}
-                        <span>{{ __('lang.dues') }}</span>
+                        <span class="mx-2">{{ __('lang.dues') }}</span>
                     </a>
                 </li>
             </ul>

@@ -20,16 +20,19 @@
                     {{-- {{ dd($countryId);  }} --}}
                     {{-- ++++++++++++++++++++++ name ++++++++++++++++++++++++ --}}
                     <div
-                        class="col-md-4 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
 
                         <label for="name"
-                            class="@if (app()->isLocale('ar')) d-block text-end mx-2 mb-0 width-quarter @else mx-2 mb-0 width-quarter @endif
+                            class="@if (app()->isLocale('ar')) d-block text-end mx-2 mb-0 @else mx-2 mb-0 @endif
                                 "
                             style ="font-size: 12px;font-weight: 500;">@lang('lang.name')</label>
-                        {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
-                        <input type="text"
-                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            placeholder="@lang('lang.name')" name="name" value="{{ old('name') }}">
+                        <div class="input-wrapper width-full">
+
+                            {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
+                            <input type="text"
+                                class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                placeholder="@lang('lang.name')" name="name" value="{{ old('name') }}">
+                        </div>
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -38,16 +41,19 @@
                     </div>
                     {{-- ++++++++++++++++++++++ company_name ++++++++++++++++++++++++ --}}
                     <div
-                        class="col-md-4 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
 
                         <label
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
                                 "
                             style ="font-size: 12px;font-weight: 500;" for="name">@lang('lang.company_name')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
-                        <input type="text"
-                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            placeholder="@lang('lang.company_name')" name="company_name" value="{{ old('company_name') }}">
+                        <div class="input-wrapper width-full">
+
+                            <input type="text"
+                                class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                placeholder="@lang('lang.company_name')" name="company_name" value="{{ old('company_name') }}">
+                        </div>
                         @error('company_name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -72,18 +78,21 @@
                     </div> --}}
                     {{-- +++++++++++++++++++++++++++++++ exchange_rate ++++++++++++++++++++++++ --}}
                     <div
-                        class="col-md-4 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
 
 
                         <label
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
                                 "
                             style ="font-size: 12px;font-weight: 500;" for="exchange_rate">@lang('lang.exchange_rate')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
-                        <input type="number"
-                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            placeholder="@lang('lang.exchange_rate')" name="exchange_rate" style="border-color:#aaa"
-                            value="{{ old('exchange_rate') }}">
+                        <div class="input-wrapper width-full">
+
+                            <input type="number"
+                                class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                placeholder="@lang('lang.exchange_rate')" name="exchange_rate" style="border-color:#aaa"
+                                value="{{ old('exchange_rate') }}">
+                        </div>
                         @error('exchange_rate')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -92,17 +101,19 @@
                     </div>
                     {{-- --}}
                     <div
-                        class="col-md-4 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
 
                         <label
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
                                 "
                             style ="font-size: 12px;font-weight: 500;" for="start_date">@lang('lang.start_date')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
-                        <input type="date"
-                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            placeholder="@lang('lang.start_date')" name="start_date" style="border-color:#aaa"
-                            value="{{ date('Y-m-d') }}">
+                        <div class="input-wrapper width-full">
+
+                            <input type="date"
+                                class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                placeholder="@lang('lang.start_date')" name="start_date" value="{{ date('Y-m-d') }}">
+                        </div>
                         @error('start_date')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -111,18 +122,19 @@
                     </div>
                     {{-- --}}
                     <div
-                        class="col-md-4 d-flex mb-2 align-items-center
-                        @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
 
                         <label
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
                                 "
                             style ="font-size: 12px;font-weight: 500;" for="end_date">@lang('lang.end_date')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
-                        <input type="date"
-                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            placeholder="@lang('lang.end_date')" name="end_date" style="border-color:#aaa"
-                            value="{{ old('end_date') }}">
+                        <div class="input-wrapper width-full">
+
+                            <input type="date"
+                                class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                placeholder="@lang('lang.end_date')" name="end_date" value="{{ old('end_date') }}">
+                        </div>
                         @error('end_date')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -132,23 +144,25 @@
 
                     {{-- +++++++++++++++++++++++++++++++ postal_code ++++++++++++++++++++++++ --}}
                     <div
-                        class="col-md-4 d-flex mb-2 align-items-center
-                        @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                         <label
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
                                 "
                             style ="font-size: 12px;font-weight: 500;" for="postal_code">@lang('lang.postal_code')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
-                        <input type="text"
-                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            placeholder="@lang('lang.postal_code')" name="postal_code" value="{{ old('postal_code') }}">
+                        <div class="input-wrapper width-full">
+
+                            <input type="text"
+                                class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                placeholder="@lang('lang.postal_code')" name="postal_code" value="{{ old('postal_code') }}">
+                        </div>
                         @error('postal_code')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                         {{-- </div> --}}
                     </div>
                     {{-- +++++++++++++++++++++++++++++++ address ++++++++++++++++++++++++ --}}
-                    {{-- <div class="col-md-4 ">
+                    {{-- <div class="col-md-3 p-0 ">
                         <div class="form-group ">
                             <label for="address">@lang('lang.address')</label>
                             <div class="select_body d-flex justify-content-between align-items-center" >
@@ -160,7 +174,7 @@
                         </div>
                     </div> --}}
                     {{-- +++++++++++++++++++++++++++++++ city ++++++++++++++++++++++++ --}}
-                    {{-- <div class="col-md-4">
+                    {{-- <div class="col-md-3 p-0">
                         <div class="form-group ">
                             <label for="city">@lang('lang.city')</label>
                             <div class="select_body d-flex justify-content-between align-items-center" >
@@ -176,7 +190,7 @@
                         </div>
                     </div> --}}
                     {{-- ========================== country ==================== --}}
-                    {{-- <div class="col-md-4">
+                    {{-- <div class="col-md-3 p-0">
                         <div class="form-group ">
                             <label for="country">@lang('lang.country')</label>
                             <div class="select_body d-flex justify-content-between align-items-center" >
@@ -193,52 +207,37 @@
                     </div> --}}
                     {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
                     <div
-                        class="col-md-4 d-flex mb-2 align-items-center
-                        @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                         <label
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
                                 "
                             style ="font-size: 12px;font-weight: 500;"
                             for="owner_debt_in_dinar">@lang('lang.owner_debt_in_dinar')</label>
-                        <input type="number"
-                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            style="border-color:#aaa" name="owner_debt_in_dinar" id="owner_debt_in_dinar" />
+                        <div class="input-wrapper width-full">
+
+                            <input type="number"
+                                class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                style="border-color:#aaa" name="owner_debt_in_dinar" id="owner_debt_in_dinar" />
+                        </div>
                     </div>
                     {{-- +++++++++++++++++++++++ owner_debt_in_dollar +++++++++++++++++++++++ --}}
                     <div
-                        class="col-md-4 d-flex mb-2 align-items-center
-                        @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                         <label
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
                                 "
                             style ="font-size: 12px;font-weight: 500;"
                             for="owner_debt_in_dollar">@lang('lang.owner_debt_in_dollar')</label>
-                        <input type="number"
-                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            style="border-color:#aaa" name="owner_debt_in_dollar" id="owner_debt_in_dollar" />
-                    </div>
-                    {{-- ++++++++++++ images ++++++++++++ --}}
-                    <div
-                        class="col-md-4 d-flex mb-2 align-items-center
-                        @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <div class="input-wrapper width-full">
 
-                        <label
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
-                                "
-                            style ="font-size: 12px;font-weight: 500;">@lang('lang.image')</label>
-                        <input
-                            class="form-control img initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            style="width: 100%" name="image" type="file" accept="image/*">
-                        {{-- <div class="dropzone" id="my-dropzone">
-                                <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                            </div> --}}
-                        @error('cover')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-
+                            <input type="number"
+                                class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                style="border-color:#aaa" name="owner_debt_in_dollar" id="owner_debt_in_dollar" />
+                        </div>
                     </div>
+
                     {{--                    --}}{{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                    {{--                    <div class="col-md-4"> --}}
+                    {{--                    <div class="col-md-3 p-0"> --}}
                     {{--                        <label for="country-dd">@lang('lang.country')</label> --}}
                     {{--                        <select id="country-dd" name="country" class="form-control" disabled> --}}
                     {{--                            <option value="{{ $countryId }}"> --}}
@@ -247,7 +246,7 @@
                     {{--                        </select> --}}
                     {{--                    </div> --}}
                     {{--                    --}}{{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
-                    {{--                    <div class="col-md-4"> --}}
+                    {{--                    <div class="col-md-3 p-0"> --}}
                     {{--                        <div class="form-group"> --}}
                     {{--                            <label for="state-dd">@lang('lang.state')</label> --}}
                     {{--                            <select id="state-dd" name="state_id" class="form-control"> --}}
@@ -263,7 +262,7 @@
                     {{--                        </div> --}}
                     {{--                    </div> --}}
                     {{--                    --}}{{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                    {{--                    <div class="col-md-4"> --}}
+                    {{--                    <div class="col-md-3 p-0"> --}}
                     {{--                        <div class="form-group"> --}}
                     {{--                            <label for="city-dd">@lang('lang.city')</label> --}}
                     {{--                            <select id="city-dd" name="city_id" class="form-control"></select> --}}
@@ -288,7 +287,7 @@
                                         <td
                                             class="col-md-12 d-flex mb-2 align-items-center p-0  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             <label
-                                                class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                                                class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0  @else h5  mx-2 mb-0 @endif
                                 "
                                                 style="font-size: 12px">
                                                 <span class="text-danger">*</span>@lang('lang.email')
@@ -303,7 +302,7 @@
                                                         height: 30px;
                                                         flex-wrap: nowrap;">
                                                 <input type="text"
-                                                    class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                                    class="form-control width-full width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
                                                     placeholder="@lang('lang.email')" name="email[]"
                                                     value="{{ old('email') }}" required>
                                                 @error('email')
@@ -341,7 +340,7 @@
                                         <td
                                             class="col-md-12 d-flex mb-2 align-items-center p-0  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             <label style="font-size: 12px"
-                                                class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                                                class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0  @else h5  mx-2 mb-0 @endif
                                 ">
                                                 <span class="text-danger">*</span>@lang('lang.phone_number')
                                             </label>
@@ -355,7 +354,7 @@
                                                         height: 30px;
                                                         flex-wrap: nowrap;">
                                                 <input type="text"
-                                                    class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                                    class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
                                                     style="width: 100%" placeholder="@lang('lang.phone_number')"
                                                     name="mobile_number[]" value="{{ old('mobile_number') }}"
                                                     required>
@@ -376,6 +375,27 @@
                         </div>
                     </div>
 
+                    {{-- ++++++++++++ images ++++++++++++ --}}
+                    <div
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+
+                        <label
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
+                                "
+                            style ="font-size: 12px;font-weight: 500;">@lang('lang.image')</label>
+                        <div class="input-wrapper width-full">
+                            <input
+                                class="form-control img width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                style="width: 100%" name="image" type="file" accept="image/*">
+                            {{-- <div class="dropzone" id="my-dropzone">
+                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                </div> --}}
+                        </div>
+                        @error('cover')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
+                    </div>
                 </div>
             </div>
 
