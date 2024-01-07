@@ -342,7 +342,7 @@
                                                                         $cash_register->totalPurchases -
                                                                         $cash_register->totalExpenses -
                                                                         $cash_register->totalWagesAndCompensation -
-                                                                        $cash_register->totalSellReturn,
+                                                                        $cash_register->totalSellReturn
                                                                 ) }}
                                                             </span>
                                                         </td>

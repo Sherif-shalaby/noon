@@ -378,6 +378,7 @@ class Create extends Component
     public function addExpense()
     {
         $this->expenses[] = ['details' => '', 'amount' => 0, 'expense_currency' => ''];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function getTotalExpenses()
     {
@@ -396,6 +397,7 @@ class Create extends Component
         }
         $this->dinar_expenses = number_format($this->num_uf($this->dinar_expenses), 3);
         $this->dollar_expenses = number_format($this->num_uf($this->dollar_expenses), 3);
+        $this->dispatchBrowserEvent('componentRefreshed');
         // dd(number_format($this->total_expenses,3));
     }
     public function removeExpense($index)
@@ -407,16 +409,19 @@ class Create extends Component
         }
         unset($this->expenses[$index]);
         $this->expenses = array_values($this->expenses);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function reset_change()
     {
         // dd('test');
         $this->dinar_remaining = 0;
         $this->dollar_remaining = 0;
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function convertRemainingDollar()
     {
         $this->total_amount = $this->num_uf($this->total_amount) + ($this->num_uf($this->dollar_remaining) * $this->num_uf($this->exchange_rate));
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
 
@@ -731,6 +736,7 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
         return redirect('/add-stock/create');
     }
 
@@ -898,6 +904,7 @@ class Create extends Component
                 $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function addNewProduct($variations, $product, $show_product_data, $index = null, $stock)
@@ -1080,6 +1087,7 @@ class Create extends Component
 
         ];
         array_unshift($this->items[$index]['prices'], $new_price);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function addCustomersPrice()
@@ -1146,6 +1154,7 @@ class Create extends Component
         ];
         //        dd($new_store);
         array_unshift($this->items[$index]['stores'], $new_store);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changePercent($index, $key, $via = null, $i = null)
     {
@@ -1182,6 +1191,7 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeIncrease($index, $key, $via = null, $i = null)
     {
@@ -1226,16 +1236,19 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_price_raw($index, $key)
     {
         unset($this->items[$index]['prices'][$key]);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function change_discount_from_original_price($index, $key)
     {
         if ($this->items[$index]['prices'][$key]['discount_from_original_price']) {
             $this->items[$index]['prices'][$key]['discount_from_original_price'] = !$this->items[$index]['prices'][$key]['discount_from_original_price'];
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
         //        $this->changePrice($index,$key);
     }
     public function changePrice($index, $key)
@@ -1286,6 +1299,7 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function getVariationData($index, $via = null, $i = null)
@@ -1329,7 +1343,7 @@ class Create extends Component
 
             $this->getSubUnits($index);
         }
-
+        $this->dispatchBrowserEvent('componentRefreshed');
         //    dd($product_data->product_dimensions);
     }
 
@@ -1661,6 +1675,7 @@ class Create extends Component
         // $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
         $this->total_amount = $this->sum_total_cost();
         // }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeReceivedDollar()
     {
@@ -1701,6 +1716,7 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
         // dd( $this->dollar_remaining);
     }
 
@@ -1744,6 +1760,7 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function sum_sub_total()
@@ -1786,6 +1803,7 @@ class Create extends Component
                 $this->final_purchase_for_piece($index);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function total_quantity()
     {
@@ -1975,6 +1993,7 @@ class Create extends Component
             $this->purchase_final_dollar($index, $var, $i);
             $this->final_purchase_for_piece($index, $var, $i);
             // }
+            $this->dispatchBrowserEvent('componentRefreshed');
             return $final_purchase;
         } else {
             $final_purchase = $this->num_uf($this->items[$index]['purchase_after_discount']);
@@ -2066,6 +2085,7 @@ class Create extends Component
             // }
             $this->purchase_final_dollar($index);
             $this->final_purchase_for_piece($index);
+            $this->dispatchBrowserEvent('componentRefreshed');
             return number_format($final_purchase, 3);
             // if( $this->purchase_final($index) > 0){
 
@@ -2309,6 +2329,7 @@ class Create extends Component
         } else {
             unset($this->items[$index]);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function countItems()
@@ -2493,6 +2514,7 @@ class Create extends Component
         }
         $this->changeTotalAmount();
         $this->changePurchasePrice($index, $var, $i);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeExchangeRate()
     {

@@ -111,9 +111,9 @@
             <div
                 class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div>
-                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                    <h5 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
                         @lang('lang.products')
-                    </h4>
+                    </h5>
                     <div class="breadcrumb-list">
                         <ul
                             class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

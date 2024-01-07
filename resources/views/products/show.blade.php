@@ -3,9 +3,9 @@
     style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document" style="max-width: 65%;">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header d-flex justify-content-between py-2 ">
                 <h4 class="modal-title">{{ $product->name }}</h4>
-                <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close"><span
+                <button type="button" class="close mx-0" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
