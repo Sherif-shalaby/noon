@@ -1810,7 +1810,7 @@ class Create extends Component
     }
 
     public function changePurchasePrice($index, $var = null, $i = null){
-        if($var = 'stores'){
+        if($var == 'stores'){
             $this->items[$index]['stores'][$i]['dollar_purchase_discount'] = null;
             $this->items[$index]['stores'][$i]['dollar_purchase_discount_percent'] = null;
             if(!empty($this->items[$index]['stores'][$i]['purchase_discount']) || !empty($this->items[$index]['stores'][$i]['purchase_discount_percent'])){
@@ -1843,8 +1843,8 @@ class Create extends Component
                 }
             }
             else{
-                $this->items[$index]['stores'][$i]['purchase_after_discount'] = number_format($this->items[$index]['stores'][$i]['purchase_price'],3);
-                $this->items[$index]['stores'][$i]['dollar_purchase_after_discount'] =  number_format($this->items[$index]['stores'][$i]['dollar_purchase_price'],3);
+                $this->items[$index]['stores'][$i]['purchase_after_discount'] = number_format($this->num_uf($this->items[$index]['stores'][$i]['purchase_price']),3);
+                $this->items[$index]['stores'][$i]['dollar_purchase_after_discount'] =  number_format($this->num_uf($this->items[$index]['stores'][$i]['dollar_purchase_price']),3);
             }
         }
         else{
