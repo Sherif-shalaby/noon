@@ -39,7 +39,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group" >
                                         {!! Form::label('seasonal_discount', __('lang.seasonal_discount') . ':*', []) !!} <br>
-                                        {!! Form::text('seasonal_discount',$seasonal_discount_dollar, ['class' => 'form-control dueDollarAmount', 'placeholder' => __('lang.seasonal_discount'), 'id' => 'seasonal_discount']) !!}
+                                        {!! Form::text('seasonal_discount_dollar',$seasonal_discount_dollar, ['class' => 'form-control dueDollarAmount', 'placeholder' => __('lang.seasonal_discount'), 'id' => 'seasonal_discount']) !!}
 
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group" 
                                         {!! Form::label('annual_discount', __('lang.annual_discount') . ':*', []) !!} <br>
-                                        {!! Form::text('annual_discount',$annual_discount_dollar, ['class' => 'form-control dueDollarAmount', 'placeholder' => __('lang.annual_discount'), 'id' => 'annual_discount']) !!}
+                                        {!! Form::text('annual_discount_dollar',$annual_discount_dollar, ['class' => 'form-control dueDollarAmount', 'placeholder' => __('lang.annual_discount'), 'id' => 'annual_discount']) !!}
                                     </div>
                                 </div>
                             @endif
