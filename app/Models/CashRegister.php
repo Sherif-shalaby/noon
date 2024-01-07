@@ -36,6 +36,10 @@ class CashRegister extends Model
     {
         return $this->belongsTo(StorePos::class, 'store_pos_id')->withDefault(['name' => '']);
     }
+    public function store()
+    {
+        return $this->belongsTo(Store::class, 'store_id')->withDefault(['name' => '']);
+    }
     // ++++++++++++++++++++++++++++++++++ Task : Cash Relationships ++++++++++++++++++++++++++++++++++
     /* ======== cashRegisterTransactions() : Get the Cash registers transactions ======== */
     public function cashRegisterTransactions()

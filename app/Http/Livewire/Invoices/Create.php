@@ -108,6 +108,19 @@ class Create extends Component
         if (isset($data['var1']) && $data['var1'] == "expiry_order_id") {
             $this->updatedDepartmentId($data['var2'], 'expiry_order_id');
         }
+          // +++++++ unit id +++++++
+          if (isset($data['var1']) && $data['var1'] == "unit_id") {
+            $this->items[$data['var3']][$data['var1']]=$data['var2'];
+            $this->changeUnit($data['var3']);
+        }
+        if (isset($data['var1']) && $data['var1'] == "customer_type_id") {
+            $this->items[$data['var3']][$data['var1']]=$data['var2'];
+            $this->changeCustomerType($data['var3']);
+        }
+        if (isset($data['var1']) && $data['var1'] == "discount") {
+            $this->items[$data['var3']][$data['var1']]=$data['var2'];
+            $this->subtotal($data['var3'],'discount');
+        }
     }
     public function mount()
     {
@@ -298,7 +311,7 @@ class Create extends Component
             $transaction_data = [
                 'store_id' => $this->store_id,
                 'customer_id' => $this->client_id,
-                'supplier_id ' => $this->supplier_id ,
+//                'supplier_id ' => $this->supplier_id ,
                 'employee_id' => Employee::where('user_id', auth()->user()->id)->first()->id,
                 'store_pos_id' => $this->store_pos_id,
                 'exchange_rate' => System::getProperty('dollar_exchange') ?? 0,
@@ -665,8 +678,8 @@ class Create extends Component
                     'dollar_sub_total' => (float) 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
                     //                    'discount_categories' =>  $discounts,
-                    'discount_categories' => !empty($current_stock) ? $current_stock->prices()->get() : null,
-                    'discount' => null,
+                    'discount_categories' => !empty($current_stock) ? $current_stock->prices()->where('price_customer_types',$get_Variation_price->first()->customer_type_id ?? 0)->get() : null,
+                    'discount' => 0,
                     'discount_price' => 0,
                     'discount_type' =>  null,
                     'discount_category' =>  null,
@@ -907,10 +920,10 @@ class Create extends Component
             $price = 0;
 
         $this->items[$key]['discount_price'] = $price;
-        $this->items[$key]['sub_total'] = ((float)$this->num_uf($this->items[$key]['price']) * $this->items[$key]['quantity']) -
-            ($this->items[$key]['quantity'] * (float)$this->num_uf($this->items[$key]['discount_price']));
-        $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->items[$key]['quantity']) -
-            ($this->items[$key]['quantity'] * (float)$this->num_uf($this->items[$key]['discount_price']));
+        $this->items[$key]['sub_total'] = ((float)$this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
+            ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
+        $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
+            ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
         $this->computeForAll();
     }
 
@@ -919,7 +932,6 @@ class Create extends Component
         $discounts = collect($this->items[$key]['discount_categories'])->sortByDesc('quantity')->toArray();
         foreach ($discounts as $discount) {
             $currentQuantity = $this->items[$key]['quantity'];
-            // Check if the quantity meets the current discount condition
             if (!empty($discount['quantity'])) {
                 if ($currentQuantity >= $discount['quantity']) {
                     $this->items[$key]['discount'] = $discount['id'];
@@ -1446,7 +1458,7 @@ class Create extends Component
     }
     public function changeUnit($key)
     {
-        //        dd($this->items[$key]['unit_id']);
+            //    dd($this->items[$key]['unit_id']);
         if (!empty($this->items[$key]['unit_id'])) {
             $variation_id = $this->items[$key]['unit_id'];
             $stock_line = AddStockLine::where('variation_id', $variation_id)->first();
@@ -1474,6 +1486,7 @@ class Create extends Component
             $this->items[$key]['sub_total'] = number_format($this->num_uf($this->items[$key]['price']) * $this->items[$key]['quantity'], 2);
             $this->items[$key]['dollar_sub_total'] = number_format($this->items[$key]['dollar_price'] * $this->items[$key]['quantity'], 2);
             $this->items[$key]['discount'] = 0;
+            // $discount=ProductPrice::where('unit_id',$this->items[$key]['unit_id'])->where('stock_line_id', $stock_line->id)->first();
             $this->items[$key]['extra_quantity'] = 0;
             $qty = $this->items[$key]['quantity_available'];
             $variations = Variation::where('product_id', $this->items[$key]['product']['id'])->get();
@@ -1499,29 +1512,12 @@ class Create extends Component
                     }
                     $this->items[$key]['quantity_available'] = number_format($product_store->quantity_available / $amount, 3);
                 }
-                // else{
-                //     foreach($variations as $variation){
-                //         if($variation->unit_id == $var_id){
-                //             $amount *=$variation->equal;
-                //             $basic_unit=$variation->basic_unit_id;
-                //             foreach($variations as $var){
-                //                 if($basic_unit == $var->unit_id){
-                //                     $amount *=$var->equal;
-                //                     $basic_unit=$var->basic_unit_id;
-                //                     if($product_store->variations->unit_id != $var->basic_unit_id){
-                //                         break;
-                //                     }
-                //                 }
-                //             }
-                //             $this->items[$key]['quantity_available']= $product_store->quantity_available / $amount;
-                //             break;
-                //         }
-                //     }
-                // }
             } else {
                 $this->items[$key]['quantity_available'] = $qty;
             }
         }
+        $this->subtotal($key, $via = 'quantity');
+        $this->changeCustomerType($key);
     }
 
     public function getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id)
