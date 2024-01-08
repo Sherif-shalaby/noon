@@ -721,7 +721,7 @@ return [
     'total_gift_card_sale' => 'Total Gift Card Sale',
     'credit_card_sales' => 'Credit Card Sales',
     'return_sales' => 'Return Sales',
-
+    'ordered' => 'ordered' ,
 
 
 ];

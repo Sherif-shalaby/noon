@@ -4,10 +4,12 @@ namespace App\Http\Livewire\Invoices;
 
 use App\Models\Brand;
 use App\Models\Invoice;
+use App\Models\JobType;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Employee;
 use App\Models\Variation;
 use App\Models\CustomerType;
 use Illuminate\Http\Request;
@@ -98,12 +100,28 @@ class Index extends Component
                 $query->where('customer_type_id', request()->customer_type_id);
             });
         })
+        // customer phone filter
+        ->when(request()->phone_number != null, function ($query) {
+            $query->whereHas('customer', function ($query) {
+                $query->where('phone', 'like', '%' . request()->phone_number . '%');
+            });
+        })
         // payment_status filter
         ->when(request()->payment_status != null, function ($query) {
             $query->where('payment_status', request()->payment_status);
         })
-       // brands filter
-       ->when(request()->brand_id, function ($query, $brand_id) {
+        // sale_status filter
+        ->when(request()->sale_status != null, function ($query) {
+            $query->where('status', request()->sale_status);
+        })
+        // deliveryman filter
+        ->when(request()->deliveryman_id != null, function ($query) {
+            $query->whereHas('delivery', function ($query) {
+                $query->where('deliveryman_id', request()->deliveryman_id);
+            });
+        })
+        // brands filter
+        ->when(request()->brand_id, function ($query, $brand_id) {
             $query->whereHas('transaction_sell_lines.product.brand', function ($query) use ($brand_id) {
                 $query->where('brand_id', $brand_id);
             });
@@ -153,15 +171,24 @@ class Index extends Component
                 'paid' => __('lang.paid'),
                 'pending' => __('lang.pay_later'),
             ];
+        $sale_status =  [
+                'final' => __('lang.final'),
+                'draft' => __('lang.draft'),
+                'ordered' => __('lang.ordered'),
+                'pending' => __('lang.pending'),
+                'received' => __('lang.received'),
+            ];
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
         $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
+        $delivery_type_ids = JobType::where('title', 'Deliveryman')->pluck('id')->toArray();
+        $delivery_men = Employee::whereIn('job_type_id', $delivery_type_ids)->pluck('employee_name', 'id')->toArray();
 
         return view('livewire.invoices.index',
                     compact('sell_lines','categories1','categories2',
                                 'categories3','categories4',
                                 'customers','customer_types',
                                 'payment_status_array','brands',
-                                'products')
+                                'products','sale_status','delivery_men')
                     );
     }
 }

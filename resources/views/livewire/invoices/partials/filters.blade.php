@@ -53,6 +53,16 @@
                     ]) !!}
                 </div>
             </div>
+            {{-- ++++++++++++++++ customer_phone filter +++++++++++++ --}}
+            <div class="col-md-2">
+                <div class="form-group">
+                    {!! Form::label('phone_number', __('lang.phone_number'), []) !!}
+                    {!! Form::text(
+                        'phone_number', request()->phone_number,
+                        ['class' => 'form-control', 'placeholder' => __('lang.phone_number')]
+                    ) !!}
+                </div>
+            </div>
             {{-- ++++++++++++++ payment_status filter ++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
@@ -63,17 +73,26 @@
                     ]) !!}
                 </div>
             </div>
-            {{-- ++++++++++++++++++++ brands filter ++++++++++++++++++++ --}}
-            {{-- <div class="col-2">
+            {{-- ++++++++++++++ sale_status filter ++++++++++++++ --}}
+            <div class="col-md-2">
                 <div class="form-group">
-                    {!! Form::label('brand_id' ,__('lang.brand')) !!}
-                    {!! Form::select(
-                        'brand_id',
-                        $brands,request()->brand_id,
-                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
-                    ) !!}
+                    {!! Form::label('sale_status', __('lang.sale_status'), []) !!}
+                    {!! Form::select('sale_status', $sale_status, request()->sale_status, [
+                        'class' => 'form-control select2',
+                        'placeholder' => __('lang.all'),
+                    ]) !!}
                 </div>
-            </div> --}}
+            </div>
+            {{-- ++++++++++++++ deliveryman filter ++++++++++++++ --}}
+            <div class="col-md-2">
+                <div class="form-group">
+                    {!! Form::label('deliveryman_id', __('lang.deliveryman'), []) !!}
+                    {!! Form::select('deliveryman_id', $delivery_men, null, [
+                        'class' => 'form-control select2',
+                        'placeholder' => __('lang.deliveryman'),
+                    ]) !!}
+                </div>
+            </div>
             {{-- ++++++++++++++++++++ products filter ++++++++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
