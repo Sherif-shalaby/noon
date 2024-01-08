@@ -10,6 +10,7 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Employee;
+use App\Models\StorePos;
 use App\Models\Variation;
 use App\Models\CustomerType;
 use Illuminate\Http\Request;
@@ -116,9 +117,9 @@ class Index extends Component
         })
         // deliveryman filter
         ->when(request()->deliveryman_id != null, function ($query) {
-            $query->whereHas('delivery', function ($query) {
+            // $query->whereHas('delivery', function ($query) {
                 $query->where('deliveryman_id', request()->deliveryman_id);
-            });
+            // });
         })
         // brands filter
         ->when(request()->brand_id, function ($query, $brand_id) {
@@ -158,6 +159,10 @@ class Index extends Component
                 $query->where('subcategory_id3', $subcategory_id3);
             });
         })
+        // store_pos filter
+        ->when(request()->pos_id != null, function ($query) {
+            $query->where('store_pos_id',request()->pos_id);
+        })
         ->latest()->get();
         // dd($sell_lines);
         $categories1    = Category::orderBy('name', 'asc')->where('parent_id',1)->pluck('name', 'id')->toArray();
@@ -182,10 +187,11 @@ class Index extends Component
         $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
         $delivery_type_ids = JobType::where('title', 'Deliveryman')->pluck('id')->toArray();
         $delivery_men = Employee::whereIn('job_type_id', $delivery_type_ids)->pluck('employee_name', 'id')->toArray();
+        $store_pos = StorePos::orderBy('name', 'asc')->pluck('name', 'id');
 
         return view('livewire.invoices.index',
                     compact('sell_lines','categories1','categories2',
-                                'categories3','categories4',
+                                'categories3','categories4','store_pos',
                                 'customers','customer_types',
                                 'payment_status_array','brands',
                                 'products','sale_status','delivery_men')
