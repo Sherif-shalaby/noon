@@ -31,11 +31,6 @@ class StockTransaction extends Model
     {
         return $this->hasMany(AddStockLine::class);
     }
-
-//    public function supplier()
-//    {
-//        return $this->belongsTo(Supplier::class)->withDefault(['name' => '']);
-//    }
     public function add_stock_variations()
     {
         return $this->hasManyThrough(Product::class, AddStockLine::class, 'transaction_id', 'id', 'id', 'variation_id');
@@ -50,7 +45,14 @@ class StockTransaction extends Model
     {
         return $this->belongsTo(Store::class, 'store_id', 'id')->withDefault(['name' => '']);
     }
-
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+    public function state()
+    {
+        return $this->belongsTo(State::class, 'state_id', 'id');
+    }
     public function transaction_payments()
     {
         return $this->hasMany(StockTransactionPayment::class);
@@ -81,11 +83,26 @@ class StockTransaction extends Model
 
         return $this->belongsTo(Currency::class, 'transaction_currency');
     }
+    public function parentTransaction()
+    {
+        // Assuming the foreign key is 'return_parent_id'
+        return $this->belongsTo(StockTransaction::class, 'parent_transction');
+    }
 
+    // Define a relationship to retrieve all child transactions
+    public function childTransactions()
+    {
+        // Assuming the foreign key is 'return_parent_id'
+        return $this->hasMany(StockTransaction::class, 'parent_transction');
+    }
     public function getSourceNameAttribute()
     {
 
     }
 
+    public function received_discount()
+    {
+        return $this->hasMany(ReceiveDiscount::class , 'stock_transaction_id');
+    }
 
 }

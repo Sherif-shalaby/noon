@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BranchRequest;
 use App\Models\Branch;
 use App\Models\Store;
 use App\Utils\Util;
@@ -29,7 +30,7 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $branches = Branch::all();
+        $branches = Branch::where('type','branch')->get();
         return view('branches.index',compact('branches'));
     }
 
@@ -50,7 +51,7 @@ class BranchController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(BranchRequest $request)
     {
         try {
 //            dd($request);
@@ -163,10 +164,28 @@ class BranchController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $branch=Branch::find($id);
+            $branch->deleted_by=Auth::user()->id;
+            $branch->save();
+            $branch->delete();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+          } catch (\Exception $e) {
+              Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+              $output = [
+                  'success' => false,
+                  'msg' => __('lang.something_went_wrong')
+              ];
+          }
+          return $output;
     }
-    public function getBranchStores($id){
-        $stores = Store::where('branch_id',$id)->orderBy('name', 'asc')->pluck('name', 'id');
+    public function getBranchStores($ids){
+        $branchIds = explode(',', $ids);
+
+        $stores = Store::whereIn('branch_id',$branchIds)->orderBy('name', 'asc')->pluck('name', 'id');
         $stores_dp = $this->Util->createDropdownHtml($stores, __('lang.please_select'));
         return $stores_dp;
     }

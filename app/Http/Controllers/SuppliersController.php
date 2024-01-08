@@ -6,7 +6,9 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Product;
+use App\Models\PurchaseOrderTransaction;
 use App\Models\State;
+use App\Models\StockTransaction;
 use App\Models\Supplier;
 use App\Models\System;
 use App\Utils\Util;
@@ -73,12 +75,7 @@ class SuppliersController extends Controller
         $data['cities'] = City::where('state_id', $request->state_id)->get(['id','name']);
         return response()->json($data);
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+    /* +++++++++++++++++++ store() +++++++++++++++++++ */
     public function store(Request $request)
     {
         try {
@@ -123,7 +120,7 @@ class SuppliersController extends Controller
 
             $output = [
                 'success' => true,
-//                'id' => $supplier->id,
+                'id' => $supplier->id,
                 'msg' => __('lang.success')
             ];
             if ($request->ajax()) {
@@ -140,16 +137,23 @@ class SuppliersController extends Controller
 
         return redirect()->back()->with('status', $output);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    /* +++++++++++++++++++ show() +++++++++++++++++++ */
     public function show($id)
     {
-        //
+        $supplier = Supplier::findOrFail($id);
+        // tab 1 : Stock Transactions : كشف حساب
+        $add_stocks = StockTransaction::whereIn('type', ['add_stock', 'purchase_return'])
+                                        ->whereIn('status', ['received', 'final'])
+                                        // ->where('supplier_id',$id)
+                                        ->get();
+        // tab 2 : Purchase Orders : الاوامر المعلقة
+        $purchase_orders = PurchaseOrderTransaction::whereIn('type', ['purchase_order'])
+                                                    ->where('status', 'pending')
+                                                    // ->where('supplier_id',$id)
+                                                    ->get();
+        // dd($purchase_orders);
+        return view('suppliers.show',compact('supplier','add_stocks','purchase_orders'));
+        // dd($supplier);
     }
 
     /**

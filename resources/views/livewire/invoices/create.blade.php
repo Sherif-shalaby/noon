@@ -5,6 +5,7 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="row">
+                    {{-- +++++++++++ brand filter +++++++++++ --}}
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('brand_id', __('lang.brand') . ':*', []) !!}
@@ -16,52 +17,96 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4 pt-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="from_a_to_z" wire:model="from_a_to_z" name="customCheckboxInline2">
-                            <label for="from_a_to_z">@lang('lang.from_a_to_z')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-4 pt-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="from_z_to_a" wire:model="from_z_to_a" name="customCheckboxInline2">
-                            <label for="from_z_to_a">@lang('lang.from_z_to_a')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="highest_price" wire:model="highest_price" name="customCheckboxInline2">
-                            <label for="highest_price">@lang('lang.highest_price')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="lowest_price" wire:model="lowest_price" name="customCheckboxInline2">
-                            <label for="lowest_price">@lang('lang.lowest_price')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="dollar_highest_price" wire:model="dollar_highest_price" name="customCheckboxInline2">
-                            <label for="dollar_highest_price">@lang('lang.dollar_highest_price')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="dollar_lowest_price" wire:model="dollar_lowest_price" name="customCheckboxInline2">
-                            <label for="dollar_lowest_price">@lang('lang.dollar_lowest_price')</label>
-                        </div>
-                    </div>
+                    {{-- +++++++++++ from_a_to_z , from_z_to_a filter +++++++++++ --}}
                     <div class="col-md-4">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="nearest_expiry_filter" wire:model="nearest_expiry_filter" name="customCheckboxInline2">
-                            <label for="nearest_expiry_filter">@lang('lang.nearest_expiry_filter')</label>
+                        <div class="form-group">
+                            {!! Form::label('alphabetical_order_id', __('lang.alphabetical_order') . ':*', []) !!}
+                            {!! Form::select(
+                                'alphabetical_order_id',
+                                [ __('lang.from_a_to_z'), __('lang.from_z_to_a')],
+                                    $alphabetical_order_id,
+                                    [
+                                        'class' => 'select2 form-control',
+                                        'data-live-search' => 'true',
+                                        'id' => 'alphabetical_order_id',
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                        'data-name' => 'alphabetical_order_id',
+                                        'wire:model' => 'alphabetical_order_id',
+                                    ]
+                            ) !!}
+                            @error('alphabetical_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
+                    {{-- +++++++++++ lowest_price , highest_price filter +++++++++++ --}}
                     <div class="col-md-4">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="longest_expiry_filter" wire:model="longest_expiry_filter" name="customCheckboxInline2">
-                            <label for="longest_expiry_filter">@lang('lang.longest_expiry_filter')</label>
+                        <div class="form-group">
+                            {!! Form::label('price_order_id', __('lang.price') . ':*', []) !!}
+                            {!! Form::select(
+                                'price_order_id',
+                                [ __('lang.lowest_price'), __('lang.highest_price')],
+                                $price_order_id,
+                                [
+                                    'class' => 'select2 form-control',
+                                    'data-live-search' => 'true',
+                                    'id' => 'price_order_id',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-name' => 'price_order_id',
+                                    'wire:model' => 'price_order_id',
+                                ]
+                            ) !!}
+                            @error('price_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    {{-- +++++++++++ dollar_lowest_price , dollar_highest_price filter +++++++++++ --}}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('dollar_price_order_id', __('lang.dollar_price') . ':*', []) !!}
+                            {!! Form::select(
+                                'dollar_price_order_id',
+                                [ __('lang.dollar_lowest_price'), __('lang.dollar_highest_price')],
+                                $dollar_price_order_id,
+                                [
+                                    'class' => 'select2 form-control',
+                                    'data-live-search' => 'true',
+                                    'id' => 'dollar_price_order_id',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-name' => 'dollar_price_order_id',
+                                    'wire:model' => 'dollar_price_order_id',
+                                ]
+                            ) !!}
+                            @error('dollar_price_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    {{-- +++++++++++ nearest_expiry , longest_expiry filter +++++++++++ --}}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('expiry_order_id', __('lang.expiry_order') . ':*', []) !!}
+                            {!! Form::select(
+                                'expiry_order_id',
+                                [ __('lang.nearest_expiry_filter') , __('lang.longest_expiry_filter')],
+                                $expiry_order_id,
+                                [
+                                    'class' => 'select2 form-control',
+                                    'data-live-search' => 'true',
+                                    'id' => 'expiry_order_id',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-name' => 'expiry_order_id',
+                                    'wire:model' => 'expiry_order_id',
+                                ]
+                            ) !!}
+                            @error('expiry_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -98,7 +143,7 @@
                             <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id">
                                 <option  value="0 " readonly >اختر </option>
                                 @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}>{{ $customer->name }}</option>
+                                    <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}> {{ $customer->name }} - {{($customer->phone != '[null]' ) ? $customer->phone : ''}}</option>
                                 @endforeach
                             </select>
                             <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
@@ -107,11 +152,36 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>
+                                {!! Form::checkbox('toggle_suppliers_dropdown', 1, false,['wire:model' => 'toggle_suppliers_dropdown']) !!}
+                                @lang('lang.toggle_suppliers_dropdown')
+                            </label>
+                        </div>
+                    </div>
+                    {{-- +++++++++++++++++ suppliers Dropdown +++++++++++++++++ --}}
+                    @if(!empty($toggle_suppliers_dropdown))
+                        <div class="col-md-3">
+                            {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
+                            <div class="d-flex justify-content-center">
+                            {!! Form::select('supplier_id', $suppliers, $supplier_id,
+                                ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
+                                'data-name' => 'supplier', 'wire:model' => 'supplier_id'
+                                ]) !!}
+                                {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
+                            </div>
+                            @error('supplier')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    @endif
+                </div>
+
                 </div>
                 <div class="row">
-                    <div class="col-md-7">
-                        @include('invoices.partials.search')
-                    </div>
+
                     <div class="col-md-5">
                         <div class="card-app">
                             <div class="row">
@@ -132,6 +202,42 @@
                                 </div>
                                 <div class="col-md-2">
                                     <span> @lang('lang.balance_in_dollar') : {{ $customer_data->balance_in_dollar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.customer_type') : {{ $customer_data->customer_type->name ?? '' }}</span>
+                                </div>
+                                @php
+                                    if(!empty($customer_data->state_id)){
+                                        $state = \App\Models\State::find($customer_data->state_id);
+                                    }
+                                @endphp
+                                <div class="col-md-2">
+                                    <span> @lang('lang.state') : {{ !empty($state) ? $state->name : '' }}</span>
+                                </div>
+                                @php
+                                    if(!empty($customer_data->city_id)){
+                                        $city = \App\Models\City::find($customer_data->city_id);
+                                    }
+                                @endphp
+                                <div class="col-md-2">
+                                    <span> @lang('lang.city') : {{ !empty($city) ? $city->name : '' }}</span>
+                                </div>
+                                @php
+                                    if(!empty($customer_data->quarter_id )){
+                                        $quarter = \App\Models\Quarter::find($customer_data->quarter_id );
+                                    }
+                                @endphp
+                                <div class="col-md-2">
+                                    <span> @lang('lang.quarter') : {{ !empty($quarter) ? $quarter->name : '' }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.phone_number') : {{ !empty($customer_data->phone) ? $customer_data->phone: '' }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.email') : {{ !empty($customer_data->email) ? $customer_data->email :'' }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.notes') : {{ !empty($customer_data->notes) ? $customer_data->notes  : '' }}</span>
                                 </div>
                                 <div class="col-md-3">
                                     <button style="width: 100%; background: #5b808f" wire:click="redirectToCustomerDetails({{ $client_id }})"
@@ -159,10 +265,12 @@
                                 <div class="table-responsive box-table ">
                                     <table class="table">
                                         <tr>
+                                            <th >@lang('lang.sku')</th>
                                             <th >@lang('lang.product')</th>
                                             <th >@lang('lang.quantity')</th>
                                             <th >@lang('lang.extra')</th>
                                             <th >@lang('lang.unit')</th>
+                                            <th >@lang('lang.c_type')</th>
                                             <th >@lang('lang.price')</th>
                                             <th >@lang('lang.price') $ </th>
                                             <th> @lang('lang.exchange_rate')</th>
@@ -178,6 +286,7 @@
                                         @endphp
                                         @foreach ($items as $key => $item)
                                             <tr>
+                                                <td>{{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}</td>
                                                 <td >
                                                     {{$item['product']['name']}}
                                                 </td>
@@ -200,13 +309,28 @@
                                                 </td>
                                                 <td>{{$item['extra_quantity']}}</td>
                                                 <td>
-                                                    <select class="form-control" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
+                                                    <select class="form-control select2" data-name="unit_id" data-index="{{$key}}" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
                                                         <option value="0.00">select</option>
                                                          @if(!empty($item['variation']))
                                                            @foreach($item['variation'] as $i=>$var)
                                                                @if(!empty($var['unit_id']))
                                                                     <option value="{{$var['id']}}" {{$i==0?'selected':''}}>
                                                                         {{$var['unit']['name']??''}}
+                                                                    </option>
+                                                               @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control select2" style="height:30% !important;width:100px;" data-name="customer_type_id" data-index="{{$key}}" wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
+                                                        <option value="0">select</option>
+                                                         @if(!empty($item['customer_types']))
+                                                         {{-- {{dd($item['customer_types'])}} --}}
+                                                           @foreach($item['customer_types'] as $x=>$var)
+                                                               @if(!empty($var) && !empty($var['id']))
+                                                                    <option value="{{$var['id']}}" {{$x==0?'selected':''}}>
+                                                                        {{$var['name']??''}}
                                                                     </option>
                                                                @endif
                                                             @endforeach
@@ -232,7 +356,7 @@
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
                                                 <td>
-                                                    <select class="form-control discount_category " style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}},'discount')">
+                                                    <select class="form-control discount_category select2" style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount" data-name="discount" data-index="{{$key}}" wire:change="subtotal({{$key}},'discount')">
                                                         <option selected value="0">select</option>
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
@@ -273,6 +397,11 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+                                        <tr>
+                                            {{--                                            <div class="col-md-7">--}}
+                                            @include('invoices.partials.search')
+                                            {{--                                            </div>--}}
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -291,7 +420,7 @@
 
 
 {{--<!-- This will be printed -->--}}
-<section class="invoice print_section print-only" id="receipt_section"> </section>
+<section class="invoice print_section print-only" id="receipt_section_print"> </section>
 @push('javascripts')
     @if(empty($store_pos) || empty($stores))
         <script>
@@ -303,8 +432,8 @@
     @endif
     <script>
         document.addEventListener('livewire:load', function () {
-            $('.depart').select().on('change', function (e) {
-                @this.set('department_id', $(this).val());
+            $('.depart1').select().on('change', function (e) {
+                @this.set('department_id1', $(this).val());
             });
         });
         document.addEventListener('livewire:load', function () {
@@ -317,9 +446,9 @@
         document.addEventListener('livewire:load', function () {
             Livewire.on('printInvoice', function (htmlContent) {
                 // Set the generated HTML content
-                $("#receipt_section").html(htmlContent);
+                $("#receipt_section_print").html(htmlContent);
                 // Trigger the print action
-                window.print("#receipt_section");
+                window.print("#receipt_section_print");
             });
         });
         $(document).on("click", ".print-invoice", function () {
@@ -377,7 +506,7 @@
 
             });
         });
-        
+
         $(document).on('change','.dinarPrice', function(e) {
             var key=$(this).data('key');
             Swal.fire({
@@ -399,7 +528,7 @@
 
 
 
-        
+
         $(document).on('change','.dollarPrice', function(e) {
             var key=$(this).data('key');
             Swal.fire({
@@ -417,6 +546,21 @@
                 }
             });
 
+        });
+        $(document).on('change', 'select', function(e) {
+            var name = $(this).data('name');
+            console.log(name)
+            if (name != undefined) {
+                var index = $(this).data('index');
+                var key = $(this).data('key');
+                var select2 = $(this);
+                Livewire.emit('listenerReferenceHere', {
+                    var1: name,
+                    var2: select2.select2("val"),
+                    var3: index,
+                    var4: key
+                });
+            }
         });
     </script>
 

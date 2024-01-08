@@ -168,40 +168,43 @@
                             </select>
                         </div>
                         {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
-                        @php
-                            $states = \App\Models\State::where('country_id', $countryId)->pluck('name','id');
-                        @endphp
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="state-dd">@lang('lang.state')</label>
-                                {!! Form::select('state_id', $states, 1730, [
-                                'class' => 'form-control select2', 'id' =>'state-dd',
-                                'placeholder' => __('lang.please_select')]) !!}
+                                <select id="state-dd" name="state_id" class="form-control select2">
+                                    @php
+                                        $states = \App\Models\State::where('country_id', $countryId)->get(['id','name']);
+                                    @endphp
+                                    @foreach ( $states as $state)
+                                        <option value="{{ $state->id }}">
+                                            {{ $state->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                        @php
-                            if(!empty($customer->state_id)){
-                                $cities = \App\Models\City::where('state_id', $customer->state_id)->get(['id','name']);
-//                                dd($cities,$customer->state_id );
-                            }
-                        @endphp
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="city-dd">@lang('lang.city')</label>
-                                <select id="city-dd" name="city_id"  class="form-control select2" >
-                                    <option  @if(empty($customer->city_id)) selected @endif> @lang('lang.please_select')</option>
-                                    @if(!empty($cities))
-                                        @foreach($cities as $city)
-                                            <option value="{{ $city->id }}"
-                                            @if(!empty($customer->city_id))
-                                                {{$customer->city_id == $city->id ? 'selected' : ''}}
-                                            @endif>
-                                            {{ $city->name }} </option>
-                                        @endforeach
-                                    @endif
-                                </select>
-
+                                <label for="city-dd">@lang('lang.regions')</label>
+                                <div class="d-flex justify-content-center">
+                                    <select id="city-dd" name="city_id" class="form-control select2"></select>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="quarters_id">@lang('lang.quarters')</label>
+                                <div class="d-flex justify-content-center">
+                                    <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         {{-- +++++++++++++++++++++++++++++++ phone array ++++++++++++++++++++++++ --}}
@@ -268,6 +271,18 @@
                                 </table>
                             </div>
                         </div>
+                        {{-- ++++++++++++ images ++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>@lang('lang.upload_image')</label>
+                                <input class="form-control img" name="image" type="file" accept="image/*" id="image">
+                                {{-- Crop Image : cropper.js --}}
+                                {{-- <div class="dropzone" id="my-dropzone2" required>
+                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                </div> --}}
+                                @error('cover')<span class="text-danger">{{ $message }}</span>@enderror
+                            </div>
+                        </div>
                         {{-- ++++++++++++++++++ address ++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
@@ -290,18 +305,6 @@
                                 @error('address')
                                 <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
-                            </div>
-                        </div>
-                        {{-- ++++++++++++ images ++++++++++++ --}}
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>@lang('lang.upload_image')</label>
-                                <input class="form-control img" name="image" type="file" accept="image/*" id="image">
-                                {{-- Crop Image : cropper.js --}}
-                                {{-- <div class="dropzone" id="my-dropzone2" required>
-                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                </div> --}}
-                                @error('cover')<span class="text-danger">{{ $message }}</span>@enderror
                             </div>
                         </div>
                     </div>
@@ -343,94 +346,109 @@
                 </div>
                 {!! Form::close() !!}
             </div>
+            {{-- ++++++++++++ customer_types Model ++++++++++++ --}}
+            @include('customer_types.create')
         </div>
     </div>
 @endsection
 @push('js')
     <script src="{{asset('js/product/customer.js')}}" ></script>
-    {{-- +++++++++++++++++++++++++++++++ Add New Row in phone ++++++++++++++++++++++++ --}}
     <script>
-        $('.phone_tbody').on('click','.addRow', function(){
-            console.log('new phone inputField was added');
-            var tr = `<tr>
-                    <td>
-                        <input type="text" name="phone[]" class="form-control" placeholder="Enter phone number" />
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
-                    </td>
+        $(document).ready(function(){
+            $('.phone_tbody').on('click','.addRow', function(){
+                console.log('new phone inputField was added');
+                var tr = `<tr>
+                        <td>
+                            <input type="text" name="phone[]" class="form-control" placeholder="Enter phone number" />
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
+                        </td>
 
+                    </td>
+                </tr>`;
+                $('.phone_tbody').append(tr);
+            } );
+            $('.phone_tbody').on('click','.deleteRow',function(){
+                $(this).parent().parent().remove();
+            });
+            // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
+            $('.email_tbody').on('click','.addRow_email', function(){
+                console.log('new Email inputField was added');
+                var tr = `<tr>
+                        <td>
+                            <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
+                                    value="" required >
+                                    @error('email')
+                <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                 </td>
-            </tr>`;
-            $('.phone_tbody').append(tr);
-        } );
-        $('.phone_tbody').on('click','.deleteRow',function(){
-            $(this).parent().parent().remove();
-        });
-        // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
-        $('.email_tbody').on('click','.addRow_email', function(){
-            console.log('new Email inputField was added');
-            var tr = `<tr>
-                    <td>
-                        <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
-                                value="{{ old('email') }}" required >
-                                @error('email')
-            <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-            </td>
-            <td>
-                <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
-            </td>
+                <td>
+                    <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
+                </td>
 
-        </td>
-    </tr>`;
-            $('.email_tbody').append(tr);
-        } );
-        $('.email_tbody').on('click','.deleteRow_email',function(){
-            $(this).parent().parent().remove();
-        });
-        // ++++++++++++++++++++++ Countries , State , Cities Selectbox +++++++++++++++++
-        // ================ countries selectbox ================
-        // $('#country-dd').on('click',function(event) {
-        //     var idCountry = this.value;
-        //     // console.log(idCountry);
-        //     $('#state-dd').html('');
-        //     $.ajax({
-        //         url: "/api/fetch-state",
-        //         type: 'POST',
-        //         dataType: 'json',
-        //         data: { country_id : idCountry , _token : "{{ csrf_token() }}" } ,
-        //         success:function(response)
-        //         {
-        //             $('#state-dd').html('<option value="">Select State</option>');
-        //             $.each(response.states,function(index, val)
-        //             {
-        //                 $('#state-dd').append('<option value="'+val.id+'"> '+val.name+' </option>')
-        //             });
-        //             $('#city-dd').html('<option value="">Select City</option>');
-        //         }
-        //     })
-        // });
-
-        // ================ state selectbox ================
-        $('#state-dd').change(function(event) {
-            var idState = this.value;
-            $('#city-dd').html('');
-            $.ajax({
-                url: "/api/fetch-cities",
-                type: 'POST',
-                dataType: 'json',
-                data: {state_id: idState,_token:"{{ csrf_token() }}"},
-                success:function(response)
-                {
-                    $('#city-dd').html('<option value="">Select State</option>');
-                    console.log(response);
-                    $.each(response.cities,function(index, val)
+            </td>
+        </tr>`;
+                $('.email_tbody').append(tr);
+            } );
+            $('.email_tbody').on('click','.deleteRow_email',function(){
+                $(this).parent().parent().remove();
+            });
+            // ++++++++++++++++++++++ Countries , State , Cities Selectbox ++++++++++++++++
+            // ================ state selectbox ================
+            $('#state-dd').change(function(event) {
+                // Capture the selected state value
+                var idState = this.value;
+                $('#city-dd').html('');
+                $.ajax({
+                    url: "/api/customers/fetch-cities",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {state_id: idState,_token:"{{ csrf_token() }}"},
+                    success:function(response)
                     {
-                        $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
-                    });
-                }
-            })
+                        $('#city-dd').html('<option value="">Select State</option>');
+                        $.each(response.cities,function(index, val)
+                        {
+                            $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                        });
+                    }
+                })
+            });
+            // ================ city selectbox ================
+            // ++++++++++++ store "state_id" in hidden inputField in "cities modal" ++++++++++
+            $("#cities_id").on('click', function(){
+                var state_id = $("#state-dd").val();
+                $("#stateId").val(state_id);
+                console.log("+++++++++++++++++++++++++++ "+state_id+" +++++++++++++++++++++++++++");
+            });
+            // ================ quarter selectbox ================
+            $('#city-dd').change(function(event) {
+                // Capture the selected city value
+                var idCity = this.value;
+                $('#quarter-dd').html('');
+                $.ajax({
+                    url: "/api/customers/fetch-quarters",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {city_id: idCity,_token:"{{ csrf_token() }}"},
+                    success:function(response)
+                    {
+                        console.log("Quarter = "+response.quarters);
+                        $('#quarter-dd').html('<option value="">Select Quarter</option>');
+                        $.each(response.quarters,function(index, val)
+                        {
+                            $('#quarter-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                        });
+                    }
+                })
+            });
+            // ++++++++++++ store "cities_id" in hidden inputField in "quarter modal" ++++++++++
+            $("#add_quarters_btn_id").on('click', function(){
+                var city_id = $("#city-dd").val();
+                $("#cityId").val(city_id);
+                console.log("+++++++++++++++++++++++++++ "+city_id+" +++++++++++++++++++++++++++");
+            });
         });
     </script>
 @endpush

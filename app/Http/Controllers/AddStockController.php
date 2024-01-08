@@ -4,19 +4,28 @@ namespace App\Http\Controllers;
 
 
 use App\Models\AddStockLine;
+use App\Models\Branch;
+use App\Models\Brand;
 use App\Models\CashRegisterTransaction;
+use App\Models\Category;
 use App\Models\Currency;
+use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\JobType;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
+use App\Models\ReceiveDiscount;
 use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
 use App\Models\Store;
 use App\Models\StorePos;
 use App\Models\Supplier;
 use App\Models\System;
+use App\Models\TransactionSellLine;
 use App\Models\User;
 use App\Utils\MoneySafeUtil;
 use App\Utils\ProductUtil;
+use App\Utils\ReportsFilters;
 use App\Utils\StockTransactionUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
@@ -34,15 +43,39 @@ class AddStockController extends Controller
     protected $moneysafeUtil;
     protected $productUtil;
     protected $stockTransactionUtil;
+    protected $reportsFilters;
 
 
-    public function __construct(Util $commonUtil,ProductUtil $productUtil,MoneySafeUtil $moneySafeUtil, StockTransactionUtil $stockTransactionUtil)
+
+    public function __construct(Util $commonUtil,ProductUtil $productUtil,MoneySafeUtil $moneySafeUtil, StockTransactionUtil $stockTransactionUtil,ReportsFilters $reportsFilters)
     {
         $this->commonUtil = $commonUtil;
         $this->moneysafeUtil = $moneySafeUtil;
         $this->productUtil = $productUtil;
         $this->stockTransactionUtil = $stockTransactionUtil;
+        $this->reportsFilters = $reportsFilters;
 
+
+    }
+    public function index(){
+        $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+        $users = User::orderBy('created_at', 'desc')->pluck('name','id');
+        $brands = Brand::pluck('name','id');
+        $categories = Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories1 = Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories2 = Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories3 = Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name','id');
+        $payment_status_array = $this->commonUtil->getPaymentStatusArray();
+        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
+        $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
+        $stocks  = $this->reportsFilters->addStockFilter();
+        // foreach($stocks as $index => $stock){
+        //     return $stock->add_stock_lines->sum('cash_discount');
+        // }
+
+
+        return view('add-stock.index')->with(compact('stocks','suppliers','users','brands','categories',
+            'subcategories1','subcategories2','subcategories3','payment_status_array','branches','stores'));
     }
 
     public function show($id)
@@ -108,11 +141,11 @@ class AddStockController extends Controller
         $payment_type_array = $this->commonUtil->getPaymentTypeArray();
         $transaction = StockTransaction::find($transaction_id);
         $users = User::Notview()->pluck('name', 'id');
-        $exchange_rate = $transaction->transaction_payments()->latest()->first()->exchange_rate;
+//        dd(count($transaction->transaction_payments) > 0 );
+        $exchange_rate = count($transaction->transaction_payments) > 0 ? $transaction->transaction_payments->last()->exchange_rate : System::getProperty('dollar_exchange');
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $pending_amount = $this->calculatePendingAmount($transaction_id);
-
         $supplier = $transaction->supplier->id;
 
         if(isset($supplier->exchange_rate)) {
@@ -147,7 +180,6 @@ class AddStockController extends Controller
                 'paid_on' => $this->commonUtil->uf_date($data['paid_on']) . ' ' . date('H:i:s'),
                 'exchange_rate' => $request->exchange_rate,
                 'created_by' => Auth::user()->id,
-//                'payment_for' => !empty($data['payment_for']) ? $data['payment_for'] : $transaction->customer_id,
                 'paying_currency' => $request->paying_currency,
             ];
             DB::beginTransaction();
@@ -159,12 +191,6 @@ class AddStockController extends Controller
             if(isset($request->change_exchange_rate_to_supplier)){
                 $transaction->supplier->update(['exchange_rate' => $request->exchange_rate]);
             }
-
-//            if ($request->upload_documents) {
-//                foreach ($request->file('upload_documents', []) as $key => $doc) {
-//                    $transaction_payment->addMedia($doc)->toMediaCollection('transaction_payment');
-//                }
-//            }
             // check user and add money to user.
             if ($data['method'] == 'cash') {
                 $user_id = null;
@@ -200,6 +226,89 @@ class AddStockController extends Controller
 
 
             $this->stockTransactionUtil->updateTransactionPaymentStatus($transaction->id);
+
+            DB::commit();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+        }
+
+
+        return redirect()->back()->with('status', $output);
+    }
+
+    public function receive_discount_view($transaction_id){
+        // $payment_type_array = $this->commonUtil->getPaymentTypeArray();
+        $transaction = StockTransaction::find($transaction_id);
+        $received_discounts = ReceiveDiscount::where('stock_transaction_id', $transaction_id)->get();
+
+        if(!empty($transaction->add_stock_lines)){
+            $seasonal_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('seasonal_discount_amount');
+            $annual_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('annual_discount_amount');
+    
+            $sum_received_seasonal = $received_discounts->where('discount_type', 'seasonal_discount')->sum('received_amount');
+            $seasonal_discount -= $sum_received_seasonal;
+
+            $sum_received_annual = $received_discounts->where('discount_type', 'annual_discount')->sum('received_amount');
+            $annual_discount -= $sum_received_annual;
+
+            $seasonal_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount') - $received_discounts->sum('received_amount_dollar');
+            $annual_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('annual_discount') - $received_discounts->sum('received_amount_dollar');
+        } else {
+            $seasonal_discount = 0;
+            $annual_discount = 0;
+            $seasonal_discount_dollar = 0;
+            $annual_discount_dollar = 0;
+        }
+
+        return view('add-stock.partials.receive_discount')->with(compact(
+            'transaction_id',
+            'transaction',
+            'seasonal_discount',
+            'annual_discount',
+            'seasonal_discount_dollar',
+            'annual_discount_dollar'
+        ));
+    }
+    public function receive_discount(Request $request,$transaction_id){
+
+        try {
+            if( $request->discount_type == 'seasonal_discount'){
+                $discount_data = [
+                    'stock_transaction_id' =>  $transaction_id,
+                    'discount_type' => $request->discount_type,
+                    'amount' => $request->seasonal_discount,
+                    'amount_dollar' =>$request->seasonal_discount_dollar,
+                    'change' => $request->change_dinar,
+                    'change_dollar' => $request->change_dollar,
+                    'received_amount' => $request->amount,
+                    'received_amount_dollar' => $request->amount_dollar,
+                    'created_by' => Auth::user()->id,
+                ];
+            }else{
+                $discount_data = [
+                    'stock_transaction_id' =>  $transaction_id,
+                    'discount_type' => $request->discount_type,
+                    'amount' => $request->annual_discount,
+                    'amount_dollar' =>$request->annual_discount_dollar,
+                    'change' => $request->change_dinar,
+                    'change_dollar' => $request->change_dollar,
+                    'received_amount' => $request->amount,
+                    'received_amount_dollar' => $request->amount_dollar,
+                    'created_by' => Auth::user()->id,
+                ];
+            }
+           
+            ReceiveDiscount::create($discount_data);
+
 
             DB::commit();
             $output = [
@@ -285,7 +394,7 @@ class AddStockController extends Controller
                     $pending = $final_total - $amount;
                 }
                 else{
-                    $amount += $payment->amount / $payment->exchange_rate;
+                    $amount += $payment->amount / $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                     $pending = $final_total - $amount;
                 }
             }
@@ -294,7 +403,7 @@ class AddStockController extends Controller
             $final_total = $transaction->final_total;
             foreach ($payments as $payment){
                 if($payment->paying_currency == 2){
-                    $amount += $payment->amount * $payment->exchange_rate;
+                    $amount += $payment->amount * $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                     $pending = $final_total - $amount;
                 }
                 else{
@@ -304,7 +413,7 @@ class AddStockController extends Controller
             }
         }
 
-        return number_format($pending,2);
+        return number_format($pending,3);
     }
 
     public function calculatePaidAmount($transaction_id): string
@@ -320,7 +429,7 @@ class AddStockController extends Controller
                     $paid = $payment->amount;
                 }
                 else{
-                    $paid = $payment->amount / $payment->exchange_rate;
+                    $paid = $payment->amount / $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                 }
             }
         }
@@ -328,7 +437,7 @@ class AddStockController extends Controller
             $final_total = $transaction->final_total;
             foreach ($payments as $payment){
                 if($payment->paying_currency == 2){
-                    $paid = $payment->amount * $payment->exchange_rate;
+                    $paid = $payment->amount * $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                 }
                 else{
                     $paid = $payment->amount;
@@ -336,9 +445,70 @@ class AddStockController extends Controller
             }
         }
 
-        return number_format($paid,2);
+        return number_format($paid,3);
     }
-
+    // +++++++++++++++++++ recentTransactions() +++++++++++++++++++
+    public function recentTransactions(Request $request)
+    {
+        // dd($request);
+        $sell_lines = TransactionSellLine::query();
+        // Check if the user is a superadmin or admin
+        if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
+            $sell_lines = $sell_lines->orderBy('created_at', 'desc');
+        } else {
+            $sell_lines = $sell_lines->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc');
+        }
+        if (!empty(request()->from)) {
+            $sell_lines->whereDate('transaction_sell_lines.created_at', '>=', request()->from);
+        }
+        if (!empty(request()->to)) {
+            $sell_lines->whereDate('transaction_sell_lines.created_at', '<=', request()->to);
+        }
+        if (!empty(request()->customer_id)) {
+            $sell_lines->where('transaction_sell_lines.customer_id', request()->customer_id);
+        }
+        // +++++++++++++++ phone_number column +++++++++++++++
+        // Adjust the condition to search by customer phone number
+        if (!empty(request()->phone_number))
+        {
+            $sell_lines->whereHas('customer', function ($query) {
+                // $query->where('phone', request()->phone_number);
+                $query->where('phone', 'like', '%' . request()->phone_number . '%');
+            });
+        }
+        // dd($sell_lines);
+        if (!empty(request()->deliveryman_id)) {
+            $sell_lines->where('transaction_sell_lines.deliveryman_id', request()->deliveryman_id);
+        }
+        if (!empty(request()->created_by)) {
+            $sell_lines->where('transaction_sell_lines.created_by', request()->created_by);
+        }
+        if (!empty(request()->method)) {
+            $sell_lines->where('payment_transaction_sell_lines.method', request()->method);
+        }
+        $sell_lines = $sell_lines->paginate(10);
+        // return($sell_lines);
+        $customers=Customer::latest()->pluck('name','id')->toArray();
+        $payment_types = $this->getPaymentTypeArrayForPos();
+        $users=User::latest()->pluck('name','id')->toArray();
+        $pos_users=StorePos::pluck('user_id')->toArray();
+        $employees=Employee::whereIn('user_id',$pos_users)->pluck('employee_name','id')->toArray();
+        $job_type_id=JobType::where('title','deliveryman')->first()->id??0;
+        $delivery_men=Employee::where('job_type_id',$job_type_id)->pluck('employee_name','id')->toArray();
+        return view('invoices.partials.recent_transactions',compact('sell_lines','customers','payment_types','users','employees','delivery_men'));
+    }
+    public function getPaymentTypeArrayForPos()
+    {
+        return [
+            'cash' => __('lang.cash'),
+            'card' => __('lang.credit_card'),
+            'cheque' => __('lang.cheque'),
+            'gift_card' => __('lang.gift_card'),
+            'bank_transfer' => __('lang.bank_transfer'),
+            'deposit' => __('lang.use_the_balance'),
+//            'paypal' => __('lang.paypal'),
+        ];
+    }
 
 
 }

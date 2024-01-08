@@ -11,24 +11,24 @@
             {{-- ++++++++++++++++++ "sub1_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select( 'subcategory_id1', [],null,
-                        ['class' => 'form-control select2 subcategory1','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
+                    {!! Form::select( 'subcategory_id1', $subcategories1,null,
+                        ['class' => 'form-control select2 subcategory1','placeholder'=>__('lang.category')." 1",'id' => 'subcategory_id1']
                     ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub2_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select( 'subcategory_id2', [] ,null,
-                            ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
+                    {!! Form::select( 'subcategory_id2', $subcategories2,null,
+                            ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.category')." 2",'id' => 'subcategory_id2' ]
                     ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub3_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select('subcategory_id3', [] ,null,
-                        ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
+                    {!! Form::select('subcategory_id3',$subcategories3 ,null,
+                        ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.category')." 3" ,'id' => 'subcategory_id3']
                     ) !!}
                 </div>
             </div>
@@ -138,8 +138,8 @@
                             $('#subcategory_id1').append('<option value="'+val.id+'">'+val.name+'</option>')
                         });
                     }
-                })
-            });
+            })
+        });
         // +++++++++++++++++++++++++++++++++ subcategory2 filter +++++++++++++++++++++++++++++++++
         $('#subcategory_id1').change(function(event) {
                 var idSubcategory2 = this.value;
@@ -182,7 +182,6 @@
                 }
             })
         });
-
     });
 </script>
 

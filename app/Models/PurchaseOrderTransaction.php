@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PurchaseOrderTransaction extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
     protected $guarded = [];
     public $timestamps = true;
     // soft delete
@@ -36,5 +39,9 @@ class PurchaseOrderTransaction extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+    public function created_by_user()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

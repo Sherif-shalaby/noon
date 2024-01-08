@@ -26,7 +26,7 @@
                    value="{{$product->item_tax}}">
         </td>
         <td style="width: 20%" title="{{__('lang.sku')}}">
-{{--            {{$product->variation->sub_sku}}--}}
+           {{$product->variation->sku}}
         </td>
         <td>@if(isset($product->quantity)){{ preg_match('/\.\d*[1-9]+/', (string)$product->quantity) ? $product->quantity : @num_format($product->quantity)}}@else{{1}}@endif</td>
         <td style="width: 15%">
@@ -56,9 +56,9 @@
             <input type="hidden" class="form-control sub_total" name="transaction_sell_line[{{$loop->index}}][sub_total]"
                    value="{{@num_format(0)}}">
         </td>
-        <td style="width: 20%">
+        {{-- <td style="width: 20%">
             <button type="button" class="btn btn-danger btn-sx remove_row"><i class="fa fa-times"></i></button>
-        </td>
+        </td> --}}
     </tr>
 @empty
 

@@ -32,7 +32,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            {{-- +++++++++++++ Table +++++++++++++ --}}
+                            {{-- ++++++++++++++++++++++++++ Table ++++++++++++++++++++++++++  --}}
                             <div class="col-sm-12">
                                 <br>
                                 <table class="table dataTable">
@@ -48,7 +48,7 @@
                                     </thead>
 
                                     <tbody>
-                                        {{-- @foreach ($attendances as $attendance)
+                                        @foreach ($attendances as $attendance)
                                         <tr>
                                             <td>
                                                 {{@format_date($attendance->date)}}
@@ -62,49 +62,64 @@
                                             <td>
                                                 {{\Carbon\Carbon::parse($attendance->check_out)->format('h:i:s A')}}
                                             </td>
+                                            {{-- ++++++++++++++ status ++++++++++++++++ --}}
                                             <td>
-                                                <span
-                                                    class="badge @attendance_status($attendance->status)">{{__('lang.' . $attendance->status)}}</span>
+                                                {{-- ///// status == late ///// --}}
                                                 @if($attendance->status == 'late')
-                                                @php
-                                                $check_in_data = [];
-                                                $employee = App\Models\Employee::find($attendance->employee_id);
-                                                if(!empty($employee)){
-                                                $check_in_data = $employee->check_in;
-                                                }
-                                                $day_name =
-                                                Illuminate\Support\Str::lower(\Carbon\Carbon::parse($attendance->date)->format('l'));
-                                                $late_time = 0;
-                                                if(!empty($check_in_data[$day_name])){
-                                                $check_in_time =$check_in_data[$day_name];
-                                                $late_time =
-                                                \Carbon\Carbon::parse($attendance->check_in)->diffInMinutes($check_in_time);
-                                                }
-                                                @endphp
-                                                @if($late_time > 0)
-                                                +{{$late_time}}
+                                                    <span class="badge badge-danger p-2">
+                                                        {{__('lang.' . $attendance->status)}}
+                                                    </span>
+                                                {{-- ///// status == present ///// --}}
+                                                @elseif ($attendance->status == 'present')
+                                                    <span class="badge badge-success p-2">
+                                                        {{__('lang.' . $attendance->status)}}
+                                                    </span>
+                                                {{-- ///// status == on_leave ///// --}}
+                                                @else
+                                                    <span class="badge badge-warning p-2">
+                                                        {{__('lang.' . $attendance->status)}}
+                                                    </span>
                                                 @endif
+
+                                                @if($attendance->status == 'late')
+                                                    @php
+                                                        $check_in_data = [];
+                                                        $employee = App\Models\Employee::find($attendance->employee_id);
+                                                        if(!empty($employee))
+                                                        {
+                                                            $check_in_data = $employee->check_in;
+                                                        }
+                                                        $day_name = Illuminate\Support\Str::lower(\Carbon\Carbon::parse($attendance->date)->format('l'));
+                                                        $late_time = 0;
+                                                        if(!empty($check_in_data[$day_name]))
+                                                        {
+                                                            $check_in_time = $check_in_data[$day_name];
+                                                            $late_time = \Carbon\Carbon::parse($attendance->check_in)->diffInMinutes($check_in_time);
+                                                        }
+                                                    @endphp
+                                                    @if($late_time > 0)
+                                                        +{{$late_time}}
+                                                    @endif
                                                 @endif
                                                 @if($attendance->status == 'on_leave')
-                                                @php
-                                                $leave = App\Models\Leave::leftjoin('leave_types', 'leave_type_id',
-                                                'leave_types.id')
-                                                ->where('employee_id', $attendance->employee_id)
-                                                ->where('start_date', '>=', $attendance->date)
-                                                ->where('start_date', '<=', $attendance->date)
-                                                    ->select('leave_types.name')
-                                                    ->first()
+                                                    @php
+                                                        $leave = App\Models\Leave::leftjoin('leave_types', 'leave_type_id','leave_types.id')
+                                                                                ->where('employee_id', $attendance->employee_id)
+                                                                                ->where('start_date', '>=', $attendance->date)
+                                                                                ->where('start_date', '<=', $attendance->date)
+                                                                                ->select('leave_types.name')
+                                                                                ->first()
                                                     @endphp
                                                     @if(!empty($leave))
-                                                    {{$leave->name}}
+                                                        {{$leave->name}}
                                                     @endif
-                                                    @endif
+                                                @endif
                                             </td>
                                             <td>
                                                 {{ucfirst($attendance->created_by)}}
                                             </td>
                                         </tr>
-                                        @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
 

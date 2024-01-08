@@ -2,33 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Branch;
 use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\User;
 use App\Models\Brand;
-use App\Models\Leave;
 use App\Models\Store;
+use App\Models\Branch;
 use App\Models\JobType;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\LeaveType;
-use App\Models\Attendance;
 use App\Models\CustomerType;
-use App\Models\EmployeeProducts;
-use App\Utils\MoneySafeUtil;
 use Illuminate\Http\Request;
 use App\Models\NumberOfLeave;
 use Illuminate\Support\Facades\DB;
-use App\Utils\StockTransactionUtil;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\Auth;use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AddEmployeeNotification;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class EmployeeController extends Controller
 {
@@ -128,23 +122,25 @@ class EmployeeController extends Controller
             ->when( $request->brand_id != null, function ($query) use ( $request ) {
                 $query->where('brand_id', $request->brand_id);
             })
-            // ->latest()->get();
-            ->orderBy("created_at","asc")->get();
+            ->latest()->get();
+            // ->orderBy("created_at","asc")->get();
             return $employee_products;
         }else{
             // $employee_products = $employee_products->latest()->get();
             $employee_products = $employee_products->orderBy("created_at","asc")->get();
         }
         // ++++++++++++++++++++++++++++ end : for "employee's products" Filters +++++++++++++++++++++++++++++
-        $categories= Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
-        $subcategories= Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $categories= Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories1= Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories2= Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories3= Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name','id');
         $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
         return view('employees.create')
             ->with(
                 compact('stores','jobs','leave_types' ,'employee_products',
                     'week_days','modulePermissionArray','subModulePermissionArray',
                     'payment_cycle','commission_type','commission_calculation_period',
-                    'products','customer_types','cashiers' ,'categories','subcategories','brands','branches'
+                    'products','customer_types','cashiers' ,'categories','subcategories1','subcategories2','subcategories3','brands','branches'
                 )
             );
 
@@ -210,6 +206,19 @@ class EmployeeController extends Controller
                 $employee->photo = store_file($request->file('photo'), 'employees');
             }
             $employee->save();
+            // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+            // Fetch the user
+            $users = User::where('id','!=',auth()->user()->id)->get();
+            $employee_name = $employee->employee_name;
+            // Get the name of the user creating the employee
+            $userCreateEmp = auth()->user()->name;
+            $type = "create_employee";
+            // Send notification to users
+            foreach ($users as $user)
+            {
+                Notification::send($user, new AddEmployeeNotification($employee->id ,$userCreateEmp,$employee_name,$type));
+            }
+            // +++++++++++++++ End : Notification ++++++++++++++++++++++
             // insert "employee_id" and "product_id" of employee's product into "employee_product" table
             if(isset($data['ids']))
             {
@@ -475,7 +484,6 @@ class EmployeeController extends Controller
             ];
         }
         return redirect()->back()->with('status', $output);
-
     }
     /* ============================= addPoints() ============================= */
     public function  addPoints()

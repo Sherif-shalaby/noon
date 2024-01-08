@@ -39,17 +39,38 @@
                 <div class="container-fluid">
                     <div class="row pt-5">
                         {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select('customer_type_id', $customer_types, null, [
                                         'class' => 'form-control select2',
+                                        'id' => 'customer-types-dd' ,
                                         'required',
                                         'placeholder' => __('lang.please_select'),
                                     ]) !!}
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerTypesModal">
                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                @error('customer_type_id')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                        </div> --}}
+                        {{-- ++++++++++++++++ customer_type selectbox : انواع العملاء : (customer_type table) +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="customer_type_id">@lang('lang.customer_type')</label>
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select('customer_type_id', $customer_types, null, [
+                                        'class' => 'form-control select2',
+                                        'id' => 'customer_type_id' ,
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                    ]) !!}
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerTypesModal2">
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
                                 @error('customer_type_id')
@@ -149,7 +170,7 @@
                                 <input type="text" class="form-control" name="balance_in_dinar" id="balance_in_dinar" />
                             </div>
                         </div>
-                        {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
+                        {{-- ++++++++++++++++ countries selectbox : الدولة : (countries table) +++++++++++++++++ --}}
                         <div class="col-md-4 mb-3">
                             <label for="country-dd">@lang('lang.country')</label>
                             <select id="country-dd" name="country" class="form-control" disabled>
@@ -158,11 +179,11 @@
                                 </option>
                             </select>
                         </div>
-                        {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
+                        {{-- ++++++++++++++++ state selectbox : المحافظة : (states table) +++++++++++++++++ --}}
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="state-dd">@lang('lang.state')</label>
-                                <select id="state-dd" name="state_id" class="form-control">
+                                <select id="state-dd" name="state_id" class="form-control select2">
                                     @php
                                         $states = \App\Models\State::where('country_id', $countryId)->get(['id','name']);
                                     @endphp
@@ -174,30 +195,27 @@
                                 </select>
                             </div>
                         </div>
-                        {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="city-dd">@lang('lang.city')</label>
-                                <select id="city-dd" name="city_id" class="form-control"></select>
-                            </div>
-                        </div>
+                        {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="regions_id">@lang('lang.regions')</label>
+                                <label for="city-dd">@lang('lang.regions')</label>
                                 <div class="d-flex justify-content-center">
-                                    <select class="form-control select2" name="regions_id" id="regions_id"></select>
-{{--                                    {!! Form::select(--}}
-{{--                                        'store_id[]',--}}
-{{--                                        $stores,null,--}}
-{{--                                       [--}}
-{{--                                        'class' => 'form-control selectpicker',--}}
-{{--                                        'placeholder' => __('lang.please_select'),--}}
-{{--                                        'id' => 'store_id',--}}
-{{--                                       ],--}}
-{{--                                    ) !!}--}}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                            data-target=".add-store"><i
-                                            class="fas fa-plus"></i></button>
+                                    <select id="city-dd" name="city_id" class="form-control select2"></select>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="quarters_id">@lang('lang.quarters')</label>
+                                <div class="d-flex justify-content-center">
+                                    <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -231,6 +249,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {{-- ++++++++++++++++ upload_image ++++++++++++++++ --}}
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label>@lang('lang.upload_image')</label>
@@ -267,7 +286,6 @@
                             </div>
                         </div>
                         {{-- ++++++++++++ images ++++++++++++ --}}
-
                     </div>
                     <div class="row pt-4 pb-5">
                         <div class="col-md-12">
@@ -305,11 +323,8 @@
                 {!! Form::close() !!}
             </div>
             <!-- End col -->
-            <!-- ++++++++++++ Crop_Image Modal ++++++++++++ -->
-            {{-- @include('categories.modalCrop')  --}}
             {{-- ++++++++++++ customer_types Model ++++++++++++ --}}
             @include('customer_types.create')
-
         </div>
     </div>
 @endsection
@@ -317,65 +332,120 @@
 <script src="{{asset('js/product/customer.js')}}" ></script>
 {{-- +++++++++++++++++++++++++++++++ Add New Row in phone ++++++++++++++++++++++++ --}}
 <script>
-    $('.phone_tbody').on('click','.addRow', function(){
-        console.log('new phone inputField was added');
-        var tr = `<tr>
-                    <td>
-                        <input type="text" name="phone[]" class="form-control" placeholder="Enter phone number" />
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
-                    </td>
+    $(document).ready(function(){
+        $('.phone_tbody').on('click','.addRow', function(){
+            console.log('new phone inputField was added');
+            var tr = `<tr>
+                        <td>
+                            <input type="text" name="phone[]" class="form-control" placeholder="Enter phone number" />
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
+                        </td>
 
-                </td>
-            </tr>`;
-        $('.phone_tbody').append(tr);
-    } );
-    $('.phone_tbody').on('click','.deleteRow',function(){
-        $(this).parent().parent().remove();
-    });
-    // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
-    $('.email_tbody').on('click','.addRow_email', function(){
-        console.log('new Email inputField was added');
-        var tr = `<tr>
-                    <td>
-                        <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
-                                value="" required >
-                                @error('email')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
                     </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
-                    </td>
+                </tr>`;
+            $('.phone_tbody').append(tr);
+        } );
+        $('.phone_tbody').on('click','.deleteRow',function(){
+            $(this).parent().parent().remove();
+        });
+        // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
+        $('.email_tbody').on('click','.addRow_email', function(){
+            console.log('new Email inputField was added');
+            var tr = `<tr>
+                        <td>
+                            <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
+                                    value="" required >
+                                    @error('email')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
+                        </td>
 
-                </td>
-            </tr>`;
-        $('.email_tbody').append(tr);
-    } );
-    $('.email_tbody').on('click','.deleteRow_email',function(){
-        $(this).parent().parent().remove();
-    });
-    // ++++++++++++++++++++++ Countries , State , Cities Selectbox ++++++++++++++++
-    // ================ state selectbox ================
-    $('#state-dd').change(function(event) {
-        var idState = this.value;
-        $('#city-dd').html('');
-        $.ajax({
-        url: "/api/fetch-cities",
-        type: 'POST',
-        dataType: 'json',
-        data: {state_id: idState,_token:"{{ csrf_token() }}"},
-        success:function(response)
-        {
-            $('#city-dd').html('<option value="">Select State</option>');
-            console.log(response);
-            $.each(response.cities,function(index, val)
+                    </td>
+                </tr>`;
+            $('.email_tbody').append(tr);
+        } );
+        $('.email_tbody').on('click','.deleteRow_email',function(){
+            $(this).parent().parent().remove();
+        });
+        // ++++++++++++++++++++++ Countries , State , Cities Selectbox ++++++++++++++++
+        // ================ state selectbox ================
+        $('#state-dd').change(function(event) {
+            // Capture the selected state value
+            var idState = this.value;
+            $('#city-dd').html('');
+            $.ajax({
+                url: "/api/customers/fetch-cities",
+                type: 'POST',
+                dataType: 'json',
+                data: {state_id: idState,_token:"{{ csrf_token() }}"},
+                success:function(response)
                 {
-                    $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
-                });
-        }
-        })
+                    $('#city-dd').html('<option value="">Select State</option>');
+                    $.each(response.cities,function(index, val)
+                    {
+                        $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                    });
+                }
+            })
+        });
+        // ================ city selectbox ================
+        // ++++++++++++ store "state_id" in hidden inputField in "cities modal" ++++++++++
+        $("#cities_id").on('click', function(){
+            var state_id = $("#state-dd").val();
+            $("#stateId").val(state_id);
+            console.log("+++++++++++++++++++++++++++ "+state_id+" +++++++++++++++++++++++++++");
+        });
+        // ================ quarter selectbox ================
+        $('#city-dd').change(function(event) {
+            // Capture the selected city value
+            var idCity = this.value;
+            $('#quarter-dd').html('');
+            $.ajax({
+                url: "/api/customers/fetch-quarters",
+                type: 'POST',
+                dataType: 'json',
+                data: {city_id: idCity,_token:"{{ csrf_token() }}"},
+                success:function(response)
+                {
+                    console.log("Quarter = "+response.quarters);
+                    $('#quarter-dd').html('<option value="">Select Quarter</option>');
+                    $.each(response.quarters,function(index, val)
+                    {
+                        $('#quarter-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                    });
+                }
+            })
+        });
+        // ++++++++++++ store "cities_id" in hidden inputField in "quarter modal" ++++++++++
+        $("#add_quarters_btn_id").on('click', function(){
+            var city_id = $("#city-dd").val();
+            $("#cityId").val(city_id);
+            console.log("+++++++++++++++++++++++++++ "+city_id+" +++++++++++++++++++++++++++");
+        });
+        // ================ CustomerTypes selectbox ================
+        // $('#createCustomerTypesModal').on('submit', function(){
+        //     console.log("++++++++++++++++++++++++++++++++++++++++++++");
+        //     $.ajax({
+        //         url: "/customers/get-dropdown-customer-type",
+        //         type: 'POST',
+        //         dataType: 'json',
+        //         success:function(response)
+        //         {
+        //             console.log(response);
+        //             dd(response);
+        //             $("#customer-types-dd").html('<option value="">Select Customer Type</option>')
+        //             $.each(response,function(index, val)
+        //             {
+        //                 $('#customer-types-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+        //             });
+        //         }
+        //     })
+        // });
     });
 </script>
 @endpush

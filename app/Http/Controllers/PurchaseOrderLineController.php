@@ -10,15 +10,17 @@ use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Supplier;
 use App\Utils\ProductUtil;
+use App\Models\AddStockLine;
 use Illuminate\Http\Request;
+use App\Models\StockTransaction;
 use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\DB;
 use App\Utils\StockTransactionUtil;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\AddStockLine;
+use Illuminate\Support\Facades\Auth;
 use App\Models\PurchaseOrderTransaction;
-use App\Models\StockTransaction;
+use Carbon\Carbon;
 
 class PurchaseOrderLineController extends Controller
 {
@@ -50,8 +52,10 @@ class PurchaseOrderLineController extends Controller
     {
         // ---------- filters ------------------
         $stores = Store::pluck('name', 'id')->toArray();
-        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name', 'id');
-        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $categories = Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $subcategories1 = Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $subcategories2 = Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $subcategories3 = Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name', 'id');
         $products = Product::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
 
         // ++++++++++++++++++++++++++++ start: for "employee's products" Filters +++++++++++++++++++++++++++++
@@ -129,7 +133,7 @@ class PurchaseOrderLineController extends Controller
             $purchaseOrders = $purchaseOrders->orderBy("created_at", "asc")->get();
         }
 
-        return view('purchase_order.index', compact('purchaseOrders', 'stores', 'categories', 'subcategories', 'products'));
+        return view('purchase_order.index', compact('purchaseOrders', 'stores', 'categories', 'subcategories1','subcategories2','subcategories3', 'products'));
     }
 
     /* +++++++++++++++ create() +++++++++++++++ */
@@ -227,6 +231,7 @@ class PurchaseOrderLineController extends Controller
     public function edit($id)
     {
         $purchase_order = PurchaseOrderTransaction::find($id);
+        $products = Product::all();
         // dd($purchase_order->status);
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
         $stores = Store::getDropdown();
@@ -237,7 +242,9 @@ class PurchaseOrderLineController extends Controller
             'purchase_order',
             'status_array',
             'suppliers',
-            'stores'
+            'stores',
+            'id',
+            'products'
         ));
     }
     /* ++++++++++++++++++++++++++++++ edit() ++++++++++++++++++++++++++ */
@@ -252,8 +259,89 @@ class PurchaseOrderLineController extends Controller
      * @param  \App\Models\PurchaseOrderLine  $purchaseOrderLine
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PurchaseOrderLine $purchaseOrderLine)
+    /* ============================= destroy() ============================= */
+    public function destroy($id)
     {
-        //
+        try
+        {
+            $purchase_order = PurchaseOrderTransaction::find($id);
+            // Set the 'deleted_by' column to the name of the user who is deleting the record
+            $purchase_order->deleted_by = Auth::user()->id;
+            $purchase_order->save();
+            // Soft delete the record
+            $purchase_order->delete();
+
+            $output = [
+                'success' => true,
+                'msg' => __('lang.job_deleted')
+            ];
+        }
+
+        catch (\Exception $e)
+        {
+            // Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            // $output = [
+            //     'success' => false,
+            //     'msg' => __('messages.something_went_wrong')
+            // ];
+        }
+        return redirect()->back()->with('status', $output);
+    }
+    // ============================= show softDeletedRecords ========================
+    public function softDeletedRecords()
+    {
+        $softDeletedRecords = PurchaseOrderTransaction::onlyTrashed()->get();
+        // dd($softDeletedRecords);
+        return view('purchase_order.soft_deleted_records', compact('softDeletedRecords'));
+    }
+    // ============================= restore softDeletedRecords ========================
+    public function restore($id)
+    {
+        // dd($id);
+        try
+        {
+            $record = PurchaseOrderTransaction::withTrashed()->findOrFail($id);
+            // Restore the soft-deleted record
+            $record->restore();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.restored_success'),
+            ];
+            return redirect()->back()->with('status', $output);
+        }
+        catch (\Exception $e)
+        {
+            dd($e);
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+    }
+    // ============================= forceDelete softDeletedRecords ========================
+    public function forceDelete($id)
+    {
+        // dd($id);
+        try
+        {
+            $record = PurchaseOrderTransaction::withTrashed()->findOrFail($id);
+            // Restore the soft-deleted record
+            $record->forceDelete();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.forceDelete'),
+            ];
+            return redirect()->back()->with('status', $output);
+        }
+        catch (\Exception $e)
+        {
+            dd($e);
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
     }
 }

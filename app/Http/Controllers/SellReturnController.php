@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\SellLine;
+use App\Models\StockTransaction;
 use App\Models\Store;
 use App\Models\StorePos;
 use App\Models\TransactionSellLine;
@@ -45,7 +46,19 @@ class SellReturnController extends Controller
 
     public function index(){
         $sell_returns = TransactionSellLine::where('type' , 'sell_return')->get();
-//        dd($sell_returns);
+    //    dd($sell_returns);
         return view('returns.sell.index',compact('sell_returns'));
+    }
+    public function show($id){
+        $sale = TransactionSellLine::find($id);
+        $return_parent = TransactionSellLine::find($sale->return_parent_id);
+        // return $sale->return_parent;
+        $payment_type_array = $this->commonUtil->getPaymentTypeArrayForPos();
+
+        return view('sell_return.show')->with(compact(
+            'return_parent',
+            'sale',
+            'payment_type_array'
+        ));
     }
 }

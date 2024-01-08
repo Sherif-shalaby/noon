@@ -1,6 +1,7 @@
 <div class="contentbar">
     <div class="row">
         <div class="col-lg-12">
+
             <div class="card m-b-30">
                 <br>
                 {{-- ++++++++++++++++++++++++++++++ Filters +++++++++++++++++++++++ --}}

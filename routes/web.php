@@ -4,6 +4,7 @@ use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GetDueReport;
+use App\Http\Controllers\CashController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\UnitController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellCarController;
 use App\Http\Controllers\SellPosController;
@@ -30,24 +32,29 @@ use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SellReturnController;
+use App\Http\Controllers\ReturnStockController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\GetDueReportController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\InitialBalanceController;
+use App\Http\Controllers\RepresentativeController;
 use App\Http\Controllers\SupplierReportController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\PurchasesReportController;
+use App\Http\Controllers\RequiredProductController;
+use App\Http\Controllers\NewInitialBalanceController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\RepresentativeController;
+use App\Http\Controllers\TransactionPaymentController;
+use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
-use App\Http\Controllers\RequiredProductController;
-use App\Http\Controllers\ReturnStockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +71,12 @@ Route::group(['middleware' => ['auth']], function () {
         Auth::logout();
         return redirect('/login');
     });
+    // ++++++++++++++++++++++++++++++++++++ Notifications +++++++++++++++++++++++++++++++++
+    // --------------- Mark All Posts As Read ---------------
+    Route::get('notifications/markAllAsRead', [NotificationController::class,"markAsRead"])->name('Notification.Read');
+    // --------------- delete notification  ---------------
+    Route::get('notifications/delete/{id}', [NotificationController::class,"destroy_notification"])->name('Notification.delete');
+
     // Home cards route
     Route::get('returns', function () {
         return view('returns.index');
@@ -150,13 +163,45 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
     Route::post('product/multiDeleteRow', [ProductController::class,'multiDeleteRow']);
     Route::get('product/remove_damage/{id}', [ProductController::class,'get_remove_damage'])->name('get_remove_damage');
-    Route::get('product/create/{id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
+    Route::delete('product/convolutions/deleteExpiryRow/{id}', [ProductController::class,'deleteExpiryRow'])->name("deleteExpiryRow");
+    Route::get('product/create/product_id={id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
+    Route::get('product/remove_expiry/{id}', [ProductController::class,'get_remove_expiry'])->name('remove_expiry');
+    Route::get('product/create/product_id={id}/convolutions', [ProductController::class,'addConvolution'])->name("addConvolution");
+    // ======= add "new store" in realtime =====
+    Route::post('product/create/add_store', [ProductController::class,'add_store'])->name('product.add_store');
+    // ++++++++++++ get "stores" dropdown ++++++++++++
+    Route::get('product/get-dropdown-store/', [ProductController::class,'getStoresDropdown']);
+    // +++++++++++++++++++++ products filters +++++++++++++++++++++++++++
+    // fetch "sub_categories1" of selected "main_category" selectbox
+    Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_sub_categories1']);
+    // fetch "sub_categories2" of selected "sub_categories1" selectbox
+    Route::post('api/products/fetch_product_sub_categories2',[ProductController::class,'fetch_sub_categories2']);
+    // fetch "sub_categories3" of selected "sub_categories2" selectbox
+    Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_sub_categories3']);
+    Route::get('product/add_product_raw', [ProductController::class,'addProductRow']);
+
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
     Route::resource('customers', CustomerController::class);
+    // general_setting : fetch "state" of selected "country" selectbox
+    Route::post('api/customers/fetch-state',[CustomerController::class,'fetchState']);
+    // general_setting : fetch "city" of selected "state" selectbox
+    Route::post('api/customers/fetch-cities',[CustomerController::class,'fetchCity']);
+    // general_setting : fetch "quarter" of selected "city" selectbox
+    Route::post('api/customers/fetch-quarters',[CustomerController::class,'fetchQuarter']);
+    // +++++++++++++++++++ Add "new region" +++++++++++++++++++
+    Route::post('customers/create/', [CustomerController::class,'storeRegion'])->name('customers.storeRegion');
+    // +++++++++++++++++++ Add "new quarter" +++++++++++++++++++
+    Route::post('customers/create/storeQuarter', [CustomerController::class,'storeQuarter'])->name('customers.storeQuarter');
     Route::resource('customertypes', CustomerTypeController::class);
     Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
+    // ++++++++++++ task 14-12-2023 : get "cities" dropdown ++++++++++++
+    Route::get('customer/get-dropdown-city/{id}', [CustomerController::class,'getDropdownCity']);
+    // ++++++++++++ task 14-12-2023 : get "quarters" dropdown ++++++++++++
+    Route::get('customer/get-dropdown-quarter/{id}', [CustomerController::class,'getDropdownQuarter']);
+    // ++++++++++++ task 02-01-2024 : get "customer types" dropdown ++++++++++++
+    Route::get('customer/get-dropdown-customer-type/', [CustomerController::class,'getDropdownCustomerType']);
     Route::get('customer/dues', [CustomerController::class,'get_due'])->name('dues');
     Route::get('customer/customer_dues/{id}', [CustomerController::class,'customer_dues'])->name('customer_dues');
 
@@ -167,17 +212,22 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // stocks
-    Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
+    Route::get('recent_transactions', [AddStockController::class,'recentTransactions'])->name('recent_transactions');
+    Route::get('add-stock/index', [AddStockController::class,'index'])->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
     Route::get('add-stock/show/{id}',[AddStockController::class , 'show'])->name('stocks.show');
     Route::get('add-stock/add-payment/{id}',[AddStockController::class , 'addPayment'])->name('stocks.addPayment');
+    Route::get('add-stock/receive_discount/{id}',[AddStockController::class , 'receive_discount_view'])->name('stocks.receive_discount_view');
+    Route::post('add-stock/receive_discount_store/{id}',[AddStockController::class , 'receive_discount'])->name('stocks.receive_discount');
+
     Route::post('add-stock/post-payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.storePayment');
     Route::delete('add-stock/{id}/delete',[AddStockController::class , 'destroy'])->name('stocks.delete');
 
     // Initial Balance
     Route::get('initial-balance/get-raw-unit', [InitialBalanceController::class,'getRawUnit']);
     Route::resource('initial-balance', InitialBalanceController::class);
+    Route::resource('new-initial-balance', NewInitialBalanceController::class);
     Route::get('suppliers/get-dropdown', [SuppliersController::class,'getDropdown']);
     Route::get('balance/get-raw-product', [ProductController::class,'getRawProduct']);
     //delivery
@@ -204,6 +254,8 @@ Route::group(['middleware' => ['auth']], function () {
     // ########### Product Tax ###########
     Route::get('product-tax/get-dropdown', [ProductTaxController::class,'getDropdown']);
     Route::resource('product-tax', ProductTaxController::class);
+    Route::get('report/get-monthly-sale-report', [ReportController::class,'getMonthlySaleReport'])->name('report.monthly_sale_report');
+    Route::get('report/get-store-stock-chart', [ReportController::class,'getStoreStockChart'])->name('report.store_stock_chart');
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
@@ -212,6 +264,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('receivable-report', ReceivableController::class);
     // ########### Payable Report ###########
     Route::resource('payable-report', PayableReportController::class);
+    // fetch "stores" of selected "branch" selectbox
+    Route::post('api/fetch_branch_stores',[PayableReportController::class,'fetch_branch_stores']);
     // ########### Get Due Report ###########
     Route::resource('get-due-report', GetDueReportController::class);
     // ########### Supplier Report ###########
@@ -223,6 +277,9 @@ Route::group(['middleware' => ['auth']], function () {
     // ########### profit Report ###########
     Route::get('report/get-profit-loss', [ProfitReportController::class,'index'])->name('profit_report');
 
+    // ########### Sales Per Employee Report ###########
+
+    Route::resource('sales-per-employee', SalesPerEmployeeReportController::class);
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
@@ -233,10 +290,13 @@ Route::group(['middleware' => ['auth']], function () {
     // Sell Screen
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
 
-    Route::get('invoices/edit/{invoice}', function ($id) {
-        return view('invoices.edit', compact('id'));
-    })->name('invoices.edit');
+    Route::get('invoices/edit/{invoice}', [SellPosController::class,'editInvoice'])->name('invoices.edit');
+    // ++++++++++++ invoices : "delete all selected invoices" ++++++++++++
+    Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
+
     Route::resource('pos',SellPosController::class);
+    Route::resource('pos-pay',TransactionPaymentController::class);
+    Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
     Route::get('show/payment/{id}',[SellPosController::class, 'show_payment'])->name('show_payment');
     Route::get('add/receipt/{trans_id}',[SellPosController::class, 'upload_receipt'])->name('upload_receipt');
@@ -246,18 +306,34 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('customer_price_offer/index', 'customer_price_offer.index')->name('customer_price_offer.index');
     Route::view('customer_price_offer/create', 'customer_price_offer.create')->name('customer_price_offer.create');
     Route::view('customer_price_offer/edit/{id}', 'customer_price_offer.edit')->name('customer_price_offer.edit');
+    // ========= "create_invoice" link =============
+    // Route::get('customer_price_offer/create_invoice/{id}', [CustomerOfferPriceController::class, 'create_invoice'])->name('customer_price_offer.create_invoice');
+    // Route::view('customer_price_offer/create_invoice/{id}', 'customer_price_offer.create_invoice')->name('customer_price_offer.create_invoice');
+    // ################################# edit invoice #################################
+
     // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
     // ################################# Task : purchase_order : Livewire #################################
     Route::view('purchase_order/create', 'purchase_order.create')->name('purchase_order.create');
-    // ########### Purchase Order ###########
+
+    // ########### Purchase Order : index ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ########### Purchase Order : Livewire : edit ###########
+    Route::view('purchase_order/{id}/edit/', [PurchaseOrderLineController::class,'edit'])->name('purchase-order.edit');
+    // ########### Purchase Order : softDelete For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/delete/{id}', [PurchaseOrderLineController::class, 'destroy'])->name('purchase_order.destroy');
+    // ###########  Purchase Order : show recycle_bin For PurchaseOrderTransaction ###########
+    Route::get('/soft-deleted-records', [PurchaseOrderLineController::class, 'softDeletedRecords'])->name('purchase_order.show_soft_deleted_records');
+    // ###########  Purchase Order : restore softDeleteRecords For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/restore/{id}', [PurchaseOrderLineController::class, 'restore'])->name('purchase_order.restore');
+    // ###########  Purchase Order : force deleteRecords For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/forceDelete/{id}', [PurchaseOrderLineController::class, 'forceDelete'])->name('purchase_order.forceDelete');
     // Route::view('purchase-order/{id}/edit/', 'purchase-order.edit')->name('purchase-order.edit');
     // ---- required_products ----
     Route::resource('required-products', RequiredProductController::class);
-    Route::get('purchase-order/edit/{id}', function ($id) {
-        return view('purchase-order.edit', compact('id'));
-    })->name('purchase-order.edit');
+    // Route::get('purchase-order/edit/{id}', function ($id) {
+    //     return view('purchase-order.edit', compact('id'));
+    // })->name('purchase-order.edit');
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));
@@ -265,6 +341,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Returns
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
+    Route::get('sell-return/show/{id}', [SellReturnController::class,'show'])->name('sell_return.show');
 
     // supplier Returns
     Route::get('stock/return/product',[ReturnStockController::class,'show'])->name('suppliers.returns.products');
@@ -292,7 +369,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Branch
     Route::resource('branches',BranchController::class);
-    Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
+    Route::get('get_branch_stores/{ids}', [BranchController::class, 'getBranchStores']);
 
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
 
@@ -304,6 +381,29 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('representatives/print-representative-invoice/{transaction_id}', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
     Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
     Route::resource('expense', ExpenseController::class);
+
+                                // Reports
+    // Product Report
+    Route::get('reports/product/',[ReportController::class,'getProductReport'])->name('reports.products');
+    Route::get('reports/product/{id}',[ReportController::class,'viewProductDetails'])->name('reports.product_details');
+    Route::get('reports/{product}/sell_price_less_purchase_price',[ReportController::class,'sell_price_less_purchase_price'])->name('reports.sell_price_less_purchase_price');
+    // Initial Balance
+    Route::get('reports/initial_balance',[ReportController::class,'initialBalanceReport'])->name('reports.initial_balance');
+    // Add Stock
+    Route::get('reports/add_stock',[ReportController::class,'addStock'])->name('reports.add_stock');
+    // Best Seller
+    Route::get('reports/best_seller',[ReportController::class,'bestSellerReport'])->name('reports.best_seller');
+    // Daily Sales Report
+    Route::get('reports/daily_sales_report',[ReportController::class,'dailySalesReport'])->name('reports.daily_sales_report');
+    // Daily purchase Report
+    Route::get('reports/daily_purchase_report',[ReportController::class,'dailyPurchaseReport'])->name('reports.daily_purchase_report');
+    // ++++++++++++++++++ Task 03-01-2024 : Cash +++++++++++++++++++++
+    Route::resource('cash', CashController::class);
+
+    // close cashier
+    Route::get('cash/add-closing-cash/{cash_register_id}', [CashController::class,'addClosingCash']);
+
+
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

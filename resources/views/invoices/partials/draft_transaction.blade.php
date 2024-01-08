@@ -46,7 +46,7 @@
                                                 {{$transaction->dollar_final_total}}
                                             </td>
                                             <td>
-                                                {{$transaction->customer->customer_type->name}}
+                                                {{$transaction->customer->customer_type->name??''}}
                                             </td>
                                             <td>
                                                 {{$transaction->customer->name}}
@@ -70,10 +70,10 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a data-href="{{route('print_invoice', $transaction->id)}}"
+                                                    {{-- <a data-href="{{route('print_invoice', $transaction->id)}}"
                                                        class="btn btn-danger text-white print-invoice rounded-3">
                                                         <i title=" {{__('lang.print')}}" data-toggle="tooltip" class="dripicons-print"></i>
-                                                    </a>
+                                                    </a> --}}
                                                     <a target="_blank" href="{{route('invoices.edit', $transaction->id)}}" class="btn btn-success draft_pay rounded-3"><i
                                                             title=" {{__('lang.edit') }}" data-toggle="tooltip"
                                                             class="dripicons-document-edit"></i>

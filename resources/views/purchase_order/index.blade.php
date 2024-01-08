@@ -17,11 +17,17 @@
                 </div>
                 <br/>
             </div>
+            {{-- +++++++++++++++++++ "انشاء امر شراء" , "عرض سلة المحذوفات" +++++++++++++++++++ --}}
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
+                    {{-- ++++++++++++++++++++ show Recycle_Bin ++++++++++++ --}}
+                    <a href="{{route('purchase_order.show_soft_deleted_records')}}" class="btn btn-success">
+                        @lang('lang.show_recycle_bin')
+                    </a>
+                    {{-- ++++++++++++++++++++ create purchase_order ++++++++++++ --}}
                     <a href="{{route('purchase_order.create')}}" class="btn btn-primary">
                         @lang('lang.create_purchase_order')
-                      </a>
+                    </a>
                 </div>
             </div>
         </div>
@@ -87,23 +93,20 @@
                                                         </a>
                                                     </li>
                                                     <li class="divider"></li>
-                                                    {{-- @endcan
-                                                    @can('purchase_order.purchase_order.create_and_edit') --}}
+                                                    {{-- +++++++++++++++++++++ edit button +++++++++++++++++ --}}
                                                     <li>
                                                         <a href="{{route('purchase_order.edit', $purchase_order->id)}}" style="color:#000;" class="btn">
                                                             <i class="fa fa-edit"></i>
                                                             @lang('lang.edit') </a>
                                                     </li>
                                                     <li class="divider"></li>
-                                                    {{-- @endcan
-                                                    @can('purchase_order.purchase_order.delete') --}}
+                                                    {{-- +++++++++++++++++++++ delete button +++++++++++++++++ --}}
                                                     <li>
-                                                        <a data-href="#"
-                                                            data-check_password="#"
-                                                            class="btn text-red delete_item" style="color:#000;"><i class="fa fa-trash"></i>
+                                                        <a href="{{route('purchase_order.destroy', $purchase_order->id)}}"
+                                                           class="btn text-red"><i
+                                                                class="fa fa-trash"></i>
                                                             @lang('lang.delete')</a>
                                                     </li>
-                                                    {{-- @endcan --}}
                                                 </ul>
                                             </div>
                                         </td>

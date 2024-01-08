@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class CustomerTypeController extends Controller 
+class CustomerTypeController extends Controller
 {
 
   /**
@@ -32,7 +32,7 @@ class CustomerTypeController extends Controller
    */
   public function create()
   {
-    
+
   }
 
   /**
@@ -43,13 +43,15 @@ class CustomerTypeController extends Controller
   public function store(CustomerTypeRequest $request)
   {
     try {
-      $data = $request->except('_token');
-      $data['created_by'] = Auth::user()->id;
-      $Customer_type=CustomerType::create($data);
-      $output = [
-        'success' => true,
-        'msg' => __('lang.success')
-    ];
+        $data = $request->except('_token');
+        $data['created_by'] = Auth::user()->id;
+        $Customer_type=CustomerType::create($data);
+        $output = [
+            'success' => true,
+            'customer_type_id' => $Customer_type->id,
+            'msg' => __('lang.success')
+        ];
+        return $output;
     }catch (\Exception $e) {
         Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
         $output = [
@@ -57,7 +59,7 @@ class CustomerTypeController extends Controller
             'msg' => __('lang.something_went_wrong')
         ];
     }
-    return redirect()->back()->with('status', $output);
+    // return redirect()->back()->with('status', $output);
   }
 
   /**
@@ -68,7 +70,7 @@ class CustomerTypeController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -141,7 +143,7 @@ class CustomerTypeController extends Controller
     }
     return $output;
   }
-  
+
 }
 
 ?>

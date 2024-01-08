@@ -266,8 +266,43 @@
                     }
                 });
         });
+        $(document).on("change","#branch_id",function () {
+            $.ajax({
+                type: "get",
+                url: "/get_branch_stores/"+$(this).val().join(','),
+                dataType: "html",
+                success: function (response) {
+                    console.log(response)
+                    $("#store_id").empty().append(response).change();
+                }
+            });
+        });
+        $(document).on('click', "#power_off_btn", function(e) {
+            let cash_register_id = $('#cash_register_id').val();
+            let is_register_close = parseInt($('#is_register_close').val());
+            if (!is_register_close) {
+                getClosingModal(cash_register_id);
+                return 'Please enter the closing cash';
+            } else {
+                return;
+            }
+        });
 
 
+        function getClosingModal(cash_register_id, type = 'close') {
+            $.ajax({
+                method: 'get',
+                url: '/cash/add-closing-cash/' + cash_register_id,
+                data: {
+                    type
+                },
+                contentType: 'html',
+                success: function(result) {
+                    $('#closing_cash_modal').empty().append(result);
+                    $('#closing_cash_modal').modal('show');
+                },
+            });
+        }
     </script>
 {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script>
@@ -314,6 +349,7 @@
                     },
                 });
             });
+
         </script>
     @endpush
 

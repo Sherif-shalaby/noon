@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AddStockLine;
-use App\Models\CashRegisterTransaction;
-use App\Models\PaymentTransactionSellLine;
-use App\Models\Product;
-use App\Models\ReceiptTransactionSellLinesFiles;
-use App\Models\SellLine;
+use App\Utils\Util;
+use App\Models\User;
 use App\Models\System;
-use App\Models\TransactionSellLine;
-
+use App\Models\Invoice;
+use App\Models\Product;
+use App\Models\SellLine;
+use App\Utils\ProductUtil;
+use App\Models\AddStockLine;
+use Illuminate\Http\Request;
+use App\Utils\TransactionUtil;
 use App\Utils\CashRegisterUtil;
 use App\Utils\NotificationUtil;
-use App\Utils\ProductUtil;
-use App\Utils\TransactionUtil;
-use App\Utils\Util;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\TransactionSellLine;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\View\Factory;
+use App\Models\CashRegisterTransaction;
+use App\Models\PaymentTransactionSellLine;
+use App\Models\ReceiptTransactionSellLinesFiles;
+use App\Models\Store;
+use Illuminate\Contracts\Foundation\Application;
 
 class SellPosController extends Controller
 {
@@ -92,7 +94,6 @@ class SellPosController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-
         return $output;
     }
     public function show_payment($id){
@@ -195,8 +196,6 @@ class SellPosController extends Controller
             }
             $return_ids =TransactionSellLine::where('return_parent_id', $id)->pluck('id');
 
-
-
             TransactionSellLine::where('return_parent_id', $id)->delete();
             TransactionSellLine::where('parent_sale_id', $id)->delete();
             CashRegisterTransaction::wherein('transaction_id', $return_ids)->delete();
@@ -218,6 +217,32 @@ class SellPosController extends Controller
         }
 
         return $output;
+    }
+    // ++++++++++++++++++++++ multiDeleteRow ++++++++++++++++++++++
+    public function multiDeleteRow(Request $request)
+    {
+        // dd($request);
+        try
+        {
+            DB::beginTransaction();
+            $delete_all_id_array = explode(',',$request->delete_all_id);
+            // dd($delete_all_id_array);
+            TransactionSellLine::whereIn('id',$delete_all_id_array)->delete();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.delete_msg')
+            ];
+            DB::commit();
+        }
+        catch (\Exception $e)
+        {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+        return redirect()->back()->with('status', $output);
     }
 
     public function getPaymentTypeArrayForPos()
@@ -267,5 +292,39 @@ class SellPosController extends Controller
     public function show_receipt($line_id){
         $uploaded_files = ReceiptTransactionSellLinesFiles::where('transaction_sell_line_id',$line_id)->get();
         return view('general.uploaded_files',compact('uploaded_files'));
+    }
+    public function addPayment($transaction_id)
+    {
+        $payment_type_array = $this->commonUtil->getPaymentTypeArray();
+        $transaction = TransactionSellLine::find($transaction_id);
+        $users = User::Notview()->pluck('name', 'id');
+        $balance = $this->transactionUtil->getCustomerBalanceExceptTransaction($transaction->customer_id,$transaction_id)['balance'];
+        $finalTotal = $transaction->final_total;
+        $transactionPaymentsSum = $transaction->transaction_payments->sum('amount');
+        if ($balance > 0 && $balance < $finalTotal - $transactionPaymentsSum) {
+            if (isset($transaction->return_parent)) {
+                $amount = $finalTotal - $transactionPaymentsSum - $transaction->return_parent->final_total - $balance;
+            } else {
+                $amount = $finalTotal - $transactionPaymentsSum - $balance;
+            }
+        } else {
+            if (isset($transaction->return_parent)) {
+                $amount = $finalTotal - $transactionPaymentsSum - $transaction->return_parent->final_total;
+            } else {
+                $amount = $finalTotal - $transactionPaymentsSum;
+            }
+        }
+        return view('invoices.partials.add_payment')->with(compact(
+            'payment_type_array',
+            'transaction_id',
+            'transaction',
+            'users',
+            'balance',
+            'amount'
+        ));
+    }
+    public function editInvoice($id){
+        $stores=Store::latest()->pluck('name','id')->toArray();
+        return view('invoices.edit',compact('id','stores'));
     }
 }

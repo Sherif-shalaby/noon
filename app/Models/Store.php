@@ -66,6 +66,10 @@ class Store extends Model
     {
         return $this->hasMany('App\Models\MoneySafe');
     }
+    public function full_name()
+    {
+        return $this->name . ' - ' . $this->branch->name;
+    }
     // ############ Relationships ############
     // M:M relationship Between "stores" , "general_taxes" table
     // 'stores' can has on many 'general_taxes'

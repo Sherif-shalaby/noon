@@ -19,20 +19,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12 pt-2">
-                        <h5>@lang('lang.permissions')</h5>
-                    </div>
-                </div>
+
                 {{-- +++++++++++++++++++ permission +++++++++++++++++++ --}}
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        {{-- <h3>@lang('lang.user_rights')</h3>  --}}
+                {{-- @if(!in_array($job->title, ['Cashier', 'Deliveryman', 'Representative','Preparer'])) --}}
+                @if(!in_array($job->id, [1,2,3,4]))
+                    <div class="row">
+                        <div class="col-md-12 pt-2">
+                            <h5>@lang('lang.permissions')</h5>
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        @include('jobs.partials.permission')
+                    <div class="row">
+                        <div class="col-md-12">
+                            @include('jobs.partials.permission')
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">@lang('lang.save')</button>

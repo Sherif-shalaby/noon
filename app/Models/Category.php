@@ -38,30 +38,30 @@ class Category extends Model
     {
         return $this->status ? 'Active' : 'Inactive';
     }
-    public function parentName()
-    {
-        $parents=isset($this->parent->parent_id)?($this->getParentName($this->parent->parent_id).' / '):'';
-        $parents .=$this->parent->name ?? null;
-        return $parents;
-    }
+    // public function parentName()
+    // {
+    //     $parents=isset($this->parent->parent_id)?($this->getParentName($this->parent->parent_id).' / '):'';
+    //     $parents .=$this->parent->name ?? null;
+    //     return $parents;
+    // }
     public function created_at()
     {
         return $this->created_at->format('Y-m-d');
     }
     //rel ***********************************************************************************************************************
-    public function parent()
-    {
-        return $this->hasOne(Category::class, 'id', 'parent_id');
-    }
+    // public function parent()
+    // {
+    //     return $this->hasOne(Category::class, 'id', 'parent_id');
+    // }
 
-    public function subCategories()
-    {
-        return $this->hasMany(Category::class, 'parent_id');
-    }
-    public static function parents()
-    {
-        return self::whereNull('parent_id')->get();
-    }
+    // public function subCategories()
+    // {
+    //     return $this->hasMany(Category::class, 'parent_id');
+    // }
+    // public static function parents()
+    // {
+    //     return self::whereNull('parent_id')->get();
+    // }
     public function createBy()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -75,13 +75,13 @@ class Category extends Model
     {
         return $this->belongsToMany('App\Models\Product', 'product_stores');
     }
-    public function getParentName($parent_id) {
-        $category=Category::find($parent_id);
-        $categoryName1=$category->name??null ;
-        $category2=isset($category->parent_id)?(Category::find($category->parent_id)):null;
-        $categoryName2=$category2->name??null ;
-        return (isset($categoryName2)?($categoryName2.' / '):'').$categoryName1;
-    }
+    // public function getParentName($parent_id) {
+    //     $category=Category::find($parent_id);
+    //     $categoryName1=$category->name??null ;
+    //     $category2=isset($category->parent_id)?(Category::find($category->parent_id)):null;
+    //     $categoryName2=$category2->name??null ;
+    //     return (isset($categoryName2)?($categoryName2.' / '):'').$categoryName1;
+    // }
     // public $timestamps = true;
 
     // use SoftDeletes;

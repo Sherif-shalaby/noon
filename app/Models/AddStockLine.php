@@ -29,5 +29,9 @@ class AddStockLine extends Model
     {
         return $this->hasMany(ProductPrice::class, 'stock_line_id', 'id');
     }
+    public function variation_stocklines()
+    {
+        return $this->hasMany(VariationPrice::class, 'variation_price_id', 'id');
+    }
 
 }
