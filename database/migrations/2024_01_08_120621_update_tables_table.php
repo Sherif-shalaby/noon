@@ -30,7 +30,9 @@ return new class extends Migration
         Schema::table('stock_transaction_payments', function (Blueprint $table) {
             $table->decimal('dollar_amount', 15, 4)->nullable();
         });
-
+        Schema::table('money_safe_transactions', function (Blueprint $table) {
+            $table->decimal('dollar_amount', 15, 4)->nullable();
+        });
     }
 
     /**

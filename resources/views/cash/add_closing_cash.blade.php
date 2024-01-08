@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-lg add_closing_cash " role="document" >
     <div class="modal-content">
         {!! Form::open([
-//            'url' => action('CashController@saveAddClosingCash'),
+           'url' => route('cash.save-add-closing-cash'),
             'method' => 'post',
             'id' => 'add_closing_cash_form',
             'files' => true,
