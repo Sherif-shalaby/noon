@@ -28,6 +28,7 @@ use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CashRegisterController;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\ReceivableController;
@@ -401,8 +402,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // close cashier
     Route::get('cash/add-closing-cash/{cash_register_id}', [CashController::class,'addClosingCash']);
-
-
+    Route::post('cash/save-add-closing-cash', [CashController::class,'saveAddClosingCash'])->name('cash.save-add-closing-cash');
+    Route::resource('cash-register', CashRegisterController::class);
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

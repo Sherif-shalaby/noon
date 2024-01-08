@@ -49,7 +49,7 @@ class Create extends Component
 
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
         $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0,$back_to_dollar ,
-        $toggle_suppliers_dropdown , $supplier_id ;
+        $toggle_suppliers_dropdown , $supplier_id,$countOpenedCashRegister ;
 
 
     protected $rules = [
@@ -124,6 +124,12 @@ class Create extends Component
     }
     public function mount()
     {
+        //Check if there is a open register, if no then redirect to Create Register screen.
+        if ($this->countOpenedRegister() == 0) {
+            return redirect()->to('/cash-register/create?is_pos=1');
+        }
+      
+        // $this->countOpenedCashRegister=$this->countOpenedRegister();
         $this->payment_types = $this->getPaymentTypeArrayForPos();
         $this->department_id1 = null;
         $this->department_id2 = null;
@@ -189,7 +195,14 @@ class Create extends Component
         $this->payment_status = 'paid';
         $this->dispatchBrowserEvent('initialize-select2');
     }
-
+    public function countOpenedRegister()
+    {
+        $user_id = auth()->user()->id;
+        $count =  CashRegister::where('user_id', $user_id)
+            ->where('status', 'open')
+            ->count();
+        return $count;
+    }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
