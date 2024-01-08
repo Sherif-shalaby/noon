@@ -178,7 +178,18 @@
     <div id="containerbar" class="pl-3 pr-3">
 
         @include('layouts.partials.header')
-
+        @php
+            $cash_register = App\Models\CashRegister::where('user_id', Auth::user()->id)
+                ->where('status', 'open')
+                ->first();
+        @endphp
+        <input type="hidden" name="is_register_close" id="is_register_close"
+               value="@if (!empty($cash_register)) {{ 0 }}@else{{ 1 }} @endif">
+        <input type="hidden" name="cash_register_id" id="cash_register_id"
+               value="@if (!empty($cash_register)) {{ $cash_register->id }} @endif">
+        <div id="closing_cash_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+             class="modal">
+        </div>
         {{-- @php
         $notifications=\App\Models\BalanceRequestNotification::orderby('created_at','desc')->get();
         $notification_count=\App\Models\BalanceRequestNotification::orderby('created_at','desc')->where('isread',0)->count();
@@ -227,6 +238,7 @@
             <!-- End Topbar Mobile -->
             @yield('breadcrumbbar')
             @yield('content')
+
         </div>
         <!-- End Rightbar -->
 
