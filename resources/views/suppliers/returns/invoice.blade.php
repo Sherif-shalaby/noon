@@ -3,16 +3,16 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 85px;
+            top: 35px;
         }
 
         .wrapper1 {
-            margin-top: 55px;
+            margin-top: 35px;
         }
 
         @media(max-width:767px) {
             .wrapper1 {
-                margin-top: 145px;
+                margin-top: 120px;
             }
         }
     </style>

@@ -3,7 +3,7 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 175px;
+            top: 155px;
         }
 
         .wrapper1 {
@@ -12,7 +12,7 @@
 
         @media(max-width:768px) {
             .table-top-head {
-                top: 265px !important
+                top: 280px !important
             }
 
             .wrapper1 {

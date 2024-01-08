@@ -819,4 +819,5 @@ return array(
     'total_gift_card_sale' => 'إجمالي بيع بطاقات الهدايا',
     'credit_card_sales' => 'مبيعات بطاقات الائتمان',
     'return_sales' => 'المبيعات المرتجعة',
+    'ordered' => 'طلب',
 );

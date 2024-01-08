@@ -15,7 +15,7 @@
         }
 
         .table-top-head {
-            top: 55px !important;
+            top: 35px !important;
         }
 
         .table-scroll-wrapper {
@@ -30,19 +30,19 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 55px !important
+                top: 35px !important
             }
         }
 
         @media(max-width:768px) {
             .table-top-head {
-                top: 55px !important
+                top: 35px !important
             }
         }
 
         @media(max-width:575px) {
             .table-top-head {
-                top: 55px !important
+                top: 35px !important
             }
         }
 
@@ -57,7 +57,6 @@
         }
     </style>
     <div class="animate-in-page">
-
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
                 class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

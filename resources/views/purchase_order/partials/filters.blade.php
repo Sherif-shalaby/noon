@@ -2,10 +2,10 @@
     <form method="get" id="filter_form">
         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {{-- ++++++++++++++++++ "main_category" filter ++++++++++++++++++ --}}
-            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
                 {!! Form::label('category_id', __('lang.category') . ' 1') !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('category_id', $categories, request()->category_id, [
                         'class' => 'form-control select2 category',
                         'placeholder' => __('lang.please_select'),
@@ -14,10 +14,10 @@
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub1_category" filter ++++++++++++++++++ --}}
-            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
                 {!! Form::label('category_id', __('lang.category') . ' 2') !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('subcategory_id1', $subcategories1, request()->subcategory_id1, [
                         'class' => 'form-control select2 subcategory1',
                         'placeholder' => __('lang.please_select'),
@@ -26,10 +26,10 @@
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub2_category" filter ++++++++++++++++++ --}}
-            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
                 {!! Form::label('category_id', __('lang.category') . ' 3') !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('subcategory_id2', $subcategories2, request()->subcategory_id2, [
                         'class' => 'form-control select2 subcategory2',
                         'placeholder' => __('lang.please_select'),
@@ -38,10 +38,10 @@
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub3_category" filter ++++++++++++++++++ --}}
-            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
                 {!! Form::label('category_id', __('lang.category') . ' 4') !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('subcategory_id3', $subcategories3, request()->subcategory_id3, [
                         'class' => 'form-control select2 subcategory3',
                         'placeholder' => __('lang.please_select'),
@@ -50,10 +50,10 @@
                 </div>
             </div>
             {{-- +++++++++++++++ products filter +++++++++++++++ --}}
-            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
                 {!! Form::label('category_id', __('lang.select_products')) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('product_id', $products, request()->product_id, [
                         'class' => 'form-control select2 products',
                         'placeholder' => __('lang.please_select'),
@@ -62,10 +62,10 @@
                 </div>
             </div>
             {{-- +++++++++++++++ purchase_type filter +++++++++++++++ --}}
-            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
                 {!! Form::label('category_id', __('lang.purchase_type')) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('purchase_type', [__('lang.local'), __('lang.export')], request()->purchase_type, [
                         'class' => 'form-control select2 purchase_type',
                         'placeholder' => __('lang.please_select'),
@@ -74,7 +74,7 @@
                 </div>
             </div>
             {{-- ++++++++++++++++++ "filter" and "clear filters" button ++++++++++++++++++ --}}
-            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            <div class="col-6 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 justify-content-end @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
 
                 {{-- ======= "filter" button ======= --}}

@@ -2,12 +2,12 @@
 @section('title', __('lang.add_wages'))
 @section('breadcrumbbar')
     <style>
-        .width-quarter {
+        . {
             width: 100% !important
         }
 
         @media(min-width:768px) {
-            .width-quarter {
+            . {
                 width: 25% !important
             }
         }
@@ -61,11 +61,10 @@
                     <div class="container-fluid">
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.1s">
                                 {!! Form::label('employee_id', __('lang.employee') . '*', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="input-wrapper">
@@ -81,11 +80,10 @@
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++ طريقة الدفع +++++++++++++++++ --}}
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.15s">
                                 {!! Form::label('payment_type', __('lang.wage_payment_type') . '*', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="input-wrapper">
@@ -101,11 +99,10 @@
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++ مدفوعات اخري (المبلغ) +++++++++++++++++ --}}
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.2s">
                                 {!! Form::label('other_payment', __('lang.other_payment'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="input-wrapper">
@@ -121,11 +118,9 @@
                                 @enderror
                             </div>
 
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center payment_cycle
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.25s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
                                     style='font-size: 12px;font-weight: 500;' for="payment_cycle">@lang('lang.select_payment_cycle')</label>
                                 <div class="input-wrapper">
                                     {!! Form::select('payment_cycle', [], null, [
@@ -136,11 +131,9 @@
                                 </div>
                             </div>
 
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center account_period
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.3s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
                                     style='font-size: 12px;font-weight: 500;'
                                     for="acount_period_start_date">@lang('lang.acount_period_start_date')</label>
                                 <div class="input-wrapper">
@@ -151,11 +144,9 @@
                                     ]) !!}
                                 </div>
                             </div>
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center account_period
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.35s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
                                     style='font-size: 12px;font-weight: 500;'
                                     for="acount_period_end_date">@lang('lang.acount_period_end_date')</label>
                                 <div class="input-wrapper">
@@ -168,11 +159,9 @@
                             </div>
 
 
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.4s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 ",
                                     style='font-size: 12px;font-weight: 500;' for="deductibles">@lang('lang.deductibles')</label>
                                 <div class="input-wrapper">
 
@@ -183,11 +172,9 @@
                                     ]) !!}
                                 </div>
                             </div>
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.45s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
                                     style='font-size: 12px;font-weight: 500;'
                                     for="reasons_of_deductibles">@lang('lang.reasons_of_deductibles')</label>
                                 <div class="input-wrapper">
@@ -200,11 +187,9 @@
                                 </div>
                             </div>
                             {{-- ============= increases :  الزيادات ============= --}}
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.5s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
                                     style='font-size: 12px;font-weight: 500;' for="increases">@lang('lang.increases')</label>
                                 <div class="input-wrapper">
 
@@ -216,11 +201,9 @@
                                 </div>
                             </div>
                             {{-- ============= reasons_of_increases : أسباب الزيادات ============= --}}
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.55s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
                                     style='font-size: 12px;font-weight: 500;'
                                     for="reasons_of_increases">@lang('lang.reasons_of_increases')</label>
                                 <div class="input-wrapper">
@@ -233,11 +216,9 @@
                                 </div>
                             </div>
                             {{-- ============= net_amount : الصافي ============= --}}
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.6s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 "
                                     style='font-size: 12px;font-weight: 500;' for="net_amount">@lang('lang.net_amount')</label>
                                 <div class="input-wrapper">
 
@@ -249,11 +230,9 @@
                                 </div>
                             </div>
                             <input type="hidden" name="amount" id="amount">
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.65s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 ",
                                     style='font-size: 12px;font-weight: 500;' for="payment_date">@lang('lang.payment_date')</label>
                                 <div class="input-wrapper">
 
@@ -264,11 +243,10 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++++ source_type +++++++++++++++++  --}}
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.7s">
                                 {!! Form::label('source_type', __('lang.wage_source_type'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="input-wrapper">
@@ -282,11 +260,10 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ اسم الموظف ++++++++++ --}}
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.75s">
                                 {!! Form::label('source_of_payment', __('lang.wage_source_of_payment'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="input-wrapper">
@@ -300,11 +277,9 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++ upload_files ++++++++++++++++++++++++ --}}
-                            <div class="col-6 flex-column col-md-3 mb-2 d-flex align-items-end align-items-md-center
-                                @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.8s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
+                                <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 ",
                                     style='font-size: 12px;font-weight: 500;'
                                     for="upload_files">@lang('lang.upload_files')</label>
                                 <div class="input-wrapper">
@@ -315,27 +290,26 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++ notes ++++++++++++++++++++++++ --}}
-                            <div class="col-md-12 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-8 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.85s">
                                 {!! Form::label('notes', __('lang.notes'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
-                                <div class="input-wrapper width-full" style="height: 100px;border-radius: 9px">
+                                <div class="width-full" style="height: 100px;border-radius: 9px">
                                     {!! Form::textarea('notes', null, [
                                         'class' => 'form-control',
-                                        'style' => ' width: 100%;height:100%;background-color:transparent',
+                                        'style' => ' width: 100%;height:100%;background-color:#dedede',
                                     ]) !!}
                                 </div>
                                 @error('notes')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="row pb-5 animate__animated animate__bounceInLeft" style="animation-delay: 1.9s">
-                            <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                            <div class="row animate__animated animate__bounceInLeft" style="animation-delay: 1.9s">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                                </div>
                             </div>
                         </div>
                     </div>

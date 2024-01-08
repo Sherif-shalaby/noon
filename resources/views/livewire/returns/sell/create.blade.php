@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="card m-b-30 mt-4">
+            <div class="card mb-0 mt-1">
                 <div
                     class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                     <h6>@lang('lang.return_sell')</h6>
@@ -12,7 +12,7 @@
 
                         {{-- +++++++++++++++++ stores filter +++++++++++++++++ --}}
                         <div
-                            class="col-md-4 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                             {!! Form::label('store_id', __('lang.store'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
@@ -30,7 +30,7 @@
 
                         {{-- +++++++++++++++++ branches filter +++++++++++++++++ --}}
                         <div
-                            class="col-md-4 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                             {!! Form::label('branch_id', __('lang.branch'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
@@ -64,8 +64,8 @@
                             </div>
                         </div> --}}
 
-                        <div class="col-md-4 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            style="font-size: 14px;font-weight: 500;">
+                        <div
+                            class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                             {!! Form::label('pos_id', __('lang.pos'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
@@ -77,7 +77,7 @@
                                 ]) !!}
                             </div>
                         </div>
-                        <div class="col-md-4 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-md-3 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="font-size: 14px;font-weight: 500;">
                             <span class="mx-1">
                                 @lang('lang.invoice_no')
@@ -89,7 +89,7 @@
                         </div>
 
 
-                        <div class="col-md-4 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-md-3 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="font-size: 14px;font-weight: 500;">
                             <span class="mx-1">
                                 @lang('lang.customer')
@@ -107,7 +107,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="col-md-12" style="margin-top: 20px ">
+                            <div class="col-md-12">
                                 <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
                                     <table id="product_table" class="table table-striped">
                                         <thead>
@@ -183,13 +183,13 @@
                     </div>
                     <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <div
-                            class="col-md-9 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse my-2 @else flex-row @endif">
-                            <label>@lang('lang.notes')</label>
+                            class="mb-2 col-md-9 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                            <label class="mb-0">@lang('lang.notes')</label>
                             <textarea rows="3" class="form-control initial-balance-input width-full" name="notes" id="notes"
                                 wire:model = 'notes'>{{ !empty($sell_return) ? $sell_return->notes : '' }}</textarea>
                         </div>
                         <div
-                            class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            class="mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                             {!! Form::label('files', __('lang.files'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
@@ -200,7 +200,6 @@
                             </div>
                         </div>
                     </div>
-                    <br>
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" wire:click ='store()'

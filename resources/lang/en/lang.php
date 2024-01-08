@@ -723,7 +723,7 @@ return [
     'Deliveryman' => 'DeliveryMan',
     'Representative' => 'Representative',
     'discounts' => 'Discounts',
-      // ++++++++++++ Task 03-01-2024 : Cash Module ++++++++++++++++
+    // ++++++++++++ Task 03-01-2024 : Cash Module ++++++++++++++++
     'cash' => 'Cash',
     'cash_sales' => 'Cash Sales',
     'cash_in' => 'Cash In',
@@ -749,5 +749,6 @@ return [
     'total_gift_card_sale' => 'Total Gift Card Sale',
     'credit_card_sales' => 'Credit Card Sales',
     'return_sales' => 'Return Sales',
+    'ordered' => 'ordered',
 
 ];

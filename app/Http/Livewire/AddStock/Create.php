@@ -397,8 +397,8 @@ class Create extends Component
         }
         $this->dinar_expenses = number_format($this->num_uf($this->dinar_expenses), 3);
         $this->dollar_expenses = number_format($this->num_uf($this->dollar_expenses), 3);
-        $this->dispatchBrowserEvent('componentRefreshed');
         // dd(number_format($this->total_expenses,3));
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function removeExpense($index)
     {
@@ -428,6 +428,7 @@ class Create extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function store(): Redirector|Application|RedirectResponse
     {
@@ -635,10 +636,11 @@ class Create extends Component
             }
 
             // Add payment transaction
-            if (!empty($this->amount)) {
+            if (!empty($this->total_amount) || !empty($this->total_amount_dollar)) {
                 $payment  = new StockTransactionPayment();
                 $payment->stock_transaction_id  = $transaction->id;
-                $payment->amount  = $this->amount;
+                $payment->amount  = $this->total_amount;
+                $payment->dollar_amount  = $this->total_amount_dollar;
                 $payment->method = $this->method;
                 $payment->paid_on = !empty($this->paid_on) ? $this->paid_on :  Carbon::now();
                 $payment->source_type = !empty($this->source_type) ? $this->source_type : null;
@@ -691,12 +693,13 @@ class Create extends Component
                         }
                     }
                     if (!empty($user_id)) {
-                        $cr_transaction = CashRegisterTransaction::where('transaction_id', $transaction->id)->first();
+                        $cr_transaction = CashRegisterTransaction::where('stock_transaction_id', $transaction->id)->first();
                         if ($cr_transaction) {
                             $register = CashRegister::where('id', $cr_transaction->cash_register_id)->first();
                             $data = [
                                 'cash_register_id' => $register->id,
                                 'amount' => $payment->amount,
+                                'dollar_mount' => $payment->dollar_amount,
                                 'pay_method' => 'cash',
                                 'type' => 'debit',
                                 'transaction_type' => 'add_stock',
@@ -715,10 +718,11 @@ class Create extends Component
                             if (!empty($user_id)) {
                                 $payments_formatted[] = new CashRegisterTransaction([
                                     'amount' => $this->amount,
+                                    'dollar_mount' => $payment->dollar_amount,
                                     'pay_method' => $this->method,
                                     'type' => 'debit',
                                     'transaction_type' => 'add_stock',
-                                    'transaction_id' => $transaction->id,
+                                    'stock_transaction_id' => $transaction->id,
                                     'transaction_payment_id' => null
                                 ]);
                             }
@@ -994,19 +998,16 @@ class Create extends Component
     {
         $this->items[$index]['show_validity'] =
             !$this->items[$index]['show_validity'];
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function stayShowshowDiscountDetails($index)
     {
         $this->items[$index]['show_discount_details'] =
             !$this->items[$index]['show_discount_details'];
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function stayShowUnitDetails($index)
     {
         $this->items[$index]['show_unit_details'] =
             !$this->items[$index]['show_unit_details'];
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function add_by_po()
     {
@@ -1236,19 +1237,16 @@ class Create extends Component
                 }
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_price_raw($index, $key)
     {
         unset($this->items[$index]['prices'][$key]);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function change_discount_from_original_price($index, $key)
     {
         if ($this->items[$index]['prices'][$key]['discount_from_original_price']) {
             $this->items[$index]['prices'][$key]['discount_from_original_price'] = !$this->items[$index]['prices'][$key]['discount_from_original_price'];
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
         //        $this->changePrice($index,$key);
     }
     public function changePrice($index, $key)
@@ -1299,7 +1297,6 @@ class Create extends Component
                 }
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function getVariationData($index, $via = null, $i = null)
@@ -1343,7 +1340,7 @@ class Create extends Component
 
             $this->getSubUnits($index);
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
+
         //    dd($product_data->product_dimensions);
     }
 
@@ -1675,7 +1672,6 @@ class Create extends Component
         // $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
         $this->total_amount = $this->sum_total_cost();
         // }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeReceivedDollar()
     {
@@ -1716,7 +1712,6 @@ class Create extends Component
                 }
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
         // dd( $this->dollar_remaining);
     }
 
@@ -1760,7 +1755,6 @@ class Create extends Component
                 }
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function sum_sub_total()
@@ -1803,7 +1797,6 @@ class Create extends Component
                 $this->final_purchase_for_piece($index);
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function total_quantity()
     {
@@ -1990,17 +1983,17 @@ class Create extends Component
             // $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity'])* $this->num_uf($this->items[$index]['stores'][$i]['purchase_price']));
             // }
             // if( $this->purchase_final($index,$var,$i) > 0){
-            $this->purchase_final_dollar($index, $var, $i);
-            $this->final_purchase_for_piece($index, $var, $i);
+            // $this->purchase_final_dollar($index,$var,$i);
+            // $this->final_purchase_for_piece($index,$var,$i);
             // }
-            $this->dispatchBrowserEvent('componentRefreshed');
             return $final_purchase;
         } else {
             $final_purchase = $this->num_uf($this->items[$index]['purchase_after_discount']);
             // dd($this->items[$index]['bonus_quantity']);
 
             $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']));
-
+            // if($this->items[$index]['used_currency'] != 2){
+            // dd('test');
             if (isset($this->items[$index]['discount_dependency']) && $this->items[$index]['discount_dependency'] == true) {
 
                 if (isset($this->items[$index]['discount_percent'])) {
@@ -2076,16 +2069,16 @@ class Create extends Component
                     $this->items[$index]['annual_discount_amount'] =  $annual_discount;
                 }
                 // dd($discount );
-                $final_purchase = $original - $this->num_uf($this->items[$index]['quantity']) * ($discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount);
+                $final_purchase = $original - ($discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount);
                 // dd( $final_purchase);
             }
+            // }
             // dd( $final_purchase);
             // if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == false && isset($this->items[$index]['bonus_quantity']) ){
             // $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['bonus_quantity'])* $this->num_uf($this->items[$index]['purchase_price']));
             // }
-            $this->purchase_final_dollar($index);
-            $this->final_purchase_for_piece($index);
-            $this->dispatchBrowserEvent('componentRefreshed');
+            // $this->purchase_final_dollar($index);
+            // $this->final_purchase_for_piece($index);
             return number_format($final_purchase, 3);
             // if( $this->purchase_final($index) > 0){
 
@@ -2103,7 +2096,8 @@ class Create extends Component
             // dd($this->items[$index]['stores'][$i]['bonus_quantity']);
 
             $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
-
+            // if($this->items[$index]['used_currency'] == 2){
+            // dd('test');
             if (isset($this->items[$index]['stores'][$i]['discount_dependency']) && $this->items[$index]['stores'][$i]['discount_dependency'] == true) {
 
                 if (isset($this->items[$index]['stores'][$i]['discount_percent'])) {
@@ -2111,7 +2105,12 @@ class Create extends Component
                 }
 
                 if (isset($this->items[$index]['stores'][$i]['discount'])) {
-                    $final_purchase -= $this->num_uf($this->items[$index]['discount']);
+                    if ($this->items[$index]['used_currency'] == 2) {
+                        $final_purchase -= $this->num_uf($this->items[$index]['stores'][$i]['discount']);
+                    } else {
+                        $final_purchase -= ($this->num_uf($this->items[$index]['stores'][$i]['discount']) / $this->num_uf($this->exchange_rate));
+                    }
+                    // $final_purchase -= $this->num_uf($this->items[$index]['discount']);
                 }
 
                 if (isset($this->items[$index]['stores'][$i]['cash_discount'])) {
@@ -2150,6 +2149,13 @@ class Create extends Component
 
                 if (isset($this->items[$index]['stores'][$i]['discount'])) {
                     $discount = $this->num_uf($this->items[$index]['stores'][$i]['discount']);
+                    // dd($discount);
+                    if ($this->items[$index]['used_currency'] == 2) {
+                        $discount = $this->num_uf($discount);
+                    } else {
+                        $discount = $this->num_uf($discount) / $this->num_uf($this->exchange_rate);
+                    }
+                    // $discount =$this->num_uf( $this->items[$index]['stores'][$i]['discount']);
                 }
 
                 if (isset($this->items[$index]['stores'][$i]['cash_discount'])) {
@@ -2176,11 +2182,12 @@ class Create extends Component
                 $final_purchase = $original - ($discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount);
                 // dd( $final_purchase);
             }
+            // }
             // dd( $final_purchase);
             // if(isset($this->items[$index]['stores'][$i]['discount_on_bonus_quantity']) && $this->items[$index]['stores'][$i]['discount_on_bonus_quantity'] == false && isset($this->items[$index]['stores'][$i]['bonus_quantity']) ){
             //     $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity'])* $this->num_uf($this->items[$index]['stores'][$i]['purchase_price']));
             // }
-            $this->dollar_final_purchase_for_piece($index, $var, $i);
+            // $this->dollar_final_purchase_for_piece($index,$var,$i);
             return $final_purchase;
             // if( $this->purchase_final($index,$var,$i) > 0){
 
@@ -2189,6 +2196,8 @@ class Create extends Component
             $final_purchase = $this->num_uf($this->items[$index]['dollar_purchase_after_discount']);
 
             $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']));
+            // if($this->items[$index]['used_currency'] == 2){
+            // dd('vfgdsh');
 
             if (isset($this->items[$index]['discount_dependency']) && $this->items[$index]['discount_dependency'] == true) {
 
@@ -2197,7 +2206,12 @@ class Create extends Component
                 }
 
                 if (isset($this->items[$index]['discount'])) {
-                    $final_purchase -= $this->num_uf($this->items[$index]['discount']);
+                    if ($this->items[$index]['used_currency'] == 2) {
+                        $final_purchase -= $this->num_uf($this->items[$index]['discount']);
+                    } else {
+                        $final_purchase -= ($this->num_uf($this->items[$index]['discount']) / $this->num_uf($this->exchange_rate));
+                    }
+                    // $final_purchase -= $this->num_uf($this->items[$index]['discount']);
                 }
 
                 if (isset($this->items[$index]['cash_discount'])) {
@@ -2222,7 +2236,7 @@ class Create extends Component
                 }
             } else {
                 $original = $this->num_uf($this->items[$index]['dollar_purchase_after_discount']);
-                // dd( $original);
+                // dd('test2');
 
                 $original =  $original * ($this->num_uf($this->items[$index]['quantity']));
                 $discount_percent = 0;
@@ -2232,12 +2246,16 @@ class Create extends Component
                 $seasonal_discount = 0;
                 if (isset($this->items[$index]['discount_percent'])) {
                     $discount_percent = round($original * ($this->num_uf($this->items[$index]['discount_percent']) / 100), 2);
+                    // dd($discount_percent);
                 }
 
                 if (isset($this->items[$index]['discount'])) {
                     $discount = $this->num_uf($this->items[$index]['discount']);
+                    // dd($discount);
                     if ($this->items[$index]['used_currency'] == 2) {
-                        $discount = $this->num_uf($discount) * $this->num_uf($this->exchange_rate);
+                        $discount = $this->num_uf($discount);
+                    } else {
+                        $discount = $this->num_uf($discount) / $this->num_uf($this->exchange_rate);
                     }
                 }
 
@@ -2262,14 +2280,15 @@ class Create extends Component
                     $this->items[$index]['annual_discount_amount'] =  $annual_discount;
                 }
                 // dd($discount );
-                $final_purchase = $original - $this->num_uf($this->items[$index]['quantity']) * ($discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount);
+                $final_purchase = $original - ($discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount);
                 // dd( $final_purchase);
             }
+            // }
             // dd( $final_purchase);
             // if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == false && isset($this->items[$index]['bonus_quantity']) ){
             //     $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['bonus_quantity'])* $this->num_uf($this->items[$index]['purchase_price']));
             // }
-            $this->dollar_final_purchase_for_piece($index);
+            // $this->dollar_final_purchase_for_piece($index);
             return number_format($final_purchase, 3);
         }
         // }
@@ -2329,7 +2348,6 @@ class Create extends Component
         } else {
             unset($this->items[$index]);
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function countItems()
@@ -2514,7 +2532,6 @@ class Create extends Component
         }
         $this->changeTotalAmount();
         $this->changePurchasePrice($index, $var, $i);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeExchangeRate()
     {

@@ -231,10 +231,10 @@
         {!! Form::label('address', __('lang.address'), [
             'class' => 'mb-0',
         ]) !!}
-        <div class="input-wrapper width-full" style="height: 100px;border-radius: 9px">
+        <div class="width-full" style="height: 100px;border-radius: 9px">
             {!! Form::textarea('address', null, [
                 'class' => 'form-control ',
-                'style' => ' width: 100%;height:100%;background-color:transparent',
+                'style' => ' width: 100%;height:100%;background-color:#dedede',
                 'rows' => '4',
                 'wire:model' => 'add_customer.address',
             ]) !!}

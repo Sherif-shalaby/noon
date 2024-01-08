@@ -751,6 +751,16 @@
                 });
             });
         @endif
+        // @if (empty($countOpenedCashRegister))
+        //     // window.addEventListener('NoUserPos', function(event) {
+        //         Swal.fire({
+        //             title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>" ,
+        //             icon: 'error',
+        //         }).then((result) => {
+        //             window.location.href = "{{ url('/cash-register/create?is_pos=1') }}";
+        //         });
+        //     // });
+        // @endif
         $(document).ready(function() {
             $('select').on('change', function(e) {
 

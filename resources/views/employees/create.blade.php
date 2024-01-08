@@ -207,10 +207,10 @@
                                         {{-- +++++++++++++++++ employee [ name , store , email ] +++++++++++++++++ --}}
                                         <div
                                             class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                            <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                 style="animation-delay: 1.2s">
                                                 <label
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="fname">@lang('lang.name')*</label>
                                                 <div class="input-wrapper">
 
@@ -219,12 +219,12 @@
                                                         placeholder="Name">
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                            <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                 style="animation-delay: 1.25s">
                                                 <label
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                    for="email">@lang('lang.email')*
-                                                    <small>(@lang('lang.it_will_be_used_for_login'))</small></label>
+                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                    for="email"><small>(@lang('lang.it_will_be_used_for_login'))</small>@lang('lang.email')*
+                                                </label>
                                                 <div class="input-wrapper">
                                                     <input class="form-control initial-balance-input" style="width: 100%;"
                                                         type="email" name="email" id="email" required
@@ -232,10 +232,10 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                            <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                 style="animation-delay: 1.3s">
                                                 <label
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="password">@lang('lang.password')*</label>
                                                 <div class="input-wrapper">
                                                     <input type="password" class="form-control initial-balance-input"
@@ -243,10 +243,10 @@
                                                         placeholder="Create New Password">
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                            <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                 style="animation-delay: 1.35s">
                                                 <label
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="pass">@lang('lang.confirm_password'):*</label>
                                                 <div class="input-wrapper">
                                                     <input type="password" class="form-control initial-balance-input"
@@ -254,10 +254,10 @@
                                                         name="password_confirmation" placeholder="Conform Password">
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                            <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                 style="animation-delay: 1.4s">
                                                 <label
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="mobile">@lang('lang.phone_number')*</label>
                                                 <div class="input-wrapper">
                                                     <input type="mobile"
@@ -266,10 +266,10 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                            <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                 style="animation-delay: 1.45s;position: relative;z-index: 999;">
                                                 <label
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="branch_id">@lang('lang.branch')</label>
                                                 <div class="input-wrapper" style="background-color: transparent">
                                                     {!! Form::select('branch_id', $branches, null, [
@@ -281,10 +281,10 @@
                                                     ]) !!}
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                            <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                 style="animation-delay: 1.5s;position: relative;z-index: 999;">
                                                 <label
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="store_id">@lang('lang.stores')</label>
                                                 <div class="input-wrapper" style="background-color: transparent">
                                                     {!! Form::select('store_id[]', $stores, null, [
@@ -297,10 +297,10 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                            <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                 style="animation-delay: 1.55s;position: relative;z-index: 999;">
                                                 <label
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="job_type">@lang('lang.jobs')</label>
                                                 <div class="input-wrapper" style="background-color: transparent">
                                                     {!! Form::select('job_type_id', $jobs, null, [
@@ -332,7 +332,7 @@
                                                             <div
                                                                 class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                                 <label
-                                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                                     for="date_of_start_working">@lang('lang.date_of_start_working')</label>
                                                                 <div class="input-wrapper">
 
@@ -346,7 +346,7 @@
                                                             <div
                                                                 class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                                 <label
-                                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                                     for="date_of_birth">@lang('lang.date_of_birth')</label>
                                                                 <div class="input-wrapper">
 
@@ -359,7 +359,7 @@
                                                             <div
                                                                 class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                                 <label
-                                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                                     for="upload_files">@lang('lang.upload_files')</label>
                                                                 <div class="input-wrapper">
                                                                     {!! Form::file('upload_files[]', ['class' => 'form-control initial-balance-input width-full', 'multiple']) !!}
@@ -368,7 +368,7 @@
                                                             <div
                                                                 class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                                 <label
-                                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                                    class="mx-2 mb-0  @if (app()->isLocale('ar')) d-block text-end @endif"
                                                                     for="photo">@lang('lang.profile_photo')</label>
                                                                 <div class="input-wrapper">
 

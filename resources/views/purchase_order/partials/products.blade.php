@@ -6,19 +6,20 @@
                 <div class="row">
                     @if ($allproducts)
                         @forelse ($allproducts as $product)
-                            <div class="col-md-3 order-btn" wire:click='add_product({{ $product->id }})'>
+                            <div class="col-md-3 mb-1 order-btn" wire:click='add_product({{ $product->id }})'>
                                 @if ($product->image)
                                     <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                        alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                        alt="{{ $product->name }}" class="img-thumbnail" width="100px;"
+                                        style="height: 55px!important">
                                 @else
                                     <img src="{{ asset('uploads/' . $settings['logo']) }}" alt="{{ $product->name }}"
-                                        class="img-thumbnail" width="100px">
+                                        class="img-thumbnail" width="100px;" style="height: 55px!important">
                                 @endif
                                 <div>
                                     <span>{{ $product->name }}</span>
 
                                 </div>
-                                <br />
+
                             </div>
                         @empty
                             <div class="col-md-12">

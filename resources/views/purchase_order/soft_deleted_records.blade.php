@@ -7,6 +7,16 @@
     .table-top-head {
         top: 10px !important;
     }
+
+    .table-scroll-wrapper {
+        width: fit-content;
+    }
+
+    @media(min-width:1900px) {
+        .table-scroll-wrapper {
+            width: 100%;
+        }
+    }
 </style>
 
 @section('breadcrumbbar')
@@ -49,7 +59,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card mb-0">
                     {{-- ++++++++++++++ Filters ++++++++++++++ --}}
                     {{-- <div class="col-lg-12">
                         <div class="container-fluid">

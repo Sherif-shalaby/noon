@@ -5,6 +5,16 @@
         .table-top-head {
             top: 85px;
         }
+
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
+            }
+        }
     </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -62,8 +72,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif"
-                                        style="margin-top:25px ">
+                                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                                         <div class="div1"></div>
                                     </div>
                                     <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
@@ -88,33 +97,42 @@
                                                     <tbody class="table_tbody">
                                                         <tr>
                                                             <td>
-                                                                <input type="date" class="form-control date"
+                                                                <input type="date"
+                                                                    class="form-control initial-balance-input width-full m-0 date"
                                                                     name="date" required>
                                                             </td>
                                                             <td>
-                                                                {!! Form::select('employees', $employees, null, [
-                                                                    'class' => 'form-control select2',
-                                                                    'placeholder' => __('lang.please_select'),
-                                                                    'data-live-search' => 'true',
-                                                                    'required',
-                                                                ]) !!}
+                                                                <div class="input-wrapper width-full">
+
+                                                                    {!! Form::select('employees', $employees, null, [
+                                                                        'class' => 'form-control select2',
+                                                                        'placeholder' => __('lang.please_select'),
+                                                                        'data-live-search' => 'true',
+                                                                        'required',
+                                                                    ]) !!}
+                                                                </div>
                                                             </td>
                                                             <td>
-                                                                <input type="time" class="form-control time"
+                                                                <input type="time"
+                                                                    class="form-control initial-balance-input width-full m-0 time"
                                                                     name="check_in" id="check_in_id" required>
                                                             </td>
                                                             <td>
-                                                                <input type="time" class="form-control time"
+                                                                <input type="time"
+                                                                    class="form-control initial-balance-input width-full m-0 time"
                                                                     name="check_out" id="check_out_id" required>
                                                             </td>
                                                             <td>
-                                                                {!! Form::select('status', ['present' => 'Present', 'late' => 'Late', 'on_leave' => 'On Leave'], null, [
-                                                                    'class' => 'form-control select2',
-                                                                    'id' => 'status_id',
-                                                                    'data-live-search' => 'true',
-                                                                    'placeholder' => __('lang.please_select'),
-                                                                    'required',
-                                                                ]) !!}
+                                                                <div class="input-wrapper width-full">
+
+                                                                    {!! Form::select('status', ['present' => 'Present', 'late' => 'Late', 'on_leave' => 'On Leave'], null, [
+                                                                        'class' => 'form-control select2',
+                                                                        'id' => 'status_id',
+                                                                        'data-live-search' => 'true',
+                                                                        'placeholder' => __('lang.please_select'),
+                                                                        'required',
+                                                                    ]) !!}
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 {{ ucfirst(Auth::user()->name) }}

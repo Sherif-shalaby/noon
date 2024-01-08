@@ -50,7 +50,7 @@ class Create extends Component
 
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
         $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0, $back_to_dollar,
-        $toggle_suppliers_dropdown, $supplier_id;
+        $toggle_suppliers_dropdown, $supplier_id, $countOpenedCashRegister;
 
 
     protected $rules = [
@@ -126,6 +126,12 @@ class Create extends Component
     }
     public function mount()
     {
+        //Check if there is a open register, if no then redirect to Create Register screen.
+        if ($this->countOpenedRegister() == 0) {
+            return redirect()->to('/cash-register/create?is_pos=1');
+        }
+
+        // $this->countOpenedCashRegister=$this->countOpenedRegister();
         $this->payment_types = $this->getPaymentTypeArrayForPos();
         $this->department_id1 = null;
         $this->department_id2 = null;
@@ -191,7 +197,14 @@ class Create extends Component
         $this->payment_status = 'paid';
         $this->dispatchBrowserEvent('initialize-select2');
     }
-
+    public function countOpenedRegister()
+    {
+        $user_id = auth()->user()->id;
+        $count =  CashRegister::where('user_id', $user_id)
+            ->where('status', 'open')
+            ->count();
+        return $count;
+    }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -314,7 +327,7 @@ class Create extends Component
             $transaction_data = [
                 'store_id' => $this->store_id,
                 'customer_id' => $this->client_id,
-                // 'supplier_id ' => $this->supplier_id,
+                //                'supplier_id ' => $this->supplier_id ,
                 'employee_id' => Employee::where('user_id', auth()->user()->id)->first()->id,
                 'store_pos_id' => $this->store_pos_id,
                 'exchange_rate' => System::getProperty('dollar_exchange') ?? 0,
@@ -379,7 +392,7 @@ class Create extends Component
                 $sell_line->extra_quantity = (float) $item['extra_quantity'];
                 $sell_line->stock_sell_price = !empty($item['current_stock']['sell_price']) ? $item['current_stock']['sell_price'] : null;
                 $sell_line->stock_dollar_sell_price = !empty($item['current_stock']['dollar_sell_price']) ? $item['current_stock']['dollar_sell_price'] : null;
-                $sell_line->sell_price = !empty($item['price']) ? $item['price'] : null;
+                $sell_line->sell_price = !empty($item['price']) ? $this->num_uf($item['price']) : null;
                 $sell_line->dollar_sell_price = !empty($item['dollar_price']) ? $item['dollar_price'] : null;
                 $sell_line->purchase_price = !empty($item['current_stock']['purchase_price']) ? $item['current_stock']['purchase_price'] : null;
                 $sell_line->dollar_purchase_price = !empty($item['current_stock']['dollar_purchase_price']) ? $item['current_stock']['dollar_purchase_price'] : null;
@@ -831,6 +844,7 @@ class Create extends Component
             $this->dinar_remaining = 0;
             $this->back_to_dollar = 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function increment($key)
     {
@@ -948,7 +962,6 @@ class Create extends Component
         $discounts = collect($this->items[$key]['discount_categories'])->sortByDesc('quantity')->toArray();
         foreach ($discounts as $discount) {
             $currentQuantity = $this->items[$key]['quantity'];
-
             if (!empty($discount['quantity'])) {
                 if ($currentQuantity >= $discount['quantity']) {
                     $this->items[$key]['discount'] = $discount['id'];
@@ -1250,10 +1263,11 @@ class Create extends Component
             if (!empty($cr_transaction)) {
                 $cr_transaction->update([
                     'amount' => $this->num_uf($payment['amount']),
+                    'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                     'pay_method' => $payment['method'],
                     'type' => $type,
-                    'transaction_type' => $transaction->type,
-                    'transaction_id' => $transaction->id,
+                    'transaction_type' => 'sell',
+                    'sell_transaction_id' => $transaction->id,
                     'transaction_payment_id' => $transaction_payment_id
                 ]);
 
@@ -1262,10 +1276,11 @@ class Create extends Component
                 CashRegisterTransaction::create([
                     'cash_register_id' => $register->id,
                     'amount' => $this->num_uf($payment['amount']),
+                    'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                     'pay_method' =>  $payment['method'],
                     'type' => $type,
-                    'transaction_type' => $transaction->type,
-                    'transaction_id' => $transaction->id,
+                    'transaction_type' => 'sell',
+                    'sell_transaction_id' => $transaction->id,
                     'transaction_payment_id' => $transaction_payment_id
                 ]);
                 return true;
@@ -1273,10 +1288,11 @@ class Create extends Component
         } else {
             $payments_formatted[] = new CashRegisterTransaction([
                 'amount' => $this->num_uf($payment['amount']),
+                'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                 'pay_method' => $payment['method'],
                 'type' => $type,
                 'transaction_type' => $transaction->type,
-                'transaction_id' => $transaction->id,
+                'sell_transaction_id' => $transaction->id,
                 'transaction_payment_id' => $transaction_payment_id
             ]);
         }
@@ -1479,7 +1495,7 @@ class Create extends Component
     }
     public function changeUnit($key)
     {
-        //        dd($this->items[$key]['unit_id']);
+        //    dd($this->items[$key]['unit_id']);
         if (!empty($this->items[$key]['unit_id'])) {
             $variation_id = $this->items[$key]['unit_id'];
             $stock_line = AddStockLine::where('variation_id', $variation_id)->first();

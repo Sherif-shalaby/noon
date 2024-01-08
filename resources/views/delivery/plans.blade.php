@@ -3,7 +3,45 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 120px;
+            top: 85px !important;
+        }
+
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
+            }
+        }
+
+        @media(max-width:991px) {
+            .table-top-head {
+                top: 80px !important
+            }
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 85px !important
+            }
+        }
+
+        @media(max-width:575px) {
+            .table-top-head {
+                top: 140px !important
+            }
+        }
+
+        .wrapper1 {
+            margin-top: 25px;
+        }
+
+        @media(max-width:767px) {
+            .wrapper1 {
+                margin-top: 125px;
+            }
         }
     </style>
     <div class="animate-in-page">
@@ -58,7 +96,7 @@
                                                 class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                 <div class="col-6 col-sm-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                                     style="animation-delay: 1.15s">
-                                                    <div class="input-wrapper">
+                                                    <div class="input-wrapper width-full">
                                                         {!! Form::select('city_id', $cities, null, [
                                                             'class' => 'form-control select2',
                                                             'placeholder' => __('lang.cities'),
@@ -67,7 +105,7 @@
                                                 </div>
                                                 <div class="col-6 col-sm-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                                     style="animation-delay: 1.15s">
-                                                    <div class="input-wrapper">
+                                                    <div class="input-wrapper width-full">
                                                         <select name="delivery_id" class="form-control select2"
                                                             placeholder="@if (request()->segment(2) . '/' . request()->segment(3) == 'plans/representatives') {{ __('lang.representatives') }} @else {{ __('lang.delivery') }} @endif">
                                                             <option value="">
@@ -86,7 +124,7 @@
                                                 </div>
                                                 <div class="col-6 col-sm-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                                     style="animation-delay: 1.15s">
-                                                    <div class="input-wrapper">
+                                                    <div class="input-wrapper width-full">
                                                         {{-- <label for="date">@lang('lang.date')</label> --}}
                                                         <input type="date"
                                                             class="form-control initial-balance-input width-full"
@@ -95,12 +133,10 @@
                                                 </div>
 
                                                 {{-- <div class="col-2"></div> --}}
-                                                <div class="col-1">
-                                                    <div class="form-group">
-                                                        <button type="submit" name="submit"
-                                                            class="btn btn-primary width-100" title="search">
-                                                            <i class="fa fa-eye"></i> {{ __('Search') }}</button>
-                                                    </div>
+                                                <div class="col-6 col-sm-3">
+                                                    <button type="submit" name="submit" class="btn btn-primary"
+                                                        title="search">
+                                                        <i class="fa fa-eye"></i> {{ __('Search') }}</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -109,7 +145,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:25px ">
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif ">
                             <div class="div1"></div>
                         </div>
                         <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">

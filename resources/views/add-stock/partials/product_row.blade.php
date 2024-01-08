@@ -283,10 +283,10 @@
 
                 <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
                     wire:model="items.{{ $index }}.discount_percent" style='font-weight:500;font-size:10px;'
-                    wire:change="purchase_final({{ $index }})" placeholder="%">
+                    placeholder="%">
                 <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
                     wire:model="items.{{ $index }}.discount" style='font-weight:500;font-size:10px;'
-                    wire:change="purchase_final({{ $index }})" placeholder="discount amount">
+                    placeholder="discount amount">
             </div>
         </div>
 

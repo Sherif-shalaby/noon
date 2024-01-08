@@ -142,7 +142,7 @@
         <div class="row d-flex justify-content-center">
             <!-- Start col -->
 
-            <div class="card m-b-30 p-2">
+            <div class="card mb-0 p-3 pb-0 ">
                 {!! Form::open([
                     'route' => ['products.update', $product->id],
                     'method' => 'put',
@@ -869,11 +869,11 @@
 
 
                 </div>
+                <div class="col-md-12 mb-1">
+                    <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                </div>
             </div>
 
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
-            </div>
             {!! Form::close() !!}
         </div>
         @include('products.crop-image-modal')

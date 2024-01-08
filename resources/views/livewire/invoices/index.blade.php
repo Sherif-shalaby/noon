@@ -1,7 +1,5 @@
     {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
     <div class="animate-in-page">
-
-
         <!-- Start Contentbar -->
         <div class="contentbar mb-0 pb-0 no-print">
             <!-- Start row -->
@@ -17,7 +15,10 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="container-fluid">
-                                        {{-- @include('customers.filters') --}}
+                                        {{-- +++++++++++++ Filters +++++++++++++++++ --}}
+                                        {{-- <div class="col-md-12"> --}}
+                                        @include('livewire.invoices.partials.filters')
+                                        {{-- </div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -25,7 +26,7 @@
 
                             <div class="row ml-4">
                                 {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                                <div class="col-md-3 col-lg-3" style="position: relative;z-index: 9;">
+                                <div class="col-md-3 col-7" style="position: relative;z-index: 9;">
                                     <div class="multiselect col-md-12">
                                         <div class="selectBox" onclick="showCheckboxes()">
                                             <select class="form-select ">
@@ -172,8 +173,8 @@
                                 </div>
 
                                 {{-- +++++++++ delete_all button ++++++++ --}}
-                                <div class="col-md-3 col-lg-3">
-                                    <button id="btn_delete_all" class="btn btn-danger text-white delete_all">
+                                <div class="col-md-3 col-5">
+                                    <button id="btn_delete_all" class="btn btn-danger  px-1 mx-1 delete_all">
                                         <i class="fa fa-trash"></i>@lang('lang.delete_all')
                                     </button>
                                 </div>
@@ -251,6 +252,12 @@
                                                                         data-container=".view_modal"
                                                                         class="btn btn-modal" data-toggle="modal"
                                                                         style="color: #007bff;">R</a>
+                                                                @endif
+                                                                @if (!empty($line->payment_status == 'pending'))
+                                                                    <a data-href="{{ route('sell_return.show', $line->id) }}"
+                                                                        data-container=".view_modal"
+                                                                        class="btn btn-modal" data-toggle="modal"
+                                                                        style="color: #007bff;">P</a>
                                                                 @endif
                                                             </span>
                                                         </td>

@@ -746,7 +746,7 @@
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 ]) !!}
                                                 <input type="text" style="width: 100px;border:2px solid #cececf;"
-                                                    class="form-control initial-balance-input m-0 discount_quantity"
+                                                    class="form-control initial-balance-input m-0  discount_quantity"
                                                     name="prices.{{ $key }}.discount_quantity"
                                                     wire:model="prices.{{ $key }}.discount_quantity"
                                                     wire:change="changePrice({{ $key }}, 'quantity')"

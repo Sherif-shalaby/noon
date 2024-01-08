@@ -54,7 +54,13 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }
         });
-
+        Blade::directive('num_uf', function ($input_number, $currency_details = null) {
+            $thousand_separator  = ',';
+            $decimal_separator  = '.';
+            $num = str_replace($thousand_separator, '', $input_number);
+            $num = str_replace($decimal_separator, '.', $num);
+            return (float)$num;
+        });
         if(Schema::hasTable('systems')){
 
             $module_settings = System::getProperty('module_settings');

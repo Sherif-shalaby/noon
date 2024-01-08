@@ -7,7 +7,7 @@
                 {!! Form::label('branch_id', __('lang.branch'), [
                     'class' => 'mb-0',
                 ]) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('branch_id[]', $branches, request()->brach_id, [
                         'class' => 'form-control select2',
                         'multiple',
@@ -22,7 +22,7 @@
                 {!! Form::label('store_id', __('lang.store'), [
                     'class' => 'mb-0',
                 ]) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('store_id[]', [], request()->store_id, [
                         'class' => 'form-control select2 store',
                         'multiple',
@@ -37,7 +37,7 @@
                 {!! Form::label('supplier_id', __('lang.supplier'), [
                     'class' => 'mb-0',
                 ]) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('supplier_id', $suppliers, request()->supplier_id, [
                         'class' => 'form-control select2',
                         'placeholder' => __('lang.please_select'),
@@ -47,7 +47,7 @@
             {{-- ++++++++++++++++++++ categories filter ++++++++++++++++++++ --}}
             {{--   <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select(
                         'category_id',
                         $categories,request()->category_id,
@@ -58,7 +58,7 @@
             {{-- ++++++++++++++++++++ subcategories1 filter ++++++++++++++++++++ --}}
             {{--   <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select(
                         'subcategory_id1', [] ,request()->subcategory_id1,
                         ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
@@ -68,7 +68,7 @@
             {{-- ++++++++++++++++++++ subcategories2 filter ++++++++++++++++++++ --}}
             {{--   <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select(
                         'subcategory_id2',[] ,request()->subcategory_id2,
                         ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
@@ -78,7 +78,7 @@
             {{-- ++++++++++++++++++++ subcategories3 filter ++++++++++++++++++++ --}}
             {{--   <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select(
                         'subcategory_id3', [] ,request()->subcategory_id3,
                         ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
@@ -91,7 +91,7 @@
                 {!! Form::label('category_id', __('lang.category') . ' 1', [
                     'class' => 'mb-0',
                 ]) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('category_id', $categories1, request()->category_id, [
                         'class' => 'form-control select2 category',
                         'placeholder' => __('lang.please_select'),
@@ -105,7 +105,7 @@
                 {!! Form::label('subcategory_id1', __('lang.category') . ' 2', [
                     'class' => 'mb-0',
                 ]) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('subcategory_id1', $categories2, request()->subcategory_id1, [
                         'class' => 'form-control select2 subcategory',
                         'placeholder' => __('lang.please_select'),
@@ -119,7 +119,7 @@
                 {!! Form::label('subcategory_id2', __('lang.category') . ' 3', [
                     'class' => 'mb-0',
                 ]) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('subcategory_id2', $categories3, request()->subcategory_id2, [
                         'class' => 'form-control select2 subcategory2',
                         'placeholder' => __('lang.please_select'),
@@ -133,7 +133,7 @@
                 {!! Form::label('subcategory_id3', __('lang.category') . ' 4', [
                     'class' => 'mb-0',
                 ]) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('subcategory_id3', $categories4, request()->subcategory_id3, [
                         'class' => 'form-control select2 subcategory3',
                         'placeholder' => __('lang.please_select'),
@@ -148,7 +148,7 @@
                 {!! Form::label('brand_id', __('lang.brand'), [
                     'class' => 'mb-0',
                 ]) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('brand_id', $brands, request()->brand_id, [
                         'class' => 'form-control select2',
                         'placeholder' => __('lang.please_select'),
@@ -158,7 +158,7 @@
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
                 {!! Form::label('created_by', __('lang.created_by')) !!}
-                <div class="input-wrapper">
+                <div class="input-wrapper width-full">
                     {!! Form::select('created_by', $users, request()->created_by, [
                         'class' => 'form-control select2',
                         'placeholder' => __('lang.please_select'),

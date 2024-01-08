@@ -11,11 +11,11 @@
         }
 
         .table-top-head {
-            top: 102px;
+            top: 55px;
         }
 
         .wrapper1 {
-            margin-top: 25px;
+            margin-top: 30px;
         }
 
         @media(max-width:768px) {
@@ -55,7 +55,7 @@
                     class="col-md-4  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
                     <div class="widgetbar">
                         {{-- ++++++++++++++++++++ show Recycle_Bin ++++++++++++ --}}
-                        <a href="{{ route('purchase_order.show_soft_deleted_records') }}" class="btn btn-success">
+                        <a href="{{ route('purchase_order.show_soft_deleted_records') }}" class="btn btn-danger">
                             @lang('lang.show_recycle_bin')
                         </a>
                         {{-- ++++++++++++++++++++ create purchase_order ++++++++++++ --}}

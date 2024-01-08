@@ -50,7 +50,7 @@
         }
 
         .table-top-head {
-            top: 85px !important;
+            top: 265px !important;
         }
 
         .table-scroll-wrapper {
@@ -67,13 +67,25 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 85px !important
+                top: 265px !important
             }
         }
 
         @media(max-width:768px) {
             .table-top-head {
-                top: 80px !important
+                top: 615px !important
+            }
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 630px !important
+            }
+        }
+
+        @media(max-width:575px) {
+            .table-top-head {
+                top: 625px !important
             }
         }
 
@@ -87,7 +99,7 @@
 
         @media(max-width:767px) {
             .wrapper1 {
-                margin-top: 90px;
+                margin-top: 128px;
             }
 
             .input-wrapper {

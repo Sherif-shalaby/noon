@@ -3,7 +3,7 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 40px !important;
+            top: 20px !important;
         }
 
         .table-scroll-wrapper {
@@ -18,19 +18,19 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 40px !important
+                top: 20px !important
             }
         }
 
         @media(max-width:768px) {
             .table-top-head {
-                top: 40px !important
+                top: 20px !important
             }
         }
 
         @media(max-width:575px) {
             .table-top-head {
-                top: 40px !important
+                top: 20px !important
             }
         }
 
@@ -54,10 +54,10 @@
                         <ul
                             class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                    style="text-decoration: none;color: #596fd7"
-                                    href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
+                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                    @lang('lang.dashboard')</a></li>
                             <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ route('products.index') }}">/
+                                    style="text-decoration: none;color: #596fd7" href="{{ route('products.index') }}">
                                     @lang('lang.products')</a></li>
                         </ul>
                     </div>

@@ -37,7 +37,7 @@
                     <div class="container-fluid">
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {{-- ++++++++++++++++++ customer_type ++++++++++++++++ --}}
-                            <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.1s;position: relative;z-index: 4;">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -56,7 +56,7 @@
                                 @enderror
                             </div>
                             {{-- ++++++++++++++++++ name ++++++++++++++++ --}}
-                            <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.15s">
                                 {!! Form::label('name', __('lang.name'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -73,8 +73,7 @@
                             </div>
 
                             {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-md-3 mb-2 d-flex align-items-center dollar-cell
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.2s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -87,8 +86,7 @@
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-md-3 mb-2 d-flex align-items-center dollar-cell
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.25s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -101,8 +99,7 @@
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ min_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.3s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -115,8 +112,7 @@
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ max_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.35s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -129,8 +125,7 @@
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-md-3 mb-2 d-flex align-items-center dollar-cell
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.4s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -143,8 +138,7 @@
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ balance_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.45s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -157,8 +151,7 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                            <div class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.5s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -174,8 +167,7 @@
                             </div>
                             {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
 
-                            <div class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.55s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -194,8 +186,7 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                            <div class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.6s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -210,8 +201,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.6s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -367,16 +357,16 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++ address ++++++++++++++++ --}}
-                            <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-6 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.8s">
                                 {!! Form::label('address', __('lang.address'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
-                                <div class="input-wrapper width-full" style="height: 100px;border-radius: 9px">
+                                <div class=" width-full" style="height: 100px;border-radius: 9px">
                                     {!! Form::textarea('address', $customer->address, [
                                         'class' => 'form-control',
-                                        'style' => ' width: 100%;height:100%;background-color:transparent',
+                                        'style' => ' width: 100%;height:100%;background-color:#dedede',
                                     ]) !!}
                                 </div>
                                 @error('address')
@@ -384,16 +374,16 @@
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
-                            <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-6 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.85s">
                                 {!! Form::label('notes', __('lang.notes'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
-                                <div class="input-wrapper width-full" style="height: 100px;border-radius: 9px">
+                                <div class=" width-full" style="height: 100px;border-radius: 9px">
                                     {!! Form::textarea('notes', $customer->notes, [
                                         'class' => 'form-control',
-                                        'style' => ' width: 100%;height:100%;background-color:transparent',
+                                        'style' => ' width: 100%;height:100%;background-color:#dedede',
                                     ]) !!}
                                 </div>
                                 @error('address')
@@ -401,8 +391,7 @@
                                 @enderror
                             </div>
                             {{-- ++++++++++++ images ++++++++++++ --}}
-                            <div class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.65s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"

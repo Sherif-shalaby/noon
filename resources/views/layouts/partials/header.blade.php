@@ -1,4 +1,5 @@
-<nav class="navbar no-print navbar-expand-lg bg-white py-0" style="z-index: 5">
+<nav class="navbar no-print navbar-expand-lg bg-white mb-1 py-0"
+    style="z-index: 5;background-color: #596fd705 !important">
     <div class="container-fluid">
         <a style="width: 150px;" class="ml-2 d-lg-none" href="index.html">
             <img style="width: 100%" src="{{ asset('images/logo1.png') }}" class="img-fluid" alt="logo">
@@ -1712,6 +1713,15 @@
                                                     class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
                                             </a>
                                         </li>
+                                        {{-- +++++++++++ profit Report +++++++++++ --}}
+                                        <li class="navbar_item">
+                                            <a class="profit_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                target="_blank" href="{{ route('profit_report') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
+                                                <i
+                                                    class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
+                                            </a>
+                                        </li>
                                         {{-- +++++++++++ monthly sales & purchase report +++++++++++ --}}
                                         <li class="navbar_item">
                                             <a class="monthly_sale_and_purchase_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
@@ -2197,6 +2207,13 @@
     $('.representative_salary_report-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('representative_salary_report.index') }}"
+        document.body.classList.add('animated-element');
+        // window.location.href = url;
+        window.open(url, "_blank")
+    })
+    $('.profit_report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('profit_report') }}"
         document.body.classList.add('animated-element');
         // window.location.href = url;
         window.open(url, "_blank")

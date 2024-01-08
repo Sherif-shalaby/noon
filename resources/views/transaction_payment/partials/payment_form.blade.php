@@ -2,9 +2,8 @@
     @if (!empty($payment))
         <input type="hidden" name="transaction_payment_id" value="{{ $payment->id }}">
     @endif
-
     <div
-        class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        class="mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
 
         {!! Form::label('amount', __('lang.amount') . '*', [
             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -20,7 +19,7 @@
         </div>
     </div>
 
-    <div class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+    <div class="mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
         style="position:relative;z-index:5">
         {!! Form::label('method', __('lang.payment_type') . '*', [
             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -39,7 +38,7 @@
     </div>
 
     <div
-        class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        class="mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
         {!! Form::label('paid_on', __('lang.payment_date'), [
             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
             'style' => 'font-size: 12px;font-weight: 500;',
@@ -55,14 +54,13 @@
     </div>
 
     <div
-        class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        class="mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
         {!! Form::label('upload_documents', __('lang.upload_documents'), [
             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
             'style' => 'font-size: 12px;font-weight: 500;',
         ]) !!}
         <div class="input-wrapper">
-
-            {!! Form::file('upload_documents[]', null, ['class' => '']) !!}
+            {!! Form::file('upload_documents[]', null, ['class' => 'initial-balance-input width-full']) !!}
         </div>
     </div>
     {{--    <div class="col-md-3 not_cash_fields hide"> --}}

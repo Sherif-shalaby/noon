@@ -6,10 +6,11 @@
             {{--        {!! Form::open(['url' => action('TransactionPaymentController@store'), 'method' => 'post', 'add_payment_form' ]) --}}
             {{--        !!} --}}
 
-            <div class="modal-header">
+            <div
+                class="modal-header d-flex justify-content-between py-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                 <h4 class="modal-title">@lang('lang.view_payments')</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                <button type="button" class="close mx-0" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
 

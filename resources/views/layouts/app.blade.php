@@ -205,6 +205,18 @@
     <div id="containerbar" class=" bg-white">
 
         @include('layouts.partials.header')
+        @php
+            $cash_register = App\Models\CashRegister::where('user_id', Auth::user()->id)
+                ->where('status', 'open')
+                ->first();
+        @endphp
+        <input type="hidden" name="is_register_close" id="is_register_close"
+            value="@if (!empty($cash_register)) {{ 0 }}@else{{ 1 }} @endif">
+        <input type="hidden" name="cash_register_id" id="cash_register_id"
+            value="@if (!empty($cash_register)) {{ $cash_register->id }} @endif">
+        <div id="closing_cash_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+            class="modal">
+        </div>
 
         {{-- @php
             $notifications = \App\Models\BalanceRequestNotification::orderby('created_at', 'desc')->get();
@@ -310,6 +322,32 @@
                 }
             });
         });
+
+        $(document).on('click', "#power_off_btn", function(e) {
+            let cash_register_id = $('#cash_register_id').val();
+            let is_register_close = parseInt($('#is_register_close').val());
+            if (!is_register_close) {
+                getClosingModal(cash_register_id);
+                return 'Please enter the closing cash';
+            } else {
+                return;
+            }
+        });
+
+        function getClosingModal(cash_register_id, type = 'close') {
+            $.ajax({
+                method: 'get',
+                url: '/cash/add-closing-cash/' + cash_register_id,
+                data: {
+                    type
+                },
+                contentType: 'html',
+                success: function(result) {
+                    $('#closing_cash_modal').empty().append(result);
+                    $('#closing_cash_modal').modal('show');
+                },
+            });
+        }
 
         window.addEventListener('load', function() {
             var loaderWrapper = document.querySelector('.loading');

@@ -11,7 +11,7 @@
                 class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div>
                     <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.create_purchase_order')</h4> <br />
+                        @lang('lang.create_purchase_order')</h4>
                     <div class="breadcrumb-list">
                         <ul
                             class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

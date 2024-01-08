@@ -3,7 +3,17 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 85px;
+            top: 35px;
+        }
+
+        .wrapper1 {
+            margin-top: 35px;
+        }
+
+        @media(max-width:767px) {
+            .wrapper1 {
+                margin-top: 120px;
+            }
         }
     </style>
     <div class="animate-in-page">
@@ -55,7 +65,7 @@
                         <h6 class="print-title">@lang('lang.delivery')</h6>
                     </div>
                     <div class="card-body">
-                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:55px ">
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif ">
                             <div class="div1"></div>
                         </div>
                         <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">

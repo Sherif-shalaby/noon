@@ -18,7 +18,7 @@
                                 <div class="i-checks">
                                     <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
                                         @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif class="">
-                                    <label for="clear_all_input_form" style="font-size: 0.75rem">
+                                    <label for="clear_all_input_form" style="font-size: 0.75rem" class="mb-0">
                                         <strong>
                                             @lang('lang.clear_all_input_form')
                                         </strong>
@@ -28,19 +28,20 @@
                         </div>
                         {{-- +++++++++++++++++++++ form +++++++++++++++++ --}}
                         <form action="{{ route('pos.store') }}">
-                            <div class="card-body">
+                            <div class="card-body pt-0">
                                 <div class="col-md-12">
                                     <div
                                         class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                         {{-- ////////////////// stores filter ////////////////// --}}
-                                        <div class="col-md-3 d-flex mb-2  animate__animated animate__bounceInLeft  align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+
+                                        <div class="col-6 col-md-1 mb-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                             style="animation-delay: 1.15s">
                                             <label for="store_id"
                                                 class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                                style="width: 16%;font-size: 12px;font-weight: 500;">
+                                                style="font-size: 12px;font-weight: 500;">
                                                 @lang('lang.store')<span style="color:#dc3545;">*</span>
                                             </label>
-                                            <div class="input-wrapper">
+                                            <div class="input-wrapper width-full">
                                                 <select class="form-control select2 client" wire:model="store_id"
                                                     id="Client_Select" required>
                                                     <option value="" readonly selected>
@@ -56,14 +57,14 @@
                                             @enderror
                                         </div>
                                         {{-- ////////////////// suppliers filter ////////////////// --}}
-                                        <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
-                                            style="animation-delay: 1.2s">
+                                        <div class="col-6 col-md-1 mb-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                            style="animation-delay: 1.15s">
                                             <label for="customer_id"
                                                 class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                                style="width: 15%;font-size: 12px;font-weight: 500;">
+                                                style="font-size: 12px;font-weight: 500;">
                                                 @lang('lang.suppliers')<span style="color:#dc3545;">*</span>
                                             </label>
-                                            <div class="input-wrapper">
+                                            <div class="input-wrapper width-full">
                                                 <select class="form-control select2 client" wire:model="supplier_id"
                                                     id="Client_Select" required>
                                                     <option value="" readonly selected>
@@ -80,20 +81,23 @@
                                             @enderror
                                         </div>
                                         {{-- ////////////////// product_number inputField : رقم طلب الشراء  ////////////////// --}}
-                                        <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
-                                            style="animation-delay: 1.25s">
+                                        <div class="col-6 col-md-1 mb-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                            style="animation-delay: 1.15s">
                                             {!! Form::label('po_no', __('lang.po_no') . '*', [
-                                                'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-fit' : ' mx-2 mb-0 h5 width-fit',
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 ' : ' mx-2 mb-0 h5 ',
                                                 'style' => 'font-size: 12px;font-weight: 500;',
                                             ]) !!}
-                                            {!! Form::text('po_no', $po_no, [
-                                                'class' => 'form-control initial-balance-input width-full',
-                                                'required',
-                                                'readonly',
-                                                'placeholder' => __('lang.po_no'),
-                                            ]) !!}
+                                            <div class="input-wrapper width-full">
+
+                                                {!! Form::text('po_no', $po_no, [
+                                                    'class' => 'form-control initial-balance-input width-full',
+                                                    'required',
+                                                    'readonly',
+                                                    'placeholder' => __('lang.po_no'),
+                                                ]) !!}
+                                            </div>
                                         </div>
-                                        <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                        <div class="col-md-9 animate__animated animate__bounceInLeft d-flex align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                             style="animation-delay: 1.3s">
                                             <div class="search-box input-group">
                                                 {{-- ++++++++++++++++++++++ search_button ++++++++++++++++++++++ --}}
@@ -133,45 +137,40 @@
                                     <div class="col-md-3 border border-1 p-0 animate__animated animate__lightSpeedInLeft"
                                         style="height: 90vh;overflow: scroll;animation-delay: 1.35s">
                                         {{-- +++++++++++++++++++++ filter : الموردين ++++++++++++++++++++++ --}}
-                                        <div class="p-3 text-center font-weight-bold " style="background-color: #eee;"
+                                        <div class="px-4 text-center font-weight-bold " style="background-color: #eee;"
                                             wire:ignore>
-                                            <div class="form-group">
-                                                {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
-                                                <select class="select2 form-control supplier_class"
-                                                    wire:model="supplier_id" id="supplier_id" data-name="supplier_id"
-                                                    required>
-                                                    <option value="" readonly selected>
-                                                        {{ __('lang.please_select') }} </option>
-                                                    @foreach ($suppliers as $supplier)
-                                                        <option value="{{ $supplier->id }}">{{ $supplier->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                            {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
+                                            <select class="select2 form-control supplier_class" wire:model="supplier_id"
+                                                id="supplier_id" data-name="supplier_id" required>
+                                                <option value="" readonly selected>
+                                                    {{ __('lang.please_select') }} </option>
+                                                @foreach ($suppliers as $supplier)
+                                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                             @error('supplier_id')
                                                 <span class="error text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         {{-- +++++++++++++++++++++ filter : العلامة التجارية ++++++++++++++++++++++ --}}
-                                        <div class="p-3 text-center font-weight-bold " style="background-color: #eee;"
+                                        <div class="px-4 text-center font-weight-bold " style="background-color: #eee;"
                                             wire:ignore>
-                                            <div class="form-group">
-                                                {!! Form::label('brand_id', __('lang.brand') . ':', []) !!}
-                                                {!! Form::select('brand_id', $brands, $brand_id, [
-                                                    'class' => 'select2 form-control brand_class',
-                                                    'id' => 'brand_id',
-                                                    'required',
-                                                    'placeholder' => __('lang.please_select'),
-                                                    'data-name' => 'brand_id',
-                                                    'wire:model' => 'brand_id',
-                                                ]) !!}
-                                                @error('brand_id')
-                                                    <span class="error text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
+                                            {!! Form::label('brand_id', __('lang.brand') . ':', []) !!}
+                                            {!! Form::select('brand_id', $brands, $brand_id, [
+                                                'class' => 'select2 form-control brand_class',
+                                                'id' => 'brand_id',
+                                                'required',
+                                                'placeholder' => __('lang.please_select'),
+                                                'data-name' => 'brand_id',
+                                                'wire:model' => 'brand_id',
+                                            ]) !!}
+                                            @error('brand_id')
+                                                <span class="error text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         {{-- +++++++++++++++++++++ filter : الأقسام الرئيسيه ++++++++++++++++++++++ --}}
-                                        <div class="p-3 text-center font-weight-bold " style="background-color: #eee;"
+                                        <div class="px-4 text-center font-weight-bold " style="background-color: #eee;"
                                             wire:ignore>
                                             الأقسام الرئيسيه
                                             <div for="" class="d-flex align-items-center text-nowrap gap-1">
@@ -252,39 +251,38 @@
                                     </div>
                                 </div>
                                 {{-- ++++++++ total_quantity ++++++++++  --}}
-                                <div class="col-md-12 text-center mt-1 animate__animated animate__lightSpeedInLeft"
+                                <div class="col-md-12 d-flex justify-content-between text-center mt-1 animate__animated animate__lightSpeedInLeft"
                                     style="animation-delay: 1.4s">
                                     <h4>@lang('lang.items_count'):
                                         <span class="items_count_span"
                                             style="margin-right: 15px;">{{ !empty($items) ? count($items) : 0 }}</span>
-                                        <br> @lang('lang.items_quantity'): <span class="items_quantity_span"
+                                    </h4>
+                                    <h4>
+                                        @lang('lang.items_quantity'): <span class="items_quantity_span"
                                             style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
                                     </h4>
                                 </div>
-                                <br>
+
                                 {{-- ++++++++ total ++++++++++  --}}
                                 <div class="col-md-12 animate__animated animate__lightSpeedInRight"
                                     style="animation-delay: 1.45s">
-                                    <div class="col-md-3 offset-md-8 text-right">
-                                        <h3> @lang('lang.total') :
-                                            @if ($paying_currency == 2)
-                                                {{ $this->sum_dollar_total_cost() ?? 0.0 }}
-                                            @else
-                                                {{ $this->sum_total_cost() ?? 0.0 }}
-                                            @endif
-                                            <span class="final_total_span"></span>
-                                        </h3>
-                                        <input type="hidden" name="total_subtotal" id="total_subtotal_input"
-                                            value="{{ $this->sum_total_cost() ?? 0.0 }}">
-
-                                    </div>
+                                    <h3 class="text-center"> @lang('lang.total') :
+                                        @if ($paying_currency == 2)
+                                            {{ $this->sum_dollar_total_cost() ?? 0.0 }}
+                                        @else
+                                            {{ $this->sum_total_cost() ?? 0.0 }}
+                                        @endif
+                                        <span class="final_total_span"></span>
+                                    </h3>
+                                    <input type="hidden" name="total_subtotal" id="total_subtotal_input"
+                                        value="{{ $this->sum_total_cost() ?? 0.0 }}">
                                 </div>
 
                                 {{-- ++++++++++++++++++++++++ details textarea ++++++++++++++++++++++++ --}}
                                 <div class="row justify-content-between animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.5s;">
                                     {!! Form::label('details', __('lang.details'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end h5  mb-3 width-fit' : ' mb-3 h5 width-fit',
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end h5  mb-0 ' : ' mb-0 h5 ',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     {{-- {!! Form::textarea('details', null, ['class' => 'form-control', 'rows' => 3]) !!} --}}
@@ -294,8 +292,8 @@
                             {{-- ++++++++++++++++++++ submit ++++++++++++++++++++ --}}
                             <div class="col-sm-12 animate__animated animate__lightSpeedInLeft px-4"
                                 style="animation-delay: 1.55s">
-                                <button type="submit" name="submit" id="submit-save" style="margin: 10px"
-                                    value="save" class="btn btn-primary pull-right btn-flat submit"
+                                <button type="submit" name="submit" id="submit-save" value="save"
+                                    class="btn btn-primary pull-right btn-flat submit"
                                     wire:click.prevent = "store()">@lang('lang.save')</button>
                             </div>
                         </form>
