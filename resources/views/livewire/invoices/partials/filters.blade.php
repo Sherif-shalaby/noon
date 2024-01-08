@@ -158,6 +158,16 @@
                     ) !!}
                 </div>
             </div>
+            {{-- ++++++++++++++++++++ store_pos filter ++++++++++++++++++++ --}}
+            <div class="col-md-2">
+                <div class="form-group">
+                    {!! Form::label('pos_id', __('lang.pos'), []) !!}
+                    {!! Form::select('pos_id', $store_pos, request()->pos_id, [
+                        'class' => 'form-control select2 sale_filter',
+                        'placeholder' => __('lang.all'),
+                    ]) !!}
+                </div>
+            </div>
             {{-- ++++++++++++++++++++ submit filter ++++++++++++++++++++ --}}
             <div class="col-2 mt-4">
                 {{-- <div class="form-group"> --}}
