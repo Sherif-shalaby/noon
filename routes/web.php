@@ -50,7 +50,6 @@ use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfitReportController;
-use App\Http\Controllers\RepresentativeController;
 use App\Http\Controllers\TransactionPaymentController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
