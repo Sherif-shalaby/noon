@@ -392,6 +392,9 @@ Route::group(['middleware' => ['auth']], function () {
     // ++++++++++++++++++ Task 03-01-2024 : Cash +++++++++++++++++++++
     Route::resource('cash', CashController::class);
 
+    // close cashier
+    Route::get('cash/add-closing-cash/{cash_register_id}', [CashController::class,'addClosingCash']);
+
 
 });
 
