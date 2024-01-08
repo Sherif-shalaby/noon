@@ -123,9 +123,9 @@
     <td>
         <div class="d-flex justify-content-between">
             <div class="input-group-prepend">
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.discount_percent" style="width: 100px;" wire:change="purchase_final({{ $index }})" placeholder="%">
+                <input type="text" class="form-control" wire:model="items.{{ $index }}.discount_percent" style="width: 100px;"  placeholder="%">
             </div>
-            <input type="text" class="form-control" wire:model="items.{{ $index }}.discount" style="width: 100px;" wire:change="purchase_final({{ $index }})" placeholder="discount amount">
+            <input type="text" class="form-control" wire:model="items.{{ $index }}.discount" style="width: 100px;" placeholder="discount amount">
         </div>
     </td>
     <td>
