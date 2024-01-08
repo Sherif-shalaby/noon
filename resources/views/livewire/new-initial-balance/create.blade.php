@@ -449,7 +449,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('price', __('lang.quantity')) !!}
-                                        <input type="text" class="form-control discount_quantity"discount_from_original_price name="prices.{{ $key }}.discount_quantity"
+                                        <input type="text" class="form-control discount_quantity" name="prices.{{ $key }}.discount_quantity"
                                             wire:model="prices.{{ $key }}.discount_quantity"
                                             wire:change="changePrice({{ $key }}, 'quantity')"
                                             placeholder = "{{ __('lang.quantity') }}">
