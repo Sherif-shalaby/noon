@@ -66,12 +66,17 @@
                             <div class="col-lg-12">
                                 <div class="container-fluid">
                                     {{-- @include('customers.filters') --}}
+                                    {{-- +++++++++++++ Filters +++++++++++++++++ --}}
+                                    {{-- <div class="col-md-12"> --}}
+                                        @include('livewire.invoices.partials.filters')
+                                    {{-- </div> --}}
                                 </div>
                             </div>
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         <div class="table-responsive">
-                            <div class="row ml-4">
+                            <div class="row ml-5">
+
                                 {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                                 <div class="col-md-3 col-lg-3">
                                     <div class="multiselect col-md-12">
@@ -196,7 +201,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 {{-- +++++++++ delete_all button ++++++++ --}}
                                 <div class="col-md-3 col-lg-3">
                                     <button id="btn_delete_all" class="btn btn-danger text-white delete_all">
@@ -228,7 +232,7 @@
                                     <th class="col12 sum">@lang('lang.grand_total') @lang('lang.dinar_c')</th>
                                     <th class="col13 sum">@lang('lang.paid')  @lang('lang.dinar_c')</th>
                                     <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dinar_c')</th>
-                                    
+
                                     <th class="col12 sum">@lang('lang.grand_total') @lang('lang.dollar_c')</th>
                                     <th class="col13 sum">@lang('lang.paid') @lang('lang.dollar_c')</th>
                                     <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dollar_c')</th>
@@ -253,7 +257,7 @@
                                         <td class="col2">
                                             {{$line->invoice_no ?? '' }}
 
-                                            @if (!empty($line->return_parent_id)) 
+                                            @if (!empty($line->return_parent_id))
                                               <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">R</a>
                                             @endif
                                         </td>
@@ -289,7 +293,7 @@
                                                 {{$payment->received_currency_relation->symbol ?? ''}}<br>
                                             @endforeach
                                         </td> --}}
-                                      
+
                                         <td class="col12">
                                             {{number_format($line->final_total,2)}} د.ع
                                         </td>
@@ -305,7 +309,7 @@
                                         <td class="col13">
                                             {{$line->transaction_payments->sum('dollar_amount')}} $
                                         </td>
-                                        
+
                                         <td class="col14">
                                             {{$line->dollar_remaining}}  $
                                         </td>
