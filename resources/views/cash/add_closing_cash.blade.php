@@ -1,8 +1,7 @@
-<div class="modal-dialog add_closing_cash" role="document" >
+<div class="modal-dialog modal-lg add_closing_cash " role="document" >
     <div class="modal-content">
-
         {!! Form::open([
-            'url' => action('CashController@saveAddClosingCash'),
+//            'url' => action('CashController@saveAddClosingCash'),
             'method' => 'post',
             'id' => 'add_closing_cash_form',
             'files' => true,
@@ -26,162 +25,111 @@
                         </tr>
                         <tr>
                             <td><b>@lang('lang.cash_in')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_cash_in) }}</td>
-                            @endforeach
+                            <td>{{ @num_format($cash_register->dinar_total_cash_in) }} </td>
+                            <td>{{ @num_format($cash_register->dollar_total_cash_in) }} $</td>
                         </tr>
                         <tr>
                             <td><b>@lang('lang.cash_out')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_cash_out) }}</td>
-                            @endforeach
+                            <td>{{ @num_format($cash_register->dinar_total_cash_out) }}</td>
+                            <td>{{ @num_format($cash_register->dollar_total_cash_out) }} $</td>
                         </tr>
                         <tr>
                             <td><b>@lang('lang.total_card_sale')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_card_sales) }}</td>
-                            @endforeach
+                            <td>{{ @num_format($cash_register->dinar_total_card_sales) }}</td>
+                            <td>{{ @num_format($cash_register->dollar_total_card_sales) }} $</td>
                         </tr>
                         <tr>
                             <td><b>@lang('lang.total_cheque_sale')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_cheque_sales) }}
-                                </td>
-                            @endforeach
+                            <td>{{ @num_format($cash_register->dinar_total_cheque_sales) }}</td>
+                            <td>{{ @num_format($cash_register->dollar_total_cheque_sales) }} $</td>
                         </tr>
                         <tr>
                             <td><b>@lang('lang.total_bank_transfer_sale')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_bank_transfer_sales) }}
-                                </td>
-                            @endforeach
+                            <td>{{ @num_format($cash_register->dinar_total_bank_transfer_sales) }}</td>
+                            <td>{{ @num_format($cash_register->dollar_total_bank_transfer_sales) }} $</td>
                         </tr>
                         <tr>
                             <td><b>@lang('lang.total_gift_card_sale')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_gift_card_sales) }}
-                                </td>
-                            @endforeach
+                            <td>{{ @num_format($cash_register->dinar_total_gift_card_sales) }}</td>
+                            <td>{{ @num_format($cash_register->dollar_total_gift_card_sales) }} $</td>
                         </tr>
-                        @if (session('system_mode') == 'restaurant')
-                            <tr>
-                                <td><b>@lang('lang.dining_in')</b></td>
-                                @foreach ($cr_data as $data)
-                                    <td>{{ $data['currency']['symbol'] }}
-                                        {{ @num_format($data['cash_register']->total_dining_in) }}
-                                    </td>
-                                @endforeach
-                            </tr>
-                        @endif
                         <tr>
                             <td><b>@lang('lang.other_cash_sales')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    @if(($data['cash_register']->total_cash_sales - $data['cash_register']->total_dining_in_cash)>0)
-                                        {{ @num_format($data['cash_register']->total_cash_sales - $data['cash_register']->total_dining_in_cash-$total_latest_payments) }}
-                                    @else
-                                        {{ @num_format($data['cash_register']->total_cash_sales - $data['cash_register']->total_dining_in_cash) }}
-                                    @endif
-                                </td>
-                            @endforeach
+                            <td>
+                                @if(($cash_register->dinar_total_cash_sales )>0)
+                                    {{ @num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_latest_payments) }}
+                                @else
+                                    {{ @num_format($cash_register->dinar_total_cash_sales ) }}
+                                @endif
+                            </td>
+                            <td>
+                                @if(($cash_register->dollar_total_cash_sales )>0)
+                                    {{ @num_format($cash_register->dollar_total_cash_sales - $cash_register->dollar_total_latest_payments) }}
+                                @else
+                                    {{ @num_format($cash_register->dollar_total_cash_sales ) }}
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td><b>@lang('lang.total_cash_sale')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    @if($data['cash_register']->total_cash_sales>0)
-                                        {{ @num_format($data['cash_register']->total_cash_sales-$total_latest_payments) }}
-                                    @else
-                                        {{ @num_format($data['cash_register']->total_cash_sales) }}
-                                    @endif
-                                </td>
-                            @endforeach
+                            <td>
+                                @if($cash_register->dinar_total_cash_sales>0)
+                                    {{ @num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_latest_payments) }}
+                                @else
+                                    {{ @num_format($cash_register->dinar_total_cash_sales) }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($cash_register->dollar_total_cash_sales>0)
+                                    {{ @num_format($cash_register->dollar_total_cash_sales-$cash_register->dollar_total_latest_payments) }}
+                                @else
+                                    {{ @num_format($cash_register->dollar_total_cash_sales) }}
+                                @endif
+                            </td>
                         </tr>
                         <tr>
+{{--                            @dd($cash_register->dinar_total_sale,$cash_register->dollar_total_sale)--}}
                             <td><b>@lang('lang.total_sales')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    @if($data['cash_register']->total_sale - $data['cash_register']->total_refund>0)
-                                        {{ @num_format($data['cash_register']->total_sale - $data['cash_register']->total_refund-$total_latest_payments) }}
-                                    @else
-                                        {{ @num_format($data['cash_register']->total_sale - $data['cash_register']->total_refund) }}
-                                    @endif
-                                </td>
-                            @endforeach
+                            <td>
+                                @if(($cash_register->dinar_total_sale - $cash_register->total_refund) > 0)
+                                    {{ @num_format($cash_register->dinar_total_sale - $cash_register->dinar_total_refund - $cash_register->dinar_total_latest_payments) }}
+                                @else
+                                    {{ @num_format($cash_register->dinar_total_sale - $cash_register->dinar_total_refund) }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($cash_register->dollar_total_sale - $cash_register->dollar_total_refund>0)
+                                    {{ @num_format($cash_register->dollar_total_sale - $cash_register->dollar_total_refund - $cash_register->dollar_total_latest_payments) }}
+                                @else
+                                    {{ @num_format($cash_register->dollar_total_sale - $cash_register->dollar_total_refund) }}
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td><b>@lang('lang.total_latest_payments')</b></td>
-                            <td>
-                                @php
-                                    foreach ($cr_data as $data){
-                                        $currency=$data['currency']['symbol'];
-                                        break;
-                                    }
-                                @endphp
-                                {{$currency}}
-                                {{ @num_format($total_latest_payments) }}
-                            </td>
-                            @if(!empty($total_latest_payments) && $total_latest_payments>0)
-                                <td><a data-href="{{action('CashController@showLatestPaymentDetails', $cash_register_id)}}"
-                                       data-container=".view_modal" class="btn btn-modal btn-danger text-white close_cash"><i
-                                            class="fa fa-eye"></i> @lang('lang.view')</a></td>
-                            @endif
+                            <td>{{ @num_format($cash_register->dinar_total_latest_payments) }}</td>
+                            <td>{{ @num_format($cash_register->dollar_total_latest_payments) }}</td>
+{{--                            @if(!empty($cash_register->total_latest_payments) && $cash_register->total_latest_payments>0)--}}
+{{--                                <td><a data-href="{{action('CashController@showLatestPaymentDetails', $cash_register_id)}}"--}}
+{{--                                       data-container=".view_modal" class="btn btn-modal btn-danger text-white close_cash"><i--}}
+{{--                                            class="fa fa-eye"></i> @lang('lang.view')</a></td>--}}
+{{--                            @endif--}}
                         </tr>
                         <tr>
                             <td><b>@lang('lang.return_sales')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_sell_return) }}
-                                </td>
-                            @endforeach
+                            <td>{{ @num_format($cash_register->dinar_total_sell_return) }}</td>
+                            <td>{{ @num_format($cash_register->dollar_total_sell_return) }}</td>
                         </tr>
                         <tr>
                             <td><b>@lang('lang.purchases')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_purchases) }}</td>
-                            @endforeach
+                            <td>{{ @num_format($cash_register->dinar_total_purchases) }}</td>
+                            <td>{{ @num_format($cash_register->dollar_total_purchases) }}</td>
                         </tr>
                         <tr>
                             <td><b>@lang('lang.expenses')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_expenses) }}</td>
-                            @endforeach
+                            <td>{{ @num_format($cash_register->dinar_total_expenses) }}</td>
+                            <td>{{ @num_format($cash_register->dollar_total_expenses) }}</td>
                         </tr>
-                        <tr>
-                            <td><b>@lang('lang.wages_and_compensation')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>{{ $data['currency']['symbol'] }}
-                                    {{ @num_format($data['cash_register']->total_wages_and_compensation) }}</td>
-                            @endforeach
-                        </tr>
-                        {{-- <tr>
-                            <td><b>@lang('lang.current_cash')</b></td>
-                            @foreach ($cr_data as $data)
-                                <td>
-                                    @php
-                                        $current_cash = $data['cash_register']->total_cash_sales + $data['cash_register']->total_cash_in - $data['cash_register']->total_cash_out - $data['cash_register']->total_purchases - $data['cash_register']->total_expenses - $data['cash_register']->total_wages_and_compensation - $data['cash_register']->total_sell_return;
-                                    @endphp
-                                    <h6 class="currency_total_row_td currency_total currency_total_{{ $data['currency']['currency_id'] }}"
-                                        data-currency_id="{{ $data['currency']['currency_id'] }}"
-                                        data-is_default="{{ $data['currency']['is_default'] }}"
-                                        data-conversion_rate="{{ $data['currency']['conversion_rate'] }}"
-                                        data-base_conversion="{{ $data['currency']['conversion_rate'] * $current_cash }}"
-                                        data-orig_value="{{ $current_cash }}">
-                                        <span class="symbol" style="padding-right: 10px;">
-                                            {{ $data['currency']['symbol'] }}</span>
-                                        <span class="total">{{ @num_format($current_cash) }}</span>
-                                    </h6>
-                                </td>
-                            @endforeach
-                        </tr> --}}
                     </table>
                 </div>
                 <div class="col-md-12">
@@ -206,6 +154,17 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            {!! Form::label('current_cash', __('lang.current_cash') . '$ :*') !!}
+                            {!! Form::text('current_cash', @num_format($dollar_total_cash), [
+                                'class' => 'form-control',
+                                'placeholder' => __('lang.current_cash'),
+                                'readonly',
+                                'id' => 'closing_current_cash',
+                            ]) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             {!! Form::label('amount', __('lang.amount') . ':*') !!}
                             {!! Form::text('amount', null, [
                                 'class' => 'form-control',
@@ -215,11 +174,22 @@
                             ]) !!}
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label('amount', __('lang.amount') . '$ :*') !!}
+                            {!! Form::text('dollar_amount', null, [
+                                'class' => 'form-control',
+                                'placeholder' => __('lang.amount').' $',
+                                'required',
+                                'id' => 'closing_dollar_amount',
+                            ]) !!}
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             {!! Form::label('source_type', __('lang.given_to', ['value' => __('lang.user')]), ['id' => 'source_type_label']) !!} <br>
                             {!! Form::select('source_type', ['user' => __('lang.user'), 'safe' => __('lang.safe')], 'user', [
-                                'class' => 'selectpicker form-control',
+                                'class' => 'form-control',
                                 'required',
                                 'data-live-search' => 'true',
                                 'style' => 'width: 80%',
@@ -244,6 +214,14 @@
                             {!! Form::text('discrepancy', 0, [
                                 'class' => 'form-control',
                                 'placeholder' => __('lang.discrepancy'),
+                                'required',
+                            ]) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('discrepancy', __('lang.discrepancy') . '$ :*') !!}
+                            {!! Form::text('dollar_discrepancy', 0, [
+                                'class' => 'form-control',
+                                'placeholder' => __('lang.discrepancy').' $',
                                 'required',
                             ]) !!}
                         </div>
@@ -339,7 +317,7 @@
                 }).then((result) => {
                     if (result) {
                         $.ajax({
-                            url: '{{ route('check_admin_password') }}',
+                            url: '{{ route('check_password') }}',
                             method: 'POST',
                             data: {
                                 value: result,
