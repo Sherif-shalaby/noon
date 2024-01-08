@@ -48,4 +48,9 @@ class CustomerType extends Model
         return $this->belongsTo(User::class, 'deleted_by');
     }
 
+    public static function getDropdown()
+    {
+        return CustomerType::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+    }
+
 }

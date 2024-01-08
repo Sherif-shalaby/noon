@@ -631,11 +631,12 @@ class Create extends Component
             }
 
             // Add payment transaction
-            if(!empty($this->amount))
+            if(!empty($this->total_amount) || !empty($this->total_amount_dollar))
             {
                 $payment  = new StockTransactionPayment();
                 $payment->stock_transaction_id  = $transaction->id;
-                $payment->amount  = $this->amount;
+                $payment->amount  = $this->total_amount;
+                $payment->dollar_amount  = $this->total_amount_dollar;
                 $payment->method = $this->method;
                 $payment->paid_on = !empty($this->paid_on) ? $this->paid_on :  Carbon::now() ;
                 $payment->source_type = !empty($this->source_type) ? $this->source_type : null;
@@ -689,12 +690,13 @@ class Create extends Component
                         }
                     }
                     if(!empty($user_id)){
-                        $cr_transaction = CashRegisterTransaction::where('transaction_id', $transaction->id)->first();
+                        $cr_transaction = CashRegisterTransaction::where('stock_transaction_id', $transaction->id)->first();
                         if($cr_transaction){
                             $register = CashRegister::where('id', $cr_transaction->cash_register_id)->first();
                             $data = [
                                 'cash_register_id' => $register->id,
                                 'amount' => $payment->amount,
+                                'dollar_mount' => $payment->dollar_amount,
                                 'pay_method' => 'cash',
                                 'type' => 'debit',
                                 'transaction_type' => 'add_stock',
@@ -713,10 +715,11 @@ class Create extends Component
                             if (!empty($user_id)) {
                                 $payments_formatted[] = new CashRegisterTransaction([
                                     'amount' => $this->amount,
+                                    'dollar_mount' => $payment->dollar_amount,
                                     'pay_method' => $this->method,
                                     'type' => 'debit',
                                     'transaction_type' => 'add_stock',
-                                    'transaction_id' => $transaction->id,
+                                    'stock_transaction_id' => $transaction->id,
                                     'transaction_payment_id' => null
                                 ]);
                             }
@@ -1891,7 +1894,7 @@ class Create extends Component
             if($var == 'stores'){
                 $final_purchase = $this->num_uf($this->items[$index]['stores'][$i]['purchase_after_discount']) ;
                 // dd($this->items[$index]['stores'][$i]['bonus_quantity']);
-                
+
                 $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['stores'][$i]['quantity'] ));
 
                 if(isset($this->items[$index]['stores'][$i]['discount_dependency'])&& $this->items[$index]['stores'][$i]['discount_dependency'] == true){
@@ -1982,11 +1985,11 @@ class Create extends Component
                     // $this->final_purchase_for_piece($index,$var,$i);
                 // }
                 return $final_purchase;
-              
+
             }else{
                 $final_purchase = $this->num_uf($this->items[$index]['purchase_after_discount']) ;
                 // dd($this->items[$index]['bonus_quantity']);
-              
+
                 $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity'] ));
                 // if($this->items[$index]['used_currency'] != 2){
                     // dd('test');
@@ -2078,7 +2081,7 @@ class Create extends Component
                 // $this->final_purchase_for_piece($index);
                 return number_format($final_purchase,3);
                 // if( $this->purchase_final($index) > 0){
-                    
+
                 // }
             }
         // }
@@ -2090,7 +2093,7 @@ class Create extends Component
             if($var == 'stores'){
                 $final_purchase = $this->num_uf($this->items[$index]['stores'][$i]['dollar_purchase_after_discount']) ;
                 // dd($this->items[$index]['stores'][$i]['bonus_quantity']);
-               
+
                 $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['stores'][$i]['quantity'] ));
                 // if($this->items[$index]['used_currency'] == 2){
                     // dd('test');
@@ -2134,7 +2137,7 @@ class Create extends Component
                     }else{
                         $original =$this->num_uf( $this->items[$index]['stores'][$i]['dollar_purchase_after_discount']);
                         // dd( $original);
-                        
+
                             $original =  $original * ($this->num_uf($this->items[$index]['stores'][$i]['quantity'] ));
                         $discount_percent = 0;
                         $annual_discount = 0;
@@ -2190,14 +2193,14 @@ class Create extends Component
                 // $this->dollar_final_purchase_for_piece($index,$var,$i);
                 return $final_purchase;
                 // if( $this->purchase_final($index,$var,$i) > 0){
-                   
+
                 // }
             }else{
                 $final_purchase = $this->num_uf($this->items[$index]['dollar_purchase_after_discount']) ;
-              
+
                 $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity'] ));
                 // if($this->items[$index]['used_currency'] == 2){
-                    // dd('vfgdsh');   
+                    // dd('vfgdsh');
 
                     if(isset($this->items[$index]['discount_dependency'])&& $this->items[$index]['discount_dependency'] == true){
 
@@ -2239,7 +2242,7 @@ class Create extends Component
                     }else{
                         $original =$this->num_uf( $this->items[$index]['dollar_purchase_after_discount']);
                         // dd('test2');
-                        
+
                         $original =  $original * ($this->num_uf($this->items[$index]['quantity'] ));
                         $discount_percent = 0;
                         $annual_discount = 0;

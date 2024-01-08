@@ -260,6 +260,9 @@
                                             @if (!empty($line->return_parent_id))
                                               <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">R</a>
                                             @endif
+                                            @if (!empty($line->payment_status == 'pending') )
+                                                <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">P</a>
+                                            @endif
                                         </td>
                                         <td class="col3">
                                             {{$line->store->name ?? '' }}
