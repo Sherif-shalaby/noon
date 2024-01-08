@@ -48,6 +48,9 @@ use App\Http\Controllers\NewInitialBalanceController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ProfitReportController;
+use App\Http\Controllers\RepresentativeController;
 use App\Http\Controllers\TransactionPaymentController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
@@ -271,12 +274,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
+    // ########### profit Report ###########
+    Route::get('report/get-profit-loss', [ProfitReportController::class,'index'])->name('profit_report');
+
     // ########### Sales Per Employee Report ###########
 
     Route::resource('sales-per-employee', SalesPerEmployeeReportController::class);
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
+    Route::get('get-dashboard-data/{start_date}/{end_date}',  [ProfitReportController::class,'getDashboardData']);
 
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
@@ -373,6 +380,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('representatives', RepresentativeController::class);
     Route::get('representatives/print-representative-invoice/{transaction_id}', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
     Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
+    Route::resource('expense', ExpenseController::class);
 
                                 // Reports
     // Product Report

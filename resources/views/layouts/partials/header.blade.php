@@ -395,6 +395,12 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.representative_salary_report')}}
                                     </a>
                                 </li>
+                                 {{-- +++++++++++ profit Report +++++++++++ --}}
+                                 <li>
+                                    <a href="{{route('profit_report')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.representative_salary_report')}}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
 

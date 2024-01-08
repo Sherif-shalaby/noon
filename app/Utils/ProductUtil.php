@@ -531,7 +531,7 @@ class ProductUtil extends Util
             'products.*',
             'products.id as product_id',
             'products.name as product_name',
-            'product_stores.qty_available',
+            'product_stores.quantity_available',
         )
             ->get();
 
@@ -557,7 +557,7 @@ class ProductUtil extends Util
                 'products.*',
                 'products.id as product_id',
                 'products.name as product_name',
-                'product_stores.qty_available',
+                'product_stores.quantity_available',
                 'v.id as variation_id',
                 'v.name as variation_name',
                 'v.default_purchase_price',
@@ -601,7 +601,7 @@ class ProductUtil extends Util
         $products = $product->select(
             'products.id as product_id',
             'products.name as product_name',
-            'product_stores.qty_available',
+            'product_stores.quantity_available',
             'v.id as variation_id',
             'v.name as variation_name',
             'v.default_purchase_price',
@@ -647,7 +647,7 @@ class ProductUtil extends Util
             'products.alert_quantity',
             'products.tax_id',
             'products.tax_method',
-            'product_stores.qty_available',
+            'product_stores.quantity_available',
             'products.sell_price',
             'taxes.rate as tax_rate',
             'v.id as variation_id',
@@ -919,7 +919,7 @@ class ProductUtil extends Util
      *
      * @param int $variation_id
      * @param int $store_id
-     * @param bool $check_qty (If false qty_available is not checked)
+     * @param bool $check_qty (If false quantity_available is not checked)
      *
      * @return object
      */
@@ -954,7 +954,7 @@ class ProductUtil extends Util
     //         'variations.name as variation_name',
     //         'variations.sub_sku',
     //         'p.barcode_type',
-    //         'ps.qty_available',
+    //         'ps.quantity_available',
     //         'units.name as unit_name',
     //         'grades.name as grade_name',
     //         'sizes.name as size_name',
@@ -1776,7 +1776,7 @@ class ProductUtil extends Util
             'variations.sub_sku as variations_sku',
             'variations.default_sell_price as variations_sell_price',
             'variations.default_purchase_price as variations_purchase_price',
-            DB::raw('SUM(product_stores.qty_available) as current_stock'),
+            DB::raw('SUM(product_stores.quantity_available) as current_stock'),
             DB::raw("(SELECT transaction_date FROM transactions LEFT JOIN add_stock_lines ON transactions.id=add_stock_lines.transaction_id WHERE add_stock_lines.product_id=products.id ORDER BY transaction_date DESC LIMIT 1) as date_of_purchase")
         );
         if(!empty($variations)){
@@ -1809,7 +1809,7 @@ class ProductUtil extends Util
             'variations.sub_sku as variations_sku',
             'variations.default_sell_price as variations_sell_price',
             'variations.default_purchase_price as variations_purchase_price',
-            DB::raw('SUM(product_stores.qty_available) as current_stock'),
+            DB::raw('SUM(product_stores.quantity_available) as current_stock'),
             DB::raw("(SELECT transaction_date FROM transactions LEFT JOIN add_stock_lines ON transactions.id=add_stock_lines.transaction_id WHERE add_stock_lines.product_id=products.id ORDER BY transaction_date DESC LIMIT 1) as date_of_purchase")
         );
         if(!empty($variations)){
@@ -1837,14 +1837,12 @@ class ProductUtil extends Util
             foreach($stores as $store){
                 $query = Product::leftjoin('variations', 'products.id', 'variations.product_id')
                     ->leftjoin('product_stores', 'variations.id', 'product_stores.variation_id')
-                    ->leftjoin('add_stock_lines', 'variations.id', 'add_stock_lines.variation_id')
-
-                    ->where('is_service', 0)
+                    ->leftjoin('add_stock_lines', 'variations.id', 'stock_lines.variation_id')
                     ->where('product_stores.store_id', $store->id)
                     ->where('add_stock_lines.purchase_price','>',0)
                 ;
                 $query->groupBy('variations.id')->select(
-                    DB::raw('(product_stores.qty_available ) * add_stock_lines.purchase_price as current_stock_value'),
+                    DB::raw('(product_stores.quantity_available ) * add_stock_lines.purchase_price as current_stock_value'),
                 );
 
                 $current_stock_value += $query->get()->sum('current_stock_value');
@@ -1856,13 +1854,15 @@ class ProductUtil extends Util
             ->leftjoin('product_stores', 'variations.id', 'product_stores.variation_id')
             ->leftjoin('add_stock_lines', 'variations.id', 'add_stock_lines.variation_id')
             ->where('product_stores.store_id', $store_id)
-            ->where('is_service', 0)
+            // ->where('is_service', 0)
             ->where('add_stock_lines.purchase_price','>',0)
         ;
 
-        $query->groupBy('variations.id')->select(
-            DB::raw('(product_stores.qty_available ) * add_stock_lines.purchase_price as current_stock_value'),
+        $query->groupBy('variations.id', 'product_stores.quantity_available', 'add_stock_lines.purchase_price')
+        ->select(
+            DB::raw('(product_stores.quantity_available ) * add_stock_lines.purchase_price as current_stock_value')
         );
+  
 
         $current_stock_value = $query->get()->sum('current_stock_value');
         // dd($current_stock_value);
@@ -1879,13 +1879,13 @@ class ProductUtil extends Util
                     ->leftjoin('product_stores', 'variations.id', 'product_stores.variation_id')
                     ->leftjoin('add_stock_lines', 'variations.id', 'add_stock_lines.variation_id')
 
-                    ->where('is_service', 0)
-                    ->where('is_raw_material',0)
+                    // ->where('is_service', 0)
+                    // ->where('is_raw_material',0)
                     ->where('product_stores.store_id', $store->id)
                     ->where('add_stock_lines.purchase_price','>',0)
                 ;
                 $query->groupBy('variations.id')->select(
-                    DB::raw('(product_stores.qty_available ) * add_stock_lines.purchase_price as current_stock_value'),
+                    DB::raw('(product_stores.quantity_available ) * add_stock_lines.purchase_price as current_stock_value'),
                 );
 
                 $current_stock_value_product += $query->get()->sum('current_stock_value');
@@ -1897,14 +1897,16 @@ class ProductUtil extends Util
             ->leftjoin('product_stores', 'variations.id', 'product_stores.variation_id')
             ->leftjoin('add_stock_lines', 'variations.id', 'add_stock_lines.variation_id')
             ->where('product_stores.store_id', $store_id)
-            ->where('is_service', 0)
-            ->where('is_raw_material',0)
+            // ->where('is_service', 0)
+            // ->where('is_raw_material',0)
             ->where('add_stock_lines.purchase_price','>',0)
         ;
 
-        $query->groupBy('variations.id')->select(
-            DB::raw('(product_stores.qty_available ) * add_stock_lines.purchase_price as current_stock_value'),
-        );
+        $query->groupBy('variations.id', 'product_stores.quantity_available', 'add_stock_lines.purchase_price')
+      ->select(
+          DB::raw('(product_stores.quantity_available ) * add_stock_lines.purchase_price as current_stock_value')
+      );
+
 
         $current_stock_value_product = $query->get()->sum('current_stock_value');
         return $current_stock_value_product ;
@@ -1920,13 +1922,13 @@ class ProductUtil extends Util
                     ->leftjoin('product_stores', 'variations.id', 'product_stores.variation_id')
                     ->leftjoin('add_stock_lines', 'variations.id', 'add_stock_lines.variation_id')
 
-                    ->where('is_service', 0)
-                    ->where('is_raw_material',1)
+                    // ->where('is_service', 0)
+                    // ->where('is_raw_material',1)
                     ->where('product_stores.store_id', $store->id)
                     ->where('add_stock_lines.purchase_price','>',0)
                 ;
                 $query->groupBy('variations.id')->select(
-                    DB::raw('(product_stores.qty_available ) * add_stock_lines.purchase_price as current_stock_value'),
+                    DB::raw('(product_stores.quantity_available ) * add_stock_lines.purchase_price as current_stock_value'),
                 );
 
                 $current_stock_value_material += $query->get()->sum('current_stock_value');
@@ -1938,14 +1940,16 @@ class ProductUtil extends Util
             ->leftjoin('product_stores', 'variations.id', 'product_stores.variation_id')
             ->leftjoin('add_stock_lines', 'variations.id', 'add_stock_lines.variation_id')
             ->where('product_stores.store_id', $store_id)
-            ->where('is_service', 0)
-            ->where('is_raw_material',0)
+            // ->where('is_service', 0)
+            // ->where('is_raw_material',0)
             ->where('add_stock_lines.purchase_price','>',0)
         ;
 
-        $query->groupBy('variations.id')->select(
-            DB::raw('(product_stores.qty_available ) * add_stock_lines.purchase_price as current_stock_value'),
+        $query->groupBy('variations.id', 'product_stores.quantity_available', 'add_stock_lines.purchase_price')
+        ->select(
+            DB::raw('(product_stores.quantity_available ) * add_stock_lines.purchase_price as current_stock_value')
         );
+  
 
         $current_stock_value_material = $query->get()->sum('current_stock_value');
         return $current_stock_value_material ;
@@ -2031,7 +2035,7 @@ class ProductUtil extends Util
                 'variations.id as variation_id',
                 'stores.name as store_name',
                 'stores.id as store_id',
-                DB::raw('SUM(product_stores.qty_available) as current_stock'),
+                DB::raw('SUM(product_stores.quantity_available) as current_stock'),
             )->having('current_stock', '>', 0)
                 ->groupBy('products.id', 'product_stores.id')
                 ->get();
@@ -2041,8 +2045,8 @@ class ProductUtil extends Util
                 'variations.id as variation_id',
                 'stores.name as store_name',
                 'stores.id as store_id',
-                // DB::raw('SUM(product_stores.qty_available) as current_stock'),
-                DB::raw('(SELECT SUM(product_stores.qty_available) FROM product_stores WHERE product_stores.product_id=products.id AND product_stores.store_id=' . $sender_store_id . ') as current_stock')
+                // DB::raw('SUM(product_stores.quantity_available) as current_stock'),
+                DB::raw('(SELECT SUM(product_stores.quantity_available) FROM product_stores WHERE product_stores.product_id=products.id AND product_stores.store_id=' . $sender_store_id . ') as current_stock')
             )->having('current_stock', '>', 0)
                 ->groupBy('products.id', 'product_stores.id')
                 ->get();
@@ -2208,7 +2212,7 @@ class ProductUtil extends Util
             $query->where('store_id', $store_id);
         }
 
-        $current_Stock = $query->sum('qty_available');
+        $current_Stock = $query->sum('quantity_available');
         return ['current_stock' => $current_Stock];
     }
 
@@ -2224,7 +2228,7 @@ class ProductUtil extends Util
     //             $product_store->product_id = $variation->product_id;
     //             $product_store->variation_id = $variation->id;
     //             $product_store->store_id = $store_id;
-    //             $product_store->qty_available = 0;
+    //             $product_store->quantity_available = 0;
     //             $product_store->save();
     //         }
     //     }
