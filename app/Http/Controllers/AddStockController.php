@@ -72,7 +72,7 @@ class AddStockController extends Controller
         // foreach($stocks as $index => $stock){
         //     return $stock->add_stock_lines->sum('cash_discount');
         // }
-       
+
 
         return view('add-stock.index')->with(compact('stocks','suppliers','users','brands','categories',
             'subcategories1','subcategories2','subcategories3','payment_status_array','branches','stores'));
@@ -249,17 +249,17 @@ class AddStockController extends Controller
         // $payment_type_array = $this->commonUtil->getPaymentTypeArray();
         $transaction = StockTransaction::find($transaction_id);
         $received_discounts = ReceiveDiscount::where('stock_transaction_id', $transaction_id)->get();
-    
+
         if(!empty($transaction->add_stock_lines)){
             $seasonal_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('seasonal_discount');
             $annual_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('annual_discount');
-    
+
             $sum_received_seasonal = $received_discounts->where('discount_type', 'seasonal_discount')->sum('received_amount');
             $seasonal_discount -= $sum_received_seasonal;
-    
+
             $sum_received_annual = $received_discounts->where('discount_type', 'annual_discount')->sum('received_amount');
             $annual_discount -= $sum_received_annual;
-    
+
             $seasonal_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount') - $received_discounts->sum('received_amount_dollar');
             $annual_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('annual_discount') - $received_discounts->sum('received_amount_dollar');
         } else {
@@ -268,7 +268,7 @@ class AddStockController extends Controller
             $seasonal_discount_dollar = 0;
             $annual_discount_dollar = 0;
         }
-    
+
         return view('add-stock.partials.receive_discount')->with(compact(
             'transaction_id',
             'transaction',

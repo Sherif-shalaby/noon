@@ -13,7 +13,6 @@ class TransactionSellLine extends Model
 
     public function transaction_sell_lines()
     {
-
         return $this->hasMany(SellLine::class,'transaction_id','id');
     }
     public function return_parent()

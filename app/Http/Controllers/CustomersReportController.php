@@ -80,8 +80,8 @@ class CustomersReportController extends Controller
         ->when(\request()->start_time != null, function ($query) {
             $query->whereDate('transaction_date', '>=', request()->start_date);
         })
-        ->when(\request()->start_time != null, function ($query) {
-            $query->whereDate('transaction_date', '>=', request()->start_date);
+        ->when(\request()->end_time != null, function ($query) {
+            $query->whereDate('transaction_date', '<=', request()->start_date);
         })
         ->latest()->get();
         return view('reports.customers-report.index', compact('customer_transactions_sell_lines', 'store_pos',
