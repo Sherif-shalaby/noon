@@ -284,7 +284,7 @@ class CashController extends Controller
                     'msg' => __('lang.not_allowed')
                 ];
             }else{
-                
+
             DB::beginTransaction();
             $data = $request->except('_token');
 
@@ -294,6 +294,7 @@ class CashController extends Controller
             $register->source_type = $request->source_type;
             $register->cash_given_to = $request->cash_given_to;
             $register->closing_amount = $amount;
+            $register->closing_dollar_amount = $dollar_amount;
             $register->closed_at = Carbon::now();
             $register->status = 'close';
             $register->notes = $request->notes;
@@ -352,9 +353,10 @@ class CashController extends Controller
                 'msg' => __('lang.success')
             ];
         }
-            
+
         } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            dd($e);
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
@@ -365,5 +367,5 @@ class CashController extends Controller
         }
         return redirect()->back()->with('status', $output);
     }
-   
+
 }

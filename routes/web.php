@@ -288,7 +288,7 @@ Route::group(['middleware' => ['auth']], function () {
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
-    Route::view('invoices/create', 'invoices.create')->name('invoices.create');
+    Route::get('invoices/create', [SellPosController::class,'create'])->name('invoices.create');
 
     Route::get('invoices/edit/{invoice}', [SellPosController::class,'editInvoice'])->name('invoices.edit');
     // ++++++++++++ invoices : "delete all selected invoices" ++++++++++++

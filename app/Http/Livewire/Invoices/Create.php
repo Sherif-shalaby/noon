@@ -124,11 +124,8 @@ class Create extends Component
     }
     public function mount()
     {
-        //Check if there is a open register, if no then redirect to Create Register screen.
-        if ($this->countOpenedRegister() == 0) {
-            return redirect()->to('/cash-register/create?is_pos=1');
-        }
-      
+
+
         // $this->countOpenedCashRegister=$this->countOpenedRegister();
         $this->payment_types = $this->getPaymentTypeArrayForPos();
         $this->department_id1 = null;
