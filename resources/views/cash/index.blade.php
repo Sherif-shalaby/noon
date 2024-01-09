@@ -150,7 +150,7 @@
                                         </td>
 
                                         <td>{{ @num_format($cash_register->closing_amount) }}</td>
-                                        <td>{{ @num_format($cash_register->dollar_closing_amount) }}</td>
+                                        <td>{{ @num_format($cash_register->closing_dollar_amount) }}</td>
                                         <td>@if(!empty($cash_register->closed_at)){{ @format_datetime($cash_register->closed_at) }}@endif</td>
                                         <td>{{ !empty($cash_register->cash_given) ? $cash_register->cash_given->name : '' }}</td>
                                         {{-- ++++++++++++ Actions ++++++++++++ --}}

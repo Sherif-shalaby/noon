@@ -81,6 +81,10 @@ class CashController extends Controller
                 'cash_registers.store_pos_id',
                 'cash_registers.notes',
                 'cash_registers.status',
+                'cash_registers.closing_amount',
+                'cash_registers.closing_dollar_amount',
+                'cash_registers.cash_given_to',
+                'cash_registers.closed_at',
             DB::raw("SUM(IF(transaction_type = 'sell', amount, 0)) as dinar_total_sale"),
             DB::raw("SUM(IF(transaction_type = 'sell', dollar_amount, 0)) as dollar_total_sale"),
             DB::raw("SUM(IF(transaction_type = 'refund', amount, 0)) as total_refund"),
@@ -115,7 +119,8 @@ class CashController extends Controller
             DB::raw("SUM(IF(transaction_type = 'cash_out' AND pay_method = 'cash' AND cash_register_transactions.type = 'credit', dollar_amount, 0)) as dollar_total_cash_out"),
             DB::raw("SUM(IF(transaction_type = 'sell_return' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_sell_return"),
             DB::raw("SUM(IF(transaction_type = 'sell_return' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_sell_return"),
-        )->groupBy('cash_registers.id', 'cash_registers.created_at', 'cash_registers.user_id', 'cash_registers.notes', 'cash_registers.store_pos_id', 'cash_registers.status') // Add other columns as needed
+        )->groupBy('cash_registers.id', 'cash_registers.created_at', 'cash_registers.user_id', 'cash_registers.notes','cash_registers.cash_given_to',
+            'cash_registers.store_pos_id', 'cash_registers.status','cash_registers.closing_amount','cash_registers.closing_dollar_amount','cash_registers.closed_at') // Add other columns as needed
         ->orderBy('cash_registers.created_at', 'desc')
             ->get();
 //        $cash_registers = $query->orderBy('created_at', 'desc')->get();
