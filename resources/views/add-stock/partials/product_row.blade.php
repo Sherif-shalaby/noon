@@ -10,14 +10,14 @@
                 'data-live-search' => 'true',
                 'required' => 'required',
                 'wire:model' => 'items.' . $index . '.used_currency',
-               
+
             ]) !!}
             @error('items.'.$index.'.used_currency')
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
     </td>
-    
+
     <td title="{{__('lang.products')}}">
         {{ $product['product']['name'] }}
         <br>
