@@ -32,6 +32,7 @@ class SellPosController extends Controller
     protected $commonUtil;
     protected $transactionUtil;
     protected $productUtil;
+    protected $cashRegisterUtil;
 
     /**
      * Constructor
@@ -39,11 +40,12 @@ class SellPosController extends Controller
      * @param ProductUtils $product
      * @return void
      */
-    public function __construct(Util $commonUtil, ProductUtil $productUtil, TransactionUtil $transactionUtil)
+    public function __construct(Util $commonUtil, ProductUtil $productUtil, TransactionUtil $transactionUtil, CashRegisterUtil $cashRegisterUtil)
     {
         $this->commonUtil = $commonUtil;
         $this->productUtil = $productUtil;
         $this->transactionUtil = $transactionUtil;
+        $this->cashRegisterUtil = $cashRegisterUtil;
     }
     /**
      * Display a listing of the resource.
@@ -107,11 +109,16 @@ class SellPosController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Application|Factory|View
      */
     public function create()
     {
+        //Check if there is a open register, if no then redirect to Create Register screen.
+        if ($this->cashRegisterUtil->countOpenedRegister() == 0) {
+            return redirect()->to('/cash-register/create?is_pos=1');
+        }
 
+        return view('invoices.create');
     }
 
     /* ++++++++++++++++++++++++ store() ++++++++++++++++++++++++++ */
