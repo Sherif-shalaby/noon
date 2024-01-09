@@ -185,7 +185,7 @@ class TransactionUtil extends Util
             $transaction_payment->save();
         } else {
             $transaction_payment = null;
-            if (!empty($payment_data['amount'])) {
+            if (!empty($payment_data['amount']) || !empty($payment_data['dollar_amount'])) {
                 $payment_data['created_by'] = Auth::user()->id;
                 $payment_data['payment_for'] = !empty($payment_data['payment_for']) ? $payment_data['payment_for'] : $transaction->customer_id;
                 $payment_data['exchange_rate'] = !empty($payment_data['exchange_rate']) ? $payment_data['exchange_rate'] : System::getProperty('dollar_exchange');

@@ -220,9 +220,9 @@ class CashController extends Controller
             return redirect()->action('CashRegisterController@create');
         }
         $type = request()->get('type');
-        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id')
-            ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
-            ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
+        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id');
+            // ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
+            // ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
         $query->where('cash_registers.id', $cash_register_id);
 
         $cr_data = [];

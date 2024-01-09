@@ -107,9 +107,10 @@
                         <th class="currencies">@lang('lang.received_currency')</th>
                         <th class="sum">@lang('lang.grand_total')</th>
                         <th class="sum">@lang('lang.paid')</th>
+                        <th class="sum">@lang('lang.due_sale_list')</th>
                         <th class="sum">@lang('lang.grand_total') $</th>
                         <th class="sum">@lang('lang.paid') $</th>
-                        <th class="sum">@lang('lang.due_sale_list')</th>
+                        <th class="sum">@lang('lang.due_sale_list') $</th>
                         <th>@lang('lang.payment_date')</th>
                         <th>@lang('lang.cashier_man')</th>
                         <th>@lang('lang.products')</th>
@@ -162,11 +163,15 @@
                                 {{ $line->transaction_payments->sum('amount') }}
                             </td>
                             <td>
-                                {{ $line->final_total - $line->transaction_payments->sum('amount') }}
+                                {{ number_format($line->dollar_final_total, 2) }}
                             </td>
                             <td>
                                 {{ $line->transaction_payments->sum('dollar_amount') }}
                             </td>
+                            <td>
+                                {{ $line->final_total - $line->transaction_payments->sum('amount') }}
+                            </td>
+                          
                             <td>
                                 {{ $line->dollar_final_total - $line->transaction_payments->sum('dollar_amount') }}
                             </td>

@@ -62,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice', 'changePrices','printInvoice'];
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice', 'changePrices'];
 
     public function listenerReferenceHere($data)
     {
