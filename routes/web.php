@@ -295,6 +295,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
 
     Route::resource('pos',SellPosController::class);
+    // Route::get('transaction-payment/add-payment/{id}', [TransactionPaymentController::class,'addPayment'])->name('transaction-payment.add-payment');
     Route::resource('pos-pay',TransactionPaymentController::class);
     Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');

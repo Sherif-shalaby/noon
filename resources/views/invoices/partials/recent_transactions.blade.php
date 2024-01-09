@@ -107,6 +107,8 @@
                         <th class="currencies">@lang('lang.received_currency')</th>
                         <th class="sum">@lang('lang.grand_total')</th>
                         <th class="sum">@lang('lang.paid')</th>
+                        <th class="sum">@lang('lang.grand_total') $</th>
+                        <th class="sum">@lang('lang.paid') $</th>
                         <th class="sum">@lang('lang.due_sale_list')</th>
                         <th>@lang('lang.payment_date')</th>
                         <th>@lang('lang.cashier_man')</th>
@@ -163,6 +165,13 @@
                                 {{ $line->final_total - $line->transaction_payments->sum('amount') }}
                             </td>
                             <td>
+                                {{ $line->transaction_payments->sum('dollar_amount') }}
+                            </td>
+                            <td>
+                                {{ $line->dollar_final_total - $line->transaction_payments->sum('dollar_amount') }}
+                            </td>
+                            
+                            <td>
                                 {{ $line->transaction_payments->last()->paid_on ?? '' }}
                             </td>
                             <td>
@@ -194,6 +203,27 @@
                                             class="btn btn-modal"><i class="fa fa-eye"></i>{{ __('lang.view') }}
                                         </a>
                                     </li>
+                                    @if ($line->status != 'draft' && $line->payment_status != 'paid' && $line->status != 'canceled') 
+                                    <li class="divider"></li>
+                                    <li>
+                                        {{-- if (auth()->user()->can('sale.pay.create_and_edit')) { --}}
+                                                @php
+                                                $final_total = $line->final_total;
+                                                $dollar_final_total = $line->dollar_final_total;
+                                                if(!empty($line->return_parent)) {
+                                                    $final_total = @num_uf($line->final_total - $line->return_parent->final_total);
+                                                    $dollar_final_total = @num_uf($line->dollar_final_total - $line->return_parent->dollar_final_total);
+                                                }
+                                                @endphp
+                                              
+                                                @if (($final_total > 0) || ($dollar_final_total > 0)) 
+                                                   <a data-href="{{url('transaction-payment/add-payment/'. $line->id) }}"
+                                                    title="{{__('lang.pay_now')}}" data-toggle="tooltip" data-container=".view_modal"
+                                                    class="btn btn-modal"><i class="fa fa-money"></i> {{__('lang.pay')}}</a>';
+                                                @endif
+                                        {{--@endif--}}
+                                    </li>
+                                    @endif
                                     <li class="divider"></li>
                                     <li>
                                         <a href="{{ route('sell.return', $line->id) }}" class="btn"><i
@@ -225,6 +255,7 @@
                                             {{ __('lang.delete') }}
                                         </a>
                                     </li>
+                        
                                 </ul>
                             </td>
                         </tr>

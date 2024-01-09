@@ -39,6 +39,17 @@
                         @endif --}}
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('amount', __('lang.amount') . ' $:*', []) !!} <br>
+                            {!! Form::text('dollar_amount', @num_format($dollar_amount), [
+                                'id' => 'dollar_amount_pay',
+                                'class' => 'form-control',
+                                'placeholder' => __('lang.amount').'$',
+                            ]) !!}
+                  
+                        </div>
+                    </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
@@ -63,7 +74,7 @@
                             ]) !!}
                         </div>
                     </div>
-                    <div class="col-md-6 mt-1">
+                    {{-- <div class="col-md-6 mt-1">
                         <label class="change_text">@lang('lang.change'): </label>
                         <span class="change" class="ml-2">0.00</span>
                         <div class="col-md-6">
@@ -72,7 +83,7 @@
                             <input type="hidden" name="add_to_customer_balance" id="add_to_customer_balance"
                                 class="add_to_customer_balance_in">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('upload_documents', __('lang.upload_documents') . ':', []) !!} <br>

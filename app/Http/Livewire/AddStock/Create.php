@@ -690,7 +690,7 @@ class Create extends Component
                         }
                     }
                     if(!empty($user_id)){
-                        $cr_transaction = CashRegisterTransaction::where('stock_transaction_id', $transaction->id)->first();
+                        $cr_transaction = CashRegisterTransaction::where('transaction_id', $transaction->id)->first();
                         if($cr_transaction){
                             $register = CashRegister::where('id', $cr_transaction->cash_register_id)->first();
                             $data = [
@@ -719,7 +719,7 @@ class Create extends Component
                                     'pay_method' => $this->method,
                                     'type' => 'debit',
                                     'transaction_type' => 'add_stock',
-                                    'stock_transaction_id' => $transaction->id,
+                                    'transaction_id' => $transaction->id,
                                     'transaction_payment_id' => null
                                 ]);
                             }
