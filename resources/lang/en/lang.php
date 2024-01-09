@@ -750,5 +750,7 @@ return [
     'credit_card_sales' => 'Credit Card Sales',
     'return_sales' => 'Return Sales',
     'ordered' => 'ordered',
+    'total_latest_payments' => 'Total Latest Payments',
+    'welcome' => 'ًWelcome',
 
 ];

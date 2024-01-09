@@ -19,10 +19,10 @@ return new class extends Migration
         });
         Schema::table('cash_register_transactions', function (Blueprint $table) {
             $table->decimal('dollar_amount', 15, 4)->nullable();
-            $table->enum('transaction_type', ['initial', 'sell', 'transfer', 'refund', 'add_stock', 'cash_in', 'cash_out', 'expense',
-                'returns', 'closing_cash', 'wages_and_compensation','pay_off'])->nullable();
-            $table->foreignId('stock_transaction_id')->nullable()->constrained('stock_transactions', 'id')->cascadeOnDelete();
-            $table->foreignId('sell_transaction_id')->nullable()->constrained('transaction_sell_lines', 'id')->cascadeOnDelete();
+            $table->enum('transaction_type', [
+                'initial', 'sell', 'transfer', 'refund', 'add_stock', 'cash_in', 'cash_out', 'expense',
+                'returns', 'closing_cash', 'wages_and_compensation', 'pay_off'
+            ])->nullable();
         });
         Schema::table('cash_registers', function (Blueprint $table) {
             $table->decimal('closing_dollar_amount', 15, 4)->nullable();

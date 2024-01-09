@@ -50,7 +50,7 @@ class CashRegisterController extends Controller
     public function create()
     {
         if ($this->cashRegisterUtil->countOpenedRegister() != 0) {
-            return redirect()->action('SellPosController@create');
+            return redirect()->route('invoices.create');
         }
 
         $is_pos = request()->is_pos;
@@ -82,7 +82,7 @@ class CashRegisterController extends Controller
 
             $register = $this->cashRegisterUtil->getCurrentCashRegister($user_id);
             if (!empty($register)) {
-                return redirect()->action('SellPosController@create');
+                return redirect()->route('invoices.create');
             }
             $register = CashRegister::create([
                 'user_id' => $user_id,
@@ -109,7 +109,7 @@ class CashRegisterController extends Controller
                     $money_safe_data['transaction_payment_id'] = null;
                     $money_safe_data['currency_id'] = $default_currency_id;
                     $money_safe_data['type'] = 'debit';
-                    $money_safe_data['store_id'] = $register->store_id ?? 0;
+                    $money_safe_data['store_id'] = $register->store_id ?? null;
                     $money_safe_data['amount'] = $initial_amount;
                     $money_safe_data['dollar_amount'] = $dollar_initial_amount;
                     $money_safe_data['created_by'] = Auth::user()->id;
@@ -124,7 +124,6 @@ class CashRegisterController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             Log::emergency("File:" . $e->getFile() . "Line:" . $e->getLine() . "Message:" . $e->getMessage());
-
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
@@ -133,7 +132,7 @@ class CashRegisterController extends Controller
             return redirect()->back()->with('status', $output);
         }
 
-        return redirect()->action('SellPosController@create');
+        return redirect()->route('invoices.create');
     }
 
     /**

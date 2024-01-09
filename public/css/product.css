@@ -93,14 +93,6 @@
       width: 100%
   }
 
-  .select2-container {
-      width: 100% !important
-  }
-
-  .select2-selection__rendered {
-      font-size: 12px;
-      font-weight: 500;
-  }
 
   .preview {
       position: relative !important;
@@ -150,6 +142,15 @@
 
   .table-scroll-wrapper {
       width: fit-content;
+  }
+
+  .select2-container {
+      width: 100% !important
+  }
+
+  .select2-selection__rendered {
+      font-size: 12px;
+      font-weight: 500;
   }
 
   .select2-selection__rendered {

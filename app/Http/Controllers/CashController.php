@@ -45,7 +45,9 @@ class CashController extends Controller
         $users = User::Notview()->orderBy('name', 'asc')->pluck('name', 'id');
 
         // Retrieve cash registers with related transactions and cashier
-        $query = CashRegister::with(['cashRegisterTransactions', 'cashier']);
+        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id');
+            // ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
+            // ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
         // +++++++ filters +++++++
         // 1- start_date filter
         if (!empty(request()->start_date))
@@ -72,23 +74,55 @@ class CashController extends Controller
         {
             $query->where('user_id', request()->user_id);
         }
-        $cash_registers = $query->orderBy('created_at', 'desc')->get();
-        // Iterate through each cash register
-        foreach ($cash_registers as $register)
-        {
-            // Access the calculated attributes using accessor methods
-            $totalSale = $register->totalSale;
-            $totalDiningIn = $register->totalDiningIn;
-            $totalDiningInCash = $register->totalDiningInCash;
-            $totalCashSales = $register->totalCashSales;
-            $totalRefundCash = $register->totalRefundCash;
-            $totalCardSales = $register->totalCardSales;
-            // Perform the manipulation within the controller
-            $register->total_cash_sales -= $register->total_refund_cash;
-            $register->total_card_sales -= $register->total_refund_card;
-            // Store the manipulated values back in the cash register model
-            $cr_data[$register->id]['cash_register'] = $register;
-        }
+        $cash_registers = $query->select(
+                'cash_registers.id',
+                'cash_registers.created_at',
+                'cash_registers.user_id',
+                'cash_registers.store_pos_id',
+                'cash_registers.notes',
+                'cash_registers.status',
+                'cash_registers.closing_amount',
+                'cash_registers.closing_dollar_amount',
+                'cash_registers.cash_given_to',
+                'cash_registers.closed_at',
+            DB::raw("SUM(IF(transaction_type = 'sell', amount, 0)) as dinar_total_sale"),
+            DB::raw("SUM(IF(transaction_type = 'sell', dollar_amount, 0)) as dollar_total_sale"),
+            DB::raw("SUM(IF(transaction_type = 'refund', amount, 0)) as total_refund"),
+            DB::raw("SUM(IF(transaction_type = 'refund', dollar_amount, 0)) as dollar_total_refund"),
+            DB::raw("SUM(IF(transaction_type = 'pay_off', amount, 0)) as total_latest_payments"),
+            DB::raw("SUM(IF(transaction_type = 'pay_off', dollar_amount, 0)) as dollar_total_latest_payments"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'cash' AND cash_register_transactions.type = 'credit', amount, 0)) as dinar_total_cash_sales"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'cash' AND cash_register_transactions.type = 'credit', dollar_amount, 0)) as dollar_total_cash_sales"),
+            DB::raw("SUM(IF(transaction_type = 'refund' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_refund_cash"),
+            DB::raw("SUM(IF(transaction_type = 'refund' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_refund_cash"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'card' AND cash_register_transactions.type = 'credit', amount, 0)) as dinar_total_card_sales"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'card' AND cash_register_transactions.type = 'credit', dollar_amount, 0)) as dollar_total_card_sales"),
+            DB::raw("SUM(IF(transaction_type = 'refund' AND pay_method = 'card' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_refund_card"),
+            DB::raw("SUM(IF(transaction_type = 'refund' AND pay_method = 'card' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_refund_card"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'bank_transfer' AND cash_register_transactions.type = 'credit', amount, 0)) as dinar_total_bank_transfer_sales"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'bank_transfer' AND cash_register_transactions.type = 'credit', dollar_amount, 0)) as dollar_total_bank_transfer_sales"),
+            DB::raw("SUM(IF(transaction_type = 'refund' AND pay_method = 'bank_transfer' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_refund_bank_transfer"),
+            DB::raw("SUM(IF(transaction_type = 'refund' AND pay_method = 'bank_transfer' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_refund_bank_transfer"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'gift_card' AND cash_register_transactions.type = 'credit', amount, 0)) as dinar_total_gift_card_sales"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'gift_card' AND cash_register_transactions.type = 'credit', dollar_amount, 0)) as dollar_total_gift_card_sales"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'cheque' AND cash_register_transactions.type = 'credit', amount, 0)) as dinar_total_cheque_sales"),
+            DB::raw("SUM(IF(transaction_type = 'sell' AND pay_method = 'cheque' AND cash_register_transactions.type = 'credit', dollar_amount, 0)) as dollar_total_cheque_sales"),
+            DB::raw("SUM(IF(transaction_type = 'refund' AND pay_method = 'cheque' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_refund_cheque"),
+            DB::raw("SUM(IF(transaction_type = 'refund' AND pay_method = 'cheque' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_refund_cheque"),
+            DB::raw("SUM(IF(transaction_type = 'add_stock' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_purchases"),
+            DB::raw("SUM(IF(transaction_type = 'add_stock' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_purchases"),
+            DB::raw("SUM(IF(transaction_type = 'expense' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_expenses"),
+            DB::raw("SUM(IF(transaction_type = 'expense' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_expenses"),
+            DB::raw("SUM(IF(transaction_type = 'cash_in' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_cash_in"),
+            DB::raw("SUM(IF(transaction_type = 'cash_in' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_cash_in"),
+            DB::raw("SUM(IF(transaction_type = 'cash_out' AND pay_method = 'cash' AND cash_register_transactions.type = 'credit', amount, 0)) as dinar_total_cash_out"),
+            DB::raw("SUM(IF(transaction_type = 'cash_out' AND pay_method = 'cash' AND cash_register_transactions.type = 'credit', dollar_amount, 0)) as dollar_total_cash_out"),
+            DB::raw("SUM(IF(transaction_type = 'sell_return' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_sell_return"),
+            DB::raw("SUM(IF(transaction_type = 'sell_return' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_sell_return"),
+        )->groupBy('cash_registers.id', 'cash_registers.created_at', 'cash_registers.user_id', 'cash_registers.notes','cash_registers.cash_given_to',
+            'cash_registers.store_pos_id', 'cash_registers.status','cash_registers.closing_amount','cash_registers.closing_dollar_amount','cash_registers.closed_at') // Add other columns as needed
+        ->orderBy('cash_registers.created_at', 'desc')
+            ->get();
         return view('cash.index', compact('cash_registers', 'stores', 'users', 'store_pos'));
     }
     /* ++++++++++++++++++++++ show() ++++++++++++++++++++++ */
@@ -191,9 +225,9 @@ class CashController extends Controller
             return redirect()->action('CashRegisterController@create');
         }
         $type = request()->get('type');
-        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id')
-            ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id');
-//            ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
+        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id');
+            // ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
+            // ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
         $query->where('cash_registers.id', $cash_register_id);
 
         $cr_data = [];
@@ -284,7 +318,7 @@ class CashController extends Controller
                     'msg' => __('lang.not_allowed')
                 ];
             }else{
-                
+
             DB::beginTransaction();
             $data = $request->except('_token');
 
@@ -294,6 +328,7 @@ class CashController extends Controller
             $register->source_type = $request->source_type;
             $register->cash_given_to = $request->cash_given_to;
             $register->closing_amount = $amount;
+            $register->closing_dollar_amount = $dollar_amount;
             $register->closed_at = Carbon::now();
             $register->status = 'close';
             $register->notes = $request->notes;
@@ -352,9 +387,10 @@ class CashController extends Controller
                 'msg' => __('lang.success')
             ];
         }
-            
+
         } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            dd($e);
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
@@ -365,5 +401,5 @@ class CashController extends Controller
         }
         return redirect()->back()->with('status', $output);
     }
-   
+
 }

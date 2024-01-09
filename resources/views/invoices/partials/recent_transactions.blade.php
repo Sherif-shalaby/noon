@@ -182,6 +182,9 @@
                                                     <th class="sum">@lang('lang.grand_total')</th>
                                                     <th class="sum">@lang('lang.paid')</th>
                                                     <th class="sum">@lang('lang.due_sale_list')</th>
+                                                    <th class="sum dollar-cell">@lang('lang.grand_total') $</th>
+                                                    <th class="sum dollar-cell">@lang('lang.paid') $</th>
+                                                    <th class="sum dollar-cell">@lang('lang.due_sale_list') $</th>
                                                     <th>@lang('lang.payment_date')</th>
                                                     <th>@lang('lang.cashier_man')</th>
                                                     <th>@lang('lang.products')</th>
@@ -301,7 +304,31 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.due_sale_list')">
+                                                                {{ number_format($line->dollar_final_total, 2) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 10px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.grand_total')">
+                                                                {{ $line->transaction_payments->sum('dollar_amount') }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 10px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.paid')">
                                                                 {{ $line->final_total - $line->transaction_payments->sum('amount') }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 10px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.due_sale_list')">
+                                                                {{ $line->dollar_final_total - $line->transaction_payments->sum('dollar_amount') }}
                                                             </span>
                                                         </td>
                                                         <td>
@@ -357,6 +384,30 @@
                                                                             class="fa fa-eye"></i>{{ __('lang.view') }}
                                                                     </a>
                                                                 </li>
+                                                                @if ($line->status != 'draft' && $line->payment_status != 'paid' && $line->status != 'canceled')
+                                                                    <li>
+                                                                        {{-- if (auth()->user()->can('sale.pay.create_and_edit')) { --}}
+                                                                        @php
+                                                                            $final_total = $line->final_total;
+                                                                            $dollar_final_total = $line->dollar_final_total;
+                                                                            if (!empty($line->return_parent)) {
+                                                                                $final_total = @num_uf($line->final_total - $line->return_parent->final_total);
+                                                                                $dollar_final_total = @num_uf($line->dollar_final_total - $line->return_parent->dollar_final_total);
+                                                                            }
+                                                                        @endphp
+
+                                                                        @if ($final_total > 0 || $dollar_final_total > 0)
+                                                                            <a data-href="{{ url('transaction-payment/add-payment/' . $line->id) }}"
+                                                                                title="{{ __('lang.pay_now') }}"
+                                                                                data-toggle="tooltip"
+                                                                                data-container=".view_modal"
+                                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  btn-modal"><i
+                                                                                    class="fa fa-money"></i>
+                                                                                {{ __('lang.pay') }}</a>';
+                                                                        @endif
+                                                                        {{-- @endif --}}
+                                                                    </li>
+                                                                @endif
                                                                 <li>
                                                                     <a href="{{ route('sell.return', $line->id) }}"
                                                                         class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i

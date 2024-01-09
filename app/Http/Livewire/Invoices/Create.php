@@ -130,7 +130,6 @@ class Create extends Component
         if ($this->countOpenedRegister() == 0) {
             return redirect()->to('/cash-register/create?is_pos=1');
         }
-
         // $this->countOpenedCashRegister=$this->countOpenedRegister();
         $this->payment_types = $this->getPaymentTypeArrayForPos();
         $this->department_id1 = null;
@@ -1267,7 +1266,7 @@ class Create extends Component
                     'pay_method' => $payment['method'],
                     'type' => $type,
                     'transaction_type' => 'sell',
-                    'sell_transaction_id' => $transaction->id,
+                    'transaction_id' => $transaction->id,
                     'transaction_payment_id' => $transaction_payment_id
                 ]);
 
@@ -1280,7 +1279,7 @@ class Create extends Component
                     'pay_method' =>  $payment['method'],
                     'type' => $type,
                     'transaction_type' => 'sell',
-                    'sell_transaction_id' => $transaction->id,
+                    'transaction_id' => $transaction->id,
                     'transaction_payment_id' => $transaction_payment_id
                 ]);
                 return true;
@@ -1292,7 +1291,7 @@ class Create extends Component
                 'pay_method' => $payment['method'],
                 'type' => $type,
                 'transaction_type' => $transaction->type,
-                'sell_transaction_id' => $transaction->id,
+                'transaction_id' => $transaction->id,
                 'transaction_payment_id' => $transaction_payment_id
             ]);
         }

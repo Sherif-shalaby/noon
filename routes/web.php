@@ -288,13 +288,14 @@ Route::group(['middleware' => ['auth']], function () {
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
-    Route::view('invoices/create', 'invoices.create')->name('invoices.create');
+    Route::get('invoices/create', [SellPosController::class,'create'])->name('invoices.create');
 
     Route::get('invoices/edit/{invoice}', [SellPosController::class,'editInvoice'])->name('invoices.edit');
     // ++++++++++++ invoices : "delete all selected invoices" ++++++++++++
     Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
 
     Route::resource('pos',SellPosController::class);
+    // Route::get('transaction-payment/add-payment/{id}', [TransactionPaymentController::class,'addPayment'])->name('transaction-payment.add-payment');
     Route::resource('pos-pay',TransactionPaymentController::class);
     Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
@@ -404,6 +405,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('cash/add-closing-cash/{cash_register_id}', [CashController::class,'addClosingCash']);
     Route::post('cash/save-add-closing-cash', [CashController::class,'saveAddClosingCash'])->name('cash.save-add-closing-cash');
     Route::resource('cash-register', CashRegisterController::class);
+    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class,'getSourceByTypeDropdown']);
+
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

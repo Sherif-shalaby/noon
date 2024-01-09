@@ -188,17 +188,24 @@
                                                     <th>@lang('lang.notes')</th>
                                                     <th>@lang('lang.status')</th>
                                                     <th class="sum">@lang('lang.cash_sales')</th>
-                                                    @if (session('system_mode') == 'restaurant')
-                                                        <th class="sum">@lang('lang.dining_in')</th>
-                                                    @endif
-                                                    <th class="sum">@lang('lang.cash_in')</th>
-                                                    <th class="sum">@lang('lang.cash_out')</th>
-                                                    <th class="sum">@lang('lang.purchases')</th>
-                                                    <th class="sum">@lang('lang.expenses')</th>
-                                                    <th class="sum">@lang('lang.wages_and_compensation')</th>
-                                                    <th class="sum">@lang('lang.current_cash')</th>
-                                                    <th class="sum">@lang('lang.closing_cash')</th>
-                                                    <th class="sum">@lang('lang.closing_date_and_time')</th>
+                                                      <th class="sum dollar-cell">@lang('lang.cash_sales') $</th>
+                                        <th class="sum">@lang('lang.total_latest_payments')</th>
+                                        <th class="sum dollar-cell">@lang('lang.total_latest_payments') $</th>
+                                        <th class="sum">@lang('lang.cash_in')</th>
+                                        <th class="sum dollar-cell">@lang('lang.cash_in') $</th>
+                                        <th class="sum">@lang('lang.cash_out')</th>
+                                        <th class="sum dollar-cell">@lang('lang.cash_out') $</th>
+                                        <th class="sum">@lang('lang.purchases')</th>
+                                        <th class="sum dollar-cell">@lang('lang.purchases') $</th>
+                                        <th class="sum">@lang('lang.expenses')</th>
+                                        <th class="sum dollar-cell">@lang('lang.expenses') $</th>
+                                        <th class="sum">@lang('lang.wages_and_compensation')</th>
+                                        <th class="sum dollar-cell">@lang('lang.wages_and_compensation') $</th>
+                                        <th class="sum">@lang('lang.current_cash')</th>
+                                        <th class="sum dollar-cell">@lang('lang.current_cash') $</th>
+                                        <th class="sum">@lang('lang.closing_cash')</th>
+                                        <th class="sum dollar-cell">@lang('lang.closing_cash') $</th>
+                                        <th class="sum">@lang('lang.closing_date_and_time')</th>
                                                     <th>@lang('lang.cash_given_to')</th>
                                                     <th class="notexport">@lang('lang.action')</th>
                                                 </tr>
@@ -267,105 +274,163 @@
                                                                 {{ ucfirst($cash_register->status) }}
                                                             </span>
                                                         </td>
-                                                        <td>
-                                                            <span
+                                                         <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.cash_sales')">
-                                                                {{ @num_format($cash_register->totalCashSales - $cash_register->totalRefundCash - $cash_register->totalSellReturn) }}
-                                                            </span>
-                                                        </td>
-                                                        @if (session('system_mode') == 'restaurant')
-                                                            <span
+                                                            {{@num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash - $cash_register->dinar_total_sell_return)}}
+                                                              </span>
+                                                            </td>
+                                                        <td>
+                                                              <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.cash_sales')">
+                                                            {{@num_format($cash_register->dollar_total_cash_sales - $cash_register->dollar_total_refund_cash - $cash_register->dollar_total_sell_return)}}
+                                                              </span>
+                                                            </td>
+                                                        <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.dining_in')">
-                                                                <td>{{ @num_format($cash_register->totalDiningIn) }}</td>
-                                                            </span>
-                                                        @endif
+                                                                data-tooltip="@lang('lang.total_latest_payments')">
+                                                            {{ @num_format($cash_register->dinar_total_latest_payments) }}
+                                                              </span>
+                                                            </td>
                                                         <td>
-                                                            <span
+                                                              <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.total_latest_payments')">
+                                                            {{ @num_format($cash_register->dollar_total_latest_payments) }}
+                                                              </span>
+                                                            </td>
+                                                        <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.cash_in')">
-
-                                                                {{ @num_format($cash_register->totalCashIn) }}
-                                                            </span>
-                                                        </td>
+                                                            {{ @num_format($cash_register->dinar_total_cash_in) }}
+                                                              </span>
+                                                            </td>
                                                         <td>
-                                                            <span
+                                                              <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.cash_in')">
+                                                            {{ @num_format($cash_register->dollar_total_cash_in) }}
+                                                              </span>
+                                                            </td>
+                                                        <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.cash_out')">
-
-                                                                {{ @num_format($cash_register->totalCashOut) }}
-                                                            </span>
-                                                        </td>
+                                                            {{ @num_format($cash_register->dinar_total_cash_out) }}
+                                                              </span>
+                                                            </td>
                                                         <td>
-                                                            <span
+                                                              <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.cash_out')">
+                                                            {{ @num_format($cash_register->dollar_total_cash_out) }}
+                                                              </span>
+                                                            </td>
+                                                        <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.purchases')">
-
-                                                                {{ @num_format($cash_register->totalPurchases) }}
-                                                            </span>
-                                                        </td>
+                                                            {{ @num_format($cash_register->dinar_total_purchases) }}
+                                                              </span>
+                                                            </td>
                                                         <td>
-                                                            <span
+                                                              <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.purchases')">
+                                                            {{ @num_format($cash_register->dollar_total_purchases) }}
+                                                              </span>
+                                                            </td>
+                                                        <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.expenses')">
-
-                                                                {{ @num_format($cash_register->totalExpenses) }}
-                                                            </span>
-                                                        </td>
+                                                            {{ @num_format($cash_register->dinar_total_expenses) }}
+                                                              </span>
+                                                            </td>
                                                         <td>
-                                                            <span
+                                                              <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.expenses')">
+                                                            {{ @num_format($cash_register->dollar_total_expenses) }}
+                                                              </span>
+                                                            </td>
+                                                        <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.wages_and_compensation')">
-
-                                                                {{ @num_format($cash_register->totalWagesAndCompensation) }}
-                                                            </span>
-                                                        </td>
+                                                            {{ @num_format($cash_register->dinar_total_wages_and_compensation) }}
+                                                              </span>
+                                                            </td>
                                                         <td>
-                                                            <span
+                                                              <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.wages_and_compensation')">
+                                                            {{ @num_format($cash_register->dollar_total_wages_and_compensation) }}
+                                                              </span>
+                                                            </td>
+                                                        <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.current_cash')">
-
-                                                                {{ @num_format(
-                                                                    $cash_register->totalCashSales -
-                                                                        $cash_register->totalRefundCash +
-                                                                        $cash_register->totalCashIn -
-                                                                        $cash_register->totalCashOut -
-                                                                        $cash_register->totalPurchases -
-                                                                        $cash_register->totalExpenses -
-                                                                        $cash_register->totalWagesAndCompensation -
-                                                                        $cash_register->totalSellReturn
-                                                                ) }}
-                                                            </span>
-                                                        </td>
+                                                            {{@num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash +
+                                                            $cash_register->dinar_total_cash_in - $cash_register->dinar_total_cash_out -
+                                                            $cash_register->dinar_total_purchases - $cash_register->dinar_total_expenses - $cash_register->dinar_total_wages_and_compensation - $cash_register->dinar_total_sell_return)}}
+                                                             </span>
+                                                </td>
                                                         <td>
-                                                            <span
+                                                              <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.current_cash')">
+                                                            {{@num_format($cash_register->dollar_total_cash_sales - $cash_register->dollar_total_refund_cash +
+                                                            $cash_register->dollar_total_cash_in - $cash_register->dollar_total_cash_out -
+                                                            $cash_register->dollar_total_purchases - $cash_register->dollar_total_expenses - $cash_register->dollar_total_wages_and_compensation - $cash_register->dollar_total_sell_return)}}
+                                                            </span>
+                                                </td>
+
+                                                        <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.closing_cash')">
-
-                                                                {{ @num_format($cash_register->closing_amount) }}
-                                                            </span>
-                                                        </td>
+                                                            {{ @num_format($cash_register->closing_amount) }}
+                                                              </span>
+                                                            </td>
                                                         <td>
-                                                            <span
+                                                              <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.closing_cash')">
+                                                            {{ @num_format($cash_register->closing_dollar_amount) }}
+                                                              </span>
+                                                            </td>
+                                                        <td>
+                                                              <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.closing_date_and_time')">
-
-                                                                @if (!empty($cash_register->closed_at))
-                                                            </span>
-                                                            {{ @format_datetime($cash_register->closed_at) }}
-                                                @endif
-                                                </td>
+                                                            @if(!empty($cash_register->closed_at)){{ @format_datetime($cash_register->closed_at) }}@endif
+                                                              </span>
+                                                            </td>
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"

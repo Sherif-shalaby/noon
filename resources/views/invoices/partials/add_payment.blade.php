@@ -3,7 +3,12 @@
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
 
-            {!! Form::open(['url' => route('pos-pay.store'), 'method' => 'post', 'id' => 'add_payment_form', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open([
+                'url' => route('pos-pay.store'),
+                'method' => 'post',
+                'id' => 'add_payment_form',
+                'enctype' => 'multipart/form-data',
+            ]) !!}
 
             <div class="modal-header">
 
@@ -26,17 +31,28 @@
                                 'class' => 'form-control',
                                 'placeholder' => __('lang.amount'),
                             ]) !!}
-                            {{-- @else 
+                            {{-- @else
                         {!! Form::text('amount', @num_format($transaction->final_total - $transaction->transaction_payments->sum('amount')-$balance), ['class' => 'form-control', 'placeholder' => __('lang.amount')]) !!}
-                        @endif 
-                         @else 
+                        @endif
+                         @else
                         @if (isset($transaction->return_parent))
-                        
+
                         {!! Form::text('amount', @num_format($transaction->final_total - $transaction->transaction_payments->sum('amount') - $transaction->return_parent->final_total), ['class' => 'form-control', 'placeholder' => __('lang.amount')]) !!}
-                        @else 
+                        @else
                         {!! Form::text('amount', @num_format($transaction->final_total - $transaction->transaction_payments->sum('amount')), ['class' => 'form-control', 'placeholder' => __('lang.amount')]) !!}
-                        @endif 
+                        @endif
                         @endif --}}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('amount', __('lang.amount') . ' $:*', []) !!} <br>
+                            {!! Form::text('dollar_amount', @num_format($dollar_amount), [
+                                'id' => 'dollar_amount_pay',
+                                'class' => 'form-control',
+                                'placeholder' => __('lang.amount') . '$',
+                            ]) !!}
+
                         </div>
                     </div>
 
@@ -63,7 +79,7 @@
                             ]) !!}
                         </div>
                     </div>
-                    <div class="col-md-6 mt-1">
+                    {{-- <div class="col-md-6 mt-1">
                         <label class="change_text">@lang('lang.change'): </label>
                         <span class="change" class="ml-2">0.00</span>
                         <div class="col-md-6">
@@ -72,7 +88,7 @@
                             <input type="hidden" name="add_to_customer_balance" id="add_to_customer_balance"
                                 class="add_to_customer_balance_in">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('upload_documents', __('lang.upload_documents') . ':', []) !!} <br>
@@ -149,7 +165,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" id="submit_form_button" class="btn btn-primary">@lang('lang.save')</button>
+                <button type="submit" id="submit_form_button" class="btn btn-primary">@lang('lang.save')</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">@lang('lang.close')</button>
 
                 {{-- <button type="button"id="close_modal_button" class="btn btn-default" data-dismiss="modal">@lang('lang.close')</button> --}}
@@ -161,90 +177,90 @@
     </div><!-- /.modal-dialog -->
 </div>
 <script>
-    $(document).ready(function() {
-        var pageTitle = window.location.pathname;
-        console.log(pageTitle);
-      
-        $('#submit_form_button').click(function() {
-            $('#add_payment_form').submit();
+    // $(document).ready(function() {
+    //     var pageTitle = window.location.pathname;
+    //     console.log(pageTitle);
+
+    //     $('#submit_form_button').click(function() {
+    //         $('#add_payment_form').submit();
+    //     });
+
+    //     if (pageTitle !== "/pos/create") {
+    //         var updateadd_payment_formClicked = false;
+    //         $('#add_payment_form').submit(function(e) {
+    //             e.preventDefault();
+
+    //             var formData = new FormData($(this)[0]);
+    //             let submitButton = $("#submit_form_button");
+    //             if (!updateadd_payment_formClicked) {
+    //                 console.log('dae')
+    //                 $.ajax({
+    //                     url: $(this).attr('action'),
+    //                     type: $(this).attr('method'),
+    //                     data: formData,
+    //                     contentType: false,
+    //                     processData: false,
+    //                     success: function(response) {
+    //                         // Handle success response here
+    //                         console.log(response);
+
+    //                         $('#add_payment_form')[0].reset();
+    //                         $('#close_modal_button').click();
+    //                         $('#sales_table').DataTable().ajax.reload();
+    //                     },
+    //                     error: function(error) {
+    //                         // Handle error response here
+    //                         console.log(error);
+    //                     }
+    //                 });
+    //                 updateadd_payment_formClicked = true;
+
+    //                 // Disable the button after it has been clicked
+    //                 submitButton.prop('disabled', true);
+    //             }
+    //         });
+    //     }
+    var inputValue = $('#amount_pay').val();
+    console.log(inputValue);
+    if (inputValue !== undefined) {
+        var initialAmount = parseFloat(inputValue.replace(',', ''));
+        // Rest of your code using initialAmount
+    } else {
+        console.error("Error: The element with id 'amount_pay' does not exist or is undefined.");
+    }
+    // Store the initial amount value
+    // var initialAmount = parseFloat($('#amount_pay').val().replace(',', '')); // Assuming 'num_format' formats the number as a string with commas
+
+    $('#amount_pay').on('change', function() {
+    var newAmount = parseFloat($(this).val().replace(',', ''));
+
+    if (!isNaN(newAmount) && newAmount > initialAmount) {
+        var change = Math.abs(newAmount - initialAmount);
+        $(".add_to_customer_balance").removeClass("hide");
+        $('.change').text(change.toFixed(2));
+        $(document).on("click", ".add_to_customer_balance", function() {
+            $('.change').text(change.toFixed(2)); // Update the change value
+
+            // if ($('.payment_way').val() !== 'deposit') {
+            $('.add_to_customer_balance_in').val(change.toFixed(2));
+            console.log($('#add_to_customer_balance').val());
+            // $('.change_amount').val(0);
+            // $(this).attr('disabled', true);
+
+            // Assuming you have a 'received_amount' variable
+            var newReceivedAmount = newAmount - change;
+            $('#amount_pay').val(newReceivedAmount.toFixed(2));
         });
-
-        if(pageTitle!=="/pos/create"){
-        var updateadd_payment_formClicked = false;
-        $('#add_payment_form').submit(function(e) {
-            e.preventDefault();
-
-            var formData = new FormData($(this)[0]);
-            let submitButton = $("#submit_form_button"); 
-            if (!updateadd_payment_formClicked) {
-                console.log('dae')
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: $(this).attr('method'),
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        // Handle success response here
-                        console.log(response);
-                    
-                        $('#add_payment_form')[0].reset();
-                        $('#close_modal_button').click();
-                        $('#sales_table').DataTable().ajax.reload();
-                    },
-                    error: function(error) {
-                        // Handle error response here
-                        console.log(error);
-                    }
-                });
-                updateadd_payment_formClicked = true;
-
-                // Disable the button after it has been clicked
-                submitButton.prop('disabled', true);
-            }
+        $(document).on("click", ".close , #close_modal_button", function() {
+            $('.add_to_customer_balance').addClass('hide');
+            $('.add_to_customer_balance_in').val('0');
+            console.log($('#add_to_customer_balance').val());
         });
-        }
-        var inputValue = $('#amount_pay').val();
-        console.log(inputValue);
-        if (inputValue !== undefined) {
-            var initialAmount = parseFloat(inputValue.replace(',', ''));
-            // Rest of your code using initialAmount
-        } else {
-            console.error("Error: The element with id 'amount_pay' does not exist or is undefined.");
-        }
-        // Store the initial amount value
-        // var initialAmount = parseFloat($('#amount_pay').val().replace(',', '')); // Assuming 'num_format' formats the number as a string with commas
-
-        $('#amount_pay').on('change', function () {
-            var newAmount = parseFloat($(this).val().replace(',', ''));
-
-            if (!isNaN(newAmount) && newAmount > initialAmount) {
-                var change = Math.abs(newAmount - initialAmount);
-                $(".add_to_customer_balance").removeClass("hide");
-                $('.change').text(change.toFixed(2));
-                $(document).on("click", ".add_to_customer_balance", function () {
-                    $('.change').text(change.toFixed(2)); // Update the change value
-                    
-                    // if ($('.payment_way').val() !== 'deposit') {
-                        $('.add_to_customer_balance_in').val(change.toFixed(2));
-                        console.log($('#add_to_customer_balance').val());
-                        // $('.change_amount').val(0);
-                        // $(this).attr('disabled', true);
-
-                        // Assuming you have a 'received_amount' variable
-                        var newReceivedAmount = newAmount - change;
-                        $('#amount_pay').val(newReceivedAmount.toFixed(2));
-                });
-                $(document).on("click", ".close , #close_modal_button", function () {
-                    $('.add_to_customer_balance').addClass('hide');
-                    $('.add_to_customer_balance_in').val('0');
-                    console.log($('#add_to_customer_balance').val());
-                });
-                // } else {
-                //     $('.add_to_customer_balance').addClass('hide');
-                // }
-            }
-        });
+        // } else {
+        //     $('.add_to_customer_balance').addClass('hide');
+        // }
+    }
+    });
     });
     $('#source_type').change(function() {
         if ($(this).val() !== '') {
@@ -281,6 +297,4 @@
             $('.not_cash').attr('required', false);
         }
     })
-
-     
 </script>
