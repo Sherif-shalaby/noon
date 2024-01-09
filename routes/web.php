@@ -404,6 +404,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('cash/add-closing-cash/{cash_register_id}', [CashController::class,'addClosingCash']);
     Route::post('cash/save-add-closing-cash', [CashController::class,'saveAddClosingCash'])->name('cash.save-add-closing-cash');
     Route::resource('cash-register', CashRegisterController::class);
+    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class,'getSourceByTypeDropdown']);
+
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
