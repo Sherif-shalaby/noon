@@ -45,9 +45,9 @@ class CashController extends Controller
         $users = User::Notview()->orderBy('name', 'asc')->pluck('name', 'id');
 
         // Retrieve cash registers with related transactions and cashier
-        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id')
-            ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
-            ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
+        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id');
+            // ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
+            // ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
         // +++++++ filters +++++++
         // 1- start_date filter
         if (!empty(request()->start_date))
@@ -123,24 +123,6 @@ class CashController extends Controller
             'cash_registers.store_pos_id', 'cash_registers.status','cash_registers.closing_amount','cash_registers.closing_dollar_amount','cash_registers.closed_at') // Add other columns as needed
         ->orderBy('cash_registers.created_at', 'desc')
             ->get();
-//        $cash_registers = $query->orderBy('created_at', 'desc')->get();
-////        dd($cash_registers);
-//        // Iterate through each cash register
-//        foreach ($cash_registers as $register)
-//        {
-//            // Access the calculated attributes using accessor methods
-//            $totalSale = $register->totalSale;
-//            $totalDiningIn = $register->totalDiningIn;
-//            $totalDiningInCash = $register->totalDiningInCash;
-//            $totalCashSales = $register->totalCashSales;
-//            $totalRefundCash = $register->totalRefundCash;
-//            $totalCardSales = $register->totalCardSales;
-//            // Perform the manipulation within the controller
-//            $register->total_cash_sales -= $register->total_refund_cash;
-//            $register->total_card_sales -= $register->total_refund_card;
-//            // Store the manipulated values back in the cash register model
-//            $cr_data[$register->id]['cash_register'] = $register;
-//        }
         return view('cash.index', compact('cash_registers', 'stores', 'users', 'store_pos'));
     }
     /* ++++++++++++++++++++++ show() ++++++++++++++++++++++ */
@@ -243,9 +225,9 @@ class CashController extends Controller
             return redirect()->action('CashRegisterController@create');
         }
         $type = request()->get('type');
-        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id')
-            ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
-            ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
+        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id');
+            // ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
+            // ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
         $query->where('cash_registers.id', $cash_register_id);
 
         $cr_data = [];

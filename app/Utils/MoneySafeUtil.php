@@ -52,6 +52,7 @@ class MoneySafeUtil extends Util
                     $money_safe_transaction->type = $type;
                     $money_safe_transaction->store_id = $transaction->store_id;
                     $money_safe_transaction->amount = $this->num_uf($payment_data['amount']);
+                    $money_safe_transaction->dollar_amount = $this->num_uf($payment_data['dollar_amount']);
                     $money_safe_transaction->created_by = $transaction->created_by;
 
                     $money_safe_transaction->save();
@@ -180,6 +181,7 @@ class MoneySafeUtil extends Util
             if (!empty($cr_transaction)) {
                 $cr_transaction->update([
                     'amount' => $this->num_uf($payment['amount']),
+                    'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                     'pay_method' => $payment['method'],
                     'type' => $type,
                     'transaction_type' => $transaction->type,
@@ -193,6 +195,7 @@ class MoneySafeUtil extends Util
                 CashRegisterTransaction::create([
                     'cash_register_id' => $register->id,
                     'amount' => $this->num_uf($payment['amount']),
+                    'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                     'pay_method' =>  $payment['method'],
                     'type' => $type,
                     'transaction_type' => $transaction->type,
@@ -205,6 +208,7 @@ class MoneySafeUtil extends Util
         else {
             $payments_formatted[] = new CashRegisterTransaction([
                 'amount' => $this->num_uf($payment['amount']),
+                'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                 'pay_method' => $payment['method'],
                 'type' => $type,
                 'transaction_type' => $transaction->type,

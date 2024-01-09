@@ -8,6 +8,8 @@ use App\Models\DeptPayment;
 use App\Models\MoneySafe;
 use App\Models\StorePos;
 use App\Models\TransactionSellLine;
+use App\Models\User;
+use App\Utils\CashRegisterUtil;
 use App\Utils\MoneySafeUtil;
 use App\Utils\TransactionUtil;
 use App\Utils\Util;
@@ -36,11 +38,12 @@ class TransactionPaymentController extends Controller
      * @param MoneySafeUtil $moneysafeUtil
      * @return void
      */
-    public function __construct(Util $commonUtil, TransactionUtil $transactionUtil, MoneySafeUtil $moneysafeUtil)
+    public function __construct(Util $commonUtil,CashRegisterUtil $CashRegisterUtil, TransactionUtil $transactionUtil, MoneySafeUtil $moneysafeUtil)
     {
         $this->commonUtil = $commonUtil;
         $this->transactionUtil = $transactionUtil;
         $this->moneysafeUtil = $moneysafeUtil;
+        $this->cashRegisterUtil=$CashRegisterUtil;
     }
     /**
      * Display a listing of the resource.
@@ -75,7 +78,8 @@ class TransactionPaymentController extends Controller
             $payment_data = [
                 'transaction_payment_id' =>  !empty($request->transaction_payment_id) ? $request->transaction_payment_id : null,
                 'transaction_id' =>  $request->transaction_id,
-                'amount' => $this->commonUtil->num_uf($request->amount),
+                'amount' => $this->commonUtil->num_uf($request->amount)??0,
+                'dollar_amount' => $this->commonUtil->num_uf($request->dollar_amount)??0,
                 'method' => $request->method,
                 'paid_on' => $this->commonUtil->uf_date($data['paid_on']) . ' ' . date('H:i:s'),
                 'ref_number' => $request->ref_number,
@@ -89,6 +93,9 @@ class TransactionPaymentController extends Controller
             $transaction = TransactionSellLine::find($request->transaction_id);
             $debt_data = [
                 'amount' => $this->commonUtil->num_uf($request->amount),
+                'dollar_amount' => $this->commonUtil->num_uf($request->dollar_amount),
+                'dinar_remaining' =>$transaction->dinar_remaining>0?($transaction->dinar_remaining - $this->commonUtil->num_uf($request->amount)):0,
+                'dollar_remaining' =>$transaction->dollar_remaining>0?($transaction->dollar_remaining - $this->commonUtil->num_uf($request->dollar_amount)):0,
                 'type' => 'Debt',
                 'customer_id' => !empty( $transaction->customer_id) ?  $transaction->customer_id :  auth()->id(),
                 'method' => $request->method,
@@ -99,18 +106,21 @@ class TransactionPaymentController extends Controller
                 'created_by' => auth()->id(),
             ];
             // $debt_payment=  DeptPayment::create($debt_data);
-            $customer = Customer::find($transaction->customer_id);
-            if($request->add_to_customer_balance > 0){
-                $customer->added_balance = $customer->added_balance + $request->add_to_customer_balance;
-                $customer->save();
-            }
+            // $customer = Customer::find($transaction->customer_id);
+            // if($request->add_to_customer_balance > 0){
+            //     $customer->added_balance = $customer->added_balance + $request->add_to_customer_balance;
+            //     $customer->save();
+            // }
            
             // if ($request->upload_documents) {
             //     foreach ($request->file('upload_documents', []) as $key => $doc) {
             //         $debt_payment->addMedia($doc)->toMediaCollection('debt_payment');
             //     }
             // }
+            // dd($payment_data);
             $transaction_payment = $this->transactionUtil->createOrUpdateTransactionPayment($transaction, $payment_data);
+            // dd($transaction_payment);
+            
             // DebtTransactionPayment::create([
             //     'debt_payment_id'=>$debt_payment->id,
             //     'transaction_payment_id'=>$transaction_payment->id,
@@ -146,7 +156,7 @@ class TransactionPaymentController extends Controller
 
             $this->transactionUtil->updateTransactionPaymentStatus($transaction->id);
             if ($transaction->type == 'sell') {
-                // $this->cashRegisterUtil->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id);
+                $this->cashRegisterUtil->addPayments($transaction, $payment_data, 'credit', null,$transaction_payment->id,'pay_off');
 
                 if ($payment_data['method'] == 'bank_transfer' || $payment_data['method'] == 'card') {
                     $this->moneysafeUtil->addPayments($transaction, $payment_data, 'credit', $transaction_payment->id);
@@ -159,15 +169,14 @@ class TransactionPaymentController extends Controller
             ];
         } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            dd($e);
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
         }
 
-        if (request()->ajax()) {
-            return $output;
-        }
+    
 
         return redirect()->back()->with('status', $output);
     }
@@ -215,5 +224,22 @@ class TransactionPaymentController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function addPayment($transaction_id)
+    {
+        
+        $payment_type_array = $this->commonUtil->getPaymentTypeArray();
+        $transaction = TransactionSellLine::find($transaction_id);
+        $users = User::Notview()->pluck('name', 'id');
+        $balance = Customer::find($transaction->customer_id)->balance??0;
+        $dollar_balance = Customer::find($transaction->customer_id)->dollar_balance??0;
+
+        return view('transaction_payment.add_payment')->with(compact(
+            'payment_type_array',
+            'transaction_id',
+            'transaction',
+            'users',
+            'balance','dollar_balance'
+        ));
     }
 }
