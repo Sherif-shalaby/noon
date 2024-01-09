@@ -33,12 +33,12 @@
             <div class="col-lg-12">
                 <div class="card m-b-30">
                     <div class="card-header">
-                        <h5 class="card-title">@lang('lang.products')</h5>
+                        <h5 class="card-title">@lang('lang.invoices')</h5>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="container-fluid">
-{{--                                @include('add-stock.partials.filters')--}}
+                               @include('suppliers.returns.partials.filters')
                             </div>
                         </div>
                     </div>
@@ -88,13 +88,21 @@
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                                                {{-- ++++++++++++++ details button ++++++++++++++ --}}
                                                 <li>
                                                     <a href="{{route('stocks.show', $stock->id)}}"
                                                        class="btn"><i
                                                             class="fa fa-eye"></i>
                                                         @lang('lang.view') </a>
                                                 </li>
-                                                {{--                                            <li class="divider"></li>--}}
+                                                <li class="divider"></li>
+                                                {{-- ++++++++++++++ return_invoice button ++++++++++++++ --}}
+                                                <li>
+                                                    <a href="{{route('suppliers.returns.return_invoice', $stock->id)}}" class="btn">
+                                                       <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        @lang('lang.return')
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </td>
                                     </tr>

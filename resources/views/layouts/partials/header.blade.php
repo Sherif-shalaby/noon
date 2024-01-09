@@ -83,11 +83,22 @@
                   {{-- ###################### Supplier Returns :  المرتجعات للموردين ###################### --}}
                   @if(!empty($module_settings['return_module']))
                       <li class="dropdown">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.supplier_returns')}}</span></a>
-                          <ul class="dropdown-menu">
-                              <li><a target="_blank" href="{{route('suppliers.returns.products')}}"><i class="mdi mdi-circle"></i>@lang('lang.products')</a></li>
-                              <li><a target="_blank" href="{{route('suppliers.returns.invoices')}}"><i class="mdi mdi-circle"></i>@lang('lang.invoices')</a></li>
-                          </ul>
+                            <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages">
+                                <span>{{__('lang.supplier_returns')}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a target="_blank" href="{{route('suppliers.returns.products')}}">
+                                        <i class="mdi mdi-circle"></i>@lang('lang.products')
+                                    </a>
+                                </li>
+                                <li>
+                                    <a target="_blank" href="{{route('suppliers.returns.invoices')}}">
+                                        <i class="mdi mdi-circle"></i>@lang('lang.invoices')
+                                    </a>
+                                </li>
+                            </ul>
                       </li>
                   @endif
 

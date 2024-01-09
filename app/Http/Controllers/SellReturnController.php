@@ -49,6 +49,7 @@ class SellReturnController extends Controller
     //    dd($sell_returns);
         return view('returns.sell.index',compact('sell_returns'));
     }
+
     public function show($id){
         $sale = TransactionSellLine::find($id);
         $return_parent = TransactionSellLine::find($sale->return_parent_id);
