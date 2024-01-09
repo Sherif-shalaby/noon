@@ -259,9 +259,9 @@ class AddStockController extends Controller
 
             $sum_received_annual = $received_discounts->where('discount_type', 'annual_discount')->sum('received_amount');
             $annual_discount -= $sum_received_annual;
-
-            $seasonal_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount') - $received_discounts->sum('received_amount_dollar');
-            $annual_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('annual_discount') - $received_discounts->sum('received_amount_dollar');
+    
+            $seasonal_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount_amount') - $received_discounts->sum('received_amount_dollar');
+            $annual_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('annual_discount_amount') - $received_discounts->sum('received_amount_dollar');
         } else {
             $seasonal_discount = 0;
             $annual_discount = 0;
@@ -299,8 +299,8 @@ class AddStockController extends Controller
                     'discount_type' => $request->discount_type,
                     'amount' => $request->annual_discount,
                     'amount_dollar' =>$request->annual_discount_dollar,
-                    'change' => $request->change_dinar,
-                    'change_dollar' => $request->change_dollar,
+                    'change' => $request->amount_change_dinar,
+                    'change_dollar' => $request->amount_change_dollar,
                     'received_amount' => $request->amount,
                     'received_amount_dollar' => $request->amount_dollar,
                     'created_by' => Auth::user()->id,
