@@ -90,6 +90,26 @@ class TransactionUtil extends Util
 
         return $data;
     }
+    public function getCustomerDollarBalanceExceptTransaction($customer_id,$transaction_id)
+    {
+        $total_paid=TransactionSellLine::where('customer_id',$customer_id)->where('type','sell')->where('status','final')->with('transaction_payments') // Ensure the relationship is eager-loaded
+    ->get()
+    ->flatMap(function ($sellLine) {
+        return $sellLine->transaction_payments;
+    })->sum('dollar_amount');
+        $total_return_paid=TransactionSellLine::where('customer_id',$customer_id)->where('type','sell_return')->where('status','final')->with('transaction_payments') // Ensure the relationship is eager-loaded
+    ->get()
+    ->flatMap(function ($sellLine) {
+        return $sellLine->transaction_payments;
+    })->sum('amount');
+        $total_invoice=TransactionSellLine::where('customer_id',$customer_id)->where('type','sell')->where('status','final')->sum('dollar_final_total');
+        $total_return=TransactionSellLine::where('customer_id',$customer_id)->where('type','sell_return')->where('status','final')->sum('dollar_final_total');
+        $deposit_balance=Customer::find($customer_id)->deposit_balance??0;
+        $added_balance=Customer::find($customer_id)->dollar_balance??0;
+
+        // $balance_adjustment = CustomerBalanceAdjustments::where('customer_id', $customer_id)->sum('add_new_balance');
+        $balance = ($total_paid - $total_invoice  + $total_return - $total_return_paid)+ $deposit_balance + $added_balance ;
+    }
     public function getCustomerBalanceExceptTransaction($customer_id,$transaction_id)
     {
         $total_paid=TransactionSellLine::where('customer_id',$customer_id)->where('type','sell')->where('status','final')->with('transaction_payments') // Ensure the relationship is eager-loaded
@@ -141,6 +161,7 @@ class TransactionUtil extends Util
         if (!empty($payment_data['transaction_payment_id'])) {
             $transaction_payment = PaymentTransactionSellLine::find($payment_data['transaction_payment_id']);
             $transaction_payment->amount = $payment_data['amount'];
+            $transaction_payment->dollar_amount = $payment_data['dollar_amount'];
             $transaction_payment->method = $payment_data['method'];
             $transaction_payment->payment_for = !empty($payment_data['payment_for']) ? $payment_data['payment_for'] : $transaction->customer_id;
             $transaction_payment->ref_number = !empty($payment_data['ref_number']) ? $payment_data['ref_number'] : null;

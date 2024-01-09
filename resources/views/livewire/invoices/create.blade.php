@@ -445,6 +445,7 @@
         });
         document.addEventListener('livewire:load', function () {
             Livewire.on('printInvoice', function (htmlContent) {
+                console.log(htmlContent);
                 // Set the generated HTML content
                 $("#receipt_section_print").html(htmlContent);
                 // Trigger the print action

@@ -20,6 +20,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\View\Factory;
 use App\Models\CashRegisterTransaction;
+use App\Models\Customer;
 use App\Models\PaymentTransactionSellLine;
 use App\Models\ReceiptTransactionSellLinesFiles;
 use App\Models\Store;
@@ -305,9 +306,13 @@ class SellPosController extends Controller
         $payment_type_array = $this->commonUtil->getPaymentTypeArray();
         $transaction = TransactionSellLine::find($transaction_id);
         $users = User::Notview()->pluck('name', 'id');
-        $balance = $this->transactionUtil->getCustomerBalanceExceptTransaction($transaction->customer_id,$transaction_id)['balance'];
+        // $balance = $this->transactionUtil->getCustomerBalanceExceptTransaction($transaction->customer_id,$transaction_id)['balance'];
+        $balance = Customer::find($transaction->customer_id)->balance??0;
+        $dollar_balance = Customer::find($transaction->customer_id)->dollar_balance??0;
+        $dollar_finalTotal = $transaction->dollar_final_total;
         $finalTotal = $transaction->final_total;
         $transactionPaymentsSum = $transaction->transaction_payments->sum('amount');
+        $dollar_transactionPaymentsSum = $transaction->transaction_payments->sum('dollar_amount');
         if ($balance > 0 && $balance < $finalTotal - $transactionPaymentsSum) {
             if (isset($transaction->return_parent)) {
                 $amount = $finalTotal - $transactionPaymentsSum - $transaction->return_parent->final_total - $balance;
@@ -321,13 +326,26 @@ class SellPosController extends Controller
                 $amount = $finalTotal - $transactionPaymentsSum;
             }
         }
+        if ($dollar_balance > 0 && $dollar_balance < $dollar_finalTotal - $dollar_transactionPaymentsSum) {
+            if (isset($transaction->return_parent)) {
+                $dollar_amount = $dollar_finalTotal - $dollar_transactionPaymentsSum - $transaction->return_parent->dollar_final_total - $dollar_balance;
+            } else {
+                $dollar_amount = $dollar_finalTotal - $dollar_transactionPaymentsSum - $dollar_balance;
+            }
+        } else {
+            if (isset($transaction->return_parent)) {
+                $dollar_amount = $dollar_finalTotal - $dollar_transactionPaymentsSum - $transaction->return_parent->dollar_final_total;
+            } else {
+                $dollar_amount = $dollar_finalTotal - $dollar_transactionPaymentsSum;
+            }
+        }
         return view('invoices.partials.add_payment')->with(compact(
             'payment_type_array',
             'transaction_id',
             'transaction',
             'users',
-            'balance',
-            'amount'
+            'balance','dollar_balance',
+            'amount','dollar_amount'
         ));
     }
     public function editInvoice($id){

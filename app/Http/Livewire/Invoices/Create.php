@@ -62,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice', 'changePrices'];
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice', 'changePrices','printInvoice'];
 
     public function listenerReferenceHere($data)
     {
@@ -124,8 +124,11 @@ class Create extends Component
     }
     public function mount()
     {
-
-
+        //Check if there is a open register, if no then redirect to Create Register screen.
+        if ($this->countOpenedRegister() == 0) {
+            return redirect()->to('/cash-register/create?is_pos=1');
+        }
+      
         // $this->countOpenedCashRegister=$this->countOpenedRegister();
         $this->payment_types = $this->getPaymentTypeArrayForPos();
         $this->department_id1 = null;
@@ -463,7 +466,6 @@ class Create extends Component
 
                 $payment_types = $this->getPaymentTypeArrayForPos();
                 $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
-
                 // Emit a browser event to trigger the invoice printing
                 $this->emit('printInvoice', $html_content);
             }
@@ -1243,7 +1245,7 @@ class Create extends Component
                     'pay_method' => $payment['method'],
                     'type' => $type,
                     'transaction_type' => 'sell',
-                    'sell_transaction_id' => $transaction->id,
+                    'transaction_id' => $transaction->id,
                     'transaction_payment_id' => $transaction_payment_id
                 ]);
 
@@ -1256,7 +1258,7 @@ class Create extends Component
                     'pay_method' =>  $payment['method'],
                     'type' => $type,
                     'transaction_type' => 'sell',
-                    'sell_transaction_id' => $transaction->id,
+                    'transaction_id' => $transaction->id,
                     'transaction_payment_id' => $transaction_payment_id
                 ]);
                 return true;
@@ -1268,7 +1270,7 @@ class Create extends Component
                 'pay_method' => $payment['method'],
                 'type' => $type,
                 'transaction_type' => $transaction->type,
-                'sell_transaction_id' => $transaction->id,
+                'transaction_id' => $transaction->id,
                 'transaction_payment_id' => $transaction_payment_id
             ]);
         }
