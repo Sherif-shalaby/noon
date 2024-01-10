@@ -951,6 +951,10 @@ class Create extends Component
             'purchase_after_discount' => null,
             'dollar_purchase_after_discount' => null,
             'discount_on_bonus_quantity' => true,
+            'show_discount' => false,
+            'show_validity' => false,
+            'show_discount_details' => false,
+            'show_unit_details' => false,
             'prices' => [
                 [
                     'price_type' => null,
@@ -977,7 +981,30 @@ class Create extends Component
             $this->items[] = $new_item;
         }
     }
-
+    public function stayShowDiscount($index)
+    {
+        $this->items[$index]['show_discount'] =
+            !$this->items[$index]['show_discount'];
+        $this->dispatchBrowserEvent('componentRefreshed');
+    }
+    public function stayShowValidity($index)
+    {
+        $this->items[$index]['show_validity'] =
+            !$this->items[$index]['show_validity'];
+        $this->dispatchBrowserEvent('componentRefreshed');
+    }
+    public function stayShowshowDiscountDetails($index)
+    {
+        $this->items[$index]['show_discount_details'] =
+            !$this->items[$index]['show_discount_details'];
+        $this->dispatchBrowserEvent('componentRefreshed');
+    }
+    public function stayShowUnitDetails($index)
+    {
+        $this->items[$index]['show_unit_details'] =
+            !$this->items[$index]['show_unit_details'];
+        $this->dispatchBrowserEvent('componentRefreshed');
+    }
     public function add_by_po()
     {
         if (!empty($this->items)) {
