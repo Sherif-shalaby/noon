@@ -483,7 +483,7 @@ class Create extends Component
             } else {
                 if ($this->new_added_dinar_balance > 0 || $this->new_added_dollar_balance > 0) {
                     $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
-                    $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance, $this->new_added_dollar_balance, 'cash_in', 'credit', Auth::user()->id, 'customer_balance', $customer->id, $transaction->id);
+                    $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance, $this->new_added_dollar_balance, 'cash_in', 'debit', Auth::user()->id, 'customer_balance', $customer->id, $transaction->id);
                 }
             }
 
