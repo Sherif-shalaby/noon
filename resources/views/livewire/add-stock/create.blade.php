@@ -80,11 +80,10 @@
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper" style="width: 100%">
-
                                         {!! Form::select('purchase_type', ['import' => __('lang.import'), 'local' => __('lang.local')], $purchase_type, [
                                             'class' => 'form-select',
                                             'required',
-                                            'style' => 'width:100%;height:100%',
+                                            'style' => 'width:100%;height:100%;',
                                             'placeholder' => __('lang.please_select'),
                                             'data-name' => 'purchase_type',
                                             'wire:model' => 'purchase_type',

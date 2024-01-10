@@ -11,7 +11,7 @@
             </div>
             <div class="d-flex justify-content-between align-items-center flex-wrap col-md-10">
                 @if ($this->checkRepresentativeUser() && $reprsenative_sell_car)
-                    <div class="col-md-2 p-0">
+                    <div class="col-md-1 p-0">
                         <button data-method="cash" style="width: 100%" type="button" class="btn btn-success payment-btn"
                             wire:click="submit" id="cash-btn"><i class="fa-solid fa-money-bill"></i>
                             @lang('lang.pay')</button>
@@ -19,7 +19,7 @@
                     </div>
                 @endif
                 @if (!$this->checkRepresentativeUser())
-                    <div class=" col-md-2 p-0 ">
+                    <div class=" col-md-1 p-0 ">
                         <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                             class="btn btn-success payment-btn px-0" wire:click="submit" id="cash-btn"><i
                                 class="fa-solid fa-money-bill"></i>
@@ -28,7 +28,7 @@
                     </div>
                 @endif
 
-                <div class=" col-md-2 p-0 ">
+                <div class=" col-md-1 p-0 ">
                     <button style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                         class="btn btn-primary payment-btn px-0" data-toggle="modal" data-target="#draftTransaction"
                         {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i class="fa-solid fa-flag"></i>
@@ -36,7 +36,7 @@
                     {{-- @include('invoices.partials.draft_transaction') --}}
 
                 </div>
-                <div class=" col-md-2 p-0">
+                <div class=" col-md-1 p-0">
                     <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                         class="btn btn-warning payment-btn " wire:click="changeStatus" id="cash-btn"><i
                             class="fa-solid fa-flag"></i>
@@ -44,7 +44,7 @@
                 </div>
 
                 @if (!$this->checkRepresentativeUser())
-                    <div class=" col-md-2 p-0">
+                    <div class=" col-md-1 p-0">
                         <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
                             class="btn btn-primary payment-btn " onclick="openDueDateModal()" id="pay-later-btn"><i
                                 class="fa fa-hourglass-start"></i>
@@ -52,7 +52,7 @@
                     </div>
                 @endif
 
-                <div class="col-md- 2 p-0">
+                <div class="col-md-2 p-0">
                     <a href="{{ route('recent_transactions') }}"
                         target="_blank"style="width: 100%;font-size: 12px;font-weight: 600;background-color: #ffc107;"
                         type="button" class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
@@ -60,7 +60,7 @@
                 </div>
 
                 <div
-                    class="col-md-2 p-0 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) || $back_to_dollar == 2
+                    class="col-md-1 p-0 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) || $back_to_dollar == 2
                         ? ''
                         : 'd-none' }}">
                     <div class="custom-control custom-switch">
@@ -71,6 +71,12 @@
                     </div>
                     {{-- <button type="button" class="btn btn-success"
                         wire:click="ChangeBillToDinar()">{{ __('lang.change_bill_to_dinar') }}</button> --}}
+                </div>
+
+                <div class="col-md-2 ">
+                    <button class="btn btn-danger {{ $this->add_to_balance == '0' ? 'd-none' : '' }}"
+                        style="width: 100%;font-size: 12px;font-weight: 600;"
+                        wire:click="addToBalance()">{{ __('lang.add_to_balance') }}</button>
                 </div>
             </div>
         </div>

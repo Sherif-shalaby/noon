@@ -1,3 +1,15 @@
+* {
+    font-family: "Noto Kufi Arabic", sans-serif !important;
+}
+
+.form-select {
+    font-family: "Noto Kufi Arabic", sans-serif !important;
+}
+
+.form-select option {
+    font-family: inherit;
+}
+
 label {
     color: #888 !important;
     font-weight: 500 !important;

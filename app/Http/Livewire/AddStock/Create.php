@@ -378,7 +378,6 @@ class Create extends Component
     public function addExpense()
     {
         $this->expenses[] = ['details' => '', 'amount' => 0, 'expense_currency' => ''];
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function getTotalExpenses()
     {
@@ -398,7 +397,6 @@ class Create extends Component
         $this->dinar_expenses = number_format($this->num_uf($this->dinar_expenses), 3);
         $this->dollar_expenses = number_format($this->num_uf($this->dollar_expenses), 3);
         // dd(number_format($this->total_expenses,3));
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function removeExpense($index)
     {
@@ -409,19 +407,16 @@ class Create extends Component
         }
         unset($this->expenses[$index]);
         $this->expenses = array_values($this->expenses);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function reset_change()
     {
         // dd('test');
         $this->dinar_remaining = 0;
         $this->dollar_remaining = 0;
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function convertRemainingDollar()
     {
         $this->total_amount = $this->num_uf($this->total_amount) + ($this->num_uf($this->dollar_remaining) * $this->num_uf($this->exchange_rate));
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
 
@@ -740,7 +735,6 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
         return redirect('/add-stock/create');
     }
 
@@ -908,7 +902,6 @@ class Create extends Component
                 $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function addNewProduct($variations, $product, $show_product_data, $index = null, $stock)
@@ -958,10 +951,6 @@ class Create extends Component
             'purchase_after_discount' => null,
             'dollar_purchase_after_discount' => null,
             'discount_on_bonus_quantity' => true,
-            'show_discount' => false,
-            'show_validity' => false,
-            'show_discount_details' => false,
-            'show_unit_details' => false,
             'prices' => [
                 [
                     'price_type' => null,
@@ -988,27 +977,7 @@ class Create extends Component
             $this->items[] = $new_item;
         }
     }
-    public function stayShowDiscount($index)
-    {
-        $this->items[$index]['show_discount'] =
-            !$this->items[$index]['show_discount'];
-        $this->dispatchBrowserEvent('componentRefreshed');
-    }
-    public function stayShowValidity($index)
-    {
-        $this->items[$index]['show_validity'] =
-            !$this->items[$index]['show_validity'];
-    }
-    public function stayShowshowDiscountDetails($index)
-    {
-        $this->items[$index]['show_discount_details'] =
-            !$this->items[$index]['show_discount_details'];
-    }
-    public function stayShowUnitDetails($index)
-    {
-        $this->items[$index]['show_unit_details'] =
-            !$this->items[$index]['show_unit_details'];
-    }
+
     public function add_by_po()
     {
         if (!empty($this->items)) {
@@ -1088,7 +1057,6 @@ class Create extends Component
 
         ];
         array_unshift($this->items[$index]['prices'], $new_price);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function addCustomersPrice()
@@ -1155,7 +1123,6 @@ class Create extends Component
         ];
         //        dd($new_store);
         array_unshift($this->items[$index]['stores'], $new_store);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changePercent($index, $key, $via = null, $i = null)
     {
@@ -1192,7 +1159,6 @@ class Create extends Component
                 }
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeIncrease($index, $key, $via = null, $i = null)
     {
@@ -1783,14 +1749,14 @@ class Create extends Component
     public function changeCurrentStock($index, $var = null, $i = null)
     {
         if ($var == 'stores') {
-            $this->items[$index]['stores'][$i]['total_stock'] = $this->items[$index]['stores'][$i]['quantity'] + $this->items[$index]['stores'][$i]['current_stock'];
+            $this->items[$index]['stores'][$i]['total_stock'] = $this->num_uf($this->items[$index]['stores'][$i]['quantity']) + $this->num_uf($this->items[$index]['stores'][$i]['current_stock']);
             // dd($this->items[$index]['total_stock']);
             $this->purchase_final($index, $var, $i);
             if ($this->purchase_final($index, $var, $i) > 0) {
                 $this->final_purchase_for_piece($index, $var, $i);
             }
         } else {
-            $this->items[$index]['total_stock'] = $this->items[$index]['quantity'] + $this->items[$index]['current_stock'];
+            $this->items[$index]['total_stock'] = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['current_stock']);
             // dd($this->items[$index]['total_stock']);
             $this->purchase_final($index);
             if ($this->purchase_final($index) > 0) {

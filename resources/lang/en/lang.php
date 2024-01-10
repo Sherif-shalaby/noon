@@ -752,5 +752,5 @@ return [
     'ordered' => 'ordered',
     'total_latest_payments' => 'Total Latest Payments',
     'welcome' => 'ًWelcome',
-
+    'add_to_balance' => 'Add To Balance',
 ];

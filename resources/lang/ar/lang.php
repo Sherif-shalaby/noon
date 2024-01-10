@@ -822,4 +822,5 @@ return array(
     'ordered' => 'طلب',
     'total_latest_payments' => 'اجمالى المدفوعات المتأخرة',
     'welcome' => 'اهلا',
+    'add_to_balance' => 'اضافة الى الرصيد',
 );
