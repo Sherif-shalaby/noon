@@ -104,6 +104,9 @@
                         {!! Form::number('final_total', $final_total, ['class' => 'form-control', 'readonly']) !!}
                     </div>
                 </div>
+                <div class="col-md-12 ">
+                    <button class="btn btn-danger {{$this->add_to_balance=='0'?'d-none':''}}" wire:click="addToBalance()">{{__('lang.add_to_balance')}}</button>
+                </div>
                 {{-- +++++++++++ الواصل دولار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
