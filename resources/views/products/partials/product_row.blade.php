@@ -69,14 +69,14 @@
                 <label class="text-danger validation-error error-msg">{{ $message }}</label>
             @enderror
         </div>
-        <div>
+        {{-- <div>
             @include('layouts.translation_inputs', [
                 'attribute' => 'name',
                 'translations' =>
                     $key == 0 && isset($recent_product->translations) ? $recent_product->translations : [],
                 'type' => 'product',
             ])
-        </div>
+        </div> --}}
         {{-- ++++++++++++++++ product symbol ++++++++++++++++ --}}
         <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
             style="width: 75px">
