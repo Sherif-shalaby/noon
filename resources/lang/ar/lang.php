@@ -394,6 +394,7 @@ return array(
     'sale'=>'المبيعات',
     'delivery_list' => 'قائمة الطلبيات',
     'return_sell' => 'إرجاع عملية بيع',
+    'return_invoice' => 'إرجاع فاتورة',
     'purchase_return' => 'إرجاع عملية شراء',
     'purchase_return_pay' => 'دفع عائد الشراء',
     'employee_commission' => 'عمولة الموظف',

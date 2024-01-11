@@ -722,7 +722,7 @@ return [
     'credit_card_sales' => 'Credit Card Sales',
     'return_sales' => 'Return Sales',
     'ordered' => 'ordered' ,
-
+    'return_invoice' => 'return invoice',
 
 ];
 

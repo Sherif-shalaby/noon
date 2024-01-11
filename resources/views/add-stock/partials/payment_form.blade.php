@@ -1,4 +1,3 @@
-
 <div class="col-md-12">
     <div class="row">
 
@@ -9,7 +8,7 @@
                 @if($dinar_remaining > 0)
                      <span wire:model="dinar_remaining">Change: {{$dinar_remaining}}</span>
                 @endif
-                
+
                 @error('amount')
                 <span class="error text-danger">{{ $message }}</span>
                 @enderror
@@ -30,7 +29,7 @@
         </div>
 
 
-     
+
         {{-- <div class="col-md-2">
             <label for="paying_currency">@lang('lang.paying_currency') </label>
             {!! Form::select('paying_currency', $selected_currencies, $paying_currency,

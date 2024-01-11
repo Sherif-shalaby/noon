@@ -127,7 +127,7 @@ class ReturnStockController extends Controller
     // ++++++++++++++++++ return_invoice() ++++++++++++++++++
     public function return_invoice($id)
     {
-        dd($id);
+        return view('suppliers.returns.return_invoice',compact('id'));
     }
     /**
      * Show the form for editing the specified resource.

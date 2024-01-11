@@ -352,7 +352,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ++++++++++++++++ suppliers return : invoices : return_invoice : Livewire : Task 09-01-2024 ++++++++++++++++++
     Route::get('invoice-return/return/{id}', function ($id) {
         return view('suppliers.returns.return_invoice', compact('id'));
-    })->name('invoices.return_invoice');
+    })->name('returns.suppliers.return_invoice');
     // user check password
     Route::post('user/check-password', [HomeController::class, 'checkPassword'])->name('check_password');
     //suppliers
