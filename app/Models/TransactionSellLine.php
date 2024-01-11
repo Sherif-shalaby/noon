@@ -13,10 +13,12 @@ class TransactionSellLine extends Model
 
     public function transaction_sell_lines()
     {
-
         return $this->hasMany(SellLine::class,'transaction_id','id');
     }
-
+    public function return_parent()
+    {
+        return $this->hasOne(TransactionSellLine::class, 'return_parent_id','id');
+    }
     public function delivery()
     {
         return $this->belongsTo(Employee::class,'deliveryman_id');

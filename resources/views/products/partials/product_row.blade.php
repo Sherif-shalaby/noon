@@ -6,7 +6,7 @@
             {!! Form::label('brand', __('lang.brand'), ['class' => 'h5 pt-3']) !!}
             <div class="d-flex justify-content-center">
                 {!! Form::select('products['.$key.'][brand_id]', $brands, $key == 0 && isset($recent_product->brand) ? $recent_product->brand->id : null, [
-                    'class' => 'form-control select2',
+                    'class' => 'form-control select2 brand',
                     'placeholder' => __('lang.please_select'),
                     'id' => 'brand_id'.$key,
                 ]) !!}
@@ -64,7 +64,7 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-3" data-key="{{ $key }}">
-                    {!! Form::label('category', __('lang.category'), ['class' => 'h5 pt-3']) !!}
+                    {!! Form::label('category', __('lang.category'). ' 1', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
                             {!! Form::select('products['.$key.'][category_id]', $categories1, $key == 0 && isset($recent_product->category_id) ? $recent_product->category_id : null, [
                                 'class' => 'form-control select2 category',
@@ -85,7 +85,7 @@
                     @enderror
                 </div>
                 <div class="col-md-3">
-                    {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!}
+                    {!! Form::label('subcategory', __('lang.category') . ' 2', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
                         {!! Form::select('products['.$key.'][subcategory_id1]', $categories2, $key == 0 && isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null, [
                             'class' => 'form-control select2 subcategory',
@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!}
+                    {!! Form::label('subcategory', __('lang.category') . ' 3', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
                         {!! Form::select('products['.$key.'][subcategory_id2]', $categories3, $key == 0 && isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null, [
                             'class' => 'form-control select2 subcategory2',
@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!}
+                    {!! Form::label('subcategory', __('lang.category') . ' 4', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
                         {!! Form::select('products['.$key.'][subcategory_id3]', $categories4, $key == 0 && isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null, [
                             'class' => 'form-control select2 subcategory3',
@@ -186,6 +186,7 @@
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
+                {{-- =========== تعبئة =========== --}}
                 <div class="col-md-2">
                     {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
@@ -198,11 +199,13 @@
                         <button type="button" class="btn btn-primary btn-add-modal btn-sm ml-2 add_unit_raw" data-toggle="modal" data-key="{{$key}}" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
-                <div class="col-md-2 pt-4">
+                {{-- +++++++ Equal Button +++++++ --}}
+                <div class="col-md-2 pt-4 mt-3">
                     <button class="btn btn btn-warning add_small_unit" type="button" data-key="{{ $key }}">
                         <i class="fa fa-equals"></i>
                     </button>
                 </div>
+
                 @include('products.product_unit_raw')
                 <input type="hidden" id="raw_unit_index[{{ $key }}]" value="0" />
             </div>

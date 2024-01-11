@@ -4,6 +4,7 @@ use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GetDueReport;
+use App\Http\Controllers\CashController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\UnitController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellCarController;
 use App\Http\Controllers\SellPosController;
@@ -26,31 +28,33 @@ use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CashRegisterController;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SellReturnController;
+use App\Http\Controllers\ReturnStockController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\GetDueReportController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\InitialBalanceController;
+use App\Http\Controllers\RepresentativeController;
 use App\Http\Controllers\SupplierReportController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\PurchasesReportController;
+use App\Http\Controllers\RequiredProductController;
+use App\Http\Controllers\NewInitialBalanceController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
-use App\Http\Controllers\NewInitialBalanceController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\RepresentativeController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ProfitReportController;
+use App\Http\Controllers\TransactionPaymentController;
+use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
-use App\Http\Controllers\RequiredProductController;
-use App\Http\Controllers\ReturnStockController;
-use App\Http\Controllers\SalesPerEmployeeReportController;
-use App\Http\Controllers\TransactionPaymentController;
-use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -169,11 +173,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/get-dropdown-store/', [ProductController::class,'getStoresDropdown']);
     // +++++++++++++++++++++ products filters +++++++++++++++++++++++++++
     // fetch "sub_categories1" of selected "main_category" selectbox
-    Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_product_sub_categories1']);
+    Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_sub_categories1']);
     // fetch "sub_categories2" of selected "sub_categories1" selectbox
-    Route::post('api/products/fetch_product_sub_categories2',[ProductController::class,'fetch_product_sub_categories2']);
+    Route::post('api/products/fetch_product_sub_categories2',[ProductController::class,'fetch_sub_categories2']);
     // fetch "sub_categories3" of selected "sub_categories2" selectbox
-    Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_product_sub_categories3']);
+    Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_sub_categories3']);
     Route::get('product/add_product_raw', [ProductController::class,'addProductRow']);
 
     Route::resource('products', ProductController::class);
@@ -196,6 +200,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('customer/get-dropdown-city/{id}', [CustomerController::class,'getDropdownCity']);
     // ++++++++++++ task 14-12-2023 : get "quarters" dropdown ++++++++++++
     Route::get('customer/get-dropdown-quarter/{id}', [CustomerController::class,'getDropdownQuarter']);
+    // ++++++++++++ task 02-01-2024 : get "customer types" dropdown ++++++++++++
+    Route::get('customer/get-dropdown-customer-type/', [CustomerController::class,'getDropdownCustomerType']);
     Route::get('customer/dues', [CustomerController::class,'get_due'])->name('dues');
     Route::get('customer/customer_dues/{id}', [CustomerController::class,'customer_dues'])->name('customer_dues');
 
@@ -212,6 +218,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
     Route::get('add-stock/show/{id}',[AddStockController::class , 'show'])->name('stocks.show');
     Route::get('add-stock/add-payment/{id}',[AddStockController::class , 'addPayment'])->name('stocks.addPayment');
+    Route::get('add-stock/receive_discount/{id}',[AddStockController::class , 'receive_discount_view'])->name('stocks.receive_discount_view');
+    Route::post('add-stock/receive_discount_store/{id}',[AddStockController::class , 'receive_discount'])->name('stocks.receive_discount');
+
     Route::post('add-stock/post-payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.storePayment');
     Route::delete('add-stock/{id}/delete',[AddStockController::class , 'destroy'])->name('stocks.delete');
 
@@ -265,23 +274,28 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
+    // ########### profit Report ###########
+    Route::get('report/get-profit-loss', [ProfitReportController::class,'index'])->name('profit_report');
+
     // ########### Sales Per Employee Report ###########
 
     Route::resource('sales-per-employee', SalesPerEmployeeReportController::class);
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
+    Route::get('get-dashboard-data/{start_date}/{end_date}',  [ProfitReportController::class,'getDashboardData']);
 
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
-    Route::view('invoices/create', 'invoices.create')->name('invoices.create');
+    Route::get('invoices/create', [SellPosController::class,'create'])->name('invoices.create');
 
     Route::get('invoices/edit/{invoice}', [SellPosController::class,'editInvoice'])->name('invoices.edit');
     // ++++++++++++ invoices : "delete all selected invoices" ++++++++++++
     Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
 
     Route::resource('pos',SellPosController::class);
+    // Route::get('transaction-payment/add-payment/{id}', [TransactionPaymentController::class,'addPayment'])->name('transaction-payment.add-payment');
     Route::resource('pos-pay',TransactionPaymentController::class);
     Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
@@ -328,6 +342,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Returns
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
+    Route::get('sell-return/show/{id}', [SellReturnController::class,'show'])->name('sell_return.show');
 
     // supplier Returns
     Route::get('stock/return/product',[ReturnStockController::class,'show'])->name('suppliers.returns.products');
@@ -355,7 +370,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Branch
     Route::resource('branches',BranchController::class);
-    Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
+    Route::get('get_branch_stores/{ids}', [BranchController::class, 'getBranchStores']);
 
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
 
@@ -366,6 +381,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('representatives', RepresentativeController::class);
     Route::get('representatives/print-representative-invoice/{transaction_id}', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
     Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
+    Route::resource('expense', ExpenseController::class);
 
                                 // Reports
     // Product Report
@@ -382,7 +398,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('reports/daily_sales_report',[ReportController::class,'dailySalesReport'])->name('reports.daily_sales_report');
     // Daily purchase Report
     Route::get('reports/daily_purchase_report',[ReportController::class,'dailyPurchaseReport'])->name('reports.daily_purchase_report');
+    // ++++++++++++++++++ Task 03-01-2024 : Cash +++++++++++++++++++++
+    Route::resource('cash', CashController::class);
 
+    // close cashier
+    Route::get('cash/add-closing-cash/{cash_register_id}', [CashController::class,'addClosingCash']);
+    Route::post('cash/save-add-closing-cash', [CashController::class,'saveAddClosingCash'])->name('cash.save-add-closing-cash');
+    Route::resource('cash-register', CashRegisterController::class);
+    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class,'getSourceByTypeDropdown']);
 
 });
 

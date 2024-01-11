@@ -101,12 +101,12 @@ class CustomerController extends Controller
    *
    * @return Response
    */
-    public function store(CustomerRequest $request)
+    public function store(Request $request)
     {
         // dd($request);
         try
         {
-            DB::beginTransaction();
+            // DB::beginTransaction();
             $data = $request->except('_token','phone','email');
             // ++++++++++++++ store phones in array ++++++++++++++++++
             $data['phone'] = json_encode($request->phone);
@@ -135,7 +135,7 @@ class CustomerController extends Controller
             if($request->quick_add){
                 return $output;
             }
-            DB::commit();
+            // DB::commit();
 
         } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
@@ -181,7 +181,7 @@ class CustomerController extends Controller
         catch (\Exception $e)
         {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-            // dd($e);
+             dd($e);
             $output = [
                 'success' => false,
                 // 'msg' => __('lang.something_went_wrong')
@@ -362,6 +362,13 @@ class CustomerController extends Controller
         $quarters = Quarter::where('city_id',$city_id)->orderBy('created_at', 'asc')->pluck('name', 'id')->toArray();
         $quarters_dp = $this->Util->createDropdownHtml($quarters, __('lang.please_select'));
         return  $quarters_dp;
+    }
+    // ++++++++++++++++++ Task 14-12-2023 : customer_types dropdown in "customer create" page +++++++++++++
+    public function getDropdownCustomerType()
+    {
+        $customer_types = CustomerType::orderBy('created_at', 'asc')->pluck('name', 'id')->toArray();
+        $customer_types_dp = $this->Util->createDropdownHtml($customer_types, __('lang.please_select'));
+        return  $customer_types_dp;
     }
 
     public function get_due(Request $request){

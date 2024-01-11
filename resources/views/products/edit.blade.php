@@ -98,14 +98,78 @@
                             'class' => 'form-control',
                         ]) !!}
                     </div>
-                    {{-- +++++++++++++++++++++++ "categories" selectbox +++++++++++++++++++++++ --}}
-                    <div class="col-md-12 product_raws">
-                        @for ($i = 0; $i < 3; $i++)
-                            @include('products.partials.product_row',['key' => $i])
-                        @endfor
-                        <input type="hidden" id="raw_product_index" value="2" />
-                    </div>
 
+                    {{-- +++++++++++++++++++++++ "categories" selectbox +++++++++++++++++++++++ --}}
+                    {{-- ++++++++++++++++ product categories ++++++++++++++++ --}}
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3" data-key="0">
+                                {!! Form::label('category', __('lang.category'). ' 1', ['class' => 'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select('products[0][category_id]', $categories1, $product->category_id ?? null, [
+                                        'class' => 'form-control select2 category',
+                                        'placeholder' => __('lang.please_select'),
+                                        'id' => 'categoryId0',
+
+                                    ]) !!}
+                                    <a   data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
+                                         class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                         data-select_category="0"><i class="fas fa-plus"></i>
+                                    </a>
+                                </div>
+                                @error('products.0.category_id')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.category') . ' 2', ['class' => 'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select('products[0][subcategory_id1]', $categories2,  $product->subcategory_id1 ?? null, [
+                                        'class' => 'form-control select2 subcategory',
+                                        'placeholder' => __('lang.please_select'),
+                                        'id' => 'subcategory_id10','data-key' => 0
+                                    ]) !!}
+                                    <a data-href="{{route('categories.sub_category_modal')}}"  data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="1"><i class="fas fa-plus"></i></a>
+                                </div>
+                                @error('products.0.category_id')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.category') . ' 3', ['class' => 'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select('products[0][subcategory_id2]', $categories3, $product->subcategory_id2 ?? null, [
+                                        'class' => 'form-control select2 subcategory2',
+                                        'placeholder' => __('lang.please_select'),
+                                        'id' => 'subCategoryId20', 'data-key' => 0
+                                    ]) !!}
+                                    <a data-href="{{route('categories.sub_category_modal')}}"  data-container=".view_modal" class="btn btn-primary  text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="2"><i class="fas fa-plus"></i></a>
+                                </div>
+                                @error('products.0.subcategory_id2')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.category') . ' 4', ['class' => 'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select('products[0][subcategory_id3]', $categories4, $product->subcategory_id3 ?? null, [
+                                        'class' => 'form-control select2 subcategory3',
+                                        'placeholder' => __('lang.please_select'),
+                                        'id' => 'subCategoryId30', 'data-key' => 0
+                                    ]) !!}
+                                    <a data-href="{{route('categories.sub_category_modal')}}"  data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="3"><i class="fas fa-plus"></i></a>
+                                </div>
+                                @error('products.0.subcategory_id3')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                     {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
                     <div class="col-md-3">
                         <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
@@ -400,7 +464,7 @@
     @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])
-    @include('categories.create_modal', ['quick_add' => $quick_add])
+    @include('categories.create_modal', ['quick_add' => 1])
     @include('product-tax.create', ['quick_add' => 1])
 
 @endsection

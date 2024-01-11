@@ -66,12 +66,17 @@
                             <div class="col-lg-12">
                                 <div class="container-fluid">
                                     {{-- @include('customers.filters') --}}
+                                    {{-- +++++++++++++ Filters +++++++++++++++++ --}}
+                                    {{-- <div class="col-md-12"> --}}
+                                        @include('livewire.invoices.partials.filters')
+                                    {{-- </div> --}}
                                 </div>
                             </div>
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         <div class="table-responsive">
-                            <div class="row ml-4">
+                            <div class="row ml-5">
+
                                 {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                                 <div class="col-md-3 col-lg-3">
                                     <div class="multiselect col-md-12">
@@ -196,7 +201,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 {{-- +++++++++ delete_all button ++++++++ --}}
                                 <div class="col-md-3 col-lg-3">
                                     <button id="btn_delete_all" class="btn btn-danger text-white delete_all">
@@ -220,14 +224,18 @@
                                     </th>
                                     <th class="col5">@lang('lang.customer')</th>
                                     <th class="col6">@lang('lang.phone')</th>
-                                    <th class="col7">@lang('lang.sale_status')</th>
+                                    {{-- <th class="col7">@lang('lang.sale_status')</th> --}}
                                     <th class="col8">@lang('lang.payment_status')</th>
                                     <th class="col9">@lang('lang.payment_type')</th>
                                     <th class="col10">@lang('lang.ref_number')</th>
-                                    <th class="col11 currencies">@lang('lang.received_currency')</th>
-                                    <th class="col12 sum">@lang('lang.grand_total')</th>
-                                    <th class="col13 sum">@lang('lang.paid')</th>
-                                    <th class="col14 sum">@lang('lang.due_sale_list')</th>
+                                    {{-- <th class="col11 currencies">@lang('lang.received_currency')</th> --}}
+                                    <th class="col12 sum">@lang('lang.grand_total') @lang('lang.dinar_c')</th>
+                                    <th class="col13 sum">@lang('lang.paid')  @lang('lang.dinar_c')</th>
+                                    <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dinar_c')</th>
+
+                                    <th class="col12 sum">@lang('lang.grand_total') @lang('lang.dollar_c')</th>
+                                    <th class="col13 sum">@lang('lang.paid') @lang('lang.dollar_c')</th>
+                                    <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dollar_c')</th>
                                     <th class="col15">@lang('lang.due_date')</th>
                                     <th class="col16">@lang('lang.payment_date')</th>
                                     <th class="col17">@lang('lang.cashier_man')</th>
@@ -248,6 +256,13 @@
                                         </td>
                                         <td class="col2">
                                             {{$line->invoice_no ?? '' }}
+
+                                            @if (!empty($line->return_parent_id))
+                                              <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">R</a>
+                                            @endif
+                                            @if (!empty($line->payment_status == 'pending') )
+                                                <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">P</a>
+                                            @endif
                                         </td>
                                         <td class="col3">
                                             {{$line->store->name ?? '' }}
@@ -262,9 +277,9 @@
                                         <td class="col6">
                                             {{$line->customer->phone ?? '' }}
                                         </td>
-                                        <td class="col7">
+                                        {{-- <td class="col7">
                                             <span class="badge badge-success">{{$line->status ?? '' }}</span>
-                                        </td>
+                                        </td> --}}
                                         <td class="col8">{{$line->payment_status}}</td>
                                         <td class="col9">
                                             @foreach($line->transaction_payments as $payment)
@@ -276,19 +291,30 @@
                                                 {{$payment->ref_no ?? ''}}<br>
                                             @endforeach
                                         </td>
-                                        <td class="col11">
+                                        {{-- <td class="col11">
                                             @foreach($line->transaction_payments as $payment)
                                                 {{$payment->received_currency_relation->symbol ?? ''}}<br>
                                             @endforeach
-                                        </td>
+                                        </td> --}}
+
                                         <td class="col12">
-                                            {{number_format($line->final_total,2)}}
+                                            {{number_format($line->final_total,2)}} د.ع
                                         </td>
                                         <td class="col13">
-                                            {{$line->transaction_payments->sum('amount')}}
+                                            {{$line->transaction_payments->sum('amount')}} د.ع
                                         </td>
                                         <td class="col14">
-                                            {{$line->final_total - $line->transaction_payments->sum('amount')}}
+                                            {{$line->dinar_remaining}} د.ع
+                                        </td>
+                                        <td class="col12">
+                                            {{number_format($line->dollar_final_total,2)}} $
+                                        </td>
+                                        <td class="col13">
+                                            {{$line->transaction_payments->sum('dollar_amount')}} $
+                                        </td>
+
+                                        <td class="col14">
+                                            {{$line->dollar_remaining}}  $
                                         </td>
                                         <td class="col15">
                                             {{$line->transaction_payments->last()->due_date ?? ''}}
@@ -342,7 +368,7 @@
                                                 </li>
                                                 <li class="divider"></li>
                                                 <li>
-                                                    <a href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a>
+                                                    <a target="_blank" href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a>
                                                 </li>
                                                 <li class="divider"></li>
                                                 <li>
@@ -354,7 +380,7 @@
                                                 <li class="divider"></li>
                                                 {{-- +++++++++ edit button +++++++++++ --}}
                                                 <li>
-                                                    <a href="{{ route('invoices.edit', $line->id) }}" class="btn">
+                                                    <a target="_blank" href="{{ route('invoices.edit', $line->id) }}" class="btn">
                                                         <i class="dripicons-document-edit"></i> {{ __('lang.edit') }}
                                                     </a>
                                                 </li>
@@ -418,6 +444,7 @@
         </div>
     </div>
     <!-- End Contentbar -->
+    {{-- @include() --}}
     <div class="view_modal no-print" ></div>
     <section class="invoice print_section print-only" id="receipt_section"> </section>
 

@@ -14,6 +14,7 @@ use App\Models\Employee;
 use App\Models\JobType;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
+use App\Models\ReceiveDiscount;
 use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
 use App\Models\Store;
@@ -60,14 +61,21 @@ class AddStockController extends Controller
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $users = User::orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::pluck('name','id');
-        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
-        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $categories = Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories1 = Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories2 = Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories3 = Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name','id');
         $payment_status_array = $this->commonUtil->getPaymentStatusArray();
         $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
         $stocks  = $this->reportsFilters->addStockFilter();
+        // foreach($stocks as $index => $stock){
+        //     return $stock->add_stock_lines->sum('cash_discount');
+        // }
+
+
         return view('add-stock.index')->with(compact('stocks','suppliers','users','brands','categories',
-            'subcategories','payment_status_array','branches','stores'));
+            'subcategories1','subcategories2','subcategories3','payment_status_array','branches','stores'));
     }
 
     public function show($id)
@@ -237,6 +245,89 @@ class AddStockController extends Controller
         return redirect()->back()->with('status', $output);
     }
 
+    public function receive_discount_view($transaction_id){
+        // $payment_type_array = $this->commonUtil->getPaymentTypeArray();
+        $transaction = StockTransaction::find($transaction_id);
+        $received_discounts = ReceiveDiscount::where('stock_transaction_id', $transaction_id)->get();
+
+        if(!empty($transaction->add_stock_lines)){
+            $seasonal_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('seasonal_discount_amount');
+            $annual_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('annual_discount_amount');
+    
+            $sum_received_seasonal = $received_discounts->where('discount_type', 'seasonal_discount')->sum('received_amount');
+            $seasonal_discount -= $sum_received_seasonal;
+
+            $sum_received_annual = $received_discounts->where('discount_type', 'annual_discount')->sum('received_amount');
+            $annual_discount -= $sum_received_annual;
+    
+            $seasonal_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount_amount') - $received_discounts->sum('received_amount_dollar');
+            $annual_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('annual_discount_amount') - $received_discounts->sum('received_amount_dollar');
+        } else {
+            $seasonal_discount = 0;
+            $annual_discount = 0;
+            $seasonal_discount_dollar = 0;
+            $annual_discount_dollar = 0;
+        }
+
+        return view('add-stock.partials.receive_discount')->with(compact(
+            'transaction_id',
+            'transaction',
+            'seasonal_discount',
+            'annual_discount',
+            'seasonal_discount_dollar',
+            'annual_discount_dollar'
+        ));
+    }
+    public function receive_discount(Request $request,$transaction_id){
+
+        try {
+            if( $request->discount_type == 'seasonal_discount'){
+                $discount_data = [
+                    'stock_transaction_id' =>  $transaction_id,
+                    'discount_type' => $request->discount_type,
+                    'amount' => $request->seasonal_discount,
+                    'amount_dollar' =>$request->seasonal_discount_dollar,
+                    'change' => $request->change_dinar,
+                    'change_dollar' => $request->change_dollar,
+                    'received_amount' => $request->amount,
+                    'received_amount_dollar' => $request->amount_dollar,
+                    'created_by' => Auth::user()->id,
+                ];
+            }else{
+                $discount_data = [
+                    'stock_transaction_id' =>  $transaction_id,
+                    'discount_type' => $request->discount_type,
+                    'amount' => $request->annual_discount,
+                    'amount_dollar' =>$request->annual_discount_dollar,
+                    'change' => $request->amount_change_dinar,
+                    'change_dollar' => $request->amount_change_dollar,
+                    'received_amount' => $request->amount,
+                    'received_amount_dollar' => $request->amount_dollar,
+                    'created_by' => Auth::user()->id,
+                ];
+            }
+           
+            ReceiveDiscount::create($discount_data);
+
+
+            DB::commit();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+        }
+
+
+        return redirect()->back()->with('status', $output);
+    }
+
     public function getSourceByTypeDropdown($type = null)
     {
         if ($type == 'user') {
@@ -356,10 +447,11 @@ class AddStockController extends Controller
 
         return number_format($paid,3);
     }
-
-    public function recentTransactions(Request $request){
+    // +++++++++++++++++++ recentTransactions() +++++++++++++++++++
+    public function recentTransactions(Request $request)
+    {
+        // dd($request);
         $sell_lines = TransactionSellLine::query();
-
         // Check if the user is a superadmin or admin
         if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
             $sell_lines = $sell_lines->orderBy('created_at', 'desc');
@@ -375,6 +467,16 @@ class AddStockController extends Controller
         if (!empty(request()->customer_id)) {
             $sell_lines->where('transaction_sell_lines.customer_id', request()->customer_id);
         }
+        // +++++++++++++++ phone_number column +++++++++++++++
+        // Adjust the condition to search by customer phone number
+        if (!empty(request()->phone_number))
+        {
+            $sell_lines->whereHas('customer', function ($query) {
+                // $query->where('phone', request()->phone_number);
+                $query->where('phone', 'like', '%' . request()->phone_number . '%');
+            });
+        }
+        // dd($sell_lines);
         if (!empty(request()->deliveryman_id)) {
             $sell_lines->where('transaction_sell_lines.deliveryman_id', request()->deliveryman_id);
         }
@@ -385,7 +487,7 @@ class AddStockController extends Controller
             $sell_lines->where('payment_transaction_sell_lines.method', request()->method);
         }
         $sell_lines = $sell_lines->paginate(10);
-
+        // return($sell_lines);
         $customers=Customer::latest()->pluck('name','id')->toArray();
         $payment_types = $this->getPaymentTypeArrayForPos();
         $users=User::latest()->pluck('name','id')->toArray();

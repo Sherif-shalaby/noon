@@ -156,7 +156,7 @@
                             <div class="col-md-3">
                                 <div
                                     class="subcategory_id1 {{ ($show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0)  ? (empty($item[0]['subcategory_id1'])?'d-none':'') : '' }}">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 ']) !!}
+                                    {!! Form::label('subcategory', __('lang.category') . ' 1', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id1', $subcategories1, $item[0]['subcategory_id1'], [
                                             'class' => 'form-control select2 subcategory1',
@@ -181,7 +181,7 @@
                             <div class="col-md-3">
                                 <div
                                     class="subcategory2 {{ $show_category3 == 0 && $show_category2 == 0 ? (empty($item[0]['subcategory_id2'])?'d-none':'') : '' }}">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 ']) !!}
+                                    {!! Form::label('subcategory', __('lang.category') . ' 2', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id2', $subcategories2, $item[0]['subcategory_id2'], [
                                             'class' => 'form-control select2 subcategory2',
@@ -209,7 +209,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="subcategory3 {{ $show_category3 == 0 ? (empty($item[0]['subcategory_id3'])?'d-none':'') : '' }}">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 ']) !!}
+                                    {!! Form::label('subcategory', __('lang.category') . ' 3', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id3', $subcategories3, $item[0]['subcategory_id3'], [
                                             'class' => 'form-control select2 subcategory3',
@@ -516,19 +516,19 @@
                                                 <option selected value="dollar">Dollar</option>
                                             </select> --}}
                                         </div>
-                                        <div class="custom-control custom-switch">
+                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input"
-                                                name="discount_from_original_price" id="discount_from_original_price"
-                                                style="font-size: 0.75rem"
-                                                @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
+                                                name="discount_from_original_price" id="discount_from_original_price{{ $key }}"
+                                                style="font-size: 0.75rem" wire:model='prices.{{ $key }}.discount_from_original_price'
+
                                                 wire:change="changePrice({{ $key }})">
                                             <label class="custom-control-label"
-                                                for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
+                                                for="discount_from_original_price{{ $key }}">@lang('lang.discount_from_original_price')</label>
                                         </div>
-                                        @error('prices.' . $key . '.price_type')
+                                        {{-- @error('prices.' . $key . '.price_type')
                                             <br>
                                             <label class="text-danger error-msg">{{ $message }}</label>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label(
@@ -593,7 +593,7 @@
                                         class="fas {{ $show_store == 0 ? 'fa-arrow-right' : 'fa-arrow-left' }}"></i></button>
                             </div>
                             @forelse ($fill_stores as $i => $store)
-                                <div class="row {{ $show_store == 0 ? (empty($fill_stores[$i]['extra_store_id'])?'d-none':'') : '' }}">
+                                <div class="row">
                                     <div class="col-md-1">
                                         <button type="button" class="btn btn-sm btn-primary"
                                         wire:click="addStoreRow()">

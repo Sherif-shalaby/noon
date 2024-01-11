@@ -39,17 +39,38 @@
                 <div class="container-fluid">
                     <div class="row pt-5">
                         {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select('customer_type_id', $customer_types, null, [
                                         'class' => 'form-control select2',
+                                        'id' => 'customer-types-dd' ,
                                         'required',
                                         'placeholder' => __('lang.please_select'),
                                     ]) !!}
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerTypesModal">
                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                @error('customer_type_id')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                        </div> --}}
+                        {{-- ++++++++++++++++ customer_type selectbox : انواع العملاء : (customer_type table) +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="customer_type_id">@lang('lang.customer_type')</label>
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select('customer_type_id', $customer_types, null, [
+                                        'class' => 'form-control select2',
+                                        'id' => 'customer_type_id' ,
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                    ]) !!}
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerTypesModal2">
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
                                 @error('customer_type_id')
@@ -228,6 +249,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {{-- ++++++++++++++++ upload_image ++++++++++++++++ --}}
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label>@lang('lang.upload_image')</label>
@@ -264,7 +286,6 @@
                             </div>
                         </div>
                         {{-- ++++++++++++ images ++++++++++++ --}}
-
                     </div>
                     <div class="row pt-4 pb-5">
                         <div class="col-md-12">
@@ -302,126 +323,6 @@
                 {!! Form::close() !!}
             </div>
             <!-- End col -->
-
-            {{-- //////////////////////////////////////////// Models //////////////////////////////////////////// --}}
-            <!-- ================== Modal 1 : createCustomerTypesModal ================== -->
-            {{-- <div class="modal fade" id="createCustomerTypesModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
-                <div class="modal-dialog  rollIn  animated" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_customer_type')}}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        {!! Form::open(['route' => 'customertypes.store', 'method' => 'post', 'files' => true,'id' =>'customer-type-form' ]) !!}
-                        <div class="modal-body">
-                            <div class="form-group ">
-                                <label for="name">@lang('lang.name')</label>
-                                <div class="select_body d-flex justify-content-between align-items-center" >
-                                    <input type="text" required
-                                        class="form-control"
-                                        placeholder="@lang('lang.name')"
-                                        name="name"
-                                        value="{{ old('name') }}" >
-                                    @error('name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                    <button  class="btn btn-primary btn-sm ml-2" type="button"
-                                        data-toggle="collapse" data-target="#translation_table_customertype"
-                                        aria-expanded="false" aria-controls="collapseExample">
-                                        <i class="fas fa-globe"></i>
-                                    </button>
-                                </div>
-
-                                @include('layouts.translation_inputs', [
-                                    'attribute' => 'name',
-                                    'translations' => [],
-                                    'type' => 'customertype',
-                                ])
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
-                            <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
-                        </div>
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div> --}}
-            <!-- ================== Modal 2 : createRegionModal ================== -->
-            {{-- <div class="modal fade" id="createRegionModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
-                <div class="modal-dialog  rollIn  animated" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_region')}}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        {!! Form::open(['route' => 'customers.storeRegion', 'method' => 'post', 'files' => true,'id' =>'customer-region-form' ]) !!}
-                        <div class="modal-body">
-                            <div class="form-group ">
-                                <input type="hidden" name="state_id" id="stateId" />
-                                <label for="name">@lang('lang.name')</label>
-                                <div class="select_body d-flex justify-content-between align-items-center" >
-                                    <input type="text" required
-                                        class="form-control"
-                                        placeholder="@lang('lang.name')"
-                                        name="name"
-                                        value="{{ old('name') }}" >
-                                    @error('name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
-                            <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
-                        </div>
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div> --}}
-            <!-- ================== Modal 3 : createQuarterModal ================== -->
-            {{-- <div class="modal fade" id="createQuarterModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
-                <div class="modal-dialog  rollIn  animated" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_quarter')}}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        {!! Form::open(['route' => 'customers.storeQuarter', 'method' => 'post', 'files' => true,'id' =>'customer-region-form' ]) !!}
-                        <div class="modal-body">
-                            <div class="form-group ">
-                                <input type="hidden" name="city_id" id="cityId" />
-                                <label for="name">@lang('lang.name')</label>
-                                <div class="select_body d-flex justify-content-between align-items-center" >
-                                    <input type="text" required
-                                        class="form-control"
-                                        placeholder="@lang('lang.name')"
-                                        name="name"
-                                        value="{{ old('name') }}" >
-                                    @error('name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
-                            <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
-                        </div>
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div> --}}
-            <!-- ++++++++++++ Crop_Image Modal ++++++++++++ -->
-            {{-- @include('categories.modalCrop')  --}}
             {{-- ++++++++++++ customer_types Model ++++++++++++ --}}
             @include('customer_types.create')
         </div>
@@ -526,6 +427,25 @@
             $("#cityId").val(city_id);
             console.log("+++++++++++++++++++++++++++ "+city_id+" +++++++++++++++++++++++++++");
         });
+        // ================ CustomerTypes selectbox ================
+        // $('#createCustomerTypesModal').on('submit', function(){
+        //     console.log("++++++++++++++++++++++++++++++++++++++++++++");
+        //     $.ajax({
+        //         url: "/customers/get-dropdown-customer-type",
+        //         type: 'POST',
+        //         dataType: 'json',
+        //         success:function(response)
+        //         {
+        //             console.log(response);
+        //             dd(response);
+        //             $("#customer-types-dd").html('<option value="">Select Customer Type</option>')
+        //             $.each(response,function(index, val)
+        //             {
+        //                 $('#customer-types-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+        //             });
+        //         }
+        //     })
+        // });
     });
 </script>
 @endpush

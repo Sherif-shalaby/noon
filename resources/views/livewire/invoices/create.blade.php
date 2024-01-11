@@ -5,6 +5,7 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="row">
+                    {{-- +++++++++++ brand filter +++++++++++ --}}
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('brand_id', __('lang.brand') . ':*', []) !!}
@@ -151,6 +152,31 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>
+                                {!! Form::checkbox('toggle_suppliers_dropdown', 1, false,['wire:model' => 'toggle_suppliers_dropdown']) !!}
+                                @lang('lang.toggle_suppliers_dropdown')
+                            </label>
+                        </div>
+                    </div>
+                    {{-- +++++++++++++++++ suppliers Dropdown +++++++++++++++++ --}}
+                    @if(!empty($toggle_suppliers_dropdown))
+                        <div class="col-md-3">
+                            {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
+                            <div class="d-flex justify-content-center">
+                            {!! Form::select('supplier_id', $suppliers, $supplier_id,
+                                ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
+                                'data-name' => 'supplier', 'wire:model' => 'supplier_id'
+                                ]) !!}
+                                {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
+                            </div>
+                            @error('supplier')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    @endif
                 </div>
 
                 </div>
@@ -205,13 +231,13 @@
                                     <span> @lang('lang.quarter') : {{ !empty($quarter) ? $quarter->name : '' }}</span>
                                 </div>
                                 <div class="col-md-2">
-                                    <span> @lang('lang.phone_number') : {{ !empty($customer_data->phone) ?? '' }}</span>
+                                    <span> @lang('lang.phone_number') : {{ !empty($customer_data->phone) ? $customer_data->phone: '' }}</span>
                                 </div>
                                 <div class="col-md-2">
-                                    <span> @lang('lang.email') : {{ !empty($customer_data->email) ?? '' }}</span>
+                                    <span> @lang('lang.email') : {{ !empty($customer_data->email) ? $customer_data->email :'' }}</span>
                                 </div>
                                 <div class="col-md-2">
-                                    <span> @lang('lang.notes') : {{ !empty($customer_data->notes) ?? '' }}</span>
+                                    <span> @lang('lang.notes') : {{ !empty($customer_data->notes) ? $customer_data->notes  : '' }}</span>
                                 </div>
                                 <div class="col-md-3">
                                     <button style="width: 100%; background: #5b808f" wire:click="redirectToCustomerDetails({{ $client_id }})"
@@ -260,7 +286,7 @@
                                         @endphp
                                         @foreach ($items as $key => $item)
                                             <tr>
-                                                <td>{{$item['product']['product_symbol']}}</td>
+                                                <td>{{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}</td>
                                                 <td >
                                                     {{$item['product']['name']}}
                                                 </td>
@@ -283,7 +309,7 @@
                                                 </td>
                                                 <td>{{$item['extra_quantity']}}</td>
                                                 <td>
-                                                    <select class="form-control" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
+                                                    <select class="form-control select2" data-name="unit_id" data-index="{{$key}}" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
                                                         <option value="0.00">select</option>
                                                          @if(!empty($item['variation']))
                                                            @foreach($item['variation'] as $i=>$var)
@@ -297,11 +323,12 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="form-control" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
+                                                    <select class="form-control select2" style="height:30% !important;width:100px;" data-name="customer_type_id" data-index="{{$key}}" wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
                                                         <option value="0">select</option>
                                                          @if(!empty($item['customer_types']))
+                                                         {{-- {{dd($item['customer_types'])}} --}}
                                                            @foreach($item['customer_types'] as $x=>$var)
-                                                               @if(!empty($var['id']))
+                                                               @if(!empty($var) && !empty($var['id']))
                                                                     <option value="{{$var['id']}}" {{$x==0?'selected':''}}>
                                                                         {{$var['name']??''}}
                                                                     </option>
@@ -329,7 +356,7 @@
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
                                                 <td>
-                                                    <select class="form-control discount_category " style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}},'discount')">
+                                                    <select class="form-control discount_category select2" style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount" data-name="discount" data-index="{{$key}}" wire:change="subtotal({{$key}},'discount')">
                                                         <option selected value="0">select</option>
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
@@ -403,6 +430,19 @@
             });
         </script>
     @endif
+    
+    @if(empty($store_pos))
+    <script>
+    window.addEventListener('NoUserPos', function(event) {
+        Swal.fire({
+            title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>" ,
+            icon: 'error',
+        }).then((result) => {
+            window.location.href = "{{ route('home') }}";
+        });
+    });
+    </script>
+    @endif
     <script>
         document.addEventListener('livewire:load', function () {
             $('.depart1').select().on('change', function (e) {
@@ -455,16 +495,6 @@
             });
         });
 
-      @if(empty($store_pos))
-            window.addEventListener('NoUserPos', function(event) {
-                Swal.fire({
-                    title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>" ,
-                    icon: 'error',
-                }).then((result) => {
-                    window.location.href = "{{ route('home') }}";
-                });
-            });
-        @endif
         $(document).ready(function() {
             $('select').on('change', function(e) {
 
@@ -520,7 +550,21 @@
             });
 
         });
-
+        $(document).on('change', 'select', function(e) {
+            var name = $(this).data('name');
+            console.log(name)
+            if (name != undefined) {
+                var index = $(this).data('index');
+                var key = $(this).data('key');
+                var select2 = $(this);
+                Livewire.emit('listenerReferenceHere', {
+                    var1: name,
+                    var2: select2.select2("val"),
+                    var3: index,
+                    var4: key
+                });
+            }
+        });
     </script>
 
 @endpush

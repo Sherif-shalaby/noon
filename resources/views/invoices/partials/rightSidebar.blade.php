@@ -30,9 +30,15 @@
         </div>
         <div class="body-card-app pt-2">
             <div class="row">
-                <div class="col-md-9 {{($dollar_final_total!=0 && $total_dollar!=0 )?'':'d-none'}}">
-                    <button type="button" class="btn btn-success" wire:click="ChangeBillToDinar()">{{__('lang.change_bill_to_dinar')}}</button>
+                <div class="col-md-9 {{(($dollar_final_total!=0 && $total_dollar!=0 && $back_to_dollar==0)||$back_to_dollar==2 )?'':'d-none'}}">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1" >
+                        <label class="custom-control-label" for="customSwitch1" wire:click="ChangeBillToDinar()" {{$back_to_dollar==1?'checked':''}}>{{__('lang.change_bill_to')}} {{$back_to_dollar==0?__('lang.dinar_c'):__('lang.dollar_c')}}</label>
+                    </div>
                 </div>
+                {{-- <div class="col-md-9 {{($dollar_final_total!=0 && $total_dollar!=0 )?'':'d-none'}}">
+                    <button type="button" class="btn btn-success" wire:click="ChangeBillToDinar()">{{__('lang.change_bill_to_dinar')}}</button>
+                </div> --}}
             </div>
             <div class="row ">
                 {{-- +++++++++++ الاجمالي بالدولار +++++++++++ --}}
@@ -98,6 +104,9 @@
                         {!! Form::number('final_total', $final_total, ['class' => 'form-control', 'readonly']) !!}
                     </div>
                 </div>
+                <div class="col-md-12 ">
+                    <button class="btn btn-danger {{$this->add_to_balance=='0'?'d-none':''}}" wire:click="addToBalance()">{{__('lang.add_to_balance')}}</button>
+                </div>
                 {{-- +++++++++++ الواصل دولار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
@@ -108,7 +117,7 @@
                             'wire:change' => 'changeReceivedDollar',
                         ]) !!}
                     </div>
-                    
+
                 </div>
                 {{-- +++++++++++ الواصل دينار +++++++++++ --}}
                 <div class="col-md-6">
@@ -126,14 +135,13 @@
                     {!! Form::label('dollar_remaining', 'الباقي دولار', ['class' => 'text-primary']) !!}
                     <div class="d-flex justify-content-between">
                         <div class="form-group">
-
                             {!! Form::number('dollar_remaining', $dollar_remaining, [
                                 'class' => 'form-control',
                                 'readonly',
                                 'wire:model' => 'dollar_remaining',
                             ]) !!}
                         </div>
-                        <div class="{{$dollar_remaining=='0'?'d-none':''}}" title="{{__('lang.change_remaining_to_dinar')}}">
+                        <div class="{{$dollar_remaining > 0 ? '':'d-none'}}" title="{{__('lang.change_remaining_to_dinar')}}">
                             <button class="btn btn-sm btn-danger text-white" type="button" wire:click="changeRemaining()">></button>
                         </div>
                     </div>
@@ -245,7 +253,7 @@
                         {{-- <a data-href="{{route('customers.pay_due_view', ['id' => $due->id])}}"   data-container=".view_modal" class="btn btn-modal"  style="background-color: #ffc107;" type="button" class="btn btn-custom"
                             id="recent-transaction-btn"><i class="dripicons-clock"></i>
                             @lang('lang.recent_transactions')</a> --}}
-
+                        {{-- +++++++++++++++++++++++ recent_transaction ++++++++++++++++++++ --}}
                         <a href="{{ route('recent_transactions') }}" target="_blank" style="background-color: #ffc107;" type="button"
                             class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
                             @lang('lang.recent_transactions')</a>

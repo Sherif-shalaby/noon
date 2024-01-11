@@ -33,6 +33,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
                     success: function (data_html) {
                         if (typeof key !== 'undefined' && key !== null) {
                             $("#brand_id" + key).empty().append(data_html);
+                            $(".brand").empty().append(data_html);
                             $("#brand_id" + key).val(brand_id).trigger();
                         }
                         else {
@@ -116,6 +117,8 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
 //unit form
 
 //store form
+var  store_key = null;
+var  store_index = null;
 $("#create-store-btn").click(function (e){
     e.preventDefault();
     setTimeout(()=>{
@@ -123,6 +126,15 @@ $("#create-store-btn").click(function (e){
         $("#quick_add_store_form").submit();
     },500)
 });
+
+$(document).on("click", ".createStoreModal", function(e) {
+    store_key = $(this).data('key');
+    store_index = $(this).data('index');
+    console.log('store_key' + store_key);
+    console.log('store_index' + store_index);
+});
+
+
 // ++++++++++++++++++ ajax : products module : quick_add_store ++++++++++++++++++
 $(document).on("submit", "form#quick_add_store_form", function (e) {
     e.preventDefault();
@@ -149,6 +161,14 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                         console.log(data_html);
                         $("#store_id").empty().append(data_html[0]);
                         $("#store_id").val(data_html[1]).change();
+                        if(store_key != null){
+                            $(".store_id"+store_index+store_key).empty().append(data_html[0]);
+                            $(".store_id"+store_index+store_key).val(data_html[1]).change();
+                        }else{
+                            $(".store_id"+store_index).empty().append(data_html[0]);
+                            $(".store_id"+store_index).val(data_html[1]).change();
+                        }
+
                     },
                 });
             } else {
@@ -231,6 +251,7 @@ $("#create-category-btn").click(function (e){
 });
 $(document).on("submit", "#create-category-form", function (e) {
     e.preventDefault();
+    alert('select_category' + select_category)
     var dataArray = $(this).serializeArray();
     var data = {};
     var name = $('.category-name').val();
@@ -255,6 +276,7 @@ $(document).on("submit", "#create-category-form", function (e) {
                 $("#createCategoryModal").modal("hide");
                 $(".createSubCategoryModal").modal("hide");
                 console.log(main_category_id);
+                alert(main_category_id)
                 var category_id = result.id;
                 $.ajax({
                     method: "get",
@@ -262,23 +284,28 @@ $(document).on("submit", "#create-category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
+                        console.log(key);
                         if (typeof key !== 'undefined' && key !== null) {
                             if(select_category=="0"){
                                 $("#categoryId" + key).empty().append(data_html);
+                                $(".category").empty().append(data_html);
                                 $("#categoryId" + key).val(category_id).change();
                             }else if(select_category=="2"){
                                 console.log(data_html);
 
                                 $("#subCategoryId2" + key).empty().append(data_html);
+                                $(".subcategory2" ).empty().append(data_html);
                                 $("#subCategoryId2" + key).val(category_id).change();
                                 // $("#subCategoryId2").val(category_id).trigger();
                             }else if(select_category=="3"){
                                 $("#subCategoryId3" + key).empty().append(data_html);
+                                $(".subcategory3").empty().append(data_html);
                                 $("#subCategoryId3" + key).val(category_id).change();
                                 // $("#subCategoryId3").val(category_id).trigger();
                             }
                             else if(select_category=="1"){
                                 $("#subcategory_id1" + key).empty().append(data_html);
+                                $(".subcategory").empty().append(data_html);
                                 $("#subcategory_id1" + key).val(category_id).change();
 
                                 // $("#subcategory_id1").val(category_id).trigger();
@@ -377,9 +404,10 @@ $(document).ready(function () {
         }, 500);
     });
 });
-
+// ++++++++++++++++++++++++ Customer Type Form +++++++++++++++++++++
 $(document).on("submit", "#quick_add_customer_form", function (e) {
     e.preventDefault();
+    console.log("Quick Add Customer Form");
     var data = $(this).serialize();
     $.ajax({
         method: "post",
@@ -428,7 +456,7 @@ $(document).on("submit", "#customer-region-form", function (e) {
                 console.log("Outer Second Ajax Request : ",result);
                 $.ajax({
                     method: "get",
-                    url: "/customer/get-dropdown-add_store/"+state_id,
+                    url: "/customer/get-dropdown-city/"+state_id,
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
@@ -476,6 +504,42 @@ $(document).on("submit", "#customer-quarter-form", function (e) {
                         console.log("data_html = "+data_html);
                         $("#quarter-dd").empty().append(data_html);
                         $("#quarter-dd").val(quarter_id).change();
+                    },
+                });
+            } else {
+                Swal.fire("Error", result.msg, "error");
+            }
+        },
+    });
+});
+// +++++++++++++++++++++++ customer_quarters_Dropdown ++++++++++++++++++++
+$(document).on("submit", "#customer-type-form2", function (e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+        method: "post",
+        url: $(this).attr("action"),
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            console.log("First Ajax Request : ",result);
+            if (result.success)
+            {
+                Swal.fire("Success", result.msg, "success");
+                $("#createCustomerTypesModal2").modal("hide");
+                var customer_type_id = result.customer_type_id;
+                console.log("Outer Second Ajax Request : ",result);
+                $.ajax({
+                    method: "get",
+                    url: "/customer/get-dropdown-customer-type/",
+                    data: {},
+                    contactType: "html",
+                    success: function (data_html) {
+                        // console.log("data_html = ", data_html);
+                        console.log("Inner Second Ajax Request : "+data_html);
+                        console.log("data_html = "+data_html);
+                        $("#customer_type_id").empty().append(data_html);
+                        $("#customer_type_id").val(customer_type_id).change();
                     },
                 });
             } else {

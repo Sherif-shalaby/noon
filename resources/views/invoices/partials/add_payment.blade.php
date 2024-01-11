@@ -39,6 +39,17 @@
                         @endif --}}
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('amount', __('lang.amount') . ' $:*', []) !!} <br>
+                            {!! Form::text('dollar_amount', @num_format($dollar_amount), [
+                                'id' => 'dollar_amount_pay',
+                                'class' => 'form-control',
+                                'placeholder' => __('lang.amount').'$',
+                            ]) !!}
+                  
+                        </div>
+                    </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
@@ -63,7 +74,7 @@
                             ]) !!}
                         </div>
                     </div>
-                    <div class="col-md-6 mt-1">
+                    {{-- <div class="col-md-6 mt-1">
                         <label class="change_text">@lang('lang.change'): </label>
                         <span class="change" class="ml-2">0.00</span>
                         <div class="col-md-6">
@@ -72,7 +83,7 @@
                             <input type="hidden" name="add_to_customer_balance" id="add_to_customer_balance"
                                 class="add_to_customer_balance_in">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('upload_documents', __('lang.upload_documents') . ':', []) !!} <br>
@@ -149,7 +160,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" id="submit_form_button" class="btn btn-primary">@lang('lang.save')</button>
+                <button type="submit" id="submit_form_button" class="btn btn-primary">@lang('lang.save')</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">@lang('lang.close')</button>
 
                 {{-- <button type="button"id="close_modal_button" class="btn btn-default" data-dismiss="modal">@lang('lang.close')</button> --}}
@@ -162,48 +173,48 @@
 </div>
 <script>
     $(document).ready(function() {
-        var pageTitle = window.location.pathname;
-        console.log(pageTitle);
+        // var pageTitle = window.location.pathname;
+        // console.log(pageTitle);
       
-        $('#submit_form_button').click(function() {
-            $('#add_payment_form').submit();
-        });
+        // $('#submit_form_button').click(function() {
+        //     $('#add_payment_form').submit();
+        // });
 
-        if(pageTitle!=="/pos/create"){
-        var updateadd_payment_formClicked = false;
-        $('#add_payment_form').submit(function(e) {
-            e.preventDefault();
+        // if(pageTitle!=="/pos/create"){
+        // var updateadd_payment_formClicked = false;
+        // $('#add_payment_form').submit(function(e) {
+        //     e.preventDefault();
 
-            var formData = new FormData($(this)[0]);
-            let submitButton = $("#submit_form_button"); 
-            if (!updateadd_payment_formClicked) {
-                console.log('dae')
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: $(this).attr('method'),
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        // Handle success response here
-                        console.log(response);
+        //     var formData = new FormData($(this)[0]);
+        //     let submitButton = $("#submit_form_button"); 
+        //     if (!updateadd_payment_formClicked) {
+        //         console.log('dae')
+        //         $.ajax({
+        //             url: $(this).attr('action'),
+        //             type: $(this).attr('method'),
+        //             data: formData,
+        //             contentType: false,
+        //             processData: false,
+        //             success: function(response) {
+        //                 // Handle success response here
+        //                 console.log(response);
                     
-                        $('#add_payment_form')[0].reset();
-                        $('#close_modal_button').click();
-                        $('#sales_table').DataTable().ajax.reload();
-                    },
-                    error: function(error) {
-                        // Handle error response here
-                        console.log(error);
-                    }
-                });
-                updateadd_payment_formClicked = true;
+        //                 $('#add_payment_form')[0].reset();
+        //                 $('#close_modal_button').click();
+        //                 $('#sales_table').DataTable().ajax.reload();
+        //             },
+        //             error: function(error) {
+        //                 // Handle error response here
+        //                 console.log(error);
+        //             }
+        //         });
+        //         updateadd_payment_formClicked = true;
 
-                // Disable the button after it has been clicked
-                submitButton.prop('disabled', true);
-            }
-        });
-        }
+        //         // Disable the button after it has been clicked
+        //         submitButton.prop('disabled', true);
+        //     }
+        // });
+        // }
         var inputValue = $('#amount_pay').val();
         console.log(inputValue);
         if (inputValue !== undefined) {

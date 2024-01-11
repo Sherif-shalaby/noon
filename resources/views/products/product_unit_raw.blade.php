@@ -29,9 +29,16 @@
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </div>
-        <div class="col-md-2 pt-4">
+        {{-- +++++++ Add "unit_row" Button +++++++ --}}
+        <div class="col-md-2 pt-4 mt-3">
             <button class="btn btn btn-warning add_small_unit" type="button" data-key="{{ $key }}">
                 <i class="fa fa-equals"></i>
+            </button>
+        </div>
+        {{-- +++++++ Delete "unit_row" Button +++++++ --}}
+        <div class="col-md-1 mt-3 pt-3">
+            <button type="button" class="btn btn-danger remove_row" data-key="{{ $key }}">
+                <i class="fas fa-close"></i>
             </button>
         </div>
     @endif
