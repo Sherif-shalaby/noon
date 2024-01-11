@@ -665,20 +665,20 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">
-                                    <div class="form-group">
-                                        {!! Form::label('due_date', __('lang.due_date') . ':', []) !!} <br>
-                                        {!! Form::text(
-                                            'due_date',
-                                            !empty($transaction_payment) && !empty($transaction_payment->due_date)
-                                                ? @format_date($transaction_payment->due_date)
-                                                : (!empty($payment)
-                                                    ? @format_date($payment->due_date)
-                                                    : null),
-                                            ['class' => 'form-control', 'placeholder' => __('lang.due_date'), 'wire:model' => 'due_date'],
-                                        ) !!}
-                                    </div>
-                                </div>
+{{--                                <div class="col-md-3 due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">--}}
+{{--                                    <div class="form-group">--}}
+{{--                                        {!! Form::label('due_date', __('lang.due_date') . ':', []) !!} <br>--}}
+{{--                                        {!! Form::date(--}}
+{{--                                            'due_date',--}}
+{{--                                            !empty($transaction_payment) && !empty($transaction_payment->due_date)--}}
+{{--                                                ? @format_date($transaction_payment->due_date)--}}
+{{--                                                : (!empty($payment)--}}
+{{--                                                    ? @format_date($payment->due_date)--}}
+{{--                                                    : null),--}}
+{{--                                            ['class' => 'form-control', 'placeholder' => __('lang.due_date'), 'wire:model' => 'due_date'],--}}
+{{--                                        ) !!}--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
                                 <div class="col-md-3 due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">
                                     <div class="form-group">

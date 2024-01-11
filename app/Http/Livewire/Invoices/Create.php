@@ -468,7 +468,6 @@ class Create extends Component
                 // Emit a browser event to trigger the invoice printing
                 $this->emit('printInvoice', $html_content);
             }
-            DB::commit();
             // dd($transaction->payment_status);
             if ($transaction->payment_status== 'partial' || $transaction->payment_status== 'pending') {
                 $balance = $this->payCustomerDue($transaction->customer_id);
@@ -484,7 +483,8 @@ class Create extends Component
                     $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance,$this->new_added_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
                 }
             }
-            
+            DB::commit();
+
             $this->items = [];
             $this->computeForAll();
             $this->amount = 0;

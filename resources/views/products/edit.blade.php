@@ -129,7 +129,7 @@
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subcategory_id10','data-key' => 0
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-key="0" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}"  data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                        data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('products.0.category_id')
@@ -145,7 +145,7 @@
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId20', 'data-key' => 0
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-key="0" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}"  data-container=".view_modal" class="btn btn-primary  text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                        data-select_category="2"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('products.0.subcategory_id2')
@@ -161,7 +161,7 @@
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId30', 'data-key' => 0
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-key="0" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}"  data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                        data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('products.0.subcategory_id3')
@@ -464,7 +464,7 @@
     @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])
-    @include('categories.create_modal', ['quick_add' => $quick_add])
+    @include('categories.create_modal', ['quick_add' => 1])
     @include('product-tax.create', ['quick_add' => 1])
 
 @endsection
