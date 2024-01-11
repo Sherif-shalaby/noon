@@ -104,11 +104,9 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 @if(!empty($purchase_return))
-                                                {{-- @if($purchase_return->transaction_payments->count() > 0) --}}
-                                                @include('livewire.returns.suppliers.partials.payment_form', ['payment' =>$payment_type_array])
-                                                {{-- @endif --}}
+                                                    @include('livewire.returns.suppliers.partials.payment_form', ['payment' =>$payment_type_array])
                                                 @else
-                                                @include('livewire.returns.suppliers.partials.payment_form')
+                                                    @include('livewire.returns.suppliers.partials.payment_form')
                                                 @endif
                                             </div>
                                         </div>
