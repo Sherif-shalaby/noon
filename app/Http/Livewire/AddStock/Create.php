@@ -515,6 +515,8 @@ class Create extends Component
                             $line->save();
                         }
                     }
+
+                    
                 }
                 $supplier = Supplier::find($this->supplier);
 //                dd($item['fill_quantity']);
@@ -1772,14 +1774,14 @@ class Create extends Component
     }
     public function changeCurrentStock($index,$var = null, $i =null){
         if($var == 'stores'){
-            $this->items[$index]['stores'][$i]['total_stock'] = $this->items[$index]['stores'][$i]['quantity'] + $this->items[$index]['stores'][$i]['current_stock'];
+            $this->items[$index]['stores'][$i]['total_stock'] = $this->num_uf($this->items[$index]['stores'][$i]['quantity']) + $this->num_uf($this->items[$index]['stores'][$i]['current_stock']);
             // dd($this->items[$index]['total_stock']);
             $this->purchase_final($index ,$var, $i);
             if( $this->purchase_final($index,$var, $i) > 0){
                 $this->final_purchase_for_piece($index,$var, $i);
             }
         }else{
-            $this->items[$index]['total_stock'] = $this->items[$index]['quantity'] + $this->items[$index]['current_stock'];
+            $this->items[$index]['total_stock'] = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['current_stock']);
             // dd($this->items[$index]['total_stock']);
             $this->purchase_final($index);
             if( $this->purchase_final($index) > 0){

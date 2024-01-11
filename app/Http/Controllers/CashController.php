@@ -225,9 +225,9 @@ class CashController extends Controller
             return redirect()->action('CashRegisterController@create');
         }
         $type = request()->get('type');
-        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id')
-            ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
-            ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
+        $query = CashRegister::leftjoin('cash_register_transactions', 'cash_registers.id', 'cash_register_transactions.cash_register_id');
+            // ->leftjoin('transaction_sell_lines', 'cash_register_transactions.sell_transaction_id', 'transaction_sell_lines.id')
+            // ->leftjoin('stock_transactions', 'cash_register_transactions.stock_transaction_id', 'stock_transactions.id');
         $query->where('cash_registers.id', $cash_register_id);
 
         $cr_data = [];
@@ -270,7 +270,7 @@ class CashController extends Controller
                 DB::raw("SUM(IF(transaction_type = 'sell_return' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', amount, 0)) as dinar_total_sell_return"),
                 DB::raw("SUM(IF(transaction_type = 'sell_return' AND pay_method = 'cash' AND cash_register_transactions.type = 'debit', dollar_amount, 0)) as dollar_total_sell_return"),
             )->first();
-//            dd($cash_register);
+        //    dd($cash_register_id);
             $cash_register->dinar_total_cash_sales =  $cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash;
             $cash_register->dollar_total_cash_sales =  $cash_register->dollar_total_cash_sales - $cash_register->dollar_total_refund_cash;
             $cash_register->dinar_total_card_sales =  $cash_register->dinar_total_card_sales - $cash_register->dinar_total_refund_card;

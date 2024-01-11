@@ -9,6 +9,7 @@ use App\Models\MoneySafe;
 use App\Models\StorePos;
 use App\Models\TransactionSellLine;
 use App\Models\User;
+use App\Utils\CashRegisterUtil;
 use App\Utils\MoneySafeUtil;
 use App\Utils\TransactionUtil;
 use App\Utils\Util;
@@ -37,11 +38,12 @@ class TransactionPaymentController extends Controller
      * @param MoneySafeUtil $moneysafeUtil
      * @return void
      */
-    public function __construct(Util $commonUtil, TransactionUtil $transactionUtil, MoneySafeUtil $moneysafeUtil)
+    public function __construct(Util $commonUtil,CashRegisterUtil $CashRegisterUtil, TransactionUtil $transactionUtil, MoneySafeUtil $moneysafeUtil)
     {
         $this->commonUtil = $commonUtil;
         $this->transactionUtil = $transactionUtil;
         $this->moneysafeUtil = $moneysafeUtil;
+        $this->cashRegisterUtil=$CashRegisterUtil;
     }
     /**
      * Display a listing of the resource.
@@ -115,7 +117,10 @@ class TransactionPaymentController extends Controller
             //         $debt_payment->addMedia($doc)->toMediaCollection('debt_payment');
             //     }
             // }
+            // dd($payment_data);
             $transaction_payment = $this->transactionUtil->createOrUpdateTransactionPayment($transaction, $payment_data);
+            // dd($transaction_payment);
+            
             // DebtTransactionPayment::create([
             //     'debt_payment_id'=>$debt_payment->id,
             //     'transaction_payment_id'=>$transaction_payment->id,
@@ -151,7 +156,7 @@ class TransactionPaymentController extends Controller
 
             $this->transactionUtil->updateTransactionPaymentStatus($transaction->id);
             if ($transaction->type == 'sell') {
-                $this->cashRegisterUtil->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id,'pay_off');
+                $this->cashRegisterUtil->addPayments($transaction, $payment_data, 'credit', null,$transaction_payment->id,'pay_off');
 
                 if ($payment_data['method'] == 'bank_transfer' || $payment_data['method'] == 'card') {
                     $this->moneysafeUtil->addPayments($transaction, $payment_data, 'credit', $transaction_payment->id);
@@ -164,15 +169,14 @@ class TransactionPaymentController extends Controller
             ];
         } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            dd($e);
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
         }
 
-        if (request()->ajax()) {
-            return $output;
-        }
+    
 
         return redirect()->back()->with('status', $output);
     }
