@@ -525,8 +525,8 @@
                                                     ]) !!}
                                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                                         data-key="0" data-container=".view_modal"
-                                                        style="cursor: pointer"
-                                                        class="text-white add-button   btn-add-modal d-flex justify-content-center align-items-center btn-modal openCategoryModal"
+                                                        style="cursor: pointer" data-key="0"
+                                                        class="text-white add-button   d-flex justify-content-center align-items-center btn-modal openCategoryModal"
                                                         data-toggle="modal" data-select_category="1"><i
                                                             class="fas fa-plus"></i></a>
                                                 </div>
@@ -558,8 +558,8 @@
                                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                                         data-key="0" data-container=".view_modal"
                                                         style="cursor: pointer"
-                                                        class=" text-white add-button btn-add-modal  d-flex justify-content-center align-items-center openCategoryModal"
-                                                        data-toggle="modal" data-select_category="2"><i
+                                                        class=" text-white add-button   d-flex justify-content-center align-items-center openCategoryModal"
+                                                        data-key="0" data-toggle="modal" data-select_category="2"><i
                                                             class="fas fa-plus"></i></a>
                                                 </div>
                                                 @error('products.0.subcategory_id2')
@@ -590,8 +590,8 @@
                                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                                         data-key="0" data-container=".view_modal"
                                                         style="cursor: pointer"
-                                                        class=" text-white add-button   btn-add-modal d-flex justify-content-center align-items-center openCategoryModal"
-                                                        data-toggle="modal" data-select_category="3"><i
+                                                        class=" text-white add-button   d-flex justify-content-center align-items-center openCategoryModal"
+                                                        data-key="0" data-toggle="modal" data-select_category="3"><i
                                                             class="fas fa-plus"></i></a>
                                                 </div>
                                                 @error('products.0.subcategory_id3')

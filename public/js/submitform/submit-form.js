@@ -300,6 +300,7 @@ $("#create-category-btn").click(function (e) {
 });
 $(document).on("submit", "#create-category-form", function (e) {
     e.preventDefault();
+    alert('select_category' + select_category)
     var dataArray = $(this).serializeArray();
     var data = {};
     var name = $('.category-name').val();
@@ -332,6 +333,7 @@ $(document).on("submit", "#create-category-form", function (e) {
                 $("#createCategoryModal").modal("hide");
                 $(".createSubCategoryModal").modal("hide");
                 console.log(main_category_id);
+                alert(main_category_id)
                 var category_id = result.id;
                 $.ajax({
                     method: "get",
@@ -339,6 +341,7 @@ $(document).on("submit", "#create-category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
+                        console.log(key);
                         if (typeof key !== 'undefined' && key !== null) {
                             if (select_category == "0") {
                                 $("#categoryId" + key).empty().append(data_html);

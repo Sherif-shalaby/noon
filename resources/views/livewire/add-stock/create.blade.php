@@ -836,13 +836,13 @@
                                             wire:model="due_date">
                                     </div>
 
-                                    <div
+                                    {{-- <div
                                         class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">
                                         {!! Form::label('due_date', __('lang.due_date'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                             'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
-                                        {!! Form::text(
+                                        {!! Form::date(
                                             'due_date',
                                             !empty($transaction_payment) && !empty($transaction_payment->due_date)
                                                 ? @format_date($transaction_payment->due_date)
@@ -855,7 +855,7 @@
                                                 'wire:model' => 'due_date',
                                             ],
                                         ) !!}
-                                    </div>
+                                    </div> --}}
                                     {{--  --}}
                                     <div
                                         class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">
