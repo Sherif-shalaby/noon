@@ -393,6 +393,7 @@ return array(
     'payment' => 'المدفوعات',
     'sale'=>'المبيعات',
     'delivery_list' => 'قائمة الطلبيات',
+    'due_date' => 'تاريخ الاستحقاق',
     'return_sell' => 'إرجاع عملية بيع',
     'return_invoice' => 'إرجاع فاتورة',
     'purchase_return' => 'إرجاع عملية شراء',

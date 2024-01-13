@@ -1,64 +1,71 @@
 <div class="col-md-12">
     @if(!empty($payment))
-    <input type="hidden" name="transaction_payment_id" value="{{$payment->id}}">
+        <input type="hidden" name="transaction_payment_id" value="{{$payment->id}} ">
     @endif
-    <div class="row">
-        <div class="col-md-3 payment_fields hide">
+    <div class="row {{ in_array($paymentStatus, ['paid', 'partial', 'pending']) ? '' : 'hide' }}">
+        {{-- +++++++++++++++++++ amount inputField +++++++++++++++++++ --}}
+        <div class="col-md-3 payment_fields" wire:ignore>
             <div class="form-group">
                 {!! Form::label('amount', __('lang.amount'). ':*', []) !!} <br>
-                {!! Form::text('amount', !empty($transaction_payment)&&!empty($transaction_payment->amount)?$transaction_payment->amount:(!empty($payment) ? $payment->amount : null), ['class' => 'form-control',
-                'placeholder'
-                => __('lang.amount')]) !!}
+                {!! Form::text('amount', null ,
+                    ['class' => 'form-control', 'placeholder' => __('lang.amount'),
+                    'wire:model'=>'amount']) !!}
             </div>
         </div>
-
-        <div class="col-md-3 payment_fields hide">
+        {{-- +++++++++++++++++++ payment_method dropdown +++++++++++++++++++ --}}
+        <div class="col-md-3 payment_fields" wire:ignore>
             <div class="form-group">
                 {!! Form::label('method', __('lang.payment_type'). ':*', []) !!}
                 {!! Form::select('method', $payment_type_array , __('lang.payment_type') ,
-                        ['class' => 'selectpicker form-control',
-                'data-live-search'=>"true", 'required',
-                'style' =>'width: 80%' , 'placeholder' => __('lang.please_select')]) !!}
+                    ['class' => 'select2 form-control','data-live-search'=>"true", 'required',
+                    'placeholder' => __('lang.please_select'),
+                     'wire:model' => 'method'
+                    ]) !!}
             </div>
         </div>
-
-        <div class="col-md-3 payment_fields hide">
+        {{-- +++++++++++++++++++ payment_date inputField +++++++++++++++++++ --}}
+        <div class="col-md-3 payment_fields" wire:ignore>
             <div class="form-group">
                 {!! Form::label('paid_on', __('lang.payment_date'). ':', []) !!} <br>
-                {!! Form::text('paid_on', !empty($transaction_payment)&&!empty($transaction_payment->paid_on)?@format_date($transaction_payment->paid_on):(!empty($payment) ? @format_date($payment->paid_on) :
-                @format_date(date('Y-m-d'))), ['class' => 'form-control datepicker',
-                'placeholder' => __('lang.payment_date')]) !!}
+                {!! Form::text('paid_on',@format_date(date('Y-m-d')), ['class' => 'form-control datepicker',
+                    'placeholder' => __('lang.payment_date'),
+                    'wire:model'=>'paid_on']) !!}
             </div>
         </div>
-
-        {{-- <div class="col-md-3 payment_fields hide">
+        {{-- +++++++++++++++++++ upload_documents file +++++++++++++++++++ --}}
+        {{-- <div class="col-md-3 payment_fields" wire:ignore>
             <div class="form-group">
                 {!! Form::label('upload_documents', __('lang.upload_documents'). ':', []) !!} <br>
-                <input type="file" name="upload_documents[]" id="upload_documents" multiple>
+                <input type="file" name="upload_documents[]" id="upload_documents" wire:model="upload_documents" multiple>
             </div>
         </div> --}}
-        <div class="col-md-3 not_cash_fields hide">
+
+        {{-- +++++++++++++++++++ ref_number inputField +++++++++++++++++++ --}}
+        <div class="col-md-2 not_cash_fields" wire:ignore>
             <div class="form-group">
                 {!! Form::label('ref_number', __('lang.ref_number'). ':*', []) !!} <br>
-                {!! Form::text('ref_number', !empty($transaction_payment)&&!empty($transaction_payment->ref_number)?$transaction_payment->ref_number:(!empty($payment) ? $payment->ref_number : null), ['class' => 'form-control
-                not_cash',
-                'placeholder' => __('lang.ref_number')]) !!}
+                {!! Form::text('ref_number', null,
+                    ['class' => 'form-control not_cash','placeholder' => __('lang.ref_number'),
+                    'wire:model' => 'ref_number']) !!}
             </div>
         </div>
-        <div class="col-md-3 not_cash_fields hide">
+        {{-- +++++++++++++++++++ bank_deposit_date inputField +++++++++++++++++++ --}}
+        <div class="col-md-2 not_cash_fields" wire:ignore>
             <div class="form-group">
                 {!! Form::label('bank_deposit_date', __('lang.bank_deposit_date'). ':*', []) !!} <br>
-                {!! Form::text('bank_deposit_date', !empty($transaction_payment)&&!empty($transaction_payment->bank_deposit_date)?@format_date($transaction_payment->bank_deposit_date):(!empty($payment) ? @format_date($payment->bank_deposit_date) : null),
+                {!! Form::text('bank_deposit_date', null ,
                 ['class' => 'form-control not_cash datepicker',
-                'placeholder' => __('lang.bank_deposit_date')]) !!}
+                'placeholder' => __('lang.bank_deposit_date') ,
+                'wire:model' => 'bank_deposit_date']) !!}
             </div>
         </div>
-        <div class="col-md-3 not_cash_fields hide">
+        {{-- +++++++++++++++++++ bank_name inputField +++++++++++++++++++ --}}
+        <div class="col-md-3 not_cash_fields" wire:ignore>
             <div class="form-group">
                 {!! Form::label('bank_name', __('lang.bank_name'). ':*', []) !!} <br>
-                {!! Form::text('bank_name', !empty($transaction_payment)&&!empty($transaction_payment->bank_name)?$transaction_payment->bank_name:(!empty($payment) ? $payment->bank_name : null), ['class' => 'form-control
-                not_cash',
-                'placeholder' => __('lang.bank_name')]) !!}
+                {!! Form::text('bank_name', null ,
+                    ['class' => 'form-control not_cash','placeholder' => __('lang.bank_name'),
+                    'wire:model' => 'bank_name']) !!}
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Returns\Suppliers;
 use Exception;
 use App\Models\Store;
 use App\Models\Branch;
+use App\Models\System;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\StorePos;
@@ -15,13 +16,16 @@ use App\Models\StockTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Models\StockTransactionPayment;
 
 class ReturnInvoice extends Component
 {
     public $id, $stocklines = [], $quantity = [], $amount, $stock_return, $store,
             $branches,$branch_id,$store_pos,$return_quantity=[],$final_total = [],
             $method, $paid_on, $notes,$stock, $transaction_stock_line_id = [] ,
-            $payment_status,$payment , $store_pos_id ;
+            $payment_status,$payment , $store_pos_id , $notify_before_days , $bank_name ,$bank_deposit_date,
+            $ref_number,$upload_documents,$payment_date ,
+            $paymentStatus , $partial_paid_flag=0 , $paid_flag=0 , $paid_later_flag=0 ;
 
     protected $rules = [
         'return_quantity.*' => 'required|numeric',
@@ -79,12 +83,13 @@ class ReturnInvoice extends Component
                     compact('payment_status_array','payment_type_array',
                 'sellPriceTotal','finalPriceTotal'));
     }
-    // ++++++++++++++++ store() ++++++++++++++++
+    // +++++++++++++++++++++ store() +++++++++++++++++++++
     public function store()
     {
         DB::beginTransaction();
         try
         {
+            // =================== stock_transaction table ========================
             $stock_return = StockTransaction::where('type', 'sell_return')
                                             ->where('id', $this->id)
                                             ->first();
@@ -101,8 +106,11 @@ class ReturnInvoice extends Component
                 'invoice_no' => $this->createReturnTransactionInvoiceNoFromInvoice($this->stock->invoice_no),
                 // 'status' => 'final',
                 'payment_status' => 'pending',
-                'notes' => $this->notes ,
-                'created_by' => Auth::user()->id
+                'is_return' => 1,
+                'notify_before_days' => !empty($this->notify_before_days) ? $this->notify_before_days : 0,
+                'due_date' => !empty($this->due_date) ? $this->due_date : null,
+                'notes' => !empty($this->notes) ? $this->notes : null ,
+                'created_by' => !empty(Auth::user()->id) ? Auth::user()->id : null
             ];
             // if "stock transaction" doesn't exist previously then create it now
             if (empty($stock_return))
@@ -118,32 +126,73 @@ class ReturnInvoice extends Component
                 $stock_return->save();
             }
             // dd("Before add_stock_line table ");
-            // ++++++++++++++++++++ add_stock_line table ++++++++++++++++++++
+            // =================== add_stock_line table ========================
             foreach ($this->stocklines as $key => $stock_line)
             {
                 if (!empty($this->transaction_stock_line_id[$key]))
                 {
-
                     $line = AddStockLine::find($this->transaction_stock_line_id[$key]);
                     $old_quantity = $line->quantity;
                     $line->quantity_returned = $this->return_quantity[$key];
                     $line->save();
-                    $product = Product::find($line->product_id);
-                    // if (!$product->is_service)
-                    // {
-                        $this->updateProductQuantityStore($line->product_id, $stock_return->store_id, $stock_line['quantity'], $old_quantity);
-                        if(isset($line->stock_line_id))
-                        {
-                            $stock = AddStockLine::where('id',$line->stock_line_id)->first();
-                            $stock->update([
-                                'quantity' =>  $stock->quantity + $old_quantity,
-                                'quantity_sold' =>  $stock->quantity - $old_quantity
-                            ]);
-                        }
-                    // }
+                    $this->updateProductQuantityStore($line->product_id, $stock_return->store_id, $line->quantity_returned, $old_quantity);
+                    if(isset($line->stock_line_id))
+                    {
+                        $stock = AddStockLine::where('id',$line->stock_line_id)->first();
+                        $stock->update([
+                            'quantity' => $old_quantity-$line->quantity_returned,
+                            'quantity_returned' => $line->quantity_returned  ,
+                        ]);
+                    }
                 }
             }
-            // dd("After add_stock_line table ");
+            // =================== stock_transaction_payment table ===================
+            if ($this->payment_status == 'partial')
+            {
+                $payment_data = [
+                    'stock_transaction_id' => !empty($stock_return->id)? $stock_return->id : '',
+                    'amount' => $this->amount ,
+                    'method' => $this->method,
+                    'paid_on' => $this->paid_on,
+                    'ref_number' => $this->ref_number,
+                    // 'exchange_rate' => '132',
+                    'exchange_rate' => System::getProperty('dollar_exchange'),
+                    'due_date' => !empty($this->due_date ) ? $this->due_date : null,
+                    'notify_before_days' => !empty($this->notify_before_days) ? $this->notify_before_days : null ,
+                    'created_by' => !empty(Auth::user()->id) ? Auth::user()->id : null
+                ];
+                $transaction_payment = StockTransactionPayment::create($payment_data);
+                $transaction_payment->save();
+            }
+            // ++++++++++++++++++++ payment_status ++++++++++++++++++++
+            elseif ($this->payment_status == 'paid')
+            {
+                $payment_data = [
+                    'stock_transaction_id' => !empty($stock_return->id)? $stock_return->id : '',
+                    'amount' => $this->amount ,
+                    'method' => $this->method,
+                    // 'exchange_rate' => '132',
+                    'exchange_rate' => System::getProperty('dollar_exchange'),
+                    'paid_on' => $this->paid_on,
+                    'created_by' => !empty(Auth::user()->id) ? Auth::user()->id : null
+                ];
+                $transaction_payment = StockTransactionPayment::create($payment_data);
+                $transaction_payment->save();
+            }
+            // ++++++++++++++++++++ payment_status ++++++++++++++++++++
+            elseif ($this->payment_status == 'pending')
+            {
+                $payment_data = [
+                    'stock_transaction_id' => !empty($stock_return->id)? $stock_return->id : '',
+                    // 'exchange_rate' => '132',
+                    'exchange_rate' => System::getProperty('dollar_exchange'),
+                    'due_date' => !empty($this->due_date ) ? $this->due_date : null,
+                    'notify_before_days' => !empty($this->notify_before_days) ? $this->notify_before_days : null ,
+                    'created_by' => !empty(Auth::user()->id) ? Auth::user()->id : null
+                ];
+                $transaction_payment = StockTransactionPayment::create($payment_data);
+                $transaction_payment->save();
+            }
             DB::commit();
 
             $output = [
@@ -162,29 +211,46 @@ class ReturnInvoice extends Component
         }
         return redirect()->to('/stock/return/invoices')->with('status', $output);
     }
-    // +++++++++ updateProductQuantityStore() : substitute "return_quantity" of "product" from "product_store" +++++++++
-    public function updateProductQuantityStore($product_id, $variation_id, $store_id, $new_quantity, $old_quantity = 0)
+    // +++++++++++++++++++++ "updatePaymentStatus" +++++++++++++++++++++
+    public function updatePaymentStatus()
     {
+        if ($this->paymentStatus === "paid" || $this->paymentStatus === "partial")
+        {
+            $this->emit('togglePaymentFields', true);
+            $this->emit('toggleDueFields', true);
+        }
+        elseif ($this->paymentStatus === "pending" || $this->paymentStatus === "partial")
+        {
+            $this->emit('togglePaymentFields', false);
+            $this->emit('toggleDueFields', true);
+        }
+
+        if ($this->paymentStatus === "pending")
+        {
+            $this->emit('updateRequiredAttributes', false);
+        }
+        if ($this->paymentStatus === "paid")
+        {
+            $this->emit('toggleDueFields', false);
+        }
+    }
+    // +++++++++ updateProductQuantityStore() : substitute "return_quantity" of "product" from "product_store" +++++++++
+    public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
+    {
+
         $qty_difference = $new_quantity - $old_quantity;
-
-        // if ($qty_difference != 0)
-        // {
-            $product_store = ProductStore::where('product_id', $product_id)
-                                        ->where('store_id', $store_id)
-                                        ->first();
-            // dd($product_store);
-            if (empty($product_store))
-            {
-                $product_store = new ProductStore();
-                $product_store->product_id = $product_id;
-                $product_store->store_id = $store_id;
-                $product_store->quantity_available = 0;
-            }
-
-            $product_store->quantity_available += $qty_difference;
-            $product_store->save();
-        // }
-
+        $product_store = ProductStore::where('product_id', $product_id)
+                                    ->where('store_id', $store_id)
+                                    ->first();
+        if (empty($product_store))
+        {
+            $product_store                      = new ProductStore();
+            $product_store->product_id          = $product_id;
+            $product_store->store_id            = $store_id;
+            $product_store->quantity_available  = 0;
+        }
+        $product_store->quantity_available += $qty_difference;
+        $product_store->save();
     }
     // +++++++++ num_uf() +++++++++
     public function num_uf($input_number, $currency_details = null)
