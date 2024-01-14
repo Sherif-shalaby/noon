@@ -132,9 +132,9 @@ class Create extends Component
             $transaction_data = [
                 'store_id' => $this->store,
                 'customer_id' => $this->sale->customer_id,
-                'store_pos_id' => $this->sale->store_pos_id,
-                'return_parent_id' => $this->sale->id,
-                'exchange_rate' => 0,
+                'store_pos_id' => $this->sale->store_pos_id, // no
+                'return_parent_id' => $this->sale->id, // no
+                'exchange_rate' => 0, // no
                 'type' => 'sell_return',
                 // 'transaction_currency' => $this->sale->transaction_currency,
                 'final_total' => $this->num_uf($this->final_total),
@@ -172,8 +172,8 @@ class Create extends Component
             }
 
 
-            foreach ($this->sellines as $key => $sell_line) {
-//                dd($sell_line);
+            foreach ($this->sellines as $key => $sell_line)
+            {
                 if (!empty($this->transaction_sell_line_id[$key])) {
 
                     $line = SellLine::find($this->transaction_sell_line_id[$key]);

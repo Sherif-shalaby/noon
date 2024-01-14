@@ -753,4 +753,6 @@ return [
     'total_latest_payments' => 'Total Latest Payments',
     'welcome' => 'ًWelcome',
     'add_to_balance' => 'Add To Balance',
+    'return_invoice' => 'return invoice',
+    'adjustment' => 'Adjustment',
 ];

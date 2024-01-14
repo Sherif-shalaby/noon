@@ -2,50 +2,8 @@
 @section('title', __('lang.daily_sale_report'))
 @section('breadcrumbbar')
     <style>
-        .table-top-head {
-            top: 240px !important;
-        }
-
-        .table-scroll-wrapper {
-            width: fit-content;
-        }
-
-        @media(min-width:1900px) {
-            .table-scroll-wrapper {
-                width: 100%;
-            }
-        }
-
-
-
-        @media(max-width:991px) {
-            .table-top-head {
-                top: 240px !important
-            }
-        }
-
-        @media(max-width:768px) {
-            .table-top-head {
-                top: 345px !important
-            }
-        }
-
-        .wrapper1 {
-            margin-top: 15px;
-        }
-
-        .input-wrapper {
-            width: 100% !important;
-        }
-
-        @media(max-width:767px) {
-            .wrapper1 {
-                margin-top: 115px;
-            }
-
-            .input-wrapper {
-                width: 60%
-            }
+        .rightbar {
+            z-index: 2;
         }
     </style>
     <div class="animate-in-page">

@@ -175,6 +175,10 @@ code {
     margin-top: -5px;
 }
 
+.hide {
+    display: none;
+}
+
 .leftbar {
     width: 50px;
     /*height: 100%;*/

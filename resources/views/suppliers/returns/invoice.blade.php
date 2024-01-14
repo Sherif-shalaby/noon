@@ -85,7 +85,6 @@
                                                     <th>@lang('lang.supplier')</th>
                                                     <th>@lang('lang.products')</th>
                                                     <th>@lang('lang.created_by')</th>
-                                                    <th>@lang('lang.return_invoice')</th>
                                                     <th class="notexport">@lang('lang.action')</th>
                                                 </tr>
                                             </thead>
@@ -158,13 +157,7 @@
                                                                 {{ $stock->created_by_relationship->first()->name }}
                                                             </span>
                                                         </td>
-                                                        <td>
-                                                            <button type="button" style="font-size: 12px;font-weight: 600"
-                                                                class="btn btn-default btn-sm" data-toggle="modal"
-                                                                data-target="#paymentModal">
-                                                                @lang('lang.return_invoice')
-                                                            </button>
-                                                        </td>
+
                                                         <td>
                                                             <button type="button"
                                                                 class="btn btn-default btn-sm dropdown-toggle"
@@ -200,7 +193,6 @@
             <!-- End col -->
         </div>
         <!-- End row -->
-        @include('suppliers.returns.partials.payment')
     </div>
     <!-- End Contentbar -->
 @endsection

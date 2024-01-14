@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', __('lang.daily_report_summary'))
 @section('breadcrumbbar')
+    <style>
+        .rightbar {
+            z-index: 2;
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div

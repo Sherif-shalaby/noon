@@ -20,7 +20,7 @@ class CashRegisterUtil extends Util
         return $count;
     }
 
-    public function createCashRegisterTransaction($register, $amount,$dollar_amount, $transaction_type, $type, $source_id, $notes, $referenced_id = null)
+    public function createCashRegisterTransaction($register, $amount,$dollar_amount, $transaction_type, $type, $source_id, $notes, $referenced_id = null,$transaction_id=null)
     {
         $cash_register_transaction = CashRegisterTransaction::create([
             'cash_register_id' => $register->id,
@@ -29,6 +29,7 @@ class CashRegisterUtil extends Util
             'pay_method' => 'cash',
             'type' => $type,
             'transaction_type' => $transaction_type,
+            'transaction_id' => $transaction_id,
             'source_id' => $source_id,
             'referenced_id' => $referenced_id,
             'notes' => $notes,

@@ -823,4 +823,7 @@ return array(
     'total_latest_payments' => 'اجمالى المدفوعات المتأخرة',
     'welcome' => 'اهلا',
     'add_to_balance' => 'اضافة الى الرصيد',
+    'return_invoice' => 'إرجاع فاتورة',
+    'adjustment' => 'تعديل',
+    'due_date' => 'تاريخ الاستحقاق',
 );

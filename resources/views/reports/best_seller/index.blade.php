@@ -12,6 +12,10 @@
                 width: 60%
             }
         }
+
+        .rightbar {
+            z-index: 2;
+        }
     </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">

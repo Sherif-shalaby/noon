@@ -13,7 +13,9 @@
         }
 
 
-
+        .rightbar {
+            z-index: 2;
+        }
 
         .input-wrapper {
             width: 100% !important;

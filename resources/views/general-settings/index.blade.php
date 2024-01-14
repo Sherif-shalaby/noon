@@ -226,7 +226,30 @@
                                 ['class' => 'form-control initial-balance-input m-0'],
                             ) !!}
                         </div>
-
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.8s">
+                            {!! Form::label('product_sku_start', __('lang.product_sku_start'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            {!! Form::text(
+                                'product_sku_start',
+                                !empty($settings['product_sku_start']) ? $settings['product_sku_start'] : null,
+                                ['class' => 'form-control  initial-balance-input m-0'],
+                            ) !!}
+                        </div>
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.85s">
+                            {!! Form::label('product_sku_start', __('lang.product_sku_start'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            {!! Form::text(
+                                'product_sku_start',
+                                !empty($settings['product_sku_start']) ? $settings['product_sku_start'] : null,
+                                ['class' => 'form-control  initial-balance-input m-0'],
+                            ) !!}
+                        </div>
                         <div class="col-md-12 pt-5">
                             <div class="row">
                                 <div class="col-md-4 animate__animated animate__bounceInLeft "

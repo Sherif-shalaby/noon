@@ -143,7 +143,6 @@
             <!-- End col -->
         </div>
         <!-- End row -->
-        @include('suppliers.returns.partials.payment')
     </div>
 </div>
 <!-- End Contentbar -->

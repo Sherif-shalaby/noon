@@ -10,89 +10,126 @@
             <form action="">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                {!! Form::label('start_date', __('lang.start_date'), []) !!}
-                                {!! Form::text('start_date', request()->start_date, ['class' => 'form-control']) !!}
+                        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+                            {!! Form::label('start_date', __('lang.start_date'), []) !!}
+                            <div class="input-wrapper">
+                                {!! Form::text('start_date', request()->start_date, ['class' => 'form-control initial-balance-input m-0']) !!}
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                {!! Form::label('start_time', __('lang.start_time'), []) !!}
-                                {!! Form::text('start_time', request()->start_time, ['class' => 'form-control time_picker sale_filter']) !!}
+                        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+                            {!! Form::label('start_time', __('lang.start_time'), []) !!}
+                            <div class="input-wrapper">
+                                {!! Form::text('start_time', request()->start_time, [
+                                    'class' => 'form-control initial-balance-input m-0 time_picker sale_filter',
+                                ]) !!}
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                {!! Form::label('end_date', __('lang.end_date'), []) !!}
-                                {!! Form::text('end_date', request()->end_date, ['class' => 'form-control']) !!}
+                        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+                            {!! Form::label('end_date', __('lang.end_date'), []) !!}
+                            <div class="input-wrapper">
+                                {!! Form::text('end_date', request()->end_date, ['class' => 'form-control initial-balance-input m-0']) !!}
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                {!! Form::label('end_time', __('lang.end_time'), []) !!}
-                                {!! Form::text('end_time', request()->end_time, ['class' => 'form-control time_picker sale_filter']) !!}
+                        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+                            {!! Form::label('end_time', __('lang.end_time'), []) !!}
+                            <div class="input-wrapper">
+                                {!! Form::text('end_time', request()->end_time, [
+                                    'class' => 'form-control initial-balance-input m-0 time_picker sale_filter',
+                                ]) !!}
                             </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('customer_type_id', __('lang.customer_type'), []) !!}
-                                {!! Form::select('customer_type_id', $customer_types, request()->customer_type_id, ['class' => 'form-control', 'placeholder' => __('lang.all'), 'data-live-search' => 'true']) !!}
+                        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+                            {!! Form::label('customer_type_id', __('lang.customer_type'), []) !!}
+                            <div class="input-wrapper">
+                                {!! Form::select('customer_type_id', $customer_types, request()->customer_type_id, [
+                                    'class' => 'form-control',
+                                    'placeholder' => __('lang.all'),
+                                    'data-live-search' => 'true',
+                                ]) !!}
                             </div>
                         </div>
                         @if (session('user.is_superadmin'))
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('store_id', __('lang.store'), []) !!}
-                                    {!! Form::select('store_id', $stores, request()->store_id, ['class' => 'form-control', 'placeholder' => __('lang.all'), 'data-live-search' => 'true']) !!}
+                            <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                                style="animation-delay: 1.1s">
+                                {!! Form::label('store_id', __('lang.store'), []) !!}
+                                <div class="input-wrapper">
+                                    {!! Form::select('store_id', $stores, request()->store_id, [
+                                        'class' => 'form-control',
+                                        'placeholder' => __('lang.all'),
+                                        'data-live-search' => 'true',
+                                    ]) !!}
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('pos_id', __('lang.pos'), []) !!}
-                                    {!! Form::select('pos_id', $store_pos, request()->pos_id, ['class' => 'form-control', 'placeholder' => __('lang.all'), 'data-live-search' => 'true']) !!}
+                            <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                                style="animation-delay: 1.1s">
+                                {!! Form::label('pos_id', __('lang.pos'), []) !!}
+                                <div class="input-wrapper">
+                                    {!! Form::select('pos_id', $store_pos, request()->pos_id, [
+                                        'class' => 'form-control',
+                                        'placeholder' => __('lang.all'),
+                                        'data-live-search' => 'true',
+                                    ]) !!}
                                 </div>
                             </div>
                         @endif
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('product_id', __('lang.product'), []) !!}
-                                {!! Form::select('product_id', $products, request()->product_id, ['class' => 'form-control', 'placeholder' => __('lang.all'), 'data-live-search' => 'true']) !!}
+                        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+                            {!! Form::label('product_id', __('lang.product'), []) !!}
+                            <div class="input-wrapper">
+                                {!! Form::select('product_id', $products, request()->product_id, [
+                                    'class' => 'form-control',
+                                    'placeholder' => __('lang.all'),
+                                    'data-live-search' => 'true',
+                                ]) !!}
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('employee_id', __('lang.employee'), []) !!}
-                                {!! Form::select('employee_id', $employees, request()->employee_id, ['class' => 'form-control', 'placeholder' => __('lang.all'), 'data-live-search' => 'true']) !!}
+                        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+                            {!! Form::label('employee_id', __('lang.employee'), []) !!}
+                            <div class="input-wrapper">
+                                {!! Form::select('employee_id', $employees, request()->employee_id, [
+                                    'class' => 'form-control',
+                                    'placeholder' => __('lang.all'),
+                                    'data-live-search' => 'true',
+                                ]) !!}
                             </div>
                         </div>
                         {{-- <div class="col-md-3">
-                        <div class="form-group">
+                        <div class="input-wrapper">
                             {!! Form::label('profit_type', __('lang.profit'), []) !!}
                             {!! Form::select('profit_type', ['purchase_price' => __('lang.purchase_price'), 'final_cost' => __('lang.final_cost')], request()->profit_type, ['class' =>
                             'form-control', 'placeholder' => __('lang.all'),'data-live-search'=>"true"]) !!}
                         </div>
                     </div> --}}
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">@lang('lang.wages_type')</label>
-                                {!! Form::select('payment_type', $wages_payment_types, null, ['class' => 'form-control', 'placeholder' => __('lang.all')]) !!}
+                        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+                            <label for="">@lang('lang.wages_type')</label>
+                            <div class="input-wrapper">
+                                {!! Form::select('payment_type', $wages_payment_types, null, [
+                                    'class' => 'form-control',
+                                    'placeholder' => __('lang.all'),
+                                ]) !!}
                             </div>
                         </div>
 
 
-                        <div class="col-md-3">
-                            <br>
+                        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+
                             <button type="submit" class="btn btn-success mt-2">@lang('lang.filter')</button>
-                            <a href="{{  route('profit_report')}}"
-                                class="btn btn-danger mt-2 ml-2">@lang('lang.clear_filter')</a>
+                            <a href="{{ route('profit_report') }}" class="btn btn-danger mt-2 ml-2">@lang('lang.clear_filter')</a>
                         </div>
                     </div>
                 </div>
             </form>
             @php
-                $exchange_rate  = App\Models\System::getProperty('dollar_exchange') 
+                $exchange_rate = App\Models\System::getProperty('dollar_exchange');
             @endphp
             <div class="card-body">
                 <div class="col-md-12">
@@ -121,14 +158,13 @@
                                                     data-orig_value="{{ $currency['total'] }}">
                                                     <span class="symbol" style="padding-right: 10px;">
                                                         {{ $currency['symbol'] }}</span>
-                                                    <span
-                                                        class="total">{{ @num_format($currency['total']) }}</span>
+                                                    <span class="total">{{ @num_format($currency['total']) }}</span>
                                                 </h6>
                                             @endforeach
                                         </th>
 
                                         <td>
-                                            <a href="{{ route('pos.index')  }}"
+                                            <a href="{{ route('pos.index') }}"
                                                 class="btn btn-primary">@lang('lang.details')</a>
                                         </td>
                                     </tr>
@@ -217,8 +253,7 @@
                                                         data-orig_value="{{ $currency['total'] }}">
                                                         <span class="symbol" style="padding-right: 10px;">
                                                             {{ $currency['symbol'] }}</span>
-                                                        <span
-                                                            class="total">{{ @num_format($currency['total']) }}</span>
+                                                        <span class="total">{{ @num_format($currency['total']) }}</span>
                                                     </h6>
                                                 @endforeach
                                             @endforeach
@@ -226,7 +261,8 @@
                                     </th>
                                     <td>
                                         <a href="{{ route('stocks.index') }}
-                                            class="btn btn-primary">@lang('lang.details')</a>
+                                            class="btn
+                                            btn-primary">@lang('lang.details')</a>
                                     </td>
                                 </tr>
                                 @foreach ($wages as $wage)
@@ -273,7 +309,7 @@
                                             @php
                                                 $total_expenses = 0;
                                                 // if ($currency['is_default']) {
-                                                    $total_expenses = $expenses->sum('total_amount') + $wages->sum('total_amount') ;
+                                                $total_expenses = $expenses->sum('total_amount') + $wages->sum('total_amount');
                                                 // } else {
                                                 //     $total_expenses = $purchase_totals[$currency['currency_id']];
                                                 // }
