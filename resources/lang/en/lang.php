@@ -723,7 +723,9 @@ return [
     'return_sales' => 'Return Sales',
     'ordered' => 'ordered' ,
     'return_invoice' => 'return invoice',
-
+    'total_latest_payments'=>'Total Latest Payments',
+    'add_to_balance'=>'Add To Balance',
+    'adjustment' => 'Adjustment',
 ];
 
 

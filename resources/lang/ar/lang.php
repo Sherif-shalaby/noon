@@ -803,5 +803,8 @@ return array(
     'credit_card_sales' => 'مبيعات بطاقات الائتمان',
     'return_sales' => 'المبيعات المرتجعة',
     'ordered' => 'طلب' ,
+    'total_latest_payments'=>'اجمالى المدفوعات المتأخرة',
+    'add_to_balance'=>'اضافة الى الرصيد',
+    'adjustment' => 'تعديل',
 );
 

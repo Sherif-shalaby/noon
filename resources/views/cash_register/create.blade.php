@@ -67,7 +67,7 @@
     </section>
 @endsection
 
-@section('javascript')
+@push('javascripts')
     <script type="text/javascript">
         $('#supplier-type-form').submit(function() {
             $(this).validate();
@@ -89,4 +89,4 @@
             }
         });
     </script>
-@endsection
+@endpush

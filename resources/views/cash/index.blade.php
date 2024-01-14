@@ -91,20 +91,26 @@
                                         <th>@lang('lang.date_and_time')</th>
                                         <th>@lang('lang.user')</th>
                                         <th>@lang('lang.pos')</th>
-                                        <th>@lang('lang.store')</th>
                                         <th>@lang('lang.notes')</th>
                                         <th>@lang('lang.status')</th>
                                         <th class="sum">@lang('lang.cash_sales')</th>
-                                        @if(session('system_mode') == 'restaurant')
-                                            <th class="sum">@lang('lang.dining_in')</th>
-                                        @endif
+                                        <th class="sum">@lang('lang.cash_sales') $</th>
+                                        <th class="sum">@lang('lang.total_latest_payments')</th>
+                                        <th class="sum">@lang('lang.total_latest_payments') $</th>
                                         <th class="sum">@lang('lang.cash_in')</th>
+                                        <th class="sum">@lang('lang.cash_in') $</th>
                                         <th class="sum">@lang('lang.cash_out')</th>
+                                        <th class="sum">@lang('lang.cash_out') $</th>
                                         <th class="sum">@lang('lang.purchases')</th>
+                                        <th class="sum">@lang('lang.purchases') $</th>
                                         <th class="sum">@lang('lang.expenses')</th>
+                                        <th class="sum">@lang('lang.expenses') $</th>
                                         <th class="sum">@lang('lang.wages_and_compensation')</th>
+                                        <th class="sum">@lang('lang.wages_and_compensation') $</th>
                                         <th class="sum">@lang('lang.current_cash')</th>
+                                        <th class="sum">@lang('lang.current_cash') $</th>
                                         <th class="sum">@lang('lang.closing_cash')</th>
+                                        <th class="sum">@lang('lang.closing_cash') $</th>
                                         <th class="sum">@lang('lang.closing_date_and_time')</th>
                                         <th>@lang('lang.cash_given_to')</th>
                                         <th class="notexport">@lang('lang.action')</th>
@@ -113,30 +119,38 @@
                                 {{-- ++++++++++ tbody ++++++++++ --}}
                                 <tbody>
                                     @foreach($cash_registers as $cash_register)
+{{--                                        @dd($cash_register)--}}
                                     <tr>
                                         <td>{{ @format_datetime($cash_register->created_at) }}</td>
                                         <td>{{ ucfirst($cash_register->cashier->name ?? '') }}</td>
                                         <td>{{ ucfirst($cash_register->store_pos->name ?? '') }}</td>
-                                        <td>{{ ucfirst($cash_register->store->name ?? '') }}</td>
                                         <td>{{ ucfirst($cash_register->notes) }}</td>
                                         <td>{{ ucfirst($cash_register->status) }}</td>
-                                        <td>{{ @num_format($cash_register->totalCashSales - $cash_register->totalRefundCash - $cash_register->totalSellReturn) }}</td>
-                                        @if(session('system_mode') == 'restaurant')
-                                            <td>{{ @num_format($cash_register->totalDiningIn) }}</td>
-                                        @endif
-                                        <td>{{ @num_format($cash_register->totalCashIn) }}</td>
-                                        <td>{{ @num_format($cash_register->totalCashOut) }}</td>
-                                        <td>{{ @num_format($cash_register->totalPurchases) }}</td>
-                                        <td>{{ @num_format($cash_register->totalExpenses) }}</td>
-                                        <td>{{ @num_format($cash_register->totalWagesAndCompensation) }}</td>
-                                        <td>{{ @num_format(
-                                                $cash_register->totalCashSales - $cash_register->totalRefundCash +
-                                                $cash_register->totalCashIn - $cash_register->totalCashOut -
-                                                $cash_register->totalPurchases - $cash_register->totalExpenses -
-                                                $cash_register->totalWagesAndCompensation - $cash_register->totalSellReturn
-                                            ) }}
+                                        <td>{{@num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash - $cash_register->dinar_total_sell_return)}}
+                                        <td>{{@num_format($cash_register->dollar_total_cash_sales - $cash_register->dollar_total_refund_cash - $cash_register->dollar_total_sell_return)}}
+                                        <td>{{ @num_format($cash_register->dinar_total_latest_payments) }} </td>
+                                        <td>{{ @num_format($cash_register->dollar_total_latest_payments) }} </td>
+                                        <td>{{ @num_format($cash_register->dinar_total_cash_in) }}</td>
+                                        <td>{{ @num_format($cash_register->dollar_total_cash_in) }}</td>
+                                        <td>{{ @num_format($cash_register->dinar_total_cash_out) }}</td>
+                                        <td>{{ @num_format($cash_register->dollar_total_cash_out) }}</td>
+                                        <td>{{ @num_format($cash_register->dinar_total_purchases) }}</td>
+                                        <td>{{ @num_format($cash_register->dollar_total_purchases) }}</td>
+                                        <td>{{ @num_format($cash_register->dinar_total_expenses) }}</td>
+                                        <td>{{ @num_format($cash_register->dollar_total_expenses) }}</td>
+                                        <td>{{ @num_format($cash_register->dinar_total_wages_and_compensation) }}</td>
+                                        <td>{{ @num_format($cash_register->dollar_total_wages_and_compensation) }}</td>
+                                        <td>{{@num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash +
+                                            $cash_register->dinar_total_cash_in - $cash_register->dinar_total_cash_out -
+                                            $cash_register->dinar_total_purchases - $cash_register->dinar_total_expenses - $cash_register->dinar_total_wages_and_compensation - $cash_register->dinar_total_sell_return)}}
                                         </td>
+                                        <td>{{@num_format($cash_register->dollar_total_cash_sales - $cash_register->dollar_total_refund_cash +
+                                            $cash_register->dollar_total_cash_in - $cash_register->dollar_total_cash_out -
+                                            $cash_register->dollar_total_purchases - $cash_register->dollar_total_expenses - $cash_register->dollar_total_wages_and_compensation - $cash_register->dollar_total_sell_return)}}
+                                        </td>
+
                                         <td>{{ @num_format($cash_register->closing_amount) }}</td>
+                                        <td>{{ @num_format($cash_register->closing_dollar_amount) }}</td>
                                         <td>@if(!empty($cash_register->closed_at)){{ @format_datetime($cash_register->closed_at) }}@endif</td>
                                         <td>{{ !empty($cash_register->cash_given) ? $cash_register->cash_given->name : '' }}</td>
                                         {{-- ++++++++++++ Actions ++++++++++++ --}}
