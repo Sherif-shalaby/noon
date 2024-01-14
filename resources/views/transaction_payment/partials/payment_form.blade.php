@@ -18,6 +18,20 @@
             ]) !!}
         </div>
     </div>
+    <div
+        class="dollar-cell mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+        {!! Form::label('amount', __('lang.amount') . '$ :*', [
+            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+            'style' => 'font-size: 12px;font-weight: 500;',
+        ]) !!}
+        <div class="input-wrapper">
+            {!! Form::text('dollar_amount', !empty($payment) ? @num_format($payment->dollar_amount) : null, [
+                'class' => 'form-control initial-balance-input width-full',
+                'placeholder' => __('lang.amount') . '$',
+                'wire:model' => 'dollar_amount',
+            ]) !!}
+        </div>
+    </div>
 
     <div class="mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
         style="position:relative;z-index:5">
@@ -28,7 +42,7 @@
         <div class="input-wrapper">
 
             {!! Form::select('method', $payment_type_array, $method, [
-                'class' => 'selectpicker form-control',
+                'class' => 'select form-control',
                 'data-live-search' => 'true',
                 'required',
                 'placeholder' => __('lang.please_select'),

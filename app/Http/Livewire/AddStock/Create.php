@@ -453,7 +453,7 @@ class Create extends Component
             ];
         }
 
-        //        $this->validate();
+        $this->validate();
 
         try {
             if (!empty($this->po_id)) {

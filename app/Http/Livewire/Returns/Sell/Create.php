@@ -26,7 +26,7 @@ use Livewire\Component;
 class Create extends Component
 {
     public $id, $sellines = [], $quantity = [], $amount, $sell_return, $store,
-            $branches,$branch_id,$store_pos,
+            $branches,$branch_id,$store_pos, $dollar_amount,$dollar_final_total,
             $method, $paid_on, $notes,$sale, $transaction_sell_line_id = [] ,
             $payment_status,$payment,$final_total , $store_pos_id ;
 
@@ -44,26 +44,15 @@ class Create extends Component
         $this->branches =  Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
         // $this->branch_id = Store::where('id', $this->sale->store_id)->pluck('branch_id');
         $this->branch_id = Store::where('id', $this->sale->store_id)->value('branch_id');
-        $this->store_pos = StorePos::orderBy('name', 'asc')->pluck('name', 'id');
+        $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
         $this->sell_return = TransactionSellLine::where('type', 'returns')
             ->where('return_parent_id', $this->id)
             ->first();
-
-        $cash_register_id = CashRegisterTransaction::select('cash_register_id')->where('transaction_id', $this->id)->get();
-        $this->store_pos_id = CashRegister::where('store_pos_id',$cash_register_id[0]->cash_register_id)->pluck('store_pos_id');
-
-        // dd( $this->store_pos_id);
-        foreach ($this->sellines as $key => $product)
-        {
-            $this->transaction_sell_line_id[$key] = $product->id;
-
-            if(!empty($product->quantity_returned)){
-                $this->quantity[$key] = number_format($product->quantity_returned,2);
-            }
-            else{
-                $this->quantity[$key] = number_format(0,2);
-            }
+        if (empty($this->store_pos)) {
+            $this->dispatchBrowserEvent('NoUserPos');
         }
+
+        $this->store_pos_id = array_key_first($this->store_pos);
 
         if ( !empty($sell_return) && $sell_return->transaction_payments->count() > 0){
             $this->notes = $sell_return->notes;
@@ -120,9 +109,15 @@ class Create extends Component
 
     public function changeAmount($index){
         foreach ($this->quantity as $key => $quantity ){
-            $this->amount = $quantity * $this->sellines[$key]['sell_price'];
+            if($this->sellines[$key]['sell_price'] > 0 ){
+                $this->amount = $quantity * $this->sellines[$key]['sell_price'] ;
+            }
+            else if ( $this->sellines[$key]['dollar_sell_price'] > 0){
+                $this->dollar_amount = $quantity * $this->sellines[$key]['dollar_sell_price'] ;
+            }
         }
         $this->final_total = $this->amount;
+        $this->dollar_final_total = $this->dollar_amount;
     }
     public function store(){
         try {
@@ -207,6 +202,7 @@ class Create extends Component
                     'transaction_payment_id' => isset($this->payment)? $this->payment->id : null,
                     'transaction_id' => $sell_return->id,
                     'amount' => $this->num_uf($this->amount),
+                    'dollar_amount' => $this->num_uf($this->dollar_amount),
                     'method' => $this->method,
                     'paid_on' => $this->paid_on . ' ' . date('H:i:s'),
                     'exchange_rate' => 0,
@@ -376,6 +372,7 @@ class Create extends Component
             if (!empty($cr_transaction)) {
                 $cr_transaction->update([
                     'amount' => $this->num_uf($payment['amount']),
+                    'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                     'pay_method' => $payment['method'],
                     'type' => $type,
                     'transaction_type' => "returns",
@@ -388,6 +385,7 @@ class Create extends Component
                 CashRegisterTransaction::create([
                     'cash_register_id' => $register->id,
                     'amount' => $this->num_uf($payment['amount']),
+                    'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                     'pay_method' =>  $payment['method'],
                     'type' => $type,
                     'transaction_type' => "returns",
@@ -399,6 +397,7 @@ class Create extends Component
         } else {
             $payments_formatted[] = new CashRegisterTransaction([
                 'amount' => $this->num_uf($payment['amount']),
+                'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                 'pay_method' => $payment['method'],
                 'type' => $type,
                 'transaction_type' => $transaction->type,

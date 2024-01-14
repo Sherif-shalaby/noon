@@ -117,6 +117,7 @@
                                                 <th>{{ __('lang.quantity') }}</th>
                                                 <th>{{ __('lang.returned_quantity') }}</th>
                                                 <th>{{ __('lang.price') }}</th>
+                                                <th class="dollar-cell">{{ __('lang.price') }} $</th>
                                                 <th>{{ __('lang.discount') }}</th>
                                                 <th>{{ __('lang.sub_total') }}</th>
                                                 <th></th>
@@ -132,7 +133,11 @@
                                                 <td></td>
                                                 <td></td>
                                                 <th style="text-align: right">@lang('lang.total')</th>
-                                                <th><span class="grand_total_span">{{ number_format($amount) }}</span>
+                                                <th><span class="grand_total_span">{{ @num_format($amount) }}</span>
+                                                <th class="dollar-cell" style="text-align: right">@lang('lang.total') $
+                                                </th>
+                                                <th><span
+                                                        class="grand_total_span">{{ @num_format($dollar_amount) }}</span>
                                                 </th>
                                             </tr>
                                         </tfoot>
@@ -216,3 +221,25 @@
 
 <!-- This will be printed -->
 <section class="invoice print_section print-only" id="receipt_section"> </section>
+@push('javascripts')
+    @if (empty($store_pos) || empty($stores))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const noUserPosEvent = new Event('NoUserPos');
+                window.dispatchEvent(noUserPosEvent);
+            });
+        </script>
+    @endif
+    @if (empty($store_pos))
+        <script>
+            window.addEventListener('NoUserPos', function(event) {
+                Swal.fire({
+                    title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>",
+                    icon: 'error',
+                }).then((result) => {
+                    window.location.href = "{{ route('home') }}";
+                });
+            });
+        </script>
+    @endif
+@endpush
