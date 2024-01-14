@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\CashInAdjustment;
 use App\Models\CashRegisterTransaction;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
@@ -310,6 +311,7 @@ class CashController extends Controller
      */
     public function saveAddClosingCash(Request $request)
     {
+        // return $request->all();
         try {
             $cash_given_to=User::find($request->cash_given_to)->name;
             if($request->source_type == 'user' && $cash_given_to=='Admin' && request()->user()->name=="Admin"){
@@ -333,18 +335,18 @@ class CashController extends Controller
             $register->status = 'close';
             $register->notes = $request->notes;
             $register->save();
-            // if ($request->submit == 'adjustment') {
-            //     $data['store_id'] = $register->store_id;
-            //     $data['user_id'] = $register->user_id;
-            //     $data['cash_register_id'] = $register->id;
-            //     $data['amount'] = $amount;
-            //     $data['current_cash'] = $this->commonUtil->num_uf($data['current_cash']);
-            //     $data['discrepancy'] = $this->commonUtil->num_uf($data['discrepancy']);
-            //     $data['date_and_time'] = Carbon::now();
-            //     $data['created_by'] = Auth::user()->id;
+            if ($request->submitValue == 'adjustment') {
+                $data['store_id'] = $register->store_id;
+                $data['user_id'] = $register->user_id;
+                $data['cash_register_id'] = $register->id;
+                $data['amount'] = $amount;
+                $data['current_cash'] = $this->commonUtil->num_uf($data['current_cash']);
+                $data['discrepancy'] = $this->commonUtil->num_uf($data['discrepancy']);
+                $data['date_and_time'] = Carbon::now();
+                $data['created_by'] = Auth::user()->id;
 
-            //     CashInAdjustment::create($data);
-            // }
+                CashInAdjustment::create($data);
+            }
 
             $cash_register_transaction = $this->cashRegisterUtil->createCashRegisterTransaction($register, $amount,$dollar_amount, 'closing_cash', 'credit', $request->source_id, $request->notes);
 
