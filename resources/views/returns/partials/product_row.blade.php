@@ -1,4 +1,5 @@
 @forelse ($products as $product)
+{{--    @dd($product)/--}}
     <tr class="product_row">
         <td style="width: 30%">
             <span >{{$product->product->name}}</span>
@@ -26,7 +27,7 @@
                    value="{{$product->item_tax}}">
         </td>
         <td style="width: 20%" title="{{__('lang.sku')}}">
-           {{$product->variation->sku}}
+           {{$product->variation->sku ?? null}}
         </td>
         <td>@if(isset($product->quantity)){{ preg_match('/\.\d*[1-9]+/', (string)$product->quantity) ? $product->quantity : @num_format($product->quantity)}}@else{{1}}@endif</td>
         <td style="width: 15%">
@@ -39,6 +40,10 @@
         <td style="width: 15%">
             <input type="text" class="form-control sell_price" name="transaction_sell_line[{{$loop->index}}][sell_price]"
                    required value="@if(isset($product->sell_price)){{@num_format($product->sell_price)}}@else{{0}}@endif">
+        </td>
+        <td style="width: 15%">
+            <input type="text" class="form-control sell_price" name="transaction_sell_line[{{$loop->index}}][sell_price]"
+                   required value="@if(isset($product->dollar_sell_price)){{@num_format($product->dollar_sell_price)}}@else{{0}}@endif">
         </td>
         <td style="width: 15%">
             <input type="hidden" class="form-control product_discount_type"
