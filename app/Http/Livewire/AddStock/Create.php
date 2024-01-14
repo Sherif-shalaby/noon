@@ -448,7 +448,7 @@ class Create extends Component
             ];
         }
 
-//        $this->validate();
+        $this->validate();
 
         try {
             if(!empty($this->po_id)){
@@ -516,7 +516,7 @@ class Create extends Component
                         }
                     }
 
-                    
+
                 }
                 $supplier = Supplier::find($this->supplier);
 //                dd($item['fill_quantity']);

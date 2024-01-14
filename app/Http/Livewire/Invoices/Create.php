@@ -588,7 +588,7 @@ class Create extends Component
                 }
                 // $transaction_payment = $this->createOrUpdateTransactionPayment($transaction, $payment_data);
                 $this->updateTransactionPaymentStatus($transaction->id);
-                $this->addPayments($transaction, $payment_data, 'credit',null,null);
+                $this->addPayments($transaction, $payment_data, 'credit',null,null,'pay_off');
             }
         }
         return [$dinar_new_balance,$dollar_new_balance];
@@ -892,6 +892,8 @@ class Create extends Component
         // task : الباقي دولار
         $dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
         $this->dollar_remaining = $dollar_remaining > 0 ? round_250($dollar_remaining) : 0;
+        $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at', 'desc')->get();
+
     }
     public function changeRemaining()
     {

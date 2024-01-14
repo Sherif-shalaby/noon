@@ -69,7 +69,8 @@ class Edit extends Component
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
 
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0,$back_to_dollar;
+        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by,
+        $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0,$back_to_dollar, $add_to_balance = 0;
 
     protected $rules =
     [
@@ -131,7 +132,7 @@ class Edit extends Component
         $this->store_pos_id = $this->transaction_sell_line->store_pos_id;
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $this->brand_id = $this->transaction_sell_line->brand_id;
-        // dd($this->transaction_sell_line);
+//         dd($this->transaction_sell_line->transaction_sell_lines);
         foreach ($this->transaction_sell_line->transaction_sell_lines as  $line) {
             $this->addLineProduct($line);
         }
@@ -152,14 +153,12 @@ class Edit extends Component
                 $user_stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
                 $branch = $store_pos->user->employee->branch;
                 $this->store_id = array_key_first($user_stores);
-                $this->changeAllProducts();
             }
         } else {
             if (!empty($store_pos)) {
                 $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
                 $branch = $store_pos->user->employee->branch;
                 $this->store_id = array_key_first($this->stores);
-                $this->changeAllProducts();
             }
         }
         /*  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -180,6 +179,7 @@ class Edit extends Component
                 $this->reprsenative_sell_car = true;
             }
         }
+        $this->changeAllProducts();
         $this->client_id = 1;
         $this->getCustomerData($this->client_id);
         $this->payment_status = 'paid';
@@ -485,15 +485,14 @@ class Edit extends Component
     // +++++++++++++++++++++++++ addLineProduct($line) : Add line product information +++++++++++++++++++++++++
     public function addLineProduct($line)
     {
-        //        dd($line);
         $product = Product::find($line->product_id);
         $quantity_available = $this->quantityAvailable($product);
         $product_stores = $this->getProductStores($product);
-        $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id);
+        $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id ?? 0);
         $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
         $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
         $current_stock = AddStockLine::find($line->stock_line_id);
-        $this->items[] = [
+        $new_item = [
             'id'=>$line->id,
             'variation' => $product->variations,
             'product' => $product,
@@ -524,23 +523,8 @@ class Edit extends Component
             'customer_offer_id' => $line->id,
             'sell_line_id' => $line->id,
         ];
-        //        $this->items[] =
-        //            [
-        //                'product' => $product,
-        //                'quantity' => number_format($line->quantity, 2),
-        //                'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price, 2)) : 0,
-        //                'category_id' => $product->category?->id,
-        //                'extra_quantity' => 0,
-        //                'customer_id' => $product->customer?->id,
-        //                'discount' => null,
-        //                'quantity_available' => $this->quantityAvailable($product),
-        //                'discount_price' => $line->discount_amount,
-        //                'discount_type' => $line->discount_type,
-        //                'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price, 2) : 0,
-        //                'customer_offer_id' => $line->id,
-        //                'selling_price' => $line->sell_price,
-        //                'dollar_selling_price' => $line->dollar_sell_price,
-        //            ];
+        $this->items[] = $new_item;
+//        dd($this->items);
     }
     public function changeAllProducts()
     {
@@ -1058,6 +1042,12 @@ class Edit extends Component
                     }
                 }
             }
+            if ($this->add_to_balance == "0") {
+                $this->new_added_dollar_balance = $this->num_uf($this->dollar_amount) - $this->num_uf($this->dollar_final_total);
+                if ($this->new_added_dollar_balance > 0) {
+                    $this->add_to_balance = "1";
+                }
+            }
         }
     }
 
@@ -1098,6 +1088,12 @@ class Edit extends Component
                     // }
                     // Convert remaining dinar to dollars using the exchange rate
                     // $this->dollar_remaining = $this->dinar_remaining * System::getProperty('dollar_exchange');
+                }
+            }
+            if ($this->add_to_balance == "0") {
+                $this->new_added_dinar_balance = $this->num_uf($this->amount) - $this->num_uf($this->final_total);
+                if ($this->new_added_dinar_balance > 0) {
+                    $this->add_to_balance = "1";
                 }
             }
         }
