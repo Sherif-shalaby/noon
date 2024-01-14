@@ -385,6 +385,7 @@ class Create extends Component
                 CashRegisterTransaction::create([
                     'cash_register_id' => $register->id,
                     'amount' => $this->num_uf($payment['amount']),
+                    'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                     'pay_method' =>  $payment['method'],
                     'type' => $type,
                     'transaction_type' => "returns",
@@ -396,6 +397,7 @@ class Create extends Component
         } else {
             $payments_formatted[] = new CashRegisterTransaction([
                 'amount' => $this->num_uf($payment['amount']),
+                'dollar_amount' => $this->num_uf($payment['dollar_amount']),
                 'pay_method' => $payment['method'],
                 'type' => $type,
                 'transaction_type' => $transaction->type,
