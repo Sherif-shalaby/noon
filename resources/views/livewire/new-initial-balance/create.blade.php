@@ -551,6 +551,8 @@
                                         {{ $variant }} </span><br>
                                 @endforeach
                             @endif
+                            <span class="items_quantity_span" style="margin-right: 15px;">
+                                {{ $this->getStore() }}</span>
                             {{--                                @lang('lang.items_quantity'): <span class="items_quantity_span" --}}
                             {{--                                    style="margin-right: 15px;">{{ $totalQuantity }}</span> --}}
                             </h4>
@@ -649,6 +651,7 @@
                                                             ]) !!}
                                                             <input type="text"
                                                                 class="form-control quantity initial-balance-input"
+                                                                wire:change="count_total_by_variation_stores()"
                                                                 wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"
                                                                 style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                                                                 placeholder = "{{ __('lang.quantity') }}">
@@ -1127,6 +1130,17 @@
                             class="btn btn-primary pull-right mt-0 btn-flat submit"
                             wire:click.prevent="store()">@lang('lang.save')</button>
                     </div>
+                    {{-- <div class="row"> --}}
+                    <div class="col-md-12 text-center">
+                        {{ $this->count_total_by_variation_stores() }}
+                        @if (!empty($variationStoreSums))
+                            @foreach ($variationStoreSums as $unitName => $variant_qty)
+                                <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                    {{ $unitName }} : {{ $variant_qty }} </h2><br>
+                            @endforeach
+                        @endif
+                    </div>
+                    {{-- </div> --}}
                 </div>
             </div>
         </div>

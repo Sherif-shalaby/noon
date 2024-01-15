@@ -91,3 +91,11 @@
 .main-card:hover.main-card .icon {
     animation: heartBeat 0.5s infinite;
 }
+
+.userbox:hover.userbox .log-out-button {
+    animation: heartBeat 0.5s infinite;
+}
+
+.profilename:hover {
+    animation: heartBeat 0.5s infinite;
+}

@@ -491,6 +491,10 @@ class CustomerController extends Controller
           ->where('deliveryman_id', $del_id)->get();
       return view('customers.partials.show_invoices', compact('transactions'));
     }
+    public function customer_invoices($cus_id){
+      $transactions = TransactionSellLine::where('customer_id', $cus_id)->orderBy('created_at', 'desc')->get();
+      return view('customers.show_invoices', compact('transactions'));
+    }
 }
 
 ?>

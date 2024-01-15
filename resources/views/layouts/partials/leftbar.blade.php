@@ -24,7 +24,7 @@
         <div class="userbox">
             <a href="{{ route('logout') }}" class="profile-icon"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <img src="{{ asset('images/svg-icon/logout.svg') }}" class="img-fluid" alt="logout">
+                <img src="{{ asset('images/svg-icon/logout.svg') }}" class="img-fluid log-out-button" alt="logout">
             </a>
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -43,9 +43,16 @@
                     width="45px" height="45px">
             </a>
         </div>
-        <div class="profilename ">
+        @php
+            $cash_register = App\Models\CashRegister::where('user_id', Auth::user()->id)
+                ->where('status', 'open')
+                ->first();
+        @endphp
+        <div class="profilename {{ empty($cash_register) ? 'd-none' : '' }}">
             <a>
-                <button class="btn-danger btn-sm" id="power_off_btn"><i class="fa fa-power-off"></i></button>
+                <span style="background-color: transparent;width:45px;height:45px;cursor: pointer;" id="power_off_btn">
+                    <img src="{{ asset('images/power-button.svg') }}" class="img-fluid w-100 h-100" alt="power-off">
+                </span>
             </a>
         </div>
 

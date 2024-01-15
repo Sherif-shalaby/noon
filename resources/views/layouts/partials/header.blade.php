@@ -1624,6 +1624,26 @@
                         <span class="mx-2">{{ __('lang.dues') }}</span>
                     </a>
                 </li>
+
+                {{-- @if (!empty($module_settings['customer_module'])) --}}
+                <li class="dropdown  scroll mx-2 mb-0 p-0" style="height: 40px;">
+                    <a href="javaScript:void();"
+                        class="d-flex proccess-invoice-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                        style="height: 100%;font-weight: 600" data-toggle="dropdown">
+                        <div style="width: 25px" class="d-flex align-items-center">
+                            <img src="{{ asset('images/navbar/reports.svg') }}" alt="{{ __('lang.reports') }}">
+                        </div>
+                        <span class="mx-2">{{ __('lang.process_invoices') }}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none;"
+                                target="_blank"
+                                class="process_invoices-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif text-decoration-none"
+                                href="{{ route('process-invoice.index') }}"><i
+                                    class="mdi mdi-circle"></i>{{ __('lang.process_invoices') }}</a></li>
+                    </ul>
+                </li>
+                {{-- @endif --}}
             </ul>
         </div>
     </div>
@@ -2036,6 +2056,13 @@
     $('.due-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('dues') }}"
+        document.body.classList.add('animated-element');
+        // window.location.href = url;
+        window.open(url, "_blank")
+    })
+    $('.process_invoices-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('process-invoice.index') }}"
         document.body.classList.add('animated-element');
         // window.location.href = url;
         window.open(url, "_blank")

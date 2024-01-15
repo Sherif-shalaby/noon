@@ -98,7 +98,8 @@
                 <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.quantity') }}</label>
                 <input type="text" class="form-control initial-balance-input quantity" name="quantity"
-                    wire:model="rows.{{ $index }}.quantity" maxlength="6"
+                    wire:change="count_total_by_variation_stores()" wire:model="rows.{{ $index }}.quantity"
+                    maxlength="6"
                     style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                     placeholder="{{ __('lang.quantity') }}">
             </div>
@@ -169,6 +170,7 @@
 
                         <input type="text" class="form-control initial-balance-input dinar_sell_price"
                             style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                            wire:change="changeUnitPrices({{ $index }})"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                             placeholder = "{{ __('lang.price') }}">
                         <span class="dollar-cell"

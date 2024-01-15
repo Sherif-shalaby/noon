@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="col-md-2 ">
-                    <button class="btn btn-danger {{ $this->add_to_balance == '0' ? 'd-none' : '' }}"
+                    <button class="btn btn-danger {{ $add_to_balance == '0' ? 'd-none' : '' }}"
                         style="width: 100%;font-size: 12px;font-weight: 600;"
                         wire:click="addToBalance()">{{ __('lang.add_to_balance') }}</button>
                 </div>
@@ -209,22 +209,38 @@
             </div>
 
             <div class="col-md-8 p-0 d-flex justify-content-end">
-                {{-- @if ($this->checkRepresentativeUser() && !$reprsenative_sell_car) --}}
-                <div class="col-sm-2">
-                    <div class="form-group">
+                @if (!$reprsenative_sell_car)
+                    <div class="col-sm-2">
                         {!! Form::label('delivery_cost', __('lang.delivery_cost'), [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
-                        {!! Form::number('delivery_cost', null, [
-                            'class' => 'form-control py-1',
-                            'style' => 'height:30px',
-                            'wire:model' => 'delivery_cost',
-                            'placeholder' => __('lang.delivery_cost'),
+                        <div class="input-wrapper width-full">
+                            {!! Form::number('delivery_cost', null, [
+                                'class' => 'form-control initial-balance-input width-full py-1',
+                                'style' => 'height:30px',
+                                'wire:model' => 'delivery_cost',
+                                'placeholder' => __('lang.delivery_cost'),
+                            ]) !!}
+                        </div>
+                    </div>
+                @endif
+                <div class="col-sm-2">
+                    {!! Form::label('representative_id', __('lang.representative') . '*', [
+                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                        'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                    ]) !!}
+                    <div class="input-wrapper width-full">
+                        {!! Form::select('representative_id', $representatives, null, [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'representative_id',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'representative_id',
+                            'wire:model' => 'representative_id',
                         ]) !!}
                     </div>
                 </div>
-                {{-- @endif --}}
                 {{-- +++++++++++ الاجمالي بالدينار +++++++++++ --}}
                 <div class="col-sm-2">
                     <div class="form-group">

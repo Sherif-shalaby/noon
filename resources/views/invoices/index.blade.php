@@ -146,12 +146,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    {{--                <div class="widgetbar"> --}}
-                    {{--                    <a href="{{route('customers.create')}}" class="btn btn-primary"> --}}
-                    {{--                    </a> --}}
-                    {{--                </div> --}}
-                </div>
+
             </div>
         </div>
     @endsection

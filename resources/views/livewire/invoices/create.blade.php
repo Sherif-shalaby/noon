@@ -75,7 +75,7 @@
                 @enderror
             </div>
 
-            <div class="col-md-1 justify-content-center d-flex flex-column align-items-end mx-1 p-0 animate__animated animate__bounceInLeft"
+            <div class="col-md-1 justify-content-center d-flex flex-column align-items-end mx-1 mt-2 p-0 animate__animated animate__bounceInLeft"
                 style="animation-delay: 1.2s">
                 <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
                     wire:click="redirectToCustomerDetails({{ $client_id }})"
@@ -84,9 +84,33 @@
                 </button>
 
             </div>
-
+            <div class="col-md-2 d-flex mb-2 @if (app()->isLocale('ar')) align-items-end  @else  align-items-start @endif   flex-column animate__animated animate__bounceInLeft"
+                style="animation-delay: 1.2s">
+                {!! Form::label('invoice_status', __('lang.invoice') . '*', [
+                    'class' => app()->isLocale('ar') ? 'd-block text-end h5 mx-2 mb-1 width-fit' : 'mx-2  mb-1 h5 width-fit',
+                    'style' => 'font-size: 12px;font-weight: 500;',
+                ]) !!}
+                <div class="input-wrapper width-full">
+                    {!! Form::select(
+                        'invoice_status',
+                        ['monetary' => __('lang.monetary'), 'deferred_time' => __('lang.deferred_time')],
+                        $invoice_status,
+                        [
+                            'class' => 'select2 form-control',
+                            'data-name' => 'store_pos_id',
+                            'data-live-search' => 'true',
+                            'required',
+                            'placeholder' => __('lang.please_select'),
+                            'wire:model' => 'invoice_status',
+                        ],
+                    ) !!}
+                    @error('store_pos_id')
+                        <span class="error text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
             {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
-            <div class="col-md-1  d-flex align-items-center justify-content-center flex-row-reverse p-0 animate__animated animate__bounceInLeft"
+            {{-- <div class="col-md-1  d-flex align-items-center justify-content-center flex-row-reverse p-0 animate__animated animate__bounceInLeft"
                 style="animation-delay: 1.2s">
                 <label class=" d-flex align-items-center justify-content-center flex-column p-0">
                     {!! Form::checkbox('toggle_suppliers_dropdown', 1, false, ['wire:model' => 'toggle_suppliers_dropdown']) !!}
@@ -95,7 +119,7 @@
                         @lang('lang.toggle_suppliers_dropdown')
                     </span>
                 </label>
-            </div>
+            </div> --}}
             {{-- +++++++++++++++++ suppliers Dropdown +++++++++++++++++ --}}
             @if (!empty($toggle_suppliers_dropdown))
                 <div

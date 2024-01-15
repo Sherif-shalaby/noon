@@ -23,6 +23,17 @@
 {{-- @endsection --}}
 
 @section('content')
+    <style>
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
+            }
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="contentbar">
@@ -171,6 +182,182 @@
                         </div>
                     </a>
                 </div>
+
+                <div
+                    class="row justify-content-evenly  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <div class="container-fluid">
+                        <div class="col-md-12">
+                            {!! Form::open([
+                                'route' => ['home'],
+                                'method' => 'get',
+                                'enctype' => 'multipart/form-data',
+                            ]) !!}
+                            <div
+                                class="row @if (app()->isLocale('ar')) justify-content-start flex-row-reverse @else  justify-content-end   flex-row @endif">
+                                <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                                    style="animation-delay: 1.15s">
+                                    {!! Form::label('customer_name', __('lang.customer_name')) !!}
+                                    <div class="input-wrapper width-full">
+                                        {!! Form::text('customer_name', request()->customer_name, [
+                                            'class' => 'form-control width-full initial-balance-input m-0',
+                                            'placeholder' => __('lang.customer_name'),
+                                            'id' => 'customer_name',
+                                        ]) !!}
+                                    </div>
+                                </div>
+                                <div class="col-2"></div>
+                                <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                                    style="animation-delay: 1.15s">
+                                    {!! Form::label('customer_phone', __('lang.customer_phone')) !!}
+                                    <div class="input-wrapper width-full">
+                                        {!! Form::text('customer_phone', request()->customer_phone, [
+                                            'class' => 'form-control width-full initial-balance-input m-0',
+                                            'placeholder' => __('lang.customer_phone'),
+                                            'id' => 'customer_phone',
+                                        ]) !!}
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2 p-1 mb-1 justify-content-end d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                                    style="animation-delay: 1.15s">
+                                    <button type="submit" class="btn btn-primary">@lang('lang.filter')</button>
+                                </div>
+                            </div>
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+                {{--    End customer Filter --}}
+
+                {{-- Show Customers    --}}
+                @if (!empty($customers))
+                    <div class="row">
+                        <div class="container-fluid">
+                            <div class="col-md-12">
+                                <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                    <div class="div1"></div>
+                                </div>
+                                <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                    <div class="div2 table-scroll-wrapper">
+                                        <!-- content goes here -->
+                                        <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
+                                            {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
+                                            <table class="table table-striped table-bordered hideShowTable"
+                                                style="max-height: 90vh">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th class="col1">@lang('lang.customer_name')</th>
+                                                        <th class="col2">@lang('lang.customer_type')</th>
+                                                        <th class="col3">@lang('lang.email')</th>
+                                                        <th class="col4">@lang('lang.phone')</th>
+                                                        <th class="col5">@lang('lang.state')</th>
+                                                        <th class="col6">@lang('lang.city')</th>
+                                                        <th class="col7">@lang('lang.min_amount_in_dinar')</th>
+                                                        <th class="col8">@lang('lang.max_amount_in_dinar')</th>
+                                                        <th class="col9">@lang('lang.min_amount_in_dollar')</th>
+                                                        <th class="col10">@lang('lang.max_amount_in_dollar')</th>
+                                                        <th class="col11">@lang('lang.balance_in_dinar')</th>
+                                                        <th class="col12">@lang('lang.balance_in_dollar')</th>
+                                                        <th class="col13">@lang('lang.balance')</th>
+                                                        <th class="col14">@lang('lang.purchases')</th>
+                                                        <th class="col15">@lang('lang.discount')</th>
+                                                        <th class="col16">@lang('lang.points')</th>
+                                                        <th class="col17">@lang('updated_by')</th>
+                                                        <th class="col18">@lang('lang.action')</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($customers as $index => $customer)
+                                                        <tr>
+                                                            <td>{{ $index + 1 }}</td>
+                                                            <td class="col1">{{ $customer->name }}</td>
+                                                            <td class="col2">{{ $customer->customer_type->name }}</td>
+                                                            {{-- Convert the email and phone strings to arrays --}}
+                                                            @php
+                                                                $emailArray = explode(',', $customer->email);
+                                                                $phoneArray = explode(',', $customer->phone);
+                                                                // Remove square brackets from each element in the emailArray
+                                                                foreach ($emailArray as $key => $email) {
+                                                                    $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
+                                                                }
+                                                                // Remove square brackets from each element in the emailArray
+                                                                foreach ($phoneArray as $key => $phone) {
+                                                                    $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
+                                                                }
+                                                            @endphp
+                                                            <td class="col3">
+                                                                {{-- Iterate over the email array elements --}}
+                                                                @foreach ($emailArray as $email)
+                                                                    {{ $email }}<br>
+                                                                @endforeach
+                                                            </td>
+                                                            <td class="col4">
+                                                                {{-- Iterate over the phone array elements --}}
+                                                                @foreach ($phoneArray as $phone)
+                                                                    {{ $phone }}<br>
+                                                                @endforeach
+                                                            </td>
+
+                                                            @php
+                                                                $state = \App\Models\State::find($customer->state_id);
+                                                                $city = \App\Models\City::find($customer->city_id);
+                                                            @endphp
+                                                            <td class="col5">{{ $state ? $state->name : '' }}</td>
+                                                            <td class="col6">{{ $city ? $city->name : '' }}</td>
+                                                            <td class="col7">{{ $customer->min_amount_in_dinar }}</td>
+                                                            <td class="col8">{{ $customer->max_amount_in_dinar }}</td>
+                                                            <td class="col9">{{ $customer->min_amount_in_dollar }}</td>
+                                                            <td class="col10">{{ $customer->max_amount_in_dollar }}</td>
+                                                            <td class="col11">{{ $customer->balance_in_dinar }}</td>
+                                                            <td class="col12">{{ $customer->balance_in_dollar }}</td>
+                                                            <td class="col13">{{ $customer->added_balance }}</td>
+                                                            <td class="col14">{{ $customer->added_balance }}</td>
+                                                            <td class="col15">{{ $customer->added_balance }}</td>
+                                                            <td class="col16">
+                                                                @if ($customer->created_by > 0 and $customer->created_by != null)
+                                                                    {{ $customer->created_at->diffForHumans() }} <br>
+                                                                    {{ $customer->created_at->format('Y-m-d') }}
+                                                                    ({{ $customer->created_at->format('h:i') }})
+                                                                    {{ $customer->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                                    <br>
+                                                                    {{ $customer->createBy?->name }}
+                                                                @else
+                                                                    {{ __('no_update') }}
+                                                                @endif
+                                                            </td>
+                                                            <td class="col17">
+                                                                @if ($customer->updated_by > 0 and $customer->updated_by != null)
+                                                                    {{ $customer->updated_at->diffForHumans() }} <br>
+                                                                    {{ $customer->updated_at->format('Y-m-d') }}
+                                                                    ({{ $customer->updated_at->format('h:i') }})
+                                                                    {{ $customer->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                                    <br>
+                                                                    {{ $customer->updateBy?->name }}
+                                                                @else
+                                                                    {{ __('no_update') }}
+                                                                @endif
+                                                            </td>
+                                                            <td class="col18">
+                                                                <a href="{{ route('customer_invoices', $customer->id) }}"
+                                                                    class="btn btn-default btn-sm">
+                                                                    @lang('lang.details')
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+
+
+
 
                 <div class="row">
                     <div class="container-fluid">
@@ -424,6 +611,7 @@
                 if (!end_date) {
                     end_date = 0;
                 }
+
                 getDashboardData(store_id, start_date, end_date, start_time, end_time)
             })
 
@@ -444,7 +632,9 @@
                         console.log(result, 'result');
                         $('.revenue-data').hide();
                         // $(".revenue-data").text(__currency_trans_from_en(result.revenue, false));
+
                         let currenct_stock_string = '<div>';
+
                         let revenue_string = '<div>';
                         let sell_return_string = '<div>';
                         let total_tax_string = '<div>';
@@ -469,6 +659,7 @@
                                       `;
 
                             revenue_string += `<h3 class="dashboard_currency
+
                                             data-orig_value="${element.data.revenue}">
                                             <span class="symbol" style="padding-right: 10px;">
                                                  د.ع</span>
@@ -480,6 +671,8 @@
                                                 class="doll_total">${(parseFloat(element.data.revenue.replace(/,/g, '')) / exchangeRate).toFixed(2)}</span>
                                         </h3>
                                         </h3>`;
+
+
                             sell_return_string += `<h3 class="dashboard_currency
 
                                             data-orig_value="${element.data.sell_return}">
@@ -550,6 +743,7 @@
                                                 <span
                                                 class="doll_total">${(parseFloat(element.data.purchase.replace(/,/g, '')) / exchangeRate).toFixed(2)}</span>
                                         </h3>`;
+
                         });
                         currenct_stock_string += `</div>`;
                         revenue_string += `</div>`;
@@ -561,28 +755,38 @@
                         expense_string += '</div>';
                         purchase_string += '</div>';
                         $(".revenue-data").html(revenue_string);
+
+
                         $('.revenue-data').show(500);
+
                         $('.current_stock_value-data').hide();
                         $(".current_stock_value-data").html(currenct_stock_string);
                         $('.current_stock_value-data').show(500);
+
                         $('.sell_return-data').hide();
                         $(".sell_return-data").html(sell_return_string);
                         $('.sell_return-data').show(500);
+
                         // $('.purchase_return-data').hide();
                         // $(".purchase_return-data").html(purchase_return_string);
                         // $('.purchase_return-data').show(500);
+
                         $('.total_tax').hide();
                         $(".total_tax").html(total_tax_string);
                         $('.total_tax').show(500);
+
                         $('.profit-data').hide();
                         $(".profit-data").html(profit_string);
                         $('.profit-data').show(500);
+
                         $('.net_profitt-data').hide();
                         $(".net_profitt-data").html(net_profit_string);
                         $('.net_profitt-data').show(500);
+
                         $('.expense-data').hide();
                         $(".expense-data").html(expense_string);
                         $('.expense-data').show(500);
+
                         $('.purchase-data').hide();
                         $(".purchase-data").html(purchase_string);
                         $('.purchase-data').show(500);
