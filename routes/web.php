@@ -50,10 +50,10 @@ use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ProcessInvoiceController;
 use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\TransactionPaymentController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
-use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 
 /*
@@ -295,6 +295,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
 
     Route::resource('pos',SellPosController::class);
+    Route::resource('process-invoice',ProcessInvoiceController::class);
     // Route::get('transaction-payment/add-payment/{id}', [TransactionPaymentController::class,'addPayment'])->name('transaction-payment.add-payment');
     Route::resource('pos-pay',TransactionPaymentController::class);
     Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');

@@ -127,19 +127,17 @@
                             ['class' => 'form-control'],
                         ) !!}
                     </div>
-                    <div class="col-md-3">
-                        {!! Form::label('product_sku_start', __('lang.product_sku_start'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::text(
-                            'product_sku_start',!empty($settings['product_sku_start']) ? $settings['product_sku_start'] : null,
-                            ['class' => 'form-control'],
-                        ) !!}
+                    <div class="col-md-3 pt-5">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" {{isset($settings['activate_processing']) && isset($settings['activate_processing'])=="1" ? 'checked' :''}} id="activate_processing" name="activate_processing">
+                            <label class="custom-control-label" for="activate_processing">{{__('lang.activate_processing')}}</label>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        {!! Form::label('product_sku_start', __('lang.product_sku_start'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::text(
-                            'product_sku_start',!empty($settings['product_sku_start']) ? $settings['product_sku_start'] : null,
-                            ['class' => 'form-control'],
-                        ) !!}
+                    <div class="col-md-3 pt-5">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="update_processing" name="update_processing" {{isset($settings['update_processing']) && isset($settings['update_processing'])==1 ? 'checked' :''}}>
+                            <label class="custom-control-label"  for="update_processing" >{{__('lang.update_processing')}}</label>
+                        </div>
                     </div>
                     <br>
                     <hr>

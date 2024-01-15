@@ -99,7 +99,7 @@ class Create extends Component
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $variationSums = [], $customer_types = [],
         $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $units = [],
         $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [];
-    public $rows = []  , $toggle_customers_dropdown , $customer_id ;
+    public $rows = []  , $toggle_customers_dropdown , $customer_id ,$variationStoreSums;
     public function messages()
     {
         return [
@@ -746,7 +746,34 @@ class Create extends Component
             }
         }
     }
-
+    public function count_total_by_variation_stores()
+    {
+        $this->variationStoreSums = [];
+        foreach ($this->rows as $row) {
+            if (!empty($row['unit_id'])) {
+                $unit = Unit::find($row['unit_id']);
+                $variation_name = $unit->name;
+                if (isset($this->variationStoreSums[$variation_name])) {
+                    $this->variationStoreSums[$variation_name] += $this->num_uf($row['quantity']);
+                } else {
+                    $this->variationStoreSums[$variation_name] = $this->num_uf($row['quantity']);
+                }
+            }
+        }
+        foreach($this->fill_stores as $key=>$fill){
+            foreach($this->fill_stores[$key]['data'] as $index=>$fill){
+                if (!empty($fill['store_fill_id'])) {
+                    $unit = Unit::find($fill['store_fill_id']);
+                    $variation_name = $unit->name;
+                    if (isset($this->variationStoreSums[$variation_name])) {
+                        $this->variationStoreSums[$variation_name] += $this->num_uf($fill['quantity']);
+                    } else {
+                        $this->variationStoreSums[$variation_name] = $this->num_uf($fill['quantity']);
+                    }
+                }
+            }
+        }
+    }
     public function sub_total($index)
     {
         if (!empty($this->rows[$index]['quantity']) && !empty($this->rows[$index]['purchase_price'])) {
@@ -1012,6 +1039,18 @@ class Create extends Component
             array_unshift($this->rows[$index]['prices'], $new_price);
         }
     }
+    public function changeUnitPrices($key){
+        foreach($this->rows as $index=>$row){
+            if($index>$key){
+                $this->changeFill($index);
+            }
+        }
+    }
+    public function getStore(){
+        if(!empty($this->item[0]['store_id'])){
+            return __('lang.store') .' : '.Store::find($this->item[0]['store_id'])?->name;
+        }
+    }
     public function changePercent($index, $key)
     {
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
@@ -1028,6 +1067,7 @@ class Create extends Component
             $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']), 3);
             $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
         }
+        $this->changeUnitPrices($index);
     }
     public function changeIncrease($index, $key)
     {

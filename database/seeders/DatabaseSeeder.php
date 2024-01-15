@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
            SizeSeeder::class ,
            ProductSeeder::class ,
            CategorySeeder::class,
+           JobTypeSeeder::class,
 
         ]);
 

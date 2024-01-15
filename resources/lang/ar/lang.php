@@ -804,5 +804,8 @@ return array(
     'total_latest_payments'=>'اجمالى المدفوعات المتأخرة',
     'add_to_balance'=>'اضافة الى الرصيد',
     'adjustment' => 'تعديل',
+    'activate_processing'=>'تفعيل التجهيز',
+    'update_processing'=>'تعديل التجهيز',
+    'process_invoices'=>'تجهيز الفواتير',
 );
 
