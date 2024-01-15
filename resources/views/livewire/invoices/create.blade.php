@@ -152,6 +152,17 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('invoice_status', __('lang.invoice') . ':*', []) !!}
+                            {!! Form::select('invoice_status', ['monetary' => __('lang.monetary') , 'deferred_time' => __('lang.deferred_time')], $invoice_status,
+                            ['class' => 'select2 form-control','data-name'=>'store_pos_id', 'data-live-search' => 'true', 'required',
+                            'placeholder' => __('lang.please_select'), 'wire:model' => 'invoice_status']) !!}
+                            @error('store_pos_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
                     <div class="col-md-2">
                         <div class="form-group">
@@ -323,7 +334,8 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="form-control select2" style="height:30% !important;width:100px;" data-name="customer_type_id" data-index="{{$key}}" wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
+                                                    <select class="form-control select2" style="height:30% !important;width:100px;" data-name="customer_type_id" data-index="{{$key}}"
+                                                            wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
                                                         <option value="0">select</option>
                                                          @if(!empty($item['customer_types']))
                                                          {{-- {{dd($item['customer_types'])}} --}}
@@ -430,7 +442,7 @@
             });
         </script>
     @endif
-    
+
     @if(empty($store_pos))
     <script>
     window.addEventListener('NoUserPos', function(event) {
