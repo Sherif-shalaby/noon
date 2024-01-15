@@ -557,6 +557,131 @@
                         </div>
                         {{-- sizes --}}
 
+                        <div class="accordion animate__animated  animate__bounceInLeft mb-2"
+                            style="animation-delay: 1.2s;">
+                            <div class="accordion-item d-flex flex-column"
+                                style=" background-color: transparent;border:none">
+                                <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
+                                    <div class="accordion-button-down"
+                                        style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;font-size: 14px;font-weight: 500"
+                                        wire:click="showStore()">
+                                        <span class="mx-2">
+                                            <i class="fas {{ $show_store == 0 ? 'fa-arrow-down' : 'fa-arrow-up' }} d-flex justify-content-center align-items-center"
+                                                style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                                        </span>
+                                        {{ __('lang.add_to_another_store') }}
+                                    </div>
+                                </h2>
+                                <div
+                                    class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
+                                    <button type="button" class="plus-button py-2 my-1" wire:click="addStoreRow()">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    @foreach ($fill_stores as $i => $store)
+                                        <div
+                                            class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+
+
+                                            <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
+                                                style="width: 160px">
+                                                <label for="extra_store_id"
+                                                    class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') . '*' }}</label>
+                                                <div class="d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dedede;
+                                                    border: none;
+                                                border-radius: 16px;
+                                                color: #373737;
+                                                box-shadow: 0 8px 6px -5px #bbb;
+                                                width: 100%;
+                                                height: 30px;
+                                                flex-wrap: nowrap;">
+                                                    {!! Form::select('extra_store_id', $stores, $fill_stores[$i]['extra_store_id'], [
+                                                        'class' => 'form-control select2 extra_store_id',
+                                                        'data-index' => $i,
+                                                        'data-name' => 'extra_store_id',
+                                                        'required',
+                                                        'placeholder' => __('lang.please_select'),
+                                                        'wire:model' => 'fill_stores.' . $i . '.extra_store_id',
+                                                        'wire:key' => 'extra_store_id_' . $i,
+                                                    ]) !!}
+
+                                                </div>
+                                                {{-- @error('fill_stores.' . $i . '.extra_store_id')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror --}}
+                                            </div>
+                                            <div
+                                                class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                @foreach ($fill_stores[$i]['data'] as $x => $fill)
+                                                    <div
+                                                        class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                                            style="width: 100px">
+                                                            <label for="store_fill_id"
+                                                                class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.fill') . '*' }}</label>
+                                                            <div class="d-flex justify-content-center align-items-center"
+                                                                style="background-color: #dedede;
+                                                        border: none;
+                                                        border-radius: 16px;
+                                                        color: #373737;
+                                                        box-shadow: 0 8px 6px -5px #bbb;
+                                                        width: 100%;
+                                                        height: 30px;
+                                                        flex-wrap: nowrap;">
+                                                                {!! Form::select('store_fill_id', $basic_unit_variations, $fill_stores[$i]['data'][$x]['store_fill_id'], [
+                                                                    'id' => 'store_fill_id',
+                                                                    'class' => 'select2 form-select  store_fill_id',
+                                                                    'data-name' => 'store_fill_id',
+                                                                    'data-index' => $i,
+                                                                    'data-key' => $x,
+                                                                    'placeholder' => __('lang.fill'),
+                                                                    'wire:model' => 'fill_stores.' . $i . '.data.' . $x . '.store_fill_id',
+                                                                ]) !!}
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                                            style="width: 75px">
+                                                            {!! Form::label('quantity', __('lang.quantity'), [
+                                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                            ]) !!}
+                                                            <input type="text"
+                                                                class="form-control quantity initial-balance-input"
+                                                                wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"
+                                                                style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                                                                placeholder = "{{ __('lang.quantity') }}">
+                                                            @error('fill_stores.' . $i . 'data' . $x . '.quantity')
+                                                                <label
+                                                                    class="text-danger validation-error error-msg">{{ $message }}</label>
+                                                            @enderror
+
+                                                        </div>
+                                                        <div
+                                                            class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mt-1 animate__animated animate__bounceInLeft d-flex px-1">
+                                                            <button type="button" class="plus-button mx-1 py-2"
+                                                                wire:click="addStoreDataRow({{ $i }})">
+                                                                <i class="fa fa-plus"></i>
+                                                            </button>
+                                                            {{-- @if ($i > 0) --}}
+                                                            <button class="del-button mx-1 py-2"
+                                                                wire:click="delete_store_raw({{ $i }})">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                            {{-- @endif --}}
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="accordion animate__animated  animate__bounceInLeft mb-2 "
                             style="animation-delay: 1.2s;">
                             <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
@@ -993,129 +1118,6 @@
                         </div>
 
 
-                        <div class="accordion animate__animated  animate__bounceInLeft"
-                            style="animation-delay: 1.2s;">
-                            <div class="accordion-item d-flex flex-column"
-                                style=" background-color: transparent;border:none">
-                                <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
-                                    <div class="accordion-button-down"
-                                        style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;font-size: 14px;font-weight: 500"
-                                        wire:click="showStore()">
-                                        <span class="mx-2">
-                                            <i class="fas {{ $show_store == 0 ? 'fa-arrow-down' : 'fa-arrow-up' }} d-flex justify-content-center align-items-center"
-                                                style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
-                                        </span>
-                                        {{ __('lang.add_to_another_store') }}
-                                    </div>
-                                </h2>
-                                <div
-                                    class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
-                                    <button type="button" class="plus-button py-2 my-1" wire:click="addStoreRow()">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                    @foreach ($fill_stores as $i => $store)
-                                        <div
-                                            class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-
-
-
-                                            <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
-                                                style="width: 160px">
-                                                <label for="extra_store_id"
-                                                    class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                                                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') . '*' }}</label>
-                                                <div class="d-flex justify-content-center align-items-center"
-                                                    style="background-color: #dedede;
-                                                    border: none;
-                                                border-radius: 16px;
-                                                color: #373737;
-                                                box-shadow: 0 8px 6px -5px #bbb;
-                                                width: 100%;
-                                                height: 30px;
-                                                flex-wrap: nowrap;">
-                                                    {!! Form::select('extra_store_id', $stores, $fill_stores[$i]['extra_store_id'], [
-                                                        'class' => 'form-control select2 extra_store_id',
-                                                        'data-index' => $i,
-                                                        'data-name' => 'extra_store_id',
-                                                        'required',
-                                                        'placeholder' => __('lang.please_select'),
-                                                        'wire:model' => 'fill_stores.' . $i . '.extra_store_id',
-                                                        'wire:key' => 'extra_store_id_' . $i,
-                                                    ]) !!}
-
-                                                </div>
-                                                {{-- @error('fill_stores.' . $i . '.extra_store_id')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror --}}
-                                            </div>
-                                            <div
-                                                class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                @foreach ($fill_stores[$i]['data'] as $x => $fill)
-                                                    <div
-                                                        class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                                            style="width: 100px">
-                                                            <label for="store_fill_id"
-                                                                class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                                                                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.fill') . '*' }}</label>
-                                                            <div class="d-flex justify-content-center align-items-center"
-                                                                style="background-color: #dedede;
-                                                        border: none;
-                                                        border-radius: 16px;
-                                                        color: #373737;
-                                                        box-shadow: 0 8px 6px -5px #bbb;
-                                                        width: 100%;
-                                                        height: 30px;
-                                                        flex-wrap: nowrap;">
-                                                                {!! Form::select('store_fill_id', $basic_unit_variations, $fill_stores[$i]['data'][$x]['store_fill_id'], [
-                                                                    'id' => 'store_fill_id',
-                                                                    'class' => 'select2 form-select  store_fill_id',
-                                                                    'data-name' => 'store_fill_id',
-                                                                    'data-index' => $i,
-                                                                    'data-key' => $x,
-                                                                    'placeholder' => __('lang.fill'),
-                                                                    'wire:model' => 'fill_stores.' . $i . '.data.' . $x . '.store_fill_id',
-                                                                ]) !!}
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                                            style="width: 75px">
-                                                            {!! Form::label('quantity', __('lang.quantity'), [
-                                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                            ]) !!}
-                                                            <input type="text"
-                                                                class="form-control quantity initial-balance-input"
-                                                                wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"
-                                                                style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
-                                                                placeholder = "{{ __('lang.quantity') }}">
-                                                            @error('fill_stores.' . $i . 'data' . $x . '.quantity')
-                                                                <label
-                                                                    class="text-danger validation-error error-msg">{{ $message }}</label>
-                                                            @enderror
-
-                                                        </div>
-                                                        <div
-                                                            class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mt-1 animate__animated animate__bounceInLeft d-flex px-1">
-                                                            <button type="button" class="plus-button mx-1 py-2"
-                                                                wire:click="addStoreDataRow({{ $i }})">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                            {{-- @if ($i > 0) --}}
-                                                            <button class="del-button mx-1 py-2"
-                                                                wire:click="delete_store_raw({{ $i }})">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
-                                                            {{-- @endif --}}
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endforeach
-
-                                </div>
-                            </div>
-                        </div>
 
                     </div>
 
