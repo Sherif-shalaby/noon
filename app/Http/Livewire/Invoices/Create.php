@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CashRegisterTransaction;
 use App\Models\PaymentTransactionSellLine;
+use App\Models\ProcessInvoice;
 
 class Create extends Component
 {
@@ -467,6 +468,15 @@ class Create extends Component
                 $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
                 // Emit a browser event to trigger the invoice printing
                 $this->emit('printInvoice', $html_content);
+                $is_process_invoice=System::getProperty('activate_processing');
+                if($is_process_invoice=="1"){
+                    $process_invoice=new ProcessInvoice();
+                    $process_invoice->transaction_id=$transaction->id;
+                    $process_invoice->customer_id=$customer->id;
+                    $process_invoice->invoice_no=$transaction->invoice_no;
+                    $process_invoice->is_processed=0;
+                    $process_invoice->save();
+                }
             }
             // dd($transaction->payment_status);
             if ($transaction->payment_status== 'partial' || $transaction->payment_status== 'pending') {
@@ -483,6 +493,7 @@ class Create extends Component
                     $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance,$this->new_added_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
                 }
             }
+         
             DB::commit();
 
             $this->items = [];

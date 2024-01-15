@@ -411,7 +411,7 @@
                                     <a href="{{route('profit_report')}}">
                                         <i class="mdi mdi-circle"></i>{{__('lang.representative_salary_report')}}
                                     </a>
-                                </li>
+                                </li>e
                             </ul>
                         </li>
 
@@ -424,7 +424,14 @@
                     </a>
                 </li>
 
-
+                {{-- @if(!empty($module_settings['customer_module'])) --}}
+                <li class="dropdown">
+                        <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.process_invoices')}}</span></a>
+                        <ul class="dropdown-menu">
+                        <li><a target="_blank" href="{{route('process-invoice.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.process_invoices')}}</a></li>
+                    </ul>
+                </li>
+                {{-- @endif --}}
               </ul>
             </div>
         </nav>

@@ -43,7 +43,7 @@
         </div>
     </td>
     <td>
-        <input type="text" class="form-control quantity" name="quantity"
+        <input type="text" class="form-control quantity" name="quantity" wire:change="count_total_by_variation_stores()"
             wire:model="rows.{{ $index }}.quantity" maxlength="6"
             placeholder="{{ __('lang.quantity') }}">
     </td>
@@ -75,7 +75,7 @@
         </td>
 
         <td>
-            <input type="text" class="form-control dinar_sell_price"
+            <input type="text" class="form-control dinar_sell_price" wire:change="changeUnitPrices({{$index}})"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                 placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}">
             <span>{{$rows[$index]['prices'][$key]['dollar_sell_price']}} $</span>

@@ -726,9 +726,11 @@ return [
     'total_latest_payments'=>'Total Latest Payments',
     'add_to_balance'=>'Add To Balance',
     'adjustment' => 'Adjustment',
+    'activate_processing'=>'Activate Processing',
+    'update_processing'=>'Update Processing',
+    'process_invoices'=>'Process Invoices',
     'monetary' => 'Monetary',
     'deferred_time' => 'Deferred Time'
-
 ];
 
 

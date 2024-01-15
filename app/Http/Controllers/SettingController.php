@@ -205,6 +205,14 @@ class SettingController extends Controller
                 ['key' => 'product_sku_start'],
                 ['value' => $request->product_sku_start, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
+            System::updateOrCreate(
+                ['key' => 'activate_processing'],
+                ['value' => $request->activate_processing=="on"?1:0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
+            System::updateOrCreate(
+                ['key' => 'update_processing'],
+                ['value' => $request->update_processing=="on"?1:0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
             if (!empty($request->currency)) {
                 $currency = Currency::find($request->currency);
                 $currency_data = [
