@@ -806,5 +806,7 @@ return array(
     'total_latest_payments'=>'اجمالى المدفوعات المتأخرة',
     'add_to_balance'=>'اضافة الى الرصيد',
     'adjustment' => 'تعديل',
+    'monetary' => 'نقدي',
+    'deferred_time' => 'آجل',
 );
 

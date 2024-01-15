@@ -726,6 +726,9 @@ return [
     'total_latest_payments'=>'Total Latest Payments',
     'add_to_balance'=>'Add To Balance',
     'adjustment' => 'Adjustment',
+    'monetary' => 'Monetary',
+    'deferred_time' => 'Deferred Time'
+
 ];
 
 
