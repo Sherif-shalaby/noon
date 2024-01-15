@@ -192,6 +192,19 @@
                         </div>
                     </div>
                 @endif
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('representative_id', __('lang.representative') . ':*', []) !!}
+                        {!! Form::select('representative_id', $representatives, null, [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'representative_id',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'representative_id',
+                            'wire:model' => 'representative_id',
+                        ]) !!}
+                    </div>
+                </div>
             </div>
 
             <div class="row hide-print">

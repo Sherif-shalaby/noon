@@ -730,7 +730,16 @@ return [
     'update_processing'=>'Update Processing',
     'process_invoices'=>'Process Invoices',
     'monetary' => 'Monetary',
-    'deferred_time' => 'Deferred Time'
+    'deferred_time' => 'Deferred Time',
+    'current_stock_value' => 'Current Stock Value',
+    'revenue' => 'Revenue',
+    'total_taxes' => 'Total Taxes',
+    'profit' => 'Profit',
+    'net_profit' => 'Net Profit',
+    'purchase' => 'Purchase',
+    'customer_phone' => 'Customer Phone',
+    'welcome' => 'Welcome',
+    'customer_invoices' => 'Customer Invoices'
 ];
 
 

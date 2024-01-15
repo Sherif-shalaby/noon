@@ -209,6 +209,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('pay_due_view/{id}', [CustomerController::class,'pay_due_view'])->name('customers.pay_due_view');
 
     Route::get('customer/show-invoices/{customer_id}/{delivery_id}', [CustomerController::class,'show_customer_invoices'])->name('show_customer_invoices');
+    Route::get('customer/show-invoices/{customer_id}', [CustomerController::class,'customer_invoices'])->name('customer_invoices');
 
 
     // stocks

@@ -640,7 +640,7 @@ return array(
     'representatives_requests'=>'طلبات المناديب',
     'representatives'=>'المناديب',
     'remaining'=>'المتبقى',
-    'representative'=>'مندوب',
+    'representative'=>'مندوب بيع',
     'Representative'=>'مندوب',
     'import_stock' => 'اضافه مخزون',
     'export_stock' => 'تصدير مخزون',
@@ -811,5 +811,14 @@ return array(
     'process_invoices'=>'تجهيز الفواتير',
     'monetary' => 'نقدي',
     'deferred_time' => 'آجل',
-);
+    'current_stock_value' => 'قيمة المخزون الحالي',
+    'revenue' => 'إيرادات',
+    'total_taxes' => 'اجمالى الضرايب',
+    'profit' => 'ربح',
+    'net_profit' => 'صافي الربح',
+    'purchase' => 'شراء',
+    'customer_phone' => 'رقم العميل',
+    'welcome' => 'أهلا',
+    'customer_invoices' => 'فواتير العميل',
+ );
 

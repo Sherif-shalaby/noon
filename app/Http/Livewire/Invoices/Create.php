@@ -51,7 +51,7 @@ class Create extends Component
         $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter, $alphabetical_order_id, $price_order_id,
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
-        $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0;
+        $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0,$representative_id;
 
 
     protected $rules = [
@@ -239,6 +239,8 @@ class Create extends Component
         $customer_types = CustomerType::latest()->pluck('name', 'id');
         $delivery_job_type = JobType::where('title', 'Deliveryman')->first();
         $deliverymen = Employee::where('job_type_id', $delivery_job_type->id)->pluck('employee_name', 'id');
+        $rep_job_type = JobType::where('title', 'Representative')->first();
+        $representatives = Employee::where('job_type_id', $rep_job_type->id)->pluck('employee_name', 'id');
         $search_result = '';
         if (!empty($this->search_by_product_symbol)) {
             $search_result = Product::when($this->search_by_product_symbol, function ($query) {
@@ -299,6 +301,7 @@ class Create extends Component
             'search_result',
             'deliverymen',
             'suppliers',
+            'representatives',
             // 'customers_rt',
             'sell_lines',
         ));
@@ -360,6 +363,7 @@ class Create extends Component
                 //            'terms_and_condition_id' => !empty($request->terms_and_condition_id) ? $request->terms_and_condition_id : null,
                 'created_by' => Auth::user()->id,
                 'due_date' => $this->due_date ?? null,
+                'representative_id' => $this->representative_id ?? null,
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
@@ -493,7 +497,7 @@ class Create extends Component
                     $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance,$this->new_added_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
                 }
             }
-         
+
             DB::commit();
 
             $this->items = [];
