@@ -218,10 +218,12 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
 });
 //store form
 
-//category form
+// ++++++++++++ category form ++++++++++++
 var select_category=0;
 var main_category_id=0;
+// ++++++++++++ .openCategoryModal ++++++++++++
 $(".openCategoryModal").click(function (e){
+    console.log("+++++++++++++++++++ You Click on + button +++++++++++++++++++")
     select_category=$(this).data('select_category');
     if(select_category=="0"){
         main_category_id= 1;
@@ -235,7 +237,7 @@ $(".openCategoryModal").click(function (e){
     else if(select_category=="3"){
         main_category_id= 4;
     }
-    console.log(select_category,main_category_id)
+    console.log("select_category = "+select_category,"main_category_id = "+main_category_id)
 
     // if((main_category_id!=='' && select_category!=0) || main_category_id===0){
     $(this).addClass('btn-modal');
@@ -243,15 +245,19 @@ $(".openCategoryModal").click(function (e){
     //     Swal.fire("warning", LANG.no_parent_category, "warning");
     // }
 });
+// ++++++++++++ #create-category-btn ++++++++++++
 $("#create-category-btn").click(function (e){
+    console.log('++++++++++++++ After Click "save" on Modal ++++++++++++++++++++');
     e.preventDefault();
     setTimeout(()=>{
         $("#create-category-form").submit();
+        console.log('++++++++++++++ After Submit Form ++++++++++++++++++++');
     },500)
 });
+// ++++++++++++ #create-category-form ++++++++++++
 $(document).on("submit", "#create-category-form", function (e) {
+    console.log("++++++++++++ On Submit ++++++++++++");
     e.preventDefault();
-    alert('select_category' + select_category)
     var dataArray = $(this).serializeArray();
     var data = {};
     var name = $('.category-name').val();
@@ -276,7 +282,6 @@ $(document).on("submit", "#create-category-form", function (e) {
                 $("#createCategoryModal").modal("hide");
                 $(".createSubCategoryModal").modal("hide");
                 console.log(main_category_id);
-                alert(main_category_id)
                 var category_id = result.id;
                 $.ajax({
                     method: "get",
@@ -284,7 +289,6 @@ $(document).on("submit", "#create-category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        console.log(key);
                         if (typeof key !== 'undefined' && key !== null) {
                             if(select_category=="0"){
                                 $("#categoryId" + key).empty().append(data_html);
@@ -345,20 +349,14 @@ $(document).on("submit", "#create-category-form", function (e) {
 });
 
 $(document).ready(function () {
-$("#create-product-tax-btn").click(function (e) {
-    e.preventDefault();
-    setTimeout(() => {
-        $("#quick_add_product_tax_form").submit();
-    }, 500);
-});
+    $("#create-product-tax-btn").click(function (e) {
+        e.preventDefault();
+        setTimeout(() => {
+            $("#quick_add_product_tax_form").submit();
+        }, 500);
+    });
 });
 
-// $("#create-product-tax-btn").click(function (e){
-//     e.preventDefault();
-//     setTimeout(()=>{
-//         $("#add_product_tax").submit();
-//     },500)
-// });
 $(document).on("submit", "#quick_add_product_tax_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
