@@ -56,7 +56,7 @@
                                     </td>
                                     <td>
                                         <div class="custom-control custom-switch">
-                                            <input wire:model="inv[{{$index}}]['is_processed']" type="checkbox" class="custom-control-input" id="is_processed{{$index}}" name="is_processed{{$index}}"  {{$inv['is_processed']==1 ? 'checked' :''}}
+                                            <input  type="checkbox"  class="custom-control-input" id="is_processed{{$index}}" name="is_processed{{$index}}"  {{$inv['is_processed']=="1" ? 'checked' :''}}
                                             wire:change="UpdateStatus({{$index}},{{$inv['id']}})">
                                             <label class="custom-control-label"  for="is_processed{{$index}}" ></label>
                                         </div>
@@ -66,9 +66,6 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="view_modal no-print" >
-
-                            </div>
                         </div>
                     </div>
                 </div>

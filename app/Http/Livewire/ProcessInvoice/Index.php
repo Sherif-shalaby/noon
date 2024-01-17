@@ -47,10 +47,11 @@ class Index extends Component
     }
     public function UpdateStatus($index,$id){
         // dd($this->invoice);
-        $process_invoice=ProcessInvoice::find($id);
-        $process_invoice->update([
-            'employee_id'=>$this->invoice[$index]['employee_id'],
-            'is_processed'=>!$process_invoice->is_processed,
-        ]);
+        // $process_invoice=ProcessInvoice::find($id);
+        // $process_invoice->update([
+        //     'employee_id'=>$this->invoice[$index]['employee_id'],
+        //     'is_processed'=>!$process_invoice->is_processed,
+        // ]);
+        return redirect()->back();
     }
 }
