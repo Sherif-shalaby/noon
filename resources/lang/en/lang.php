@@ -739,7 +739,11 @@ return [
     'purchase' => 'Purchase',
     'customer_phone' => 'Customer Phone',
     'welcome' => 'Welcome',
-    'customer_invoices' => 'Customer Invoices'
+    'customer_invoices' => 'Customer Invoices',
+    'delivery_date'=>'Delivery Date',
+    'processor'=>'Processor',
+    'process'=>'Process',
+    'created_at'=>'Created at',
 ];
 
 

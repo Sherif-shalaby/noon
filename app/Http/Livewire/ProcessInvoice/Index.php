@@ -5,11 +5,12 @@ namespace App\Http\Livewire\ProcessInvoice;
 use App\Models\Employee;
 use App\Models\JobType;
 use App\Models\ProcessInvoice;
+use App\Models\System;
 use Livewire\Component;
 
 class Index extends Component
 {
-    public $employees,$invoices=[];
+    public $employees,$invoices=[],$update_processing=0;
     public $invoice=[
     // [
     //     'id'=>'',
@@ -17,6 +18,13 @@ class Index extends Component
     //     'employee_id'=>0,
     // ]
     ];
+    protected $listeners = ['listenerReferenceHere'];
+    public function listenerReferenceHere($data)
+    {
+        if (isset($data['var']) && !isset($data['name'])) {
+            $this->UpdateStatus($data['var'],$data['id'],$data['val']);
+        }
+    }
     public function render()
     {
         $this->invoices=ProcessInvoice::orderBy('is_processed', 'asc')->get();
@@ -42,16 +50,14 @@ class Index extends Component
     public function mount(){
         $jobType=JobType::where('title','Processor')->first();
         $this->employees=Employee::where('job_type_id',$jobType->id??0)->pluck('employee_name','id');
-  
-        // dd($this->invoice);
+        $this->update_processing=System::getProperty('update_processing');
     }
-    public function UpdateStatus($index,$id){
-        // dd($this->invoice);
-        // $process_invoice=ProcessInvoice::find($id);
-        // $process_invoice->update([
-        //     'employee_id'=>$this->invoice[$index]['employee_id'],
-        //     'is_processed'=>!$process_invoice->is_processed,
-        // ]);
-        return redirect()->back();
+    public function UpdateStatus($index,$id,$employee_id){
+        $process_invoice=ProcessInvoice::find($id);
+        $process_invoice->update([
+            'employee_id'=>$employee_id,
+            'is_processed'=>!$process_invoice->is_processed,
+        ]);
+        return redirect('/process-invoice');
     }
 }
