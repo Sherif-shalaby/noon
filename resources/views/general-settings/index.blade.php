@@ -129,13 +129,13 @@
                     </div>
                     <div class="col-md-3 pt-5">
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" {{isset($settings['activate_processing']) && isset($settings['activate_processing'])=="1" ? 'checked' :''}} id="activate_processing" name="activate_processing">
+                            <input type="checkbox" class="custom-control-input" {{isset($settings['activate_processing']) && $settings['activate_processing']=="1" ? 'checked' :''}} id="activate_processing" name="activate_processing">
                             <label class="custom-control-label" for="activate_processing">{{__('lang.activate_processing')}}</label>
                         </div>
                     </div>
-                    <div class="col-md-3 pt-5">
+                    <div class="col-md-3 pt-5 update_processing" style="visibility:{{isset($settings['activate_processing']) && $settings['activate_processing']=="1"?'visible':'hidden'}}">
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="update_processing" name="update_processing" {{isset($settings['update_processing']) && isset($settings['update_processing'])==1 ? 'checked' :''}}>
+                            <input type="checkbox" class="custom-control-input" id="update_processing" name="update_processing" {{isset($settings['update_processing']) && $settings['update_processing']==1 ? 'checked' :''}}>
                             <label class="custom-control-label"  for="update_processing" >{{__('lang.update_processing')}}</label>
                         </div>
                     </div>
@@ -395,5 +395,15 @@
                 });
             }
         @endif
+        $(document).ready(function () {
+            $(document).on('change', '#activate_processing', function() {
+                if ($(this).prop('checked')) {
+                    $('.update_processing').css('visibility', 'visible');
+                }else{
+                    $('.update_processing').css('visibility', 'hidden');
+                    $('#update_processing').prop('checked',false);
+                }
+            });
+        });
     </script>
 @endpush

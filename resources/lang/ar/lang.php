@@ -820,5 +820,9 @@ return array(
     'customer_phone' => 'رقم العميل',
     'welcome' => 'أهلا',
     'customer_invoices' => 'فواتير العميل',
+    'delivery_date'=>'تاريخ التوصيل',
+    'processor'=>'المجهز',
+    'process'=>'تجهيز',
+    'created_at'=>'تاريخ الانشاء',
  );
 

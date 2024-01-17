@@ -156,7 +156,7 @@ class SettingController extends Controller
     }
     public function updateGeneralSetting(Request $request)
     {
-        // return $request;
+        // dd($request->all());
         try {
             System::updateOrCreate(
                 ['key' => 'site_title'],
@@ -205,13 +205,14 @@ class SettingController extends Controller
                 ['key' => 'product_sku_start'],
                 ['value' => $request->product_sku_start, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
+            // return isset($request->activate_processing) && $request->activate_processing=="on"?1:0;
             System::updateOrCreate(
                 ['key' => 'activate_processing'],
-                ['value' => $request->activate_processing=="on"?1:0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+                ['value' => isset($request->activate_processing) && $request->activate_processing=="on"?1:0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             System::updateOrCreate(
                 ['key' => 'update_processing'],
-                ['value' => $request->update_processing=="on"?1:0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+                ['value' => $request->update_processing=="on" ||isset($request->update_processing)?1:0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             if (!empty($request->currency)) {
                 $currency = Currency::find($request->currency);
