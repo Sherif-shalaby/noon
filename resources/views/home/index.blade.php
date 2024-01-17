@@ -468,6 +468,116 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+
+                 {{-- ++++++++++++++++++ Table Columns ++++++++++++++++++ --}}
+                 <table id="example" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="col1">@lang('lang.image')</th>
+                            <th class="col2">@lang('lang.product_name')</th>
+                            <th class="col3">@lang('lang.sku')</th>
+                            <th class="col5">@lang('lang.stock')</th>
+                            <th class="col6">@lang('lang.category') 1</th>
+                            <th class="col7">@lang('lang.category') 2</th>
+                            <th class="col19">@lang('lang.category') 3</th>
+                            <th class="col20">@lang('lang.category') 4</th>
+                            <th class="col8">@lang('lang.height')</th>
+                            <th class="col9">@lang('lang.length')</th>
+                            <th class="col10">@lang('lang.width')</th>
+                            <th class="col11">@lang('lang.size')</th>
+                            <th class="col12">@lang('lang.weight')</th>
+                            <th class="col13">{{__('lang.basic_unit_for_import_product')}}</th>
+                            <th class="col14">@lang('lang.stores')</th>
+                            <th class="col15">@lang('lang.brand')</th>
+                            <th class="col16">@lang('added_by')</th>
+                            <th class="col17">@lang('updated_by')</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($products as $index=>$product)
+                            <tr>
+                                <td>{{ $index+1 }}</td>
+                                <td class="col1"><img src="{{!empty($product->image)?'/uploads/products/'.$product->image:'/uploads/'.$settings['logo']}}" style="width: 50px; height: 50px;" alt="{{ $product->name }}" ></td>
+                                <td class="col2">{{$product->name}}</td>
+                                <td class="col3">{{$product->sku}}</td>
+                                <td class="col5">
+                                    @foreach($product->product_stores as $store)
+                                        @php
+                                            $unit = !empty($store->variations)?$store->variations:[];
+                                            $amount = 0;
+                                        @endphp
+                                    @endforeach
+
+                                    @forelse($product->variations as $variation)
+                                        @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
+                                            <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name??''}}  <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
+                                        @else
+                                            <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">0</span></span> <br>
+                                        @endif
+                                    @empty
+                                        <span>{{$product->product_stores->sum('quantity_available')}} </span>
+                                    @endforelse
+                                </td>
+                                <td class="col6">{{$product->category->name??''}}</td>
+                                <td class="col7">
+                                    {{$product->subCategory1->name??''}}
+                                </td>
+                                <td class="col19">
+                                    {{$product->subCategory2->name??''}}
+                                </td>
+                                <td class="col20">
+                                    {{$product->subCategory3->name??''}}
+                                </td>
+                                <td class="col8">{{$product->product_dimensions->height??0}}</td>
+                                <td class="col9">{{$product->product_dimensions->length??0}}</td>
+                                <td class="col10">{{$product->product_dimensions->width??0}}</td>
+                                <td class="col11"><span class="text-primary">{{$product->product_dimensions->size??0}}</span></td>
+                                <td class="col12">{{$product->product_dimensions->weight??0}}</td>
+                                <td class="col13">
+                                    {{!empty($product->product_dimensions->variations)?
+                                    (!empty($product->product_dimensions->variations->unit)?$product->product_dimensions->variations->unit->name:
+                                    ''):''}}
+                                </td>
+                                <td class="col14">
+                                    @foreach($product->stores as $store)
+                                    {{$store->name}}<br>
+                                    @endforeach
+                                </td>
+                                <td class="col15">{{!empty($product->brand)?$product->brand->name:''}}</td>
+                                {{-- ++++++++++++++++++++++ created_at column ++++++++++++++++++++++ --}}
+                                <td class="col16">
+                                    @if ($product->created_by  > 0 and $product->created_by != null)
+                                        {{ $product->created_at->diffForHumans() }} <br>
+                                        {{ $product->created_at->format('Y-m-d') }}
+                                        ({{ $product->created_at->format('h:i') }})
+                                        {{ ($product->created_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
+                                        {{ $product->createBy?->name }}
+                                    @else
+                                    {{ __('no_update') }}
+                                    @endif
+                                </td>
+                                {{-- ++++++++++++++++++++++ updated_at column ++++++++++++++++++++++ --}}
+                                <td class="col17">
+                                    @if ($product->edited_by  > 0 and $product->edited_by != null)
+                                        {{ $product->updated_at->diffForHumans() }} <br>
+                                        {{ $product->updated_at->format('Y-m-d') }}
+                                        ({{ $product->updated_at->format('h:i') }})
+                                        {{ ($product->updated_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
+                                        {{ $product->updateBy?->name }}
+                                    @else
+                                    {{ __('no_update') }}
+                                    @endif
+                                </td>
+                            </tr>
+                            {{-- @include('products.edit',$product) --}}
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 <div style="display: none;" id="exchange-rate" data-exchange-rate="{{ App\Models\System::getProperty('dollar_exchange') }}"></div>
