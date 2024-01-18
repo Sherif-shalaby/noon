@@ -466,7 +466,7 @@
     @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])
-    @include('categories.create_modal', ['quick_add' => 1])
+    @include('categories.create_modal', ['quick_add' => $quick_add])
     @include('product-tax.create', ['quick_add' => 1])
 
 @endsection
