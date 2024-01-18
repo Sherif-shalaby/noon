@@ -205,6 +205,29 @@
                         ]) !!}
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('loading_cost', __('lang.loading_cost'), ['class' => 'text-primary']) !!}
+                        {!! Form::number('loading_cost', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'loading_cost',
+                            'placeholder' => __('lang.loading_cost'),
+                        ]) !!}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('dollar_loading_cost', __('lang.loading_cost').' $', ['class' => 'text-primary']) !!}
+                        {!! Form::number('dollar_loading_cost', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'dollar_loading_cost',
+                            'placeholder' => __('lang.loading_cost') .' $',
+                        ]) !!}
+                        <div class="{{$dollar_loading_cost > 0 ? '':'d-none'}}" title="{{__('lang.change_remaining_to_dinar')}}">
+                            <button class="btn btn-sm btn-danger text-white" type="button" wire:click="change_dollar_loading_cost_to_dinar()">></button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row hide-print">
