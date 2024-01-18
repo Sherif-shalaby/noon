@@ -1067,7 +1067,7 @@ class Create extends Component
             return __('lang.store') .' : '.Store::find($this->item[0]['store_id'])?->name;
         }
     }
-    public function getExtraFillStore($key){        
+    public function getExtraFillStore($key){
         if(!empty($this->fill_stores[$key]['extra_store_id'])){
             return __('lang.store') .' : '.Store::find($this->fill_stores[$key]['extra_store_id'])?->name;
         }
@@ -1114,6 +1114,9 @@ class Create extends Component
     {
         $fill = $this->num_uf($this->rows[$index]['fill']);
         $purchase_price = $this->num_uf($this->rows[$index - 1]['purchase_price']);
+        if($fill < 1){
+            $fill = 1;
+        }
         $this->rows[$index]['purchase_price'] = number_format($purchase_price / $fill, 3);
 
         foreach ($this->rows[$index]['prices'] as $key => $price) {
