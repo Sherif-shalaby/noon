@@ -70,7 +70,8 @@ class Edit extends Component
 
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
         $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by,
-        $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0,$back_to_dollar, $add_to_balance = 0;
+        $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0,$back_to_dollar, $add_to_balance = 0 ,$representative_id,
+        $loading_cost, $dollar_loading_cost;
 
     protected $rules =
     [
@@ -221,6 +222,8 @@ class Edit extends Component
         $customer_types = CustomerType::latest()->pluck('name', 'id');
         $delivery_job_type = JobType::where('title', 'Deliveryman')->first();
         $deliverymen = Employee::where('job_type_id', $delivery_job_type->id)->pluck('employee_name', 'id');
+        $rep_job_type = JobType::where('title', 'Representative')->first();
+        $representatives = Employee::where('job_type_id', $rep_job_type->id)->pluck('employee_name', 'id');
         $search_result = '';
         if (!empty($this->search_by_product_symbol)) {
             $search_result = Product::when($this->search_by_product_symbol, function ($query) {
@@ -282,6 +285,7 @@ class Edit extends Component
             'deliverymen',
             // 'customers_rt',
             'sell_lines',
+            'representatives'
         ));
     }
     public function set_data()
@@ -366,6 +370,9 @@ class Edit extends Component
                     'deleted_by' => null,
                     'created_at' => $this->transaction_sell_line->created_at,
                     'updated_at' => now(),
+                    'representative_id' => $this->representative_id ?? null,
+                    'loading_cost' => $this->loading_cost ?? null,
+                    'dollar_loading_cost' => $this->dollar_loading_cost ?? null,
                     // 'deleted_at' => null,
                 ];
             $transaction_sell_line = $this->transaction_sell_line;
@@ -801,6 +808,8 @@ class Edit extends Component
     {
         $this->total = 0;
         $this->total_dollar = 0;
+        $this->loading_cost = 0;
+        $this->dollar_loading_cost = 0;
         foreach ($this->items as $item) {
             // dinar_sub_total
             $this->total += round_250($this->num_uf($item['sub_total']));
@@ -808,6 +817,16 @@ class Edit extends Component
             $this->total_dollar += $this->num_uf($item['dollar_sub_total']);
             $this->discount += $this->num_uf($item['discount_price']);
             $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
+            //  calculate loading cost
+            if(!empty($item['unit_id'])){
+                $item_variation = Variation::find($item['unit_id']);
+                if(System::getProperty('loading_cost_currency') == 2){
+                    $this->dollar_loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                }
+                elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
+                    $this->loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                }
+            }
         }
         // dd($this->total);
 
