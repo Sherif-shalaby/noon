@@ -141,7 +141,6 @@ class Create extends Component
         $length = $this->item[0]['length'] ?? 0;
         $width = $this->item[0]['width'] ?? 0;
         $this->item[0]['size'] = (float)$height * (float)$length * (float)$width;
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     protected $listeners = ['listenerReferenceHere', 'create', 'cancelCreateProduct'];
 
@@ -283,6 +282,8 @@ class Create extends Component
             )
         );
     }
+
+
     public function setSubCategoryValue($value)
     {
 
@@ -297,7 +298,6 @@ class Create extends Component
         foreach ($this->rows as $index => $row) {
             $this->totalQuantity += (int)$this->rows[$index]['quantity'];
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addRaw()
     {
@@ -306,7 +306,6 @@ class Create extends Component
         //   ];
         //     array_unshift($this->rows, $newRow);
         $this->addPrices();
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeUnit($index)
     {
@@ -510,7 +509,6 @@ class Create extends Component
                 $this->saveTransaction($product->id,);
                 DB::commit();
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
-                $this->dispatchBrowserEvent('componentRefreshed');
                 return redirect('/new-initial-balance/create');
             }
         } catch (\Exception $e) {
@@ -654,7 +652,6 @@ class Create extends Component
         if ($product_exist) {
             $this->dispatchBrowserEvent('showCreateProductConfirmation');
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function create()
     {
@@ -792,6 +789,7 @@ class Create extends Component
                 }
             }
         }
+        return $this->variationFillStoreSums;
         // }
     }
     public function sub_total($index)
@@ -837,7 +835,6 @@ class Create extends Component
     {
         unset($this->rows[$index]);
         $this->rows = array_values($this->rows);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function convertDollarPrice($index)
@@ -1015,7 +1012,6 @@ class Create extends Component
             'discount_from_original_price' => true,
         ];
         $this->prices[] = $new_price;
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addStoreRow()
     {
@@ -1029,7 +1025,6 @@ class Create extends Component
             ]
         ];
         array_unshift($this->fill_stores, $new_store);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addStoreDataRow($index)
     {
@@ -1038,13 +1033,11 @@ class Create extends Component
             'quantity' => '',
         ];
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
-            '', 'show_prices' => false,
+            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => ''
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -1063,12 +1056,6 @@ class Create extends Component
             ];
             array_unshift($this->rows[$index]['prices'], $new_price);
         }
-    }
-    public function stayShow($index)
-    {
-        $this->rows[$index]['show_prices'] =
-            !$this->rows[$index]['show_prices'];
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeUnitPrices($key)
     {
@@ -1107,7 +1094,6 @@ class Create extends Component
             $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
         }
         $this->changeUnitPrices($index);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeIncrease($index, $key)
     {
@@ -1128,7 +1114,6 @@ class Create extends Component
             }
         }
         $this->changeUnitPrices($index);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function  changeFill($index)
     {
@@ -1138,32 +1123,32 @@ class Create extends Component
             $fill = 1;
         }
         $this->rows[$index]['purchase_price'] = number_format($purchase_price / $fill, 3);
+
         foreach ($this->rows[$index]['prices'] as $key => $price) {
             $this->rows[$index]['prices'][$key]['percent'] = $this->rows[$index - 1]['prices'][$key]['percent'];
             if ($this->rows[$index]['prices'][$key]['percent'] != null) {
                 $this->changePercent($index, $key);
+            } else if (!empty($this->rows[$index]['prices'][$key]['dinar_increase']) || !empty($this->rows[$index]['prices'][$key]['dollar_increase'])) {
+                $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->rows[$index - 1]['prices'][$key]['dinar_increase']) / $this->num_uf($fill), 3);
+                $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->rows[$index - 1]['prices'][$key]['dollar_increase']) / $this->num_uf($fill), 3);
+                // $this->changeIncrease($index, $key);
             } else {
-                $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->rows[$index - 1]['prices'][$key]['dinar_increase'] / $fill, 3);
-                $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->rows[$index - 1]['prices'][$key]['dollar_increase'] / $fill, 3);
-                $this->changeIncrease($index, $key);
+                $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($this->num_uf($this->rows[$index - 1]['prices'][$key]['dinar_sell_price']) / $this->num_uf($fill), 3);
+                $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($this->rows[$index - 1]['prices'][$key]['dollar_sell_price']) / $this->num_uf($fill), 3);
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showDiscount()
     {
         $this->show_discount = !($this->show_discount);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showStore()
     {
         $this->show_store = !($this->show_store);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showDimensions()
     {
         $this->show_dimensions = !($this->show_dimensions);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory1()
     {
@@ -1174,7 +1159,6 @@ class Create extends Component
             $this->show_category2 = 0;
             $this->show_category3 = 0;
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory2()
     {
@@ -1184,12 +1168,10 @@ class Create extends Component
             $this->show_category2 = 0;
             $this->show_category3 = 0;
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory3()
     {
         $this->show_category3 = !($this->show_category3);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_price_raw($key)
     {
@@ -1203,12 +1185,10 @@ class Create extends Component
             }
         }
         unset($this->prices[$key]);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_store_raw($key)
     {
         unset($this->fill_stores[$key]);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_store_data_raw($index, $key)
     {
@@ -1293,7 +1273,6 @@ class Create extends Component
                 $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['total_price']) / ($total_quantity == 0 ? 1 : $total_quantity), 3);
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function applyOnAllCustomers($key)
     {
@@ -1371,5 +1350,15 @@ class Create extends Component
         $num = str_replace($thousand_separator, '', $input_number);
         $num = str_replace($decimal_separator, '.', $num);
         return (float)$num;
+    }
+    public function changeSellPrice($index, $key)
+    {
+        if ($this->transaction_currency == 2) {
+            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->rows[$index]['prices'][$key]['dinar_sell_price'], 3);
+            $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) / $this->num_uf($this->exchange_rate), 3);
+        } else {
+            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) * $this->num_uf($this->exchange_rate), 3);
+        }
+        $this->changeUnitPrices($index);
     }
 }

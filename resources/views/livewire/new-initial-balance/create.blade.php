@@ -540,37 +540,10 @@
 
                                      </div> --}}
                         <div class="d-flex">
-                            <div class="col-md-4 text-center mt-1 ">
-
-                                {{ $this->count_total_by_variations() }}
-                                @if (!empty($variationSums))
-                                    @foreach ($variationSums as $unit_name => $variant)
-                                        {{ $unit_name }}:
-                                        <span class="items_quantity_span" style="margin-right: 15px;">
-                                            {{ __('lang.total') }} : {{ $variant }} </span><br>
-                                    @endforeach
-                                @endif
-                                <span class="items_quantity_span" style="margin-right: 15px;">
-                                    {{ $this->getStore() }}</span>
-
-                                </h4>
-                            </div>
-
-                            <div class="col-md-4 text-center mt-1">
-                                {{ $this->count_total_by_variation_stores() }}
-                                @if (!empty($variationStoreSums))
-                                    @foreach ($variationStoreSums as $unitName => $variant_qty)
-                                        <h2 class="items_quantity_span" style="margin-right: 15px;">
-                                            {{ $unitName }} : {{ $variant_qty }} </h2><br>
-                                    @endforeach
-                                @endif
-                            </div>
-
                             <div class="col-md-4 text-center mt-1">
                                 @foreach ($fill_stores as $i => $store)
-                                    {{ $this->count_fill_stores_unit($i) }}
-                                    @if (!empty($variationFillStoreSums))
-                                        @foreach ($variationFillStoreSums as $unit_name => $variant)
+                                    @if (!empty($this->count_fill_stores_unit($i)))
+                                        @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
                                             <h2 class="items_quantity_span" style="margin-right: 15px;">
                                                 {{ $unit_name }}: {{ $variant }} </h2><br>
                                         @endforeach
@@ -578,6 +551,34 @@
                                     <h2 class="items_quantity_span" style="margin-right: 15px;">
                                         {{ $this->getExtraFillStore($i) }}</h2>
                                 @endforeach
+                            </div>
+
+
+                            <div class="col-md-4 text-center mt-1">
+                                {{ $this->count_total_by_variation_stores() }}
+                                @if (!empty($variationStoreSums))
+                                    @foreach ($variationStoreSums as $unitName => $variant_qty)
+                                        <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                            {{ $unitName }} : {{ __('lang.total') }} : {{ $variant_qty }} </h2>
+                                        <br>
+                                    @endforeach
+                                @endif
+                            </div>
+
+                            <div class="col-md-4 text-center mt-1 ">
+
+                                {{ $this->count_total_by_variations() }}
+                                @if (!empty($variationSums))
+                                    @foreach ($variationSums as $unit_name => $variant)
+                                        {{ $unit_name }}:
+                                        <span class="items_quantity_span" style="margin-right: 15px;">
+                                            {{ $variant }} </span><br>
+                                    @endforeach
+                                @endif
+                                <span class="items_quantity_span" style="margin-right: 15px;">
+                                    {{ $this->getStore() }}</span>
+
+                                </h4>
                             </div>
                         </div>
 
@@ -657,7 +658,6 @@
                                                         height: 30px;
                                                         flex-wrap: nowrap;">
                                                                 {!! Form::select('store_fill_id', $basic_unit_variations, $fill_stores[$i]['data'][$x]['store_fill_id'], [
-                                                                    'id' => 'store_fill_id',
                                                                     'class' => 'select2 form-select  store_fill_id',
                                                                     'data-name' => 'store_fill_id',
                                                                     'data-index' => $i,
