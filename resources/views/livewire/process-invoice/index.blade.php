@@ -27,13 +27,12 @@
                                     <th>@lang('lang.delivery_date')</th>
                                     <th>@lang('lang.processor')</th>
                                     <th>{{__('lang.process')}}</th>
-                                    <th>@lang('lang.action')</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($invoice as $index=>$inv)
                                 <tr style="background-color:{{$inv['is_processed']=="1"?'rgb(221, 253, 185)':'rgb(255, 220, 220)'}} !important">
-                                    <td><input type="hidden" wire:model="inv[{{$index}}][id]" value="{{$inv['id']}}"/>
+                                    <td><input type="hidden" wire:model="inv[id]" value="{{$inv['id']}}"/>
                                         {{ $index+1 }}</td>
                                     <td>{{$inv['created_at']}}</td>
                                     <td>{{$inv['invoice_no']}}</td>
@@ -46,29 +45,34 @@
                                     <td>{{$inv['dollar_amount']}} $</td>
                                     <td>{{$inv['delivery_date']}}</td>
                                     <td>
-                                        {!! Form::select('inv.' . $index.'.employee_id', $employees, $inv['employee_id']??null, [
-                                            'class' => ' form-control select2 employee_id',
+                                        @if($update_processing=="1")
+                                        {!! Form::select('inv.' . $index.'.employee_id', $employees, !empty($inv['employee_id'])?$inv['employee_id']:null, [
+                                            'class' => ' form-control select2 employee_id'.$index,
                                             'data-name' => 'employee_id',
                                             'data-index' => $index,
                                             'placeholder' => __('lang.please_select'),
                                             'wire:model' => 'inv.' . $index.'.employee_id',
                                         ]) !!}
+                                        @else
+                                        @php
+                                         $employee=\App\Models\Employee::find($inv['employee_id']);   
+                                        @endphp
+                                        {{$employee->employee_name??''}}
+                                        @endif
                                     </td>
                                     <td>
+                                        @if($update_processing=="1")
                                         <div class="custom-control custom-switch">
-                                            <input wire:model="inv[{{$index}}]['is_processed']" type="checkbox" class="custom-control-input" id="is_processed{{$index}}" name="is_processed{{$index}}"  {{$inv['is_processed']==1 ? 'checked' :''}}
-                                            wire:change="UpdateStatus({{$index}},{{$inv['id']}})">
+                                            <input  type="checkbox"  class="custom-control-input process-checkbox" id="is_processed{{$index}}" name="is_processed{{$index}}"  {{$inv['is_processed']=="1" ? 'checked' :''}}
+                                            data-index="{{$index}}" data-id="{{$inv['id']}}">
                                             <label class="custom-control-label"  for="is_processed{{$index}}" ></label>
                                         </div>
+                                        @endif
                                     </td>
-                                    <td></td>
                                 </tr>
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="view_modal no-print" >
-
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,3 +82,20 @@
         <!-- End row -->
     </div>
     <!-- End Contentbar -->
+@push('javascripts')
+<script>
+$(document).on('change','.process-checkbox',function(e){
+    e.preventDefault();
+    var index = $(this).data('index');
+    var id = $(this).data('id');
+    var name = $(this).data('name');
+    alert($('.employee_id'+index).select2("val"));
+    Livewire.emit('listenerReferenceHere', {
+        var: index,
+        name: name,
+        id: id,
+        val: $('.employee_id'+index).select2("val"),
+    });
+});
+</script>
+@endpush
