@@ -103,7 +103,7 @@
                             <div class="input-wrapper">
 
                                 {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency'] : null, [
-                                    'class' => 'form-control select2',
+                                    'class' => 'form-control currency select2',
                                     'placholder' => __('lang.please_select'),
                                 ]) !!}
                             </div>
@@ -226,34 +226,57 @@
                                 ['class' => 'form-control initial-balance-input m-0'],
                             ) !!}
                         </div>
+                        @php
+                            $currency = \App\Models\Currency::find($settings['currency']);
+                            $info = $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ') ' . $currency->symbol;
+                        @endphp
+                        <div class="col-sm-6 col-md-3 justify-content-end animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.75s">
+                            {!! Form::label('loading_cost_currency', __('lang.loading_cost_currency'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+                                {!! Form::select(
+                                    'loading_cost_currency',
+                                    ['2' => 'America - Dollars(USD) $', $currency->id => $info],
+                                    !empty($settings['loading_cost_currency']) ? $settings['loading_cost_currency'] : null,
+                                    ['class' => 'form-control select2 loading_cost_currency', 'placeholder' => __('lang.please_select')],
+                                ) !!}
+                            </div>
+                        </div>
                         <div class="col-sm-6 col-md-3 justify-content-end animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                             style="animation-delay: 1.75s">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input"
-                                    {{ isset($settings['activate_processing']) && isset($settings['activate_processing']) == '1' ? 'checked' : '' }}
+                                    {{ isset($settings['activate_processing']) && $settings['activate_processing'] == '1' ? 'checked' : '' }}
                                     id="activate_processing" name="activate_processing">
                                 <label class="custom-control-label"
                                     for="activate_processing">{{ __('lang.activate_processing') }}</label>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3 justify-content-end animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                        <div class="col-sm-6 col-md-3 justify-content-end animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif update_processing"
+                            style="visibility:{{ isset($settings['activate_processing']) && $settings['activate_processing'] == '1' ? 'visible' : 'hidden' }}"
                             style="animation-delay: 1.75s">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="update_processing"
                                     name="update_processing"
-                                    {{ isset($settings['update_processing']) && isset($settings['update_processing']) == 1 ? 'checked' : '' }}>
+                                    {{ isset($settings['update_processing']) && $settings['update_processing'] == 1 ? 'checked' : '' }}>
                                 <label class="custom-control-label"
                                     for="update_processing">{{ __('lang.update_processing') }}</label>
                             </div>
                         </div>
-                        <div class="col-md-12 pt-5">
+                        <div class="col-md-6 py-2">
+                            @include('general-settings.partials.add_loading_cost')
+                        </div>
+                        <div class="col-md-12 pt-1">
                             <div class="row">
                                 <div class="col-md-4 animate__animated animate__bounceInLeft "
                                     style="animation-delay: 1.75s">
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
                                             <div class="col-12">
-                                                <label for="projectinput2" class="h5 p3 justify-content-center d-flex">
+                                                <label for="projectinput2" class=" justify-content-center d-flex">
                                                     {{ __('lang.letter_header') }}</label>
                                             </div>
                                             <div class="d-flex flex-column">
@@ -263,7 +286,8 @@
                                                             <div class="file-input">
                                                                 <input type="file" name="file-input"
                                                                     id="file-input-header" class="file-input__input" />
-                                                                <label class="file-input__label" for="file-input-header">
+                                                                <label class="file-input__label text-white"
+                                                                    for="file-input-header">
                                                                     <i class="fas fa-cloud-upload-alt"></i>&nbsp;
                                                                     <span>Upload file</span></label>
                                                             </div>
@@ -279,11 +303,13 @@
                                                             <button type="button"
                                                                 class="btn btn-sm btn-danger delete-btn remove_image"
                                                                 data-type="letter_header"><i style="font-size: 16px;"
-                                                                    class="fa fa-trash"></i></button>
+                                                                    class="fa fa-trash"></i>
+                                                            </button>
                                                             <span class="btn btn-sm btn-primary  crop-btn"
                                                                 id="crop-header-btn" data-toggle="modal"
                                                                 data-target="#headerModal"><i style="font-size: 16px;"
-                                                                    class="fas fa-crop"></i></span>
+                                                                    class="fas fa-crop"></i>
+                                                            </span>
                                                         </div>
                                                     @endif
                                                 </div>
@@ -308,7 +334,8 @@
                                                             <div class="file-input">
                                                                 <input type="file" name="file-input"
                                                                     id="file-input-footer" class="file-input__input" />
-                                                                <label class="file-input__label" for="file-input-footer">
+                                                                <label class="file-input__label text-white"
+                                                                    for="file-input-footer">
                                                                     <i class="fas fa-cloud-upload-alt"></i>&nbsp;
                                                                     <span>Upload file</span></label>
                                                             </div>
@@ -354,7 +381,8 @@
                                                             <div class="file-input">
                                                                 <input type="file" name="file-input"
                                                                     id="file-input-logo" class="file-input__input" />
-                                                                <label class="file-input__label" for="file-input-logo">
+                                                                <label class="file-input__label text-white"
+                                                                    for="file-input-logo">
                                                                     <i class="fas fa-cloud-upload-alt"></i>&nbsp;
                                                                     <span>Upload file</span></label>
                                                             </div>
@@ -363,7 +391,7 @@
 
                                                 </div>
                                                 <div class="preview-logo-container"
-                                                    style="display: flex !important;justify-content:center">>
+                                                    style="display: flex !important;justify-content:center">
                                                     @if (!empty($settings['logo']))
                                                         <div class="preview">
                                                             <img src="{{ asset('uploads/' . $settings['logo']) }}"
@@ -407,69 +435,117 @@
                 </div>
             </div>
         </div>
+    </div>
 
-    @endsection
-    @push('javascripts')
-        <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
-        <script src="{{ asset('css/crop/crop-setting.js') }}"></script>
+@endsection
+@push('javascripts')
+    <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+    <script src="{{ asset('css/crop/crop-setting.js') }}"></script>
 
 
-        <script>
-            // edit Case
-            @if (!empty($settings['letter_header']) && isset($settings['letter_header']))
-                document.getElementById("crop-header-btn").addEventListener('click', () => {
+    <script>
+        // edit Case
+        @if (!empty($settings['letter_header']) && isset($settings['letter_header']))
+            document.getElementById("crop-header-btn").addEventListener('click', () => {
 
-                    console.log(("#headerModal"))
-                    setTimeout(() => {
-                        launchHeaderCropTool(document.getElementById("img_header_footer"));
-                    }, 500);
+                console.log(("#headerModal"))
+                setTimeout(() => {
+                    launchHeaderCropTool(document.getElementById("img_header_footer"));
+                }, 500);
+            });
+            let deleteHeaderBtn = document.getElementById("deleteBtn");
+            if (deleteHeaderBtn) {
+                deleteHeaderBtn.addEventListener('click', () => {
+                    if (window.confirm('Are you sure you want to delete this image?')) {
+                        $("#preview").remove();
+                    }
                 });
-                let deleteHeaderBtn = document.getElementById("deleteBtn");
-                if (deleteHeaderBtn) {
-                    deleteHeaderBtn.addEventListener('click', () => {
-                        if (window.confirm('Are you sure you want to delete this image?')) {
-                            $("#preview").remove();
-                        }
-                    });
-                }
-            @endif
-            // edit Case
-            @if (!empty($settings['letter_footer']) && isset($settings['letter_footer']))
-                document.getElementById("crop-footer-btn").addEventListener('click', () => {
+            }
+        @endif
+        // edit Case
+        @if (!empty($settings['letter_footer']) && isset($settings['letter_footer']))
+            document.getElementById("crop-footer-btn").addEventListener('click', () => {
 
-                    console.log(("#footerModal"))
-                    setTimeout(() => {
-                        launchCropTool(document.getElementById("img_letter_footer"));
-                    }, 500);
+                console.log(("#footerModal"))
+                setTimeout(() => {
+                    launchCropTool(document.getElementById("img_letter_footer"));
+                }, 500);
+            });
+            let deleteFooterBtn = document.getElementById("deleteBtn");
+            if (deleteFooterBtn) {
+                deleteFooterBtn.getElementById("deleteBtn").addEventListener('click', () => {
+                    if (window.confirm('Are you sure you want to delete this image?')) {
+                        $("#preview").remove();
+                    }
                 });
-                let deleteFooterBtn = document.getElementById("deleteBtn");
-                if (deleteFooterBtn) {
-                    deleteFooterBtn.getElementById("deleteBtn").addEventListener('click', () => {
-                        if (window.confirm('Are you sure you want to delete this image?')) {
-                            $("#preview").remove();
-                        }
-                    });
-                }
-            @endif
+            }
+        @endif
 
-            // edit Case
-            @if (!empty($settings['logo']) && isset($settings['logo']))
-                document.getElementById("crop-logo-btn").addEventListener('click', () => {
+        // edit Case
+        @if (!empty($settings['logo']) && isset($settings['logo']))
+            document.getElementById("crop-logo-btn").addEventListener('click', () => {
 
-                    console.log(("#logoModal"))
-                    setTimeout(() => {
-                        launchLogoCropTool(document.getElementById("img_logo_footer"));
-                    }, 500);
+                console.log(("#logoModal"))
+                setTimeout(() => {
+                    launchLogoCropTool(document.getElementById("img_logo_footer"));
+                }, 500);
+            });
+            let deleteLogoBtn = document.getElementById("deleteBtn");
+            if (deleteLogoBtn) {
+                deleteLogoBtn.getElementById("deleteBtn").addEventListener('click', () => {
+                    if (window.confirm('Are you sure you want to delete this image?')) {
+                        $("#preview").remove();
+                    }
                 });
-                let deleteLogoBtn = document.getElementById("deleteBtn");
-                if (deleteLogoBtn) {
-                    deleteLogoBtn.getElementById("deleteBtn").addEventListener('click', () => {
-                        if (window.confirm('Are you sure you want to delete this image?')) {
-                            $("#preview").remove();
-                        }
-                    });
+            }
+        @endif
+        $(document).ready(function() {
+            $(document).on('change', '#activate_processing', function() {
+                if ($(this).prop('checked')) {
+                    $('.update_processing').css('visibility', 'visible');
+                } else {
+                    $('.update_processing').css('visibility', 'hidden');
+                    $('#update_processing').prop('checked', false);
                 }
-            @endif
-        </script>
-    @endpush
+            });
+        });
+        $(document).ready(function() {
+            $('#currency').on('change', function(e) {
+                // Get the selected value from the first dropdown
+                var selectedValue = $(this).val();
+                console.log(selectedValue);
+                // Perform an AJAX request to fetch updated options for the second dropdown based on the selected value
+                // Update the 'url' and 'data' parameters with your actual route and data structure
+                $.ajax({
+                    url: '/get_currency', // Replace with your actual API endpoint
+                    method: 'GET',
+                    data: {
+                        selectedValue: selectedValue
+                    },
+                    success: function(data) {
+                        // Update options for the second dropdown
+                        $('#loading_cost_currency').empty();
+                        $.each(data, function(key, value) {
+                            if (key == '') {
+                                $('#loading_cost_currency').append($(
+                                    '<option selected>', {
+                                        value: key,
+                                        text: LANG.please_select
+                                    }));
+                            } else {
+                                $('#loading_cost_currency').append($('<option>', {
+                                    value: key,
+                                    text: value
+                                }));
+                            }
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

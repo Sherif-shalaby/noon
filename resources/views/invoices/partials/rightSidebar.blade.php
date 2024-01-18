@@ -105,6 +105,24 @@
                         </div>
                     </div>
                 @endif
+                <div class="col-md-2 dollar-cell">
+                    {!! Form::label('dollar_loading_cost', __('lang.loading_cost') . ' $', [
+                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                        'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                    ]) !!}
+                    <div class="input-wrapper width-full">
+                        {!! Form::number('dollar_loading_cost', null, [
+                            'class' => 'form-control initial-balance-input width-full m-0',
+                            'wire:model' => 'dollar_loading_cost',
+                            'placeholder' => __('lang.loading_cost') . ' $',
+                        ]) !!}
+                        <div class="{{ $dollar_loading_cost > 0 ? '' : 'd-none' }}"
+                            title="{{ __('lang.change_remaining_to_dinar') }}">
+                            <button class="btn btn-sm btn-danger text-white" type="button"
+                                wire:click="change_dollar_loading_cost_to_dinar()">></button>
+                        </div>
+                    </div>
+                </div>
                 {{-- +++++++++++ الاجمالي بالدولار +++++++++++ --}}
                 <div class="col-sm-2 dollar-cell">
                     <div class="form-group">
@@ -241,6 +259,21 @@
                         ]) !!}
                     </div>
                 </div>
+
+                <div class="col-md-2">
+                    {!! Form::label('loading_cost', __('lang.loading_cost'), [
+                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                        'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                    ]) !!}
+                    <div class="input-wrapper width-full">
+                        {!! Form::number('loading_cost', null, [
+                            'class' => 'form-control initial-balance-input width-full m-0',
+                            'wire:model' => 'loading_cost',
+                            'placeholder' => __('lang.loading_cost'),
+                        ]) !!}
+                    </div>
+                </div>
+
                 {{-- +++++++++++ الاجمالي بالدينار +++++++++++ --}}
                 <div class="col-sm-2">
                     <div class="form-group">

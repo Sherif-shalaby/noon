@@ -840,4 +840,12 @@ return array(
     'customer_phone' => 'رقم العميل',
     'welcome' => 'أهلا',
     'customer_invoices' => 'فواتير العميل',
+    'delivery_date' => 'تاريخ التوصيل',
+    'processor' => 'المجهز',
+    'process' => 'تجهيز',
+    'created_at' => 'تاريخ الانشاء',
+    'totals' => 'الاجمالي',
+    'add_loading_cost' => 'اضافه تكلفه تحميل',
+    'loading_cost' => 'تكلفة التحميل',
+    'loading_cost_currency' => 'عملة تكاليف التحميل',
 );

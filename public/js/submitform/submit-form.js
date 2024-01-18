@@ -22,15 +22,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                // Swal.fire("Success", result.msg, "success");
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    timer: 1000
-                });
-
+                Swal.fire("Success", result.msg, "success");
                 $("#createBrandModal").modal("hide");
                 var brand_id = result.id;
                 $.ajax({
@@ -51,13 +43,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
                     },
                 });
             } else {
-                Swal.fire({
-                    title: "Error",
-                    text: response.status,
-                    icon: "error",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
-                });
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
@@ -89,16 +75,7 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                // Swal.fire("Success", result.msg, "success");
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Success", result.msg, "success");
                 $("#create").modal("hide");
                 var unit_id = result.id;
                 $.ajax({
@@ -132,13 +109,7 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                     },
                 });
             } else {
-                Swal.fire({
-                    title: "Error",
-                    text: response.status,
-                    icon: "error",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
-                });
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
@@ -162,6 +133,9 @@ $(document).on("click", ".createStoreModal", function (e) {
     console.log('store_key' + store_key);
     console.log('store_index' + store_index);
 });
+
+
+// ++++++++++++++++++ ajax : products module : quick_add_store ++++++++++++++++++
 $(document).on("submit", "form#quick_add_store_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -172,18 +146,11 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                // Swal.fire("Success", result.msg, "success");
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Success", result.msg, "success");
+                console.log("First Ajax Request : Store new store");
+                console.log(result);
+                console.log(result.store_id);
                 $(".add-store").modal("hide");
-                var store_id = result.id;
                 $.ajax({
                     method: "get",
                     url: "/product/get-dropdown-store/",
@@ -201,25 +168,22 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                             $(".store_id" + store_index).empty().append(data_html[0]);
                             $(".store_id" + store_index).val(data_html[1]).change();
                         }
+
                     },
                 });
             } else {
-                Swal.fire({
-                    title: "Error",
-                    text: response.status,
-                    icon: "error",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
-                });
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
 });
+
 $("#create-supplier-btn").click(function (e) {
     e.preventDefault();
     setTimeout(() => {
         $("#add_supplier").submit();
         $("#quick_add_supplier_form").submit();
+        console.log('submitted');
     }, 500)
 });
 $(document).on("submit", "form#quick_add_supplier_form", function (e) {
@@ -232,17 +196,10 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Success", result.msg, "success");
                 $(".add-supplier").modal("hide");
                 var supplier_id = result.id;
+                console.log(supplier_id)
                 $.ajax({
                     method: "get",
                     url: "/suppliers/get-dropdown",
@@ -254,23 +211,19 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
                     },
                 });
             } else {
-                Swal.fire({
-                    title: "Error",
-                    text: response.status,
-                    icon: "error",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
-                });
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
 });
 //store form
 
-//category form
+// ++++++++++++ category form ++++++++++++
 var select_category = 0;
 var main_category_id = 0;
+// ++++++++++++ .openCategoryModal ++++++++++++
 $(".openCategoryModal").click(function (e) {
+    console.log("+++++++++++++++++++ You Click on + button +++++++++++++++++++")
     select_category = $(this).data('select_category');
     if (select_category == "0") {
         main_category_id = 1;
@@ -284,7 +237,7 @@ $(".openCategoryModal").click(function (e) {
     else if (select_category == "3") {
         main_category_id = 4;
     }
-    console.log(select_category, main_category_id)
+    console.log("select_category = " + select_category, "main_category_id = " + main_category_id)
 
     // if((main_category_id!=='' && select_category!=0) || main_category_id===0){
     $(this).addClass('btn-modal');
@@ -292,15 +245,19 @@ $(".openCategoryModal").click(function (e) {
     //     Swal.fire("warning", LANG.no_parent_category, "warning");
     // }
 });
+// ++++++++++++ #create-category-btn ++++++++++++
 $("#create-category-btn").click(function (e) {
+    console.log('++++++++++++++ After Click "save" on Modal ++++++++++++++++++++');
     e.preventDefault();
     setTimeout(() => {
         $("#create-category-form").submit();
+        console.log('++++++++++++++ After Submit Form ++++++++++++++++++++');
     }, 500)
 });
+// ++++++++++++ #create-category-form ++++++++++++
 $(document).on("submit", "#create-category-form", function (e) {
+    console.log("++++++++++++ On Submit ++++++++++++");
     e.preventDefault();
-    alert('select_category' + select_category)
     var dataArray = $(this).serializeArray();
     var data = {};
     var name = $('.category-name').val();
@@ -321,19 +278,10 @@ $(document).on("submit", "#create-category-form", function (e) {
         },
         success: function (result) {
             if (result.success) {
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Success", result.msg, "success");
                 $("#createCategoryModal").modal("hide");
                 $(".createSubCategoryModal").modal("hide");
                 console.log(main_category_id);
-                alert(main_category_id)
                 var category_id = result.id;
                 $.ajax({
                     method: "get",
@@ -341,7 +289,6 @@ $(document).on("submit", "#create-category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        console.log(key);
                         if (typeof key !== 'undefined' && key !== null) {
                             if (select_category == "0") {
                                 $("#categoryId" + key).empty().append(data_html);
@@ -410,12 +357,6 @@ $(document).ready(function () {
     });
 });
 
-// $("#create-product-tax-btn").click(function (e){
-//     e.preventDefault();
-//     setTimeout(()=>{
-//         $("#add_product_tax").submit();
-//     },500)
-// });
 $(document).on("submit", "#quick_add_product_tax_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -426,15 +367,7 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Success", result.msg, "success");
                 $("#add_product_tax_modal").modal("hide");
                 var product_tax_id = result.id;
                 $.ajax({
@@ -457,7 +390,6 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                 });
             } else {
                 Swal.fire("Error", result.msg, "error");
-
             }
         },
     });
@@ -473,6 +405,7 @@ $(document).ready(function () {
 // ++++++++++++++++++++++++ Customer Type Form +++++++++++++++++++++
 $(document).on("submit", "#quick_add_customer_form", function (e) {
     e.preventDefault();
+    console.log("Quick Add Customer Form");
     var data = $(this).serialize();
     $.ajax({
         method: "post",
@@ -481,15 +414,7 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Success", result.msg, "success");
                 $("#add_customer").modal("hide");
                 var customer_id = result.id;
                 $.ajax({
@@ -505,12 +430,10 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
                 });
             } else {
                 Swal.fire("Error", result.msg, "error");
-
             }
         },
     });
 });
-
 // +++++++++++++++++++++++ customer_cities_Dropdown ++++++++++++++++++++
 $(document).on("submit", "#customer-region-form", function (e) {
     e.preventDefault();
@@ -523,15 +446,7 @@ $(document).on("submit", "#customer-region-form", function (e) {
         success: function (result) {
             console.log("First Ajax Request : ", result);
             if (result.success) {
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Success", result.msg, "success");
                 $("#createRegionModal").modal("hide");
                 var city_id = result.id;
                 var state_id = result.state_id;
@@ -568,15 +483,7 @@ $(document).on("submit", "#customer-quarter-form", function (e) {
         success: function (result) {
             console.log("First Ajax Request : ", result);
             if (result.success) {
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Success", result.msg, "success");
                 $("#createQuarterModal").modal("hide");
                 var quarter_id = result.id;
                 var city_id = result.city_id;
@@ -601,7 +508,6 @@ $(document).on("submit", "#customer-quarter-form", function (e) {
         },
     });
 });
-
 // +++++++++++++++++++++++ customer_quarters_Dropdown ++++++++++++++++++++
 $(document).on("submit", "#customer-type-form2", function (e) {
     e.preventDefault();
@@ -614,15 +520,7 @@ $(document).on("submit", "#customer-type-form2", function (e) {
         success: function (result) {
             console.log("First Ajax Request : ", result);
             if (result.success) {
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'success',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Success", result.msg, "success");
                 $("#createCustomerTypesModal2").modal("hide");
                 var customer_type_id = result.customer_type_id;
                 console.log("Outer Second Ajax Request : ", result);
@@ -645,4 +543,5 @@ $(document).on("submit", "#customer-type-form2", function (e) {
         },
     });
 });
+
 //category form

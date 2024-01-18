@@ -10,7 +10,12 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            {!! Form::open(['route' => 'categories.store', 'method' => 'post', 'files' => true, 'id' => 'category-form']) !!}
+            {!! Form::open([
+                'route' => 'categories.store',
+                'method' => 'post',
+                'files' => true,
+                'id' => 'create-category-form',
+            ]) !!}
             <div class="modal-body">
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -27,7 +32,7 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                         <input type="text" required
-                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @else text-start @endif"
+                            class="form-control category-name initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @else text-start @endif"
                             style="width:
                             100%; margin-right: 0"
                             placeholder="@lang('categories.categorie_name')" name="name" value="{{ old('name') }}">
@@ -43,21 +48,10 @@
                         'translations' => [],
                         'type' => 'category',
                     ])
-                    @error('name')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+
                 </div>
-                {{--                <div class="form-group"> --}}
-                {{--                    <label for="parent_id">@lang('categories.parent')</label> --}}
-                {{--                    {!! Form::select( --}}
-                {{--                        'parent_id', --}}
-                {{--                        $subcategories,null, --}}
-                {{--                        ['class' => 'form-control select2 subcategoriesSelect','placeholder'=>__('lang.please_select'),'wire:model'=>'subcategories'] --}}
-                {{--                    ) !!} --}}
-                {{--                    @error('parent_id') --}}
-                {{--                    <span class="text-danger">{{ $message }}</span> --}}
-                {{--                    @enderror --}}
-                {{--                </div> --}}
+
+
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <label class="col-md-3" for="status">@lang('categories.status')</label>

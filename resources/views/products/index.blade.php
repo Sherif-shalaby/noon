@@ -171,7 +171,7 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                            <div class="col-md-3 col-lg-3" style="position: relative;z-index: 9;">
+                            <div class="col-md-3 " style="position: relative;z-index: 9;">
                                 <div class="multiselect col-md-12">
                                     <div class="selectBox" onclick="showCheckboxes()">
                                         <select class="form-select">

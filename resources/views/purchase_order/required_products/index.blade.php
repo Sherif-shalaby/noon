@@ -10,6 +10,55 @@
         .table-top-head {
             top: 0;
         }
+
+        /* +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++  */
+
+        .selectBox {
+            position: relative;
+        }
+
+        /* selectbox style */
+        .selectBox select {
+            width: 100%;
+            padding: 0 !important;
+            padding-left: 4px;
+            padding-right: 4px;
+            color: #000;
+            border: 1px solid #ccc;
+            background-color: #dedede;
+            /* height: 39px !important; */
+        }
+
+
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #checkboxes {
+            display: none;
+            border: 1px #dadada solid;
+            height: 125px;
+            overflow: auto;
+            padding-top: 10px;
+            /* text-align: end;  */
+        }
+
+        #checkboxes label {
+            display: block;
+            padding: 5px;
+        }
+
+        #checkboxes label:hover {
+            background-color: #ddd;
+        }
+
+        #checkboxes label span {
+            font-weight: normal;
+        }
     </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -51,6 +100,79 @@
                                         @include('purchase_order.required_products.partials.filters')
                                     </div>
                                 </div>
+                                {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
+                                <div class="col-md-4" style="position: relative;z-index: 9;">
+                                    <div class="multiselect col-md-6">
+                                        <div class="selectBox" onclick="showCheckboxes()">
+                                            <select class="form-select">
+                                                <option>@lang('lang.show_hide_columns')</option>
+                                            </select>
+                                            <div class="overSelect"></div>
+                                        </div>
+                                        <div id="checkboxes">
+                                            {{-- +++++++++++++++++ checkbox1 : id +++++++++++++++++ --}}
+                                            <label for="col1_id">
+                                                <input type="checkbox" id="col1_id" name="col1" checked="checked" />
+                                                <span>#</span> &nbsp;
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox2 : Checkboxes +++++++++++++++++ --}}
+                                            <label for="col2_id">
+                                                <input type="checkbox" id="col2_id" name="col2" checked="checked" />
+                                                <span>Checkboxes</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox3 : employee_name +++++++++++++++++ --}}
+                                            <label for="col3_id">
+                                                <input type="checkbox" id="col3_id" name="col3" checked="checked" />
+                                                <span>@lang('lang.employee_name')</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox4 : date +++++++++++++++++ --}}
+                                            <label for="col4_id">
+                                                <input type="checkbox" id="col4_id" name="col4" checked="checked" />
+                                                <span>@lang('lang.date')</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox5 : product_name +++++++++++++++++ --}}
+                                            <label for="col5_id">
+                                                <input type="checkbox" id="col5_id" name="col5" checked="checked" />
+                                                <span>@lang('lang.product_name')</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox6 : store +++++++++++++++++ --}}
+                                            <label for="col6_id">
+                                                <input type="checkbox" id="col6_id" name="col6" checked="checked" />
+                                                <span>@lang('lang.store')</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox7 : status +++++++++++++++++ --}}
+                                            <label for="col7_id">
+                                                <input type="checkbox" id="col7_id" name="col7" checked="checked" />
+                                                <span>@lang('lang.status')</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox8 : supplier_name +++++++++++++++++ --}}
+                                            <label for="col8_id">
+                                                <input type="checkbox" id="col8_id" name="col8" checked="checked" />
+                                                <span>@lang('lang.supplier_name')</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox9 : branch_name +++++++++++++++++ --}}
+                                            <label for="col9_id">
+                                                <input type="checkbox" id="col9_id" name="col9" checked="checked" />
+                                                <span>@lang('lang.branch_name')</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox10 : purchase_price +++++++++++++++++ --}}
+                                            <label for="col10_id">
+                                                <input type="checkbox" id="col10_id" name="col10" checked="checked" />
+                                                <span>@lang('lang.purchase_price')</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox11 : required_quantity +++++++++++++++++ --}}
+                                            <label for="col11_id">
+                                                <input type="checkbox" id="col11_id" name="col11" checked="checked" />
+                                                <span>@lang('lang.required_quantity')</span>
+                                            </label>
+                                            {{-- +++++++++++++++++ checkbox12 : action +++++++++++++++++ --}}
+                                            <label for="col12_id">
+                                                <input type="checkbox" id="col12_id" name="col12" checked="checked" />
+                                                <span>@lang('lang.action')</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-sm-12">
                                     <form class="form-group" id="productForm"
                                         action="{{ route('required-products.store') }}" method="POST"
@@ -69,32 +191,33 @@
                                                         class="table table-striped table-bordered table-hover m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
                                                         <thead>
                                                             <tr>
-                                                                <th>#</th>
+                                                                <th class="col1">#</th>
                                                                 {{-- "select_all" checkbox --}}
-                                                                <th> <input type="checkbox" id="select_all_ids" /> </th>
-                                                                <th>@lang('lang.employee_name')</th>
-                                                                <th>@lang('lang.date')</th>
-                                                                <th>@lang('lang.product_name')</th>
-                                                                <th>@lang('lang.store')</th>
-                                                                <th>@lang('lang.status')</th>
-                                                                <th>@lang('lang.supplier_name')</th>
-                                                                <th>@lang('lang.branch_name')</th>
-                                                                <th>@lang('lang.purchase_price')</th>
-                                                                <th>@lang('lang.required_quantity')</th>
-                                                                <th>@lang('lang.action')</th>
+                                                                <th class="col2"> <input type="checkbox"
+                                                                        id="select_all_ids" /> </th>
+                                                                <th class="col3">@lang('lang.employee_name')</th>
+                                                                <th class="col4">@lang('lang.date')</th>
+                                                                <th class="col5">@lang('lang.product_name')</th>
+                                                                <th class="col6">@lang('lang.store')</th>
+                                                                <th class="col7">@lang('lang.status')</th>
+                                                                <th class="col8">@lang('lang.supplier_name')</th>
+                                                                <th class="col9">@lang('lang.branch_name')</th>
+                                                                <th class="col10">@lang('lang.purchase_price')</th>
+                                                                <th class="col11">@lang('lang.required_quantity')</th>
+                                                                <th class="col12">@lang('lang.action')</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="tbody">
                                                             @foreach ($requiredProducts as $index => $requiredProduct)
                                                                 <tr>
-                                                                    <td>
+                                                                    <td class="col1">
                                                                         <span
                                                                             class=" d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600">
                                                                             {{ $index + 1 }}
                                                                         </span>
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="col2">
                                                                         <span
                                                                             class=" d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600">
@@ -105,7 +228,7 @@
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
-                                                                    <td>
+                                                                    <td class="col3">
                                                                         <span
                                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
@@ -117,7 +240,7 @@
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ order_date +++++++++++++++++ --}}
-                                                                    <td>
+                                                                    <td class="col4">
                                                                         <span
                                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
@@ -129,7 +252,7 @@
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ product_id +++++++++++++++++ --}}
-                                                                    <td>
+                                                                    <td class="col5">
                                                                         <span
                                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
@@ -142,7 +265,7 @@
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ store_id +++++++++++++++++ --}}
-                                                                    <td>
+                                                                    <td class="col6">
                                                                         <span
                                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
@@ -155,7 +278,7 @@
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ status +++++++++++++++++ --}}
-                                                                    <td>
+                                                                    <td class="col7">
                                                                         <span
                                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
@@ -167,7 +290,7 @@
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ supplier_id +++++++++++++++++ --}}
-                                                                    <td>
+                                                                    <td class="col8">
                                                                         <span
                                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
@@ -181,7 +304,7 @@
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ branch_id +++++++++++++++++ --}}
-                                                                    <td>
+                                                                    <td class="col9">
                                                                         <span
                                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
@@ -195,7 +318,7 @@
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ purchase_price , dollar_purchase_price +++++++++++++++++ --}}
-                                                                    <td>
+                                                                    <td class="col10">
                                                                         <span
                                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
@@ -220,7 +343,7 @@
                                                                         </span>
                                                                         </span>
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="col11">
                                                                         <span
                                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
@@ -232,7 +355,7 @@
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ delete button +++++++++++++++++ --}}
-                                                                    <td class="text-center">
+                                                                    <td class="text-center col12">
                                                                         <a href="javascript:void(0)"
                                                                             class="btn btn-xs btn-danger deleteRow">
                                                                             <i class="fa fa-trash"></i>
@@ -241,6 +364,23 @@
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <th class="table_totals">@lang('lang.totals')</th>
+                                                                <td class="sum_footer">
+                                                                    {{ @num_format($purchase_price_sum) }}</td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tfoot>
                                                     </table>
                                                 </div>
                                             </div>
@@ -295,5 +435,29 @@
                 $(this).parent().parent().remove();
             });
         });
+    </script>
+    <script>
+        // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
+        $("input:checkbox:not(:checked)").each(function() {
+            var column = "table ." + $(this).attr("name");
+            $(column).hide();
+        });
+        $("input:checkbox").click(function() {
+            var column = "table ." + $(this).attr("name");
+            $(column).toggle();
+        });
+        // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
+        var expanded = false;
+
+        function showCheckboxes() {
+            var checkboxes = document.getElementById("checkboxes");
+            if (!expanded) {
+                checkboxes.style.display = "block";
+                expanded = true;
+            } else {
+                checkboxes.style.display = "none";
+                expanded = false;
+            }
+        }
     </script>
 @endpush

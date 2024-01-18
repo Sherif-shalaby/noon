@@ -63,14 +63,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div
-                        class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBrandModal">
-                            @lang('lang.add_brand_name')
-                        </button>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>

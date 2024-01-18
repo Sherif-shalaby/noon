@@ -252,6 +252,8 @@
                     <i class="fa fa-eye"></i> {{ __('lang.filter') }}
                 </button>
             </div>
+
+
         </div>
     </form>
 </div>

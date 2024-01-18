@@ -51,7 +51,8 @@ class Create extends Component
         $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter, $alphabetical_order_id, $price_order_id,
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
-        $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0, $representative_id;
+        $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0, $representative_id, $loading_cost,
+        $dollar_loading_cost;
 
 
     protected $rules = [
@@ -366,6 +367,8 @@ class Create extends Component
                 'created_by' => Auth::user()->id,
                 'due_date' => $this->due_date ?? null,
                 'representative_id' => $this->representative_id ?? null,
+                'loading_cost' => $this->loading_cost ?? null,
+                'dollar_loading_cost' => $this->dollar_loading_cost ?? null,
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
@@ -890,6 +893,8 @@ class Create extends Component
     {
         $this->total = 0;
         $this->total_dollar = 0;
+        $this->loading_cost = 0;
+        $this->dollar_loading_cost = 0;
         if (count($this->items) > 0) {
             foreach ($this->items as $item) {
                 // dinar_sub_total
@@ -898,6 +903,15 @@ class Create extends Component
                 $this->total_dollar += $this->num_uf($item['dollar_sub_total']);
                 $this->discount += $this->num_uf($item['discount_price']);
                 $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
+                //  calculate loading cost
+                if (!empty($item['unit_id'])) {
+                    $item_variation = Variation::find($item['unit_id']);
+                    if (System::getProperty('loading_cost_currency') == 2) {
+                        $this->dollar_loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                    } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
+                        $this->loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                    }
+                }
             }
         }
         if ($this->invoice_status == 'monetary') {
@@ -937,6 +951,12 @@ class Create extends Component
         }
         $this->dinar_remaining = round_250($this->num_uf($this->final_total) - $this->num_uf($this->amount));
         $this->dispatchBrowserEvent('componentRefreshed');
+    }
+    public function change_dollar_loading_cost_to_dinar()
+    {
+        $exchange_rate = System::getProperty('dollar_exchange') ?? 1;
+        $this->loading_cost += $this->dollar_loading_cost * $exchange_rate;
+        $this->dollar_loading_cost = 0;
     }
     public function ChangeBillToDinar()
     {

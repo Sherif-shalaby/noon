@@ -83,7 +83,54 @@
                 </button>
 
             </div>
-
+            <div class="col-md-4 d-flex justify-content-center align-items-center"
+                style="position: relative;z-index: 9;">
+                <div class="multiselect col-md-6">
+                    <div class="selectBox" onclick="showCheckboxes()">
+                        <select class="form-select ">
+                            <option>@lang('lang.show_hide_columns')</option>
+                        </select>
+                        <div class="overSelect"></div>
+                    </div>
+                    <div id="checkboxes">
+                        {{-- +++++++++++++++++ checkbox1 : reference_no +++++++++++++++++ --}}
+                        <label for="col1_id">
+                            <input type="checkbox" id="col1_id" name="col1" checked="checked" />
+                            <span>@lang('lang.reference_no')</span> &nbsp;
+                        </label>
+                        {{-- +++++++++++++++++ checkbox2 : date +++++++++++++++++ --}}
+                        <label for="col2_id">
+                            <input type="checkbox" id="col2_id" name="col2" checked="checked" />
+                            <span>@lang('lang.date')</span>
+                        </label>
+                        {{-- +++++++++++++++++ checkbox3 : created_by +++++++++++++++++ --}}
+                        <label for="col3_id">
+                            <input type="checkbox" id="col3_id" name="col3" checked="checked" />
+                            <span>@lang('lang.created_by')</span>
+                        </label>
+                        {{-- +++++++++++++++++ checkbox4 : supplier +++++++++++++++++ --}}
+                        <label for="col4_id">
+                            <input type="checkbox" id="col4_id" name="col4" checked="checked" />
+                            <span>@lang('lang.supplier')</span>
+                        </label>
+                        {{-- +++++++++++++++++ checkbox5 : value +++++++++++++++++ --}}
+                        <label for="col5_id">
+                            <input type="checkbox" id="col5_id" name="col5" checked="checked" />
+                            <span>@lang('lang.value')</span>
+                        </label>
+                        {{-- +++++++++++++++++ checkbox6 : status +++++++++++++++++ --}}
+                        <label for="col6_id">
+                            <input type="checkbox" id="col6_id" name="col6" checked="checked" />
+                            <span>@lang('lang.status')</span>
+                        </label>
+                        {{-- +++++++++++++++++ checkbox7 : action +++++++++++++++++ --}}
+                        <label for="col7_id">
+                            <input type="checkbox" id="col7_id" name="col7" checked="checked" />
+                            <span>@lang('lang.action')</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
 </div>

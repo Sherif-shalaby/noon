@@ -27,6 +27,54 @@
                 margin-top: 115px !important;
             }
         }
+
+        /* +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++  */
+
+        .selectBox {
+            position: relative;
+        }
+
+        /* selectbox style */
+        .selectBox select {
+            width: 100%;
+            padding: 0 !important;
+            padding-left: 4px;
+            padding-right: 4px;
+            color: #000;
+            border: 1px solid #ccc;
+            background-color: #dedede;
+            /* height: 39px !important; */
+        }
+
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #checkboxes {
+            display: none;
+            border: 1px #dadada solid;
+            height: 125px;
+            overflow: auto;
+            padding-top: 10px;
+            /* text-align: end;  */
+        }
+
+        #checkboxes label {
+            display: block;
+            padding: 5px;
+        }
+
+        #checkboxes label:hover {
+            background-color: #ddd;
+        }
+
+        #checkboxes label span {
+            font-weight: normal;
+        }
     </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -80,6 +128,8 @@
                                 @include('purchase_order.partials.filters')
                             </div>
                         </div>
+                        {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
+
                         <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:25px ">
                             <div class="div1"></div>
                         </div>
@@ -91,20 +141,20 @@
                                         class="table dataTable table-hover table-striped table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>@lang('lang.po_ref_no')</th>
-                                                <th>@lang('lang.date')</th>
-                                                <th>@lang('lang.created_by')</th>
-                                                <th>@lang('lang.supplier')</th>
-                                                <th class="sum">@lang('lang.value')</th>
-                                                <th>@lang('lang.status')</th>
-                                                <th class="notexport">@lang('lang.action')</th>
+                                                <th class="col1">@lang('lang.po_ref_no')</th>
+                                                <th class="col2">@lang('lang.date')</th>
+                                                <th class="col3">@lang('lang.created_by')</th>
+                                                <th class="col4">@lang('lang.supplier')</th>
+                                                <th class="sum col5">@lang('lang.value')</th>
+                                                <th class="col6">@lang('lang.status')</th>
+                                                <th class="notexport col7">@lang('lang.action')</th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
                                             @foreach ($purchaseOrders as $purchase_order)
                                                 <tr>
-                                                    <td>
+                                                    <td class="col1">
                                                         <span
                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                             style="font-size: 12px;font-weight: 600"
@@ -112,7 +162,7 @@
                                                             {{ $purchase_order->po_no }}
                                                         </span>
                                                     </td>
-                                                    <td>
+                                                    <td class="col2">
                                                         <span
                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                             style="font-size: 12px;font-weight: 600"
@@ -122,7 +172,7 @@
                                                         {{ @format_date($purchase_order->transaction_date) }}
                                                     </td>
 
-                                                    <td>
+                                                    <td class="col3">
                                                         <span
                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                             style="font-size: 12px;font-weight: 600"
@@ -131,7 +181,7 @@
                                                         </span>
                                                     </td>
 
-                                                    <td>
+                                                    <td class="col4">
                                                         <span
                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                             style="font-size: 12px;font-weight: 600"
@@ -142,7 +192,7 @@
                                                             @endif
                                                         </span>
                                                     </td>
-                                                    <td>
+                                                    <td class="col5">
                                                         <span
                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                             style="font-size: 12px;font-weight: 600"
@@ -150,7 +200,7 @@
                                                             {{ @num_format($purchase_order->final_total) }}
                                                         </span>
                                                     </td>
-                                                    <td>
+                                                    <td class="col6">
                                                         <span
                                                             class="custom-tooltip  d-flex justify-content-center align-items-center"
                                                             style="font-size: 12px;font-weight: 600"
@@ -159,7 +209,7 @@
                                                         </span>
                                                     </td>
                                                     {{-- =========================== Actions =========================== --}}
-                                                    <td>
+                                                    <td class="col7">
                                                         <div class="btn-group">
                                                             <button type="button"
                                                                 class="btn btn-default btn-sm dropdown-toggle  d-flex justify-content-center align-items-center"
@@ -213,6 +263,10 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <th class="table_totals" style="text-align: right">@lang('lang.totals')</th>
+                                                <td>{{ @num_format($final_total_sum) }} </td>
+                                                <td></td>
+                                                <td></td>
                                                 <td></td>
                                             </tr>
                                         </tfoot>
@@ -230,5 +284,28 @@
             </div>
         </div>
     </div>
+    <script>
+        // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
+        $("input:checkbox:not(:checked)").each(function() {
+            var column = "table ." + $(this).attr("name");
+            $(column).hide();
+        });
+        $("input:checkbox").click(function() {
+            var column = "table ." + $(this).attr("name");
+            $(column).toggle();
+        });
+        // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
+        var expanded = false;
 
+        function showCheckboxes() {
+            var checkboxes = document.getElementById("checkboxes");
+            if (!expanded) {
+                checkboxes.style.display = "block";
+                expanded = true;
+            } else {
+                checkboxes.style.display = "none";
+                expanded = false;
+            }
+        }
+    </script>
 @endsection

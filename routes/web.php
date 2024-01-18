@@ -113,6 +113,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('wages/update-other-payment/', [WageController::class,'update_other_payment'])->name('update_other_payment');
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
+    Route::get('toggle-dollar', [SettingController::class, 'toggleDollar'])->name('toggleDollar');
+    
     // Get "مصدر الاموال" depending on "طريقة الدفع"
     Route::get('/wage/get-source-by-type-dropdown/{type}', [WageController::class,'getSourceByTypeDropdown']);
     // +++++++++++ Get "طريقة الحساب " depending on "الموظف" +++++++++++
@@ -414,6 +416,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('cash/save-add-closing-cash', [CashController::class,'saveAddClosingCash'])->name('cash.save-add-closing-cash');
     Route::resource('cash-register', CashRegisterController::class);
     Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class,'getSourceByTypeDropdown']);
+    Route::get('get_currency', [SettingController::class,'get_currency']);
 
 });
 

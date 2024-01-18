@@ -472,7 +472,7 @@
                                         <div
                                             class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             <div class=" px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                                style="min-width: 135px;height: fit-content;" data-key="0">
+                                                style="min-width: 135px;height: fit-content;">
                                                 {!! Form::label('category', __('lang.category') . ' 1', [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 ]) !!}
@@ -489,7 +489,7 @@
                                                         'class' => 'form-control select2 category',
                                                         'style' => 'font-size: 12px !important;font-weight: 500;',
                                                         'placeholder' => __('lang.category'),
-                                                        'id' => 'categoryId0',
+                                                        'id' => 'categoryId',
                                                     ]) !!}
                                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                                         data-container=".view_modal" style="cursor: pointer"
@@ -520,14 +520,13 @@
                                                     {!! Form::select('products[0][subcategory_id1]', $categories2, $product->subcategory_id1 ?? null, [
                                                         'class' => 'form-control select2 subcategory',
                                                         'placeholder' => __('lang.subcategory'),
-                                                        'id' => 'subcategory_id10',
-                                                        'data-key' => 0,
+                                                        'id' => 'subcategory_id1',
                                                     ]) !!}
                                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                                         data-key="0" data-container=".view_modal"
                                                         style="cursor: pointer" data-key="0"
                                                         class="text-white add-button   d-flex justify-content-center align-items-center btn-modal openCategoryModal"
-                                                        data-toggle="modal" data-select_category="1"><i
+                                                        data-toggle="modal" data-select_category="0"><i
                                                             class="fas fa-plus"></i></a>
                                                 </div>
                                                 @error('products.0.category_id')
@@ -552,8 +551,7 @@
                                                     {!! Form::select('products[0][subcategory_id2]', $categories3, $product->subcategory_id2 ?? null, [
                                                         'class' => 'form-control select2 subcategory2',
                                                         'placeholder' => __('lang.subcategory'),
-                                                        'id' => 'subCategoryId20',
-                                                        'data-key' => 0,
+                                                        'id' => 'subCategoryId2',
                                                     ]) !!}
                                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                                         data-key="0" data-container=".view_modal"
@@ -581,11 +579,10 @@
                                                             width: 100%;
                                                             height: 30px;
                                                             flex-wrap: nowrap;">
-                                                    {!! Form::select('products[0][subcategory_id3]', $categories4, $product->subcategory_id3 ?? null, [
+                                                    {!! Form::select('products[0][subcategory_id3]', $categories4, $product->subcategory_id1 ?? null, [
                                                         'class' => 'form-control select2 subcategory3',
                                                         'placeholder' => __('lang.subcategory'),
-                                                        'id' => 'subCategoryId30',
-                                                        'data-key' => 0,
+                                                        'id' => 'subCategoryId3',
                                                     ]) !!}
                                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                                         data-key="0" data-container=".view_modal"
@@ -913,3 +910,4 @@
         @endif
     </script>
 @endpush
+{{--  --}}
