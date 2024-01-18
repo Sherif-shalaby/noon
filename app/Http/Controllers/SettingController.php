@@ -50,23 +50,29 @@ class SettingController extends Controller
             $languages[$key] = $value['full_name'];
         }
         $currencies  = $this->allCurrencies();
-        $selected_currencies=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
+        $selected_currencies = System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
         // Get All Countries
-        $countries = Country::pluck('name','id');
-        $units = Unit::orderBy('created_at','desc')->get();
-        return view('general-settings.index',compact('countries','settings','languages','currencies',
-            'selected_currencies','units'));
+        $countries = Country::pluck('name', 'id');
+        $units = Unit::orderBy('created_at', 'desc')->get();
+        return view('general-settings.index', compact(
+            'countries',
+            'settings',
+            'languages',
+            'currencies',
+            'selected_currencies',
+            'units'
+        ));
     }
     // ++++++++++++++ fetchState(): to get "states" of "selected country" selectbox ++++++++++++++
     public function fetchState(Request $request)
     {
-        $data['states'] = State::where('country_id', $request->country_id)->get(['id','name']);
+        $data['states'] = State::where('country_id', $request->country_id)->get(['id', 'name']);
         return response()->json($data);
     }
     // ++++++++++++++ fetchCity(): to get "cities" of "selected city" selectbox ++++++++++++++
     public function fetchCity(Request $request)
     {
-        $data['cities'] = City::where('state_id', $request->state_id)->get(['id','name']);
+        $data['cities'] = City::where('state_id', $request->state_id)->get(['id', 'name']);
         return response()->json($data);
     }
     /**
@@ -225,11 +231,11 @@ class SettingController extends Controller
             // return isset($request->activate_processing) && $request->activate_processing=="on"?1:0;
             System::updateOrCreate(
                 ['key' => 'activate_processing'],
-                ['value' => isset($request->activate_processing) && $request->activate_processing=="on"?1:0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+                ['value' => isset($request->activate_processing) && $request->activate_processing == "on" ? 1 : 0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             System::updateOrCreate(
                 ['key' => 'update_processing'],
-                ['value' => $request->update_processing=="on" ||isset($request->update_processing)?1:0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+                ['value' => $request->update_processing == "on" || isset($request->update_processing) ? 1 : 0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             System::updateOrCreate(
                 ['key' => 'loading_cost_currency'],
@@ -308,8 +314,8 @@ class SettingController extends Controller
             }
             // Add Loading Cost to Units
 
-            if(!empty($request->units)){
-                foreach ($request->units as $unit){
+            if (!empty($request->units)) {
+                foreach ($request->units as $unit) {
                     $unit_update = Unit::find($unit['unit_id']);
                     $data_cost = [
                         'loading_cost' =>  $this->commonUtil->num_uf($unit['loading_cost']),
@@ -332,8 +338,7 @@ class SettingController extends Controller
             dd($e);
         }
 
-    return redirect()->back()->with('status', $output);
-
+        return redirect()->back()->with('status', $output);
     }
     public function allCurrencies($exclude_array = [])
     {
@@ -382,7 +387,7 @@ class SettingController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $image_content = curl_exec($ch);
         curl_close($ch);
-//    $image_content = file_get_contents($image_path);
+        //    $image_content = file_get_contents($image_path);
         $base64_image = base64_encode($image_content);
         $b64image = "data:image/jpeg;base64," . $base64_image;
         return $b64image;
@@ -411,14 +416,42 @@ class SettingController extends Controller
 
         return $output;
     }
-    public function get_currency(){
+    public function get_currency()
+    {
         $currency = Currency::find(request()->selectedValue);
         $info = $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ') ' . $currency->symbol;
         $data = [
             '' => __('lang.please_select'),
             $currency->id => $info,
-            '2'=>'America - Dollars(USD) $',
+            '2' => 'America - Dollars(USD) $',
         ];
         return $data;
+    }
+    public function toggleDollar()
+    {
+        try {
+            $toggle_dollar = System::getProperty('toggle_dollar');
+            if (isset($toggle_dollar)) {
+                $toggle_dollar = !(int)$toggle_dollar;
+            } else {
+                $toggle_dollar = 1;
+            }
+            System::updateOrCreate(
+                ['key' => 'toggle_dollar'],
+                ['value' => $toggle_dollar, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+        }
+        return $output;
     }
 }
