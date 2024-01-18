@@ -347,7 +347,7 @@ $(document).on("submit", "#create-category-form", function (e) {
         },
     });
 });
-
+//
 $(document).ready(function () {
     $("#create-product-tax-btn").click(function (e) {
         e.preventDefault();

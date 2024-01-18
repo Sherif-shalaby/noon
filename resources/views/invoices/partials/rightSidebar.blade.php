@@ -360,8 +360,16 @@
 
             </div>
 
-            <button class="btn btn-danger position-absolute" style="left: 10px;bottom:10px" wire:click="cancel">
-                @lang('lang.close')</button>
+            <div class="d-flex flex-column  position-absolute" style="left: 10px;bottom:10px">
+                <div class="d-flex mb-2">
+                    <button class="btn btn-sm btn-danger mx-1" wire:click="getPreviousTransaction">
+                        < </button>
+                            <button class="btn btn-sm btn-danger mx-1" disabled wire:click="getNextTransaction">
+                                ></button>
+                </div>
+                <button class="btn btn-danger " wire:click="cancel">
+                    @lang('lang.close')</button>
+            </div>
         </div>
     </div>
 </div>
