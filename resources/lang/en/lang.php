@@ -15,6 +15,7 @@ return [
     'reports'=>'Reports',
     'brands'=>'Brands',
     'restore' => 'restore',
+    'totals' => 'Totals' ,
     'show_recycle_bin' => 'Show Recycle Bin',
     'restored_success' => 'Restored Success',
     'brand_name'=>'Brand Name',

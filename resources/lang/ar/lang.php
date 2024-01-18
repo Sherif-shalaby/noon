@@ -16,6 +16,7 @@ return array(
     'categories'=>'الاقسام',
     'action' => 'خيارات',
     'save' => 'حفظ',
+    'totals' => 'الاجمالي' ,
     'close' => 'الغاء',
     'delete' => 'حذف',
     'forceDelete' => 'حذف نهائي',

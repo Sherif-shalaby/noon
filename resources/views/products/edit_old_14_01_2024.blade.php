@@ -100,10 +100,10 @@
                     </div>
 
                     {{-- +++++++++++++++++++++++ "categories" selectbox +++++++++++++++++++++++ --}}
+                    {{-- ++++++++++++++++ product categories ++++++++++++++++ --}}
                     <div class="col-md-12">
                         <div class="row">
-                            {{-- +++++++++++++++++ category +++++++++++++++++ --}}
-                            <div class="col-md-3">
+                            <div class="col-md-3" data-key="0">
                                 {!! Form::label('category', __('lang.category'). ' 1', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select('products[0][category_id]', $categories1, $product->category_id ?? null, [
@@ -112,16 +112,15 @@
                                         'id' => 'categoryId0',
 
                                     ]) !!}
-                                    <a  data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="0"><i class="fas fa-plus"></i>
+                                    <a   data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
+                                         class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                         data-select_category="0"><i class="fas fa-plus"></i>
                                     </a>
                                 </div>
                                 @error('products.0.category_id')
                                 <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            {{-- +++++++++++++++++ Subcategory1 +++++++++++++++++ --}}
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.category') . ' 2', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
@@ -131,13 +130,13 @@
                                         'id' => 'subcategory_id10','data-key' => 0
                                     ]) !!}
                                     <a data-href="{{route('categories.sub_category_modal')}}"  data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                       data-select_category="0"><i class="fas fa-plus"></i></a>
+                                       data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('products.0.category_id')
                                 <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            {{-- +++++++++++++++++ Subcategory2 +++++++++++++++++ --}}
+
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.category') . ' 3', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
@@ -153,7 +152,7 @@
                                 <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            {{-- +++++++++++++++++ Subcategory3 +++++++++++++++++ --}}
+
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.category') . ' 4', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
@@ -476,8 +475,6 @@
     <script src="{{ asset('css/crop/crop-image.js') }}"></script>
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
     {!! JsValidator::formRequest('App\Http\Requests\UpdateProductRequest','#edit_product_form'); !!}
-
-
     <script>
         // edit Case
         @if (!empty($product->image) && isset($product->image))
@@ -498,4 +495,3 @@
         @endif
     </script>
 @endpush
-

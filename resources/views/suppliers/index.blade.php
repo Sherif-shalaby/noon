@@ -72,7 +72,7 @@
         {
             font-weight: normal;
         }
-</style>
+    </style>
 @endsection
 @section('content')
     <!-- Start Contentbar -->
@@ -90,7 +90,6 @@
                         <div class="table-responsive">
                             {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                             <div class="col-md-3 col-lg-3">
-                                {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                                 <div class="multiselect col-md-12">
                                     <div class="selectBox" onclick="showCheckboxes()">
                                         <select class="form-select form-control form-control-lg">

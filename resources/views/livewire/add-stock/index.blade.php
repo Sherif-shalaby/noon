@@ -5,11 +5,13 @@
             <div class="card-header d-flex align-items-center">
                 <h3 class="print-title">@lang('lang.stock')</h3>
             </div>
+            {{-- ++++++++++++++++++++++++++++++ Filters +++++++++++++++++++++++ --}}
             <div class="row">
                 <div class="col-lg-12">
                     <div class="container-fluid">
                         @include('add-stock.partials.filters')
                     </div>
+
                 </div>
             </div>
             <div class="card-body">
