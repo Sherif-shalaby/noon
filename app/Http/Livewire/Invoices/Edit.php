@@ -1825,4 +1825,22 @@ class Edit extends Component
             dd($e);
         }
     }
+    public function getPreviousTransaction(){
+        $latest_transaction = TransactionSellLine::where('id', '<', $this->transaction_sell_line->id)
+        ->latest()
+        ->first();
+            if(!empty($latest_transaction)){
+            return redirect('/invoices/edit/'.$latest_transaction?->id);
+        }   
+    }
+    public function getNextTransaction(){
+        $latest_transaction = TransactionSellLine::where('id', '>', $this->transaction_sell_line->id)
+        ->latest()
+        ->first();
+        if(!empty($latest_transaction)){
+        return redirect('/invoices/edit/'.$latest_transaction?->id);
+        }else{
+            return redirect('/invoices/create');
+        }
+    }
 }

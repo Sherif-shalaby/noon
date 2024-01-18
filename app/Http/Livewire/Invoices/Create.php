@@ -1941,4 +1941,12 @@ class Create extends Component
             dd($e);
         }
     }
+    public function getPreviousTransaction(){
+        $latest_transaction=TransactionSellLine::latest()->first()?->id;
+        return redirect('/invoices/edit/'.$latest_transaction);
+        
+    }
+    public function getNextTransaction(){
+        
+    }
 }
