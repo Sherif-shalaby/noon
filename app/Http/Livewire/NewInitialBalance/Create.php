@@ -1134,6 +1134,9 @@ class Create extends Component
     {
         $fill = $this->num_uf($this->rows[$index]['fill']);
         $purchase_price = $this->num_uf($this->rows[$index - 1]['purchase_price']);
+        if ($fill < 1) {
+            $fill = 1;
+        }
         $this->rows[$index]['purchase_price'] = number_format($purchase_price / $fill, 3);
         foreach ($this->rows[$index]['prices'] as $key => $price) {
             $this->rows[$index]['prices'][$key]['percent'] = $this->rows[$index - 1]['prices'][$key]['percent'];
