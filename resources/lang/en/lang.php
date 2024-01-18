@@ -739,7 +739,10 @@ return [
     'purchase' => 'Purchase',
     'customer_phone' => 'Customer Phone',
     'welcome' => 'Welcome',
-    'customer_invoices' => 'Customer Invoices'
+    'customer_invoices' => 'Customer Invoices',
+    'add_loading_cost' => 'Add Loading Cost',
+    'loading_cost' => 'Loading Cost',
+    'loading_cost_currency' => 'Loading Cost Currency',
 ];
 
 

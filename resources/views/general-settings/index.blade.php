@@ -61,7 +61,7 @@
                     <div class="col-md-3">
                         {!! Form::label('currency', __('lang.currency'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency']: null, [
-                            'class' => 'form-control select2','placholder'=>__('lang.please_select')
+                            'class' => 'form-control select2 currency', 'placeholder' => __('lang.please_select')
                         ]) !!}
                     </div>
                     <div class="col-md-3">
@@ -127,6 +127,19 @@
                             ['class' => 'form-control'],
                         ) !!}
                     </div>
+                    @php
+                        $currency = \App\Models\Currency::find($settings['currency']);
+                        $info = $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ') ' . $currency->symbol;
+                    @endphp
+                    <div class="col-md-3">
+                        {!! Form::label('loading_cost_currency', __('lang.loading_cost_currency'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select(
+                            'loading_cost_currency',
+                            ['2'=>'America - Dollars(USD) $', $currency->id => $info],
+                            !empty($settings['loading_cost_currency']) ? $settings['loading_cost_currency'] : null,
+                            ['class' => 'form-control select2 loading_cost_currency', 'placeholder' => __('lang.please_select')]
+                        ) !!}
+                    </div>
                     <div class="col-md-3 pt-5">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" {{isset($settings['activate_processing']) && isset($settings['activate_processing'])=="1" ? 'checked' :''}} id="activate_processing" name="activate_processing">
@@ -138,6 +151,10 @@
                             <input type="checkbox" class="custom-control-input" id="update_processing" name="update_processing" {{isset($settings['update_processing']) && isset($settings['update_processing'])==1 ? 'checked' :''}}>
                             <label class="custom-control-label"  for="update_processing" >{{__('lang.update_processing')}}</label>
                         </div>
+                    </div>
+
+                    <div class="col-md-6 pt-5">
+                        @include('general-settings.partials.add_loading_cost')
                     </div>
                     <br>
                     <hr>
@@ -395,5 +412,43 @@
                 });
             }
         @endif
+
+        $(document).ready(function() {
+            $('#currency').on('change', function(e) {
+                // Get the selected value from the first dropdown
+                var selectedValue = $(this).val();
+                console.log(selectedValue);
+
+                // Perform an AJAX request to fetch updated options for the second dropdown based on the selected value
+                // Update the 'url' and 'data' parameters with your actual route and data structure
+                $.ajax({
+                    url: '/get_currency', // Replace with your actual API endpoint
+                    method: 'GET',
+                    data: { selectedValue: selectedValue },
+                    success: function(data) {
+                        // Update options for the second dropdown
+                        $('#loading_cost_currency').empty();
+                        $.each(data, function(key, value) {
+                            if(key == ''){
+                                $('#loading_cost_currency').append($('<option selected>', {
+                                    value: key,
+                                    text: LANG.please_select
+                                }));
+                            }
+                            else{
+                                $('#loading_cost_currency').append($('<option>', {
+                                    value: key,
+                                    text: value
+                                }));
+                            }
+
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            });
+        });
     </script>
 @endpush

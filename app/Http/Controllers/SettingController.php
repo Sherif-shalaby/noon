@@ -7,7 +7,9 @@ use App\Models\Country;
 use App\Models\Currency;
 use App\Models\State;
 use App\Models\System;
+use App\Models\Unit;
 use App\Models\User;
+use App\Utils\Util;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -21,6 +23,19 @@ use Illuminate\Support\Facades\Log;
 
 class SettingController extends Controller
 {
+
+    protected $commonUtil;
+
+    /**
+     * Constructor
+     *
+     * @param ProductUtils $product
+     * @return void
+     */
+    public function __construct(Util $commonUtil)
+    {
+        $this->commonUtil = $commonUtil;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -38,8 +53,9 @@ class SettingController extends Controller
         $selected_currencies=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
         // Get All Countries
         $countries = Country::pluck('name','id');
-        // return $countries;
-        return view('general-settings.index',compact('countries','settings','languages','currencies','selected_currencies'));
+        $units = Unit::orderBy('created_at','desc')->get();
+        return view('general-settings.index',compact('countries','settings','languages','currencies',
+            'selected_currencies','units'));
     }
     // ++++++++++++++ fetchState(): to get "states" of "selected country" selectbox ++++++++++++++
     public function fetchState(Request $request)
@@ -156,8 +172,9 @@ class SettingController extends Controller
     }
     public function updateGeneralSetting(Request $request)
     {
-        // return $request;
         try {
+            DB::beginTransaction();
+
             System::updateOrCreate(
                 ['key' => 'site_title'],
                 ['value' => $request->site_title, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
@@ -213,6 +230,10 @@ class SettingController extends Controller
                 ['key' => 'update_processing'],
                 ['value' => $request->update_processing=="on"?1:0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
+            System::updateOrCreate(
+                ['key' => 'loading_cost_currency'],
+                ['value' => $request->loading_cost_currency, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
             if (!empty($request->currency)) {
                 $currency = Currency::find($request->currency);
                 $currency_data = [
@@ -243,7 +264,6 @@ class SettingController extends Controller
                 ['key' => 'country_id'],
                 ['value' => $request->country_id, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
-//            dd()
 
             $data['letter_header'] = null;
             if ($request->has('letter_header') && !is_null('letter_header')) {
@@ -285,7 +305,19 @@ class SettingController extends Controller
                     }
                 }
             }
+            // Add Loading Cost to Units
+
+            if(!empty($request->units)){
+                foreach ($request->units as $unit){
+                    $unit_update = Unit::find($unit['unit_id']);
+                    $data_cost = [
+                        'loading_cost' =>  $this->commonUtil->num_uf($unit['loading_cost']),
+                    ];
+                    $unit_update->update($data_cost);
+                }
+            }
             Artisan::call("optimize:clear");
+            DB::commit();
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
@@ -296,6 +328,7 @@ class SettingController extends Controller
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
+            dd($e);
         }
 
     return redirect()->back()->with('status', $output);
@@ -376,5 +409,15 @@ class SettingController extends Controller
         }
 
         return $output;
+    }
+    public function get_currency(){
+        $currency = Currency::find(request()->selectedValue);
+        $info = $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ') ' . $currency->symbol;
+        $data = [
+            '' => __('lang.please_select'),
+            $currency->id => $info,
+            '2'=>'America - Dollars(USD) $',
+        ];
+        return $data;
     }
 }

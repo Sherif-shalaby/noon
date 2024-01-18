@@ -820,5 +820,8 @@ return array(
     'customer_phone' => 'رقم العميل',
     'welcome' => 'أهلا',
     'customer_invoices' => 'فواتير العميل',
+    'add_loading_cost' => 'اضافه تكلفه تحميل',
+    'loading_cost' => 'تكلفة التحميل',
+    'loading_cost_currency' => 'عملة تكاليف التحميل',
  );
 
