@@ -690,8 +690,14 @@
     </div>
     @include('invoices.partials.draft_transaction')
 
-    {!! Form::close() !!}
+    <div>
 
+        <button class="btn btn-sm btn-danger mx-1" wire:click="getPreviousTransaction">
+            < </button>
+                <button class="btn btn-sm btn-danger mx-1" disabled wire:click="getNextTransaction">
+                    ></button>
+    </div>
+    {!! Form::close() !!}
 </section>
 @include('customers.quick_add', ['quick_add' => 1])
 

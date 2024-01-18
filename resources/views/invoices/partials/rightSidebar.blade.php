@@ -360,40 +360,35 @@
 
             </div>
 
-            <div class="d-flex flex-column  position-absolute" style="left: 10px;bottom:10px">
-                <div class="d-flex mb-2">
-                    <button class="btn btn-sm btn-danger mx-1" wire:click="getPreviousTransaction">
-                        < </button>
-                            <button class="btn btn-sm btn-danger mx-1" disabled wire:click="getNextTransaction">
-                                ></button>
-                </div>
-                <button class="btn btn-danger " wire:click="cancel">
+            <div class="d-flex flex-column">
+
+                <button class="btn btn-danger position-absolute" style="left: 10px;bottom:10px" wire:click="cancel">
                     @lang('lang.close')</button>
+
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    //Function to open the due date modal
-    function openDueDateModal() {
-        $('#dueDateModal').css('display', 'block');
-    }
+    <script>
+        //Function to open the due date modal
+        function openDueDateModal() {
+            $('#dueDateModal').css('display', 'block');
+        }
 
-    // Wait for the document to be ready
-    // $(document).ready(function() {
-    // Handle the "Submit" button click event
-    $('#dueDateModal').on('click', '#submitDueDateBtn', function() {
-        // Get the selected due date from the input
+        // Wait for the document to be ready
+        // $(document).ready(function() {
+        // Handle the "Submit" button click event
+        $('#dueDateModal').on('click', '#submitDueDateBtn', function() {
+            // Get the selected due date from the input
 
-        // Close the modal after handling the due date
-        $('#dueDateModal').css('display', 'none');
-    });
-    // Handle the "Close" button click event
-    $('#dueDateModal').on('click', '#closeDueDateBtn', function() {
-        // Close the modal without performing any action
-        $('#dueDateModal').css('display', 'none');
-    });
+            // Close the modal after handling the due date
+            $('#dueDateModal').css('display', 'none');
+        });
+        // Handle the "Close" button click event
+        $('#dueDateModal').on('click', '#closeDueDateBtn', function() {
+            // Close the modal without performing any action
+            $('#dueDateModal').css('display', 'none');
+        });
 
-    // });
-</script>
+        // });
+    </script>

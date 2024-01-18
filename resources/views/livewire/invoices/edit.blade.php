@@ -623,6 +623,13 @@
     </div>
 
     @include('invoices.partials.draft_transaction')
+    <div>
+
+        <button class="btn btn-sm btn-danger mx-1" wire:click="getPreviousTransaction">
+            < </button>
+                <button class="btn btn-sm btn-danger mx-1" disabled wire:click="getNextTransaction">
+                    ></button>
+    </div>
     {!! Form::close() !!}
     {{-- <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button> --}}
 </section>
