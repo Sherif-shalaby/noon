@@ -540,26 +540,23 @@
 
                                      </div> --}}
                         <div class="d-flex">
+                            <div class="col-md-4 text-center mt-1 ">
 
-                            <div class="col-md-6 text-center mt-1 ">
-                                {{-- <h4>@lang('lang.items_count'):
-            <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
-            <br> --}}
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                     @foreach ($variationSums as $unit_name => $variant)
                                         {{ $unit_name }}:
                                         <span class="items_quantity_span" style="margin-right: 15px;">
-                                            {{ $variant }} </span><br>
+                                            {{ __('lang.total') }} : {{ $variant }} </span><br>
                                     @endforeach
                                 @endif
                                 <span class="items_quantity_span" style="margin-right: 15px;">
                                     {{ $this->getStore() }}</span>
-                                {{--                                @lang('lang.items_quantity'): <span class="items_quantity_span" --}}
-                                {{--                                    style="margin-right: 15px;">{{ $totalQuantity }}</span> --}}
+
                                 </h4>
                             </div>
-                            <div class="col-md-6 text-center mt-1">
+
+                            <div class="col-md-4 text-center mt-1">
                                 {{ $this->count_total_by_variation_stores() }}
                                 @if (!empty($variationStoreSums))
                                     @foreach ($variationStoreSums as $unitName => $variant_qty)
@@ -568,11 +565,23 @@
                                     @endforeach
                                 @endif
                             </div>
-                            {{-- sizes --}}
+
+                            <div class="col-md-4 text-center mt-1">
+                                @foreach ($fill_stores as $i => $store)
+                                    {{ $this->count_fill_stores_unit($i) }}
+                                    @if (!empty($variationFillStoreSums))
+                                        @foreach ($variationFillStoreSums as $unit_name => $variant)
+                                            <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                                {{ $unit_name }}: {{ $variant }} </h2><br>
+                                        @endforeach
+                                    @endif
+                                    <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                        {{ $this->getExtraFillStore($i) }}</h2>
+                                @endforeach
+                            </div>
                         </div>
 
-
-
+                        {{-- sizes --}}
                         <div class="accordion animate__animated  animate__bounceInLeft mb-2"
                             style="animation-delay: 1.2s;">
                             <div class="accordion-item d-flex flex-column"
@@ -700,19 +709,11 @@
                             </div>
                         </div>
 
-                        <div class="row {{ $show_store == 0 ? 'd-none' : '' }}">
-                            <div class="col-md-6 text-center">
-                                {{ $this->count_fill_stores_unit($i) }}
-                                @if (!empty($variationFillStoreSums))
-                                    @foreach ($variationFillStoreSums as $unit_name => $variant)
-                                        <h5 class="items_quantity_span" style="margin-right: 15px;">
-                                            {{ $unit_name }}: {{ $variant }} </h5><br>
-                                    @endforeach
-                                @endif
-                                <h5 class="items_quantity_span" style="margin-right: 15px;">
-                                    {{ $this->getExtraFillStore($i) }}</h5>
+                        {{-- <div class="row {{ $show_store == 0 ? 'd-none' : '' }}">
+                            <div class="col-md-3 text-center">
+
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="accordion animate__animated  animate__bounceInLeft mb-2 "
                             style="animation-delay: 1.2s;">
