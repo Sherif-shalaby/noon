@@ -546,21 +546,9 @@
                                     @endforeach
 
                                      </div> --}}
-                        <div class="d-flex">
-                            <div class="col-md-4 text-center">
-                                @foreach ($fill_stores as $i => $store)
-                                    @if (!empty($this->count_fill_stores_unit($i)))
-                                        @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
-                                            <h2 class="items_quantity_span" style="margin-right: 15px;">
-                                                {{ $unit_name }}: {{ $variant }} </h2>
-                                        @endforeach
-                                    @endif
-                                    <h2 class="items_quantity_span" style="margin-right: 15px;">
-                                        {{ $this->getExtraFillStore($i) }}</h2>
-                                @endforeach
-                            </div>
+                        <div class="d-flex justify-content-end my-2">
 
-                            <div class="col-md-4 text-center">
+                            <div class="text-center mx-1">
                                 {{ $this->count_total_by_variation_stores() }}
                                 @if (!empty($variationStoreSums))
                                     @foreach ($variationStoreSums as $unitName => $variant_qty)
@@ -569,15 +557,34 @@
                                     @endforeach
                                 @endif
                             </div>
+                            <div class="d-flex mx-1">
 
-                            <div class="col-md-4 text-center ">
+                                @foreach ($fill_stores as $i => $store)
+                                    <div class="mx-1">
+
+                                        @if (!empty($this->count_fill_stores_unit($i)))
+                                            @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
+                                                <div class="text-center">
+                                                    <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                                        {{ $unit_name }}: {{ $variant }} </h2>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                        <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                            {{ $this->getExtraFillStore($i) }}</h2>
+                                    </div>
+                                @endforeach
+                            </div>
+
+
+
+                            <div class=" text-center mx-1">
 
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                     @foreach ($variationSums as $unit_name => $variant)
-                                        {{ $unit_name }}:
                                         <h2 class="items_quantity_span" style="margin-right: 15px;">
-                                            {{ $variant }} </h2>
+                                            {{ $unit_name }}: {{ $variant }} </h2>
                                     @endforeach
                                 @endif
                                 <h2 class="items_quantity_span" style="margin-right: 15px;">

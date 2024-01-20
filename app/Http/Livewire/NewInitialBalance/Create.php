@@ -1385,9 +1385,9 @@ class Create extends Component
     {
         if ($this->transaction_currency == 2) {
             $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->rows[$index]['prices'][$key]['dinar_sell_price'], 3);
-            $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) / $this->num_uf($this->exchange_rate), 3);
+            $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) * $this->num_uf($this->exchange_rate), 3);
         } else {
-            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) * $this->num_uf($this->exchange_rate), 3);
+            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) / $this->num_uf($this->exchange_rate), 3);
         }
         $this->changeUnitPrices($index);
     }
