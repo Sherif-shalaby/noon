@@ -148,6 +148,7 @@ class ProductController extends Controller
         try
         {
                 DB::beginTransaction();
+                $productIds=[];
                 foreach ($request->products as $re_product) {
                     if ($re_product['name'] != null) {
                         $product_data = [
@@ -168,6 +169,7 @@ class ProductController extends Controller
                             'balance_return_request' => !empty($re_product['balance_return_request']) ? $re_product['balance_return_request'] : null,
                         ];
                         $product = Product::create($product_data);
+                        $productIds[]=$product->id;
                         // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
                         if (!empty($re_product['product_tax_id'])) {
                             ProductTax::create([
@@ -250,6 +252,9 @@ class ProductController extends Controller
         // Send notification to All users Except "auth()->user()"
         foreach ($users as $user) {
             Notification::send($user, new AddProductNotification($product->id, $userCreateEmp, $product_name, $type));
+        }
+        if($request->add_stock_val=="1"){
+        return redirect()->to('/add-stock/create?product_ids='.implode(',', $productIds));
         }
         return redirect()->back()->with('status', $output);
     }

@@ -78,7 +78,7 @@ class Create extends Component
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [],$expenses = [], $customer_types,$total_amount_dollar,$dollar_remaining,$dinar_remaining,$units ,
-        $toggle_customers_dropdown , $customer_id ,$total_expenses=0,$market_exchange_rate=1,$dinar_expenses=0,$dollar_expenses=0;
+        $toggle_customers_dropdown , $customer_id ,$total_expenses=0,$market_exchange_rate=1,$dinar_expenses=0,$dollar_expenses=0,$productIds;
       public $supplier_data=[
           'dollar_debit'=>'',
           'dinar_debit'=>'',
@@ -141,6 +141,14 @@ class Create extends Component
         $this->department_id3 = null;
         $this->department_id4 = null;
         $this->source_id=Employee::where('user_id',Auth::user()->id)->first()->id;
+
+        $this->productIds = explode(',', request('product_ids', []));
+        if(!empty($this->productIds)){
+            for($i=0;$i<count($this->productIds);$i++){
+                $this->add_product($this->productIds[$i]);
+            }
+        }
+
     }
     public function changesupplier(){
         if($this->supplier!=null){
