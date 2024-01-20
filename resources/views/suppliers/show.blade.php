@@ -85,7 +85,13 @@
                         {{-- ++++++++++++ tab 3 : statement_of_account +++++++++++ --}}
                         <li class="nav-item">
                             <a class="nav-link @if (request()->show == 'statement_of_account') active @endif" href="#statement-of-account"
-                                role="tab" data-toggle="tab">@lang('lang.statement_of_account')</a>
+                                role="tab" data-toggle="tab">@lang('lang.statement_of_account') @lang('lang.purchase')</a>
+                        </li>
+                        {{-- ++++++++++++ tab 4 : statement_of_account +++++++++++ --}}
+                        <li class="nav-item">
+                            <a class="nav-link @if (request()->show == 'statement_of_sell_account') active @endif"
+                                href="#statement-of-sell-account" role="tab" data-toggle="tab">@lang('lang.statement_of_account')
+                                @lang('lang.sell')</a>
                         </li>
                     </ul>
 
@@ -462,11 +468,165 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th></th>
+                                                    <td></td>
                                                     <th style="text-align: right">@lang('lang.total')</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- ++++++++++++ Tab 4 Content : statement_of_account :  البيع كشف حساب +++++++++++ --}}
+                        <div role="tabpanel" class="tab-pane fade @if (request()->show == 'statement_of_sell_account') show active @endif"
+                            id="statement-of-sell-account">
+                            <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif"
+                                style="margin-top:40px ">
+                                <div class="div1"></div>
+                            </div>
+                            <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div2 table-scroll-wrapper">
+                                    <!-- content goes here -->
+                                    <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>@lang('lang.date')</th>
+                                                    <th>@lang('lang.reference_no')</th>
+                                                    <th class="sum">@lang('lang.grand_total')</th>
+                                                    <th class="sum">@lang('lang.paid')</th>
+                                                    <th class="sum">@lang('lang.due')</th>
+                                                    <th class="sum dollar-cell">@lang('lang.grand_total') $</th>
+                                                    <th class="sum dollar-cell">@lang('lang.paid') $</th>
+                                                    <th class="sum dollar-cell">@lang('lang.due') $</th>
+                                                    <th>@lang('lang.status')</th>
+                                                    <th>@lang('lang.due_date')</th>
+                                                    {{-- <th>@lang('lang.action')</th> --}}
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @php
+                                                    $total_sell_payments = 0;
+                                                    $total_sell_due = 0;
+                                                @endphp
+                                                @foreach ($sell_lines as $line)
+                                                    <tr>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.date')">
+                                                                {{ @format_date($line->transaction_date) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.reference_no')">
+                                                                {{ $line->invoice_no }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.grand_total')">
+                                                                @if ($line->type == 'sell_return')
+                                                                    {{ @num_format(-$line->final_total) }}@else{{ @num_format($line->final_total) }}
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.paid')">
+                                                                @if ($line->type == 'sell_return')
+                                                                    {{ @num_format(-$line->transaction_payments->sum('amount')) }}
+                                                                    @else{{ @num_format($line->transaction_payments->sum('amount')) }}
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.due')">
+                                                                {{ @num_format($line->final_total - $line->transaction_payments->sum('amount')) }}
+                                                            </span>
+                                                        </td>
+
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.grand_total')">
+                                                                @if ($line->type == 'sell_return')
+                                                                    {{ @num_format(-$line->dollar_final_total) }}@else{{ @num_format($line->dollar_final_total) }}
+                                                                @endif
+                                                            </span>
+                                                        </td>
+
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.paid')">
+                                                                @if ($line->type == 'sell_return')
+                                                                    {{ @num_format(-$line->transaction_payments->sum('dollar_amount')) }}
+                                                                    @else{{ @num_format($line->transaction_payments->sum('dollar_amount')) }}
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.due')">
+                                                                {{ @num_format($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount')) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.status')">
+                                                                {{ ucfirst($line->status) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.due_date')">
+                                                                @if ($line->payment_status != 'paid')
+                                                                    @if (!empty($line->due_date))
+                                                                        {{-- {{ @format_date($line->due_date) }} --}}
+                                                                        {{ $line->due_date }}
+                                                                    @endif
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    @php
+                                                        $total_sell_payments += $line->transaction_payments->sum('amount');
+                                                        $total_sell_due += $line->final_total - $line->transaction_payments->sum('amount');
+                                                    @endphp
+                                                @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td></td>
+                                                    <th style="text-align: right">@lang('lang.total')</th>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
                                             </tfoot>
                                         </table>

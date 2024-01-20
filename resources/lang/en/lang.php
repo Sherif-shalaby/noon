@@ -778,4 +778,5 @@ return [
     'add_loading_cost' => 'Add Loading Cost',
     'loading_cost' => 'Loading Cost',
     'loading_cost_currency' => 'Loading Cost Currency',
+    'sell' => 'Sell',
 ];

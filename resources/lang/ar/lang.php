@@ -848,4 +848,5 @@ return array(
     'add_loading_cost' => 'اضافه تكلفه تحميل',
     'loading_cost' => 'تكلفة التحميل',
     'loading_cost_currency' => 'عملة تكاليف التحميل',
+    'sell' => 'البيع',
 );
