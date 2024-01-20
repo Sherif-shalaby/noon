@@ -170,7 +170,7 @@
 
                         <input type="text" class="form-control initial-balance-input dinar_sell_price"
                             style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
-                            wire:change="changeUnitPrices({{ $index }})"
+                            wire:change="changeSellPrice({{ $index }},{{ $key }})"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                             placeholder = "{{ __('lang.price') }}">
                         <span class="dollar-cell"

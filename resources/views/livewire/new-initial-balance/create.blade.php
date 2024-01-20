@@ -33,7 +33,10 @@
                         <div div class="col-md-3 animate__animated animate__bounceInLeft" style="animation-delay: 1.1s">
 
                             <label class="mb-0">
-                                {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown']) !!}
+                                {!! Form::checkbox('toggle_customers_dropdown', 1, false, [
+                                    'wire:model' => 'toggle_customers_dropdown',
+                                    'wire:change' => 'toggle_suppliers_dropdown',
+                                ]) !!}
                                 @lang('lang.toggle_customers_dropdown')
                             </label>
 
@@ -70,7 +73,9 @@
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                     ]) !!}
                                     {!! Form::text('name', $item[0]['name'], [
-                                        'class' => 'form-control  required initial-balance-input',
+                                        'class' => app()->isLocale('ar')
+                                            ? 'd-block text-end  mx-2 mb-0 form-control  required initial-balance-input'
+                                            : 'mx-2 mb-0 form-control  required initial-balance-input',
                                         'style' => 'width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;',
                                         'wire:model' => 'item.0.name',
                                         'placeholder' => __('lang.product_name'),
@@ -80,14 +85,14 @@
                                         <label class="text-danger validation-error error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
-
-                                <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
-                                    style="animation-delay: 1.2s;width: 200px">
-                                    {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    ]) !!}
-                                    <div class="d-flex justify-content-center align-items-center"
-                                        style="background-color: #dedede;
+                                @if (empty($toggle_customers_dropdown))
+                                    <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
+                                        style="animation-delay: 1.2s;width: 200px">
+                                        {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        ]) !!}
+                                        <div class="d-flex justify-content-center align-items-center"
+                                            style="background-color: #dedede;
                                             border: none;
                                         border-radius: 16px;
                                         color: #373737;
@@ -95,23 +100,25 @@
                                         width: 100%;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                                        {!! Form::select('supplier_id', $suppliers, $item[0]['supplier_id'], [
-                                            'id' => 'supplier_id',
-                                            'class' => ' form-control select2 supplier_id',
-                                            'data-name' => 'supplier_id',
-                                            'required',
-                                            'placeholder' => __('lang.supplier'),
-                                            'wire:model' => 'item.0.supplier_id',
-                                        ]) !!}
-                                        <button type="button"
-                                            class="add-button d-flex justify-content-center align-items-center"
-                                            data-toggle="modal" data-target=".add-supplier"
-                                            href="{{ route('suppliers.create') }}"><i class="fas fa-plus"></i></button>
+                                            {!! Form::select('supplier_id', $suppliers, $item[0]['supplier_id'], [
+                                                'id' => 'supplier_id',
+                                                'class' => ' form-control select2 supplier_id',
+                                                'data-name' => 'supplier_id',
+                                                'required',
+                                                'placeholder' => __('lang.supplier'),
+                                                'wire:model' => 'item.0.supplier_id',
+                                            ]) !!}
+                                            <button type="button"
+                                                class="add-button d-flex justify-content-center align-items-center"
+                                                data-toggle="modal" data-target=".add-supplier"
+                                                href="{{ route('suppliers.create') }}"><i
+                                                    class="fas fa-plus"></i></button>
+                                        </div>
+                                        @error('item.0.supplier_id ')
+                                            <span class="error validation-error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    @error('item.0.supplier_id ')
-                                        <span class="error validation-error text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                @endif
                                 @include('suppliers.quick_add', ['quick_add' => 1])
 
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
@@ -540,12 +547,12 @@
 
                                      </div> --}}
                         <div class="d-flex">
-                            <div class="col-md-4 text-center mt-1">
+                            <div class="col-md-4 text-center">
                                 @foreach ($fill_stores as $i => $store)
                                     @if (!empty($this->count_fill_stores_unit($i)))
                                         @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
                                             <h2 class="items_quantity_span" style="margin-right: 15px;">
-                                                {{ $unit_name }}: {{ $variant }} </h2><br>
+                                                {{ $unit_name }}: {{ $variant }} </h2>
                                         @endforeach
                                     @endif
                                     <h2 class="items_quantity_span" style="margin-right: 15px;">
@@ -553,30 +560,28 @@
                                 @endforeach
                             </div>
 
-
-                            <div class="col-md-4 text-center mt-1">
+                            <div class="col-md-4 text-center">
                                 {{ $this->count_total_by_variation_stores() }}
                                 @if (!empty($variationStoreSums))
                                     @foreach ($variationStoreSums as $unitName => $variant_qty)
                                         <h2 class="items_quantity_span" style="margin-right: 15px;">
                                             {{ $unitName }} : {{ __('lang.total') }} : {{ $variant_qty }} </h2>
-                                        <br>
                                     @endforeach
                                 @endif
                             </div>
 
-                            <div class="col-md-4 text-center mt-1 ">
+                            <div class="col-md-4 text-center ">
 
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                     @foreach ($variationSums as $unit_name => $variant)
                                         {{ $unit_name }}:
-                                        <span class="items_quantity_span" style="margin-right: 15px;">
-                                            {{ $variant }} </span><br>
+                                        <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                            {{ $variant }} </h2>
                                     @endforeach
                                 @endif
-                                <span class="items_quantity_span" style="margin-right: 15px;">
-                                    {{ $this->getStore() }}</span>
+                                <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                    {{ $this->getStore() }}</h2>
 
                                 </h4>
                             </div>
@@ -607,9 +612,7 @@
                                         <div
                                             class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-
-
-                                            <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
+                                            <div class=" mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
                                                 style="width: 160px">
                                                 <label for="extra_store_id"
                                                     class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
@@ -643,7 +646,7 @@
                                                 @foreach ($fill_stores[$i]['data'] as $x => $fill)
                                                     <div
                                                         class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                                        <div class=" mb-2 d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                                             style="width: 100px">
                                                             <label for="store_fill_id"
                                                                 class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
@@ -667,7 +670,7 @@
                                                                 ]) !!}
                                                             </div>
                                                         </div>
-                                                        <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                                        <div class="mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                                             style="width: 75px">
                                                             {!! Form::label('quantity', __('lang.quantity'), [
                                                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -685,7 +688,7 @@
 
                                                         </div>
                                                         <div
-                                                            class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mt-1 animate__animated animate__bounceInLeft d-flex px-1">
+                                                            class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mt-1  d-flex px-1">
                                                             <button type="button" class="plus-button mx-1 py-2"
                                                                 wire:click="addStoreDataRow({{ $i }})">
                                                                 <i class="fa fa-plus"></i>

@@ -35,7 +35,10 @@
                         <div class="col-md-2 d-flex align-items-center animate__animated animate__bounceInLeft"
                             style="animation-delay: 1.1s">
                             <label style="font-size: 0.75rem" class="mb-0 mx-1">
-                                {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown']) !!}
+                                {!! Form::checkbox('toggle_customers_dropdown', 1, false, [
+                                    'wire:model' => 'toggle_customers_dropdown',
+                                    'wire:change' => 'toggle_suppliers_dropdown',
+                                ]) !!}
                                 @lang('lang.toggle_customers_dropdown')
                             </label>
                         </div>
@@ -94,38 +97,38 @@
                                             class="error validation-error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-                                <div
-                                    class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-                                    {!! Form::label('supplier_id', __('lang.supplier') . '*', [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
-                                    ]) !!}
-                                    <div class="input-wrapper" style="width: 100%">
-                                        {!! Form::select('supplier_id', $suppliers, $supplier, [
-                                            'class' => 'form-control select2',
-                                            'data-live-search' => 'true',
-                                            'id' => 'supplier_id',
-                                            'placeholder' => __('lang.please_select'),
-                                            'data-name' => 'supplier',
-                                            'wire:model' => 'supplier',
-                                        
-                                            'wire:change' => 'changeExchangeRate()',
+                                @if (empty($toggle_customers_dropdown))
+                                    <div
+                                        class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                        {!! Form::label('supplier_id', __('lang.supplier') . '*', [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
+                                            'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
+                                        <div class="input-wrapper" style="width: 100%">
+                                            {!! Form::select('supplier_id', $suppliers, $supplier, [
+                                                'class' => 'form-control select2',
+                                                'data-live-search' => 'true',
+                                                'id' => 'supplier_id',
+                                                'placeholder' => __('lang.please_select'),
+                                                'data-name' => 'supplier',
+                                                'wire:model' => 'supplier',
+                                            
+                                                'wire:change' => 'changeExchangeRate()',
+                                            ]) !!}
 
 
-                                        <button type="button"
-                                            class="add-button d-flex justify-content-center align-items-center"
-                                            data-toggle="modal" data-target=".add-supplier"><i
-                                                class="fas fa-plus"></i></button>
+                                            <button type="button"
+                                                class="add-button d-flex justify-content-center align-items-center"
+                                                data-toggle="modal" data-target=".add-supplier"><i
+                                                    class="fas fa-plus"></i></button>
 
+                                        </div>
+                                        @error('supplier')
+                                            <span style="font-size: 10px;font-weight: 700;"
+                                                class="error validation-error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    @error('supplier')
-                                        <span style="font-size: 10px;font-weight: 700;"
-                                            class="error validation-error text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
+                                @endif
 
                                 <div
                                     class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">

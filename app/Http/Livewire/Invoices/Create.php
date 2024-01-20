@@ -52,12 +52,11 @@ class Create extends Component
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
         $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0, $representative_id, $loading_cost,
-        $dollar_loading_cost;
+        $dollar_loading_cost, $toggle_suppliers;
 
 
     protected $rules = [
         'items' => 'array|min:1',
-        'client_id' => 'required',
         'store_id' => 'required',
         'store_pos_id' => 'required',
         'payment_status' => 'required',
@@ -325,13 +324,19 @@ class Create extends Component
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
     public function submit()
     {
+        if ($this->toggle_suppliers) {
+            $this->rules['supplier_id'] = 'required';
+        } else {
+            $this->rules['client_id'] = 'required';
+        }
         $this->validate();
         try {
-
+            $customer = [];
             // Add Transaction Sell Line
             $transaction_data = [
                 'store_id' => $this->store_id,
-                'customer_id' => $this->client_id,
+                'customer_id' => !$this->toggle_suppliers ? $this->client_id : null,
+                'supplier_id' => $this->toggle_suppliers ? $this->supplier_id : null,
                 //                'supplier_id ' => $this->supplier_id ,
                 'employee_id' => Employee::where('user_id', auth()->user()->id)->first()->id,
                 'store_pos_id' => $this->store_pos_id,
@@ -465,13 +470,22 @@ class Create extends Component
                 }
 
                 $transaction = $this->updateTransactionPaymentStatus($transaction->id);
-
-                $customer = Customer::find($transaction->customer_id);
-                if ($this->added_to_balance == 1) {
-                    $customer->dollar_balance += $this->num_uf($this->new_added_dollar_balance);
-                    $customer->balance += $this->num_uf($this->new_added_dinar_balance);
-                    $customer->save();
+                if (!$this->toggle_suppliers) {
+                    $customer = Customer::find($transaction->customer_id);
+                    if ($this->added_to_balance == 1) {
+                        $customer->dollar_balance += $this->num_uf($this->new_added_dollar_balance);
+                        $customer->balance += $this->num_uf($this->new_added_dinar_balance);
+                        $customer->save();
+                    }
+                } else {
+                    $supplier = Supplier::find($transaction->supplier_id);
+                    // if ($this->added_to_balance == 1) {
+                    //     $supplier->dollar_balance += $this->num_uf($this->new_added_dollar_balance);
+                    //     $supplier->balance += $this->num_uf($this->new_added_dinar_balance);
+                    //     $supplier->save();
+                    // }
                 }
+
 
                 $payment_types = $this->getPaymentTypeArrayForPos();
                 $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
@@ -481,25 +495,31 @@ class Create extends Component
                 if ($is_process_invoice == "1") {
                     $process_invoice = new ProcessInvoice();
                     $process_invoice->transaction_id = $transaction->id;
-                    $process_invoice->customer_id = $customer->id;
+                    if (!$this->toggle_suppliers) {
+                        $process_invoice->customer_id = $customer->id;
+                    } else {
+                        $process_invoice->supplier_id = $supplier->id;
+                    }
                     $process_invoice->invoice_no = $transaction->invoice_no;
                     $process_invoice->is_processed = 0;
                     $process_invoice->save();
                 }
             }
             // dd($transaction->payment_status);
-            if ($transaction->payment_status == 'partial' || $transaction->payment_status == 'pending') {
-                $balance = $this->payCustomerDue($transaction->customer_id);
-                $new_dinar_balance = $balance[0];
-                $new_dollar_balance = $balance[1];
-                if (($new_dinar_balance < $this->new_added_dinar_balance) || ($new_dollar_balance < $this->new_added_dollar_balance)) {
-                    $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
-                    $this->createCashRegisterTransaction($register, $this->num_uf($this->new_added_dinar_balance) - $new_dinar_balance, $this->num_uf($this->new_added_dollar_balance) - $new_dollar_balance, 'cash_in', 'debit', Auth::user()->id, 'customer_balance', $customer->id, $transaction->id);
-                }
-            } else {
-                if ($this->new_added_dinar_balance > 0 || $this->new_added_dollar_balance > 0) {
-                    $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
-                    $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance, $this->new_added_dollar_balance, 'cash_in', 'debit', Auth::user()->id, 'customer_balance', $customer->id, $transaction->id);
+            if (!$this->toggle_suppliers) {
+                if ($transaction->payment_status == 'partial' || $transaction->payment_status == 'pending') {
+                    $balance = $this->payCustomerDue($transaction->customer_id);
+                    $new_dinar_balance = $balance[0];
+                    $new_dollar_balance = $balance[1];
+                    if (($new_dinar_balance < $this->new_added_dinar_balance) || ($new_dollar_balance < $this->new_added_dollar_balance)) {
+                        $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
+                        $this->createCashRegisterTransaction($register, $this->num_uf($this->new_added_dinar_balance) - $new_dinar_balance, $this->num_uf($this->new_added_dollar_balance) - $new_dollar_balance, 'cash_in', 'debit', Auth::user()->id, 'customer_balance', $customer->id, $transaction->id);
+                    }
+                } else {
+                    if ($this->new_added_dinar_balance > 0 || $this->new_added_dollar_balance > 0) {
+                        $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
+                        $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance, $this->new_added_dollar_balance, 'cash_in', 'debit', Auth::user()->id, 'customer_balance', $customer->id, $transaction->id);
+                    }
                 }
             }
 
@@ -523,7 +543,6 @@ class Create extends Component
     }
     public function createCashRegisterTransaction($register, $amount, $dollar_amount, $transaction_type, $type, $source_id, $notes, $referenced_id = null, $transaction_id = null)
     {
-        // dd($source_id);
         $cash_register_transaction = CashRegisterTransaction::create([
             'cash_register_id' => $register->id,
             'transaction_id' => $transaction_id,
@@ -849,8 +868,8 @@ class Create extends Component
     {
         foreach ($this->items as $index => $item) {
             $this->delete_item($index);
-            $this->dispatchBrowserEvent('componentRefreshed');
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function getUnits($product, $store)
@@ -936,6 +955,7 @@ class Create extends Component
         $dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
         $this->dollar_remaining = $dollar_remaining > 0 ? round_250($dollar_remaining) : 0;
         $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at', 'desc')->get();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeRemaining()
     {
@@ -957,6 +977,7 @@ class Create extends Component
         $exchange_rate = System::getProperty('dollar_exchange') ?? 1;
         $this->loading_cost += $this->dollar_loading_cost * $exchange_rate;
         $this->dollar_loading_cost = 0;
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function ChangeBillToDinar()
     {
@@ -1965,7 +1986,13 @@ class Create extends Component
         $latest_transaction = TransactionSellLine::latest()->first()?->id;
         return redirect('/invoices/edit/' . $latest_transaction);
     }
-    public function getNextTransaction()
+    public function toggle_suppliers_dropdown()
     {
+        if ($this->toggle_suppliers) {
+            $this->client_id = 0;
+        } else {
+            $this->supplier_id = 0;
+        }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 }

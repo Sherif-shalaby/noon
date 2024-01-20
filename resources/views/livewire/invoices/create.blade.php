@@ -51,32 +51,32 @@
                 @enderror
             </div>
             {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-            <div class="col-md-3 d-flex flex-column align-items-end mb-2 customer_drop_down animate__animated animate__bounceInLeft"
-                style="animation-delay: 1.2s">
-                <label for=""
-                    class=" @if (app()->isLocale('ar')) d-block text-end @endif mx-2 h5 mb-1">العملاء</label>
-                <div class="input-wrapper mx-2" style="width: 100%">
-                    <select class="form-control client select2" style="width: 80%" wire:model="client_id" id="client_id"
-                        data-name="client_id">
-                        <option value="0 " readonly>اختر </option>
-                        @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}" {{ $client_id == $customer->id ? 'selected' : '' }}>
-                                {{ $customer->name }} - {{ $customer->phone != '[null]' ? $customer->phone : '' }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <button type="button" class="add-button d-flex justify-content-center align-items-center"
-                        data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
+            @if (empty($toggle_suppliers))
+                <div class="col-md-3 d-flex flex-column align-items-end mb-2 customer_drop_down animate__animated animate__bounceInLeft"
+                    style="animation-delay: 1.2s">
+                    <label for=""
+                        class=" @if (app()->isLocale('ar')) d-block text-end @endif mx-2 h5 mb-1">العملاء</label>
+                    <div class="input-wrapper mx-2" style="width: 100%">
+                        <select class="form-control client select2" style="width: 80%" wire:model="client_id" required
+                            id="client_id" data-name="client_id">
+                            <option value="0 " readonly>اختر </option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}" {{ $client_id == $customer->id ? 'selected' : '' }}>
+                                    {{ $customer->name }} - {{ $customer->phone != '[null]' ? $customer->phone : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="button" class="add-button d-flex justify-content-center align-items-center"
+                            data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
+                    </div>
+
+                    @error('client_id')
+                        <span style="font-size: 12px;font-weight: 500;"
+                            class="text-danger validation-error">{{ $message }}</span>
+                    @enderror
                 </div>
-
-                @error('client_id')
-                    <span style="font-size: 12px;font-weight: 500;"
-                        class="text-danger validation-error">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="col-md-1 justify-content-center d-flex flex-column align-items-end mx-1 mt-2 p-0 animate__animated animate__bounceInLeft"
-                style="animation-delay: 1.2s">
+            @endif
+            <div class="col-md-1 justify-content-center d-flex flex-column align-items-end mx-1 mt-2 p-0">
                 <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
                     wire:click="redirectToCustomerDetails({{ $client_id }})"
                     class="btn btn-primary d-flex justify-content-center align-items-center payment-btn">
@@ -84,8 +84,8 @@
                 </button>
 
             </div>
-            <div class="col-md-2 d-flex mb-2 @if (app()->isLocale('ar')) align-items-end  @else  align-items-start @endif   flex-column animate__animated animate__bounceInLeft"
-                style="animation-delay: 1.2s">
+            <div
+                class="col-md-2 d-flex mb-2 @if (app()->isLocale('ar')) align-items-end  @else  align-items-start @endif   flex-column">
                 {!! Form::label('invoice_status', __('lang.invoice') . '*', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end h5 mx-2 mb-1 width-fit' : 'mx-2  mb-1 h5 width-fit',
                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -110,18 +110,20 @@
                 </div>
             </div>
             {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
-            {{-- <div class="col-md-1  d-flex align-items-center justify-content-center flex-row-reverse p-0 animate__animated animate__bounceInLeft"
-                style="animation-delay: 1.2s">
+            <div class="col-md-1  d-flex align-items-center justify-content-center flex-row-reverse p-0">
                 <label class=" d-flex align-items-center justify-content-center flex-column p-0">
-                    {!! Form::checkbox('toggle_suppliers_dropdown', 1, false, ['wire:model' => 'toggle_suppliers_dropdown']) !!}
+                    {!! Form::checkbox('toggle_suppliers_dropdown', 1, false, [
+                        'wire:model' => 'toggle_suppliers',
+                        'wire:change' => 'toggle_suppliers_dropdown',
+                    ]) !!}
                     <span class="mx-1 text-center ">
 
                         @lang('lang.toggle_suppliers_dropdown')
                     </span>
                 </label>
-            </div> --}}
+            </div>
             {{-- +++++++++++++++++ suppliers Dropdown +++++++++++++++++ --}}
-            @if (!empty($toggle_suppliers_dropdown))
+            @if (!empty($toggle_suppliers))
                 <div
                     class="col-md-2 d-flex flex-column align-items-end mb-2  p-0 animate__animated animate__bounceInLeft">
                     {!! Form::label('supplier_id', __('lang.supplier') . '*', [
@@ -133,6 +135,7 @@
                             'class' => 'form-control select2',
                             'data-live-search' => 'true',
                             'id' => 'supplier_id',
+                            'required' => 'required',
                             'placeholder' => __('lang.please_select'),
                             'data-name' => 'supplier',
                             'wire:model' => 'supplier_id',

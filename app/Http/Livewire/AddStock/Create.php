@@ -430,7 +430,6 @@ class Create extends Component
         if (!empty($this->expenses)) {
             $this->rules = [
                 'store_id' => 'required',
-                'supplier' => 'required',
                 'transaction_currency' => 'required',
                 'purchase_type' => 'required',
                 'divide_costs' => 'required',
@@ -442,7 +441,6 @@ class Create extends Component
         if ($this->method != 'cash') {
             $this->rules = [
                 'store_id' => 'required',
-                'supplier' => 'required',
                 'transaction_currency' => 'required',
                 'payment_status' => 'required',
                 'method' => 'required',
@@ -452,7 +450,11 @@ class Create extends Component
                 'bank_deposit_date' => 'required',
             ];
         }
-
+        if ($this->toggle_customers_dropdown) {
+            $this->rules['customer_id'] = 'required';
+        } else {
+            $this->rules['supplier'] = 'required';
+        }
         $this->validate();
 
         try {
@@ -470,9 +472,9 @@ class Create extends Component
             $transaction->type = 'add_stock';
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
-            $transaction->supplier_id = $this->supplier;
+            $transaction->supplier_id = !$this->toggle_customers_dropdown ? $this->supplier : null;
             // customers dropdown
-            $transaction->customer_id = $this->customer_id;
+            $transaction->customer_id = $this->toggle_customers_dropdown ? $this->customer_id : null;
 
             // $transaction->transaction_currency = $this->transaction_currency;
             $transaction->payment_status = $this->payment_status;
@@ -2699,6 +2701,14 @@ class Create extends Component
             $this->items[$index]['stores'][$i]['units'] = $units;
         } else {
             $this->items[$index]['units'] = $units;
+        }
+    }
+    public function toggle_suppliers_dropdown()
+    {
+        if ($this->toggle_customers_dropdown) {
+            $this->customer_id = 0;
+        } else {
+            $this->supplier = 0;
         }
     }
 }
