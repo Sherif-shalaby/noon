@@ -35,13 +35,12 @@
             <div class="card m-b-30 p-2">
                 <div class="row ">
                     <div class="col-md-9">
-{{--                        <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info') </small></p>--}}
+                        {{--                        <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info') </small></p> --}}
                     </div>
                     <div class="col-md-3">
                         <div class="i-checks">
-                            <input id="clear_all_input_form" name="clear_all_input_form"
-                                   type="checkbox" @if(isset($clear_all_input_form) && $clear_all_input_form == '1') checked @endif
-                                   class="">
+                            <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
+                                @if (isset($clear_all_input_form) && $clear_all_input_form == '1') checked @endif class="">
                             <label for="clear_all_input_form" style="font-size: 0.75rem">
                                 <strong>
                                     @lang('lang.clear_all_input_form')
@@ -54,7 +53,7 @@
                     'route' => 'products.store',
                     'method' => 'post',
                     'enctype' => 'multipart/form-data',
-                    'id' => 'add_product_form1'
+                    'id' => 'add_product_form1',
                 ]) !!}
                 <div class="row">
                     {{-- ++++++++++++++++ stores ++++++++++++++++ --}}
@@ -72,29 +71,30 @@
                                     'id' => 'store_id',
                                 ],
                             ) !!} --}}
-                            <select id="store_id" name="store_id[]" id = 'store_id' class="form-control select2" multiple="multiple">
+                            <select id="store_id" name="store_id[]" id = 'store_id' class="form-control select2"
+                                multiple="multiple">
                                 <option value="">@lang('lang.please_select')</option>
-                                @foreach ( $stores as $store)
+                                @foreach ($stores as $store)
                                     <option value="{{ $store->id }}">
                                         {{ $store->name }}
                                     </option>
                                 @endforeach
                             </select>
 
-                            <button type="button" class="btn btn-primary btn-sm ml-2" id="add_new_store" data-toggle="modal"
-                                    data-target="#createStoreModal">
-                                    <i class="fas fa-plus"></i>
+                            <button type="button" class="btn btn-primary btn-sm ml-2" id="add_new_store"
+                                data-toggle="modal" data-target="#createStoreModal">
+                                <i class="fas fa-plus"></i>
                             </button>
                         </div>
                         @error('store_id')
-                        <label class="text-danger error-msg">{{ $message }}</label>
+                            <label class="text-danger error-msg">{{ $message }}</label>
                         @enderror
                     </div>
 
 
                     <div class="col-md-12 product_raws">
                         @for ($i = 0; $i < 3; $i++)
-                            @include('products.partials.product_row',['key' => $i])
+                            @include('products.partials.product_row', ['key' => $i])
                         @endfor
                         <input type="hidden" id="raw_product_index" value="2" />
                     </div>
@@ -106,8 +106,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                    </div>
                 </div>
                 {!! Form::close() !!}
             </div>
@@ -126,25 +128,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <script src="{{ asset('js/product/product.js') }}"></script>
     <script src="{{ asset('css/crop/crop-multi-image.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest('App\Http\Requests\ProductRequest','#add_product_form1'); !!}
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+    {!! JsValidator::formRequest('App\Http\Requests\ProductRequest', '#add_product_form1') !!}
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Counter to keep track of the number of rows
             var rowCount = 1;
 
             // Event handler for the Add Product button
-            $('#addProductRow').click(function () {
+            $('#addProductRow').click(function() {
                 // Clone the product section and update IDs and names
                 var clonedSection = $('#product-section').clone();
 
                 // Update IDs and names to make them unique
-                clonedSection.find('[id]').each(function () {
+                clonedSection.find('[id]').each(function() {
                     var newId = $(this).attr('id') + '_' + rowCount;
                     $(this).attr('id', newId);
                 });
 
-                clonedSection.find('[name]').each(function () {
+                clonedSection.find('[name]').each(function() {
                     var newName = $(this).attr('name') + '[]';
                     $(this).attr('name', newName);
                 });
@@ -156,7 +158,5 @@
                 rowCount++;
             });
         });
-
     </script>
-
 @endpush
