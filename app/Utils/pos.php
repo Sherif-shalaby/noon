@@ -48,6 +48,6 @@ class pos extends Util
             $price = $stock->dollar_sell_price * $exchange_rate;
         else
             $price = $stock->sell_price;
-        return number_format($price, 2);
+        return number_format($price, num_of_digital_numbers());
     }
 }

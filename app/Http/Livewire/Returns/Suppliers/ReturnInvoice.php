@@ -54,10 +54,10 @@ class ReturnInvoice extends Component
         {
             $this->transaction_stock_line_id[$key] = $product->id;
             if(!empty($product->quantity_returned)){
-                $this->quantity[$key] = number_format($product->quantity_returned,2);
+                $this->quantity[$key] = number_format($product->quantity_returned,num_of_digital_numbers());
             }
             else{
-                $this->quantity[$key] = number_format(0,2);
+                $this->quantity[$key] = number_format(0,num_of_digital_numbers());
             }
         }
         // dd($this->transaction_stock_line_id);
@@ -288,7 +288,7 @@ class ReturnInvoice extends Component
         $sellPriceTotal = collect($this->stocklines)->pluck('sell_price')->sum();
 
         // If you want to format the total, use number_format
-        $formattedSellPriceTotal = number_format($sellPriceTotal, 4);
+        $formattedSellPriceTotal = number_format($sellPriceTotal, num_of_digital_numbers());
 
         return $formattedSellPriceTotal;
     }
@@ -298,7 +298,7 @@ class ReturnInvoice extends Component
         // Calculate the total final price from the 'final_total' array
         $finalPriceTotal = array_sum($this->final_total);
         // If you want to format the total, use number_format
-        $formattedFinalPriceTotal = number_format($finalPriceTotal, 4);
+        $formattedFinalPriceTotal = number_format($finalPriceTotal, num_of_digital_numbers());
         return $formattedFinalPriceTotal;
     }
 

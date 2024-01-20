@@ -298,7 +298,7 @@
                                         </td> --}}
 
                                         <td class="col12">
-                                            {{number_format($line->final_total,2)}} د.ع
+                                            {{number_format($line->final_total,num_of_digital_numbers())}} د.ع
                                         </td>
                                         <td class="col13">
                                             {{$line->transaction_payments->sum('amount')}} د.ع
@@ -307,7 +307,7 @@
                                             {{$line->dinar_remaining}} د.ع
                                         </td>
                                         <td class="col12">
-                                            {{number_format($line->dollar_final_total,2)}} $
+                                            {{number_format($line->dollar_final_total,num_of_digital_numbers())}} $
                                         </td>
                                         <td class="col13">
                                             {{$line->transaction_payments->sum('dollar_amount')}} $

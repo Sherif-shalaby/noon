@@ -452,14 +452,14 @@ class Create extends Component
         $this->items[$index]['dollar_total_cost'] = (float)($this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity']);
         // $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity'];
         $this->items[$index]['dollar_total_cost_var'] = (float)($this->items[$index]['dollar_total_cost']);
-        return number_format($this->items[$index]['dollar_total_cost'], 2);
+        return number_format($this->items[$index]['dollar_total_cost'], num_of_digital_numbers());
     }
     // ++++++++++++++++++++++++++ Task : اجمالي التكاليف بالدينار ++++++++++++++++++++++++++
     public function total_cost($index)
     {
         $this->items[$index]['total_cost'] = (float)($this->items[$index]['selling_price'] * $this->items[$index]['quantity']);
         $this->items[$index]['total_cost_var'] = (float)($this->items[$index]['total_cost']) ;
-        return number_format($this->items[$index]['total_cost'],2) ;
+        return number_format($this->items[$index]['total_cost'],num_of_digital_numbers()) ;
     }
     // ++++++++++++++++++++++++++ Task : convert_dinar_price() : سعر البيع بالدينار ++++++++++++++++++++++++++
     public function convert_dinar_price($index)
@@ -514,7 +514,7 @@ class Create extends Component
         // Make sure the total cost is not negative
         $totalCost = max($totalCost, 0);
 
-        return number_format($this->num_uf($totalCost), 2);
+        return number_format($this->num_uf($totalCost), num_of_digital_numbers());
     }
     // +++++++++++++++ sum_dollar_total_cost() : sum all "dollar_sell_price" values ++++++++++++++++
     public function sum_dollar_total_cost()
@@ -528,7 +528,7 @@ class Create extends Component
             }
         }
                 // dd($totalDollarCost);
-        return number_format($totalDollarCost,2);
+        return number_format($totalDollarCost,num_of_digital_numbers());
     }
 
     public function sum_sub_total(){
@@ -537,7 +537,7 @@ class Create extends Component
         foreach ($this->items as $item) {
             $totalSubTotal += $item['sub_total'];
         }
-        return number_format($totalSubTotal,2);
+        return number_format($totalSubTotal,num_of_digital_numbers());
     }
     // +++++++++ Task : "مجموع اجمالي التكاليف " بالدولار +++++++++
     public function sum_dollar_sub_total()
@@ -548,7 +548,7 @@ class Create extends Component
         {
             $totalDollarSubTotal += $item['dollar_total_cost'];
         }
-        return number_format($totalDollarSubTotal,2);
+        return number_format($totalDollarSubTotal,num_of_digital_numbers());
     }
     // +++++++++ Task : "مجموع اجمالي التكاليف " بالدينار +++++++++
     public function sum_dinar_sub_total()
@@ -559,7 +559,7 @@ class Create extends Component
         {
             $totalDinarSubTotal += $item['total_cost'];
         }
-        return number_format($totalDinarSubTotal,2);
+        return number_format($totalDinarSubTotal,num_of_digital_numbers());
     }
 
     public function changeCurrentStock($index)

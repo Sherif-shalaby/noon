@@ -608,19 +608,19 @@ class ProfitReportController extends Controller
             $current_stock_value_material = $this->productUtil->getCurrentStockValueMaterialByStore($store_id);
         }
 
-        $data['revenue'] =number_format($revenue,2); 
-        $data['sell_return'] = number_format($sell_return,2);
-        $data['profit'] = number_format($profit,2);
-        $data['net_profit'] =number_format($net_profit,2);
-        $data['purchase'] = number_format($purchase,2);
-        $data['total_tax'] = number_format($total_tax,2);
-        $data['expense'] = number_format($expense,2);
-        // $data['purchase_return'] = number_format($purchase_return,2);
-        $data['payment_received'] = number_format($payment_received_total,2);
-        $data['payment_sent'] = number_format($payment_sent,2);
-        $data['current_stock_value'] = number_format($current_stock_value,2);
-        // $data['current_stock_value_product'] = number_format($current_stock_value_product,2);
-        // $data['current_stock_value_material'] = number_format($current_stock_value_material,2);
+        $data['revenue'] =number_format($revenue,num_of_digital_numbers()); 
+        $data['sell_return'] = number_format($sell_return,num_of_digital_numbers());
+        $data['profit'] = number_format($profit,num_of_digital_numbers());
+        $data['net_profit'] =number_format($net_profit,num_of_digital_numbers());
+        $data['purchase'] = number_format($purchase,num_of_digital_numbers());
+        $data['total_tax'] = number_format($total_tax,num_of_digital_numbers());
+        $data['expense'] = number_format($expense,num_of_digital_numbers());
+        // $data['purchase_return'] = number_format($purchase_return,num_of_digital_numbers());
+        $data['payment_received'] = number_format($payment_received_total,num_of_digital_numbers());
+        $data['payment_sent'] = number_format($payment_sent,num_of_digital_numbers());
+        $data['current_stock_value'] = number_format($current_stock_value,num_of_digital_numbers());
+        // $data['current_stock_value_product'] = number_format($current_stock_value_product,num_of_digital_numbers());
+        // $data['current_stock_value_material'] = number_format($current_stock_value_material,num_of_digital_numbers());
 
         return $data;
     }

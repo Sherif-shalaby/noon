@@ -81,7 +81,7 @@
                                             @endforeach
                                         </td>
                                         <td>
-                                            {{number_format($return->final_total,2)}}
+                                            {{number_format($return->final_total,num_of_digital_numbers())}}
                                         </td>
                                         <td>
                                             {{$return->transaction_payments->sum('amount')}}

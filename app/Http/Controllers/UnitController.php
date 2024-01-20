@@ -135,7 +135,7 @@ class UnitController extends Controller
         }else if(isset($unit->unit_id) && ($unit->unit_id == $variation->basic_unit_id)){
             return ['name'=>$variation->unit->name,'store'=>$product->product_stores->sum('quantity_available')/ $variation->equal];
         }else if(isset($unit->basic_unit_id) && ($unit->basic_unit_id == $variation->unit_id)){
-            return ['name'=>$variation->unit->name,'store'=>number_format( $unit->equal * $product->product_stores->sum('quantity_available'),3)];
+            return ['name'=>$variation->unit->name,'store'=>number_format( $unit->equal * $product->product_stores->sum('quantity_available'),num_of_digital_numbers())];
         }else{
             $amount=1;
             foreach($product->variations as $var){
@@ -150,7 +150,7 @@ class UnitController extends Controller
                         }
                     }
             }
-            return ['name'=>$variation->unit->name,'store'=>number_format( $product->product_stores->sum('quantity_available') / $amount,3)];
+            return ['name'=>$variation->unit->name,'store'=>number_format( $product->product_stores->sum('quantity_available') / $amount,num_of_digital_numbers())];
 
         }
     }
