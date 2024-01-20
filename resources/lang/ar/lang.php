@@ -828,5 +828,6 @@ return array(
     'processor'=>'المجهز',
     'process'=>'تجهيز',
     'created_at'=>'تاريخ الانشاء',
+    'sell'=>'البيع',
  );
 

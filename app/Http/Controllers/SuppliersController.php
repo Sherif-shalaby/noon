@@ -11,6 +11,7 @@ use App\Models\State;
 use App\Models\StockTransaction;
 use App\Models\Supplier;
 use App\Models\System;
+use App\Models\TransactionSellLine;
 use App\Utils\Util;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -141,18 +142,23 @@ class SuppliersController extends Controller
     public function show($id)
     {
         $supplier = Supplier::findOrFail($id);
-        // tab 1 : Stock Transactions : كشف حساب
+        // tab 1 : Stock Transactions : كشف حساب الشراء
         $add_stocks = StockTransaction::whereIn('type', ['add_stock', 'purchase_return'])
                                         ->whereIn('status', ['received', 'final'])
-                                        // ->where('supplier_id',$id)
+                                        ->where('supplier_id',$id)
                                         ->get();
         // tab 2 : Purchase Orders : الاوامر المعلقة
         $purchase_orders = PurchaseOrderTransaction::whereIn('type', ['purchase_order'])
                                                     ->where('status', 'pending')
-                                                    // ->where('supplier_id',$id)
+                                                    ->where('supplier_id',$id)
                                                     ->get();
+           // tab 1 : Stock Transactions : كشف حساب البيع
+        $sell_lines = TransactionSellLine::where('type', 'sell')
+           ->where('status', 'final')
+           ->where('supplier_id',$id)
+           ->get();
         // dd($purchase_orders);
-        return view('suppliers.show',compact('supplier','add_stocks','purchase_orders'));
+        return view('suppliers.show',compact('supplier','add_stocks','purchase_orders','sell_lines'));
         // dd($supplier);
     }
 
