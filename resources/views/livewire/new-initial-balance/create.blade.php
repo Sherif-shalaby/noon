@@ -703,15 +703,14 @@
                                 </div>
                                 <div class="row {{ $show_store == 0 ? 'd-none' : '' }}">
                                     <div class="col-md-12 text-center">
-                                        {{ $this->count_fill_stores_unit($i) }}
-                                        @if (!empty($variationFillStoreSums))
-                                            @foreach ($variationFillStoreSums as $unit_name => $variant)
-                                                <h5 class="items_quantity_span" style="margin-right: 15px;">
-                                                    {{ $unit_name }}: {{ $variant }} </h5><br>
-                                            @endforeach
-                                        @endif
-                                        <h5 class="items_quantity_span" style="margin-right: 15px;">
-                                            {{ $this->getExtraFillStore($i) }}</h5>
+                                            @if (!empty($this->count_fill_stores_unit($i)))
+                                                @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
+                                                    <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                                        {{ $unit_name }}: {{ $variant }} </h2><br>
+                                                @endforeach
+                                            @endif
+                                            <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                                {{ $this->getExtraFillStore($i) }}</h2>
                                     </div>
                                 </div>
                             @empty
