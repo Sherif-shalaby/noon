@@ -748,6 +748,7 @@ return [
     'processor'=>'Processor',
     'process'=>'Process',
     'created_at'=>'Created at',
+    'sell'=>'Sell',
 ];
 
 
