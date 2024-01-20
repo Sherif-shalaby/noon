@@ -14,7 +14,7 @@
                 <input type="hidden" value=" {{ $unit->id }}" name="units[{{ $index }}][unit_id]">
             </td>
             <td>
-                <input type="text" name="units[{{ $index }}][loading_cost]" value="{{ number_format($unit->loading_cost,3) }}">
+                <input type="text" name="units[{{ $index }}][loading_cost]" value="{{ number_format($unit->loading_cost,num_of_digital_numbers()) }}">
             </td>
         </tr>
     @endforeach

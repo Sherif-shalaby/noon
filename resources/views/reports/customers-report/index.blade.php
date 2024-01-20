@@ -84,10 +84,10 @@
                                                         @endforeach
                                                     </ul>
                                                 </td>
-                                                <td>{{ number_format($customer_transactions_sell_line->final_total, 2) }}
+                                                <td>{{ number_format($customer_transactions_sell_line->final_total, num_of_digital_numbers()) }}
                                                 </td>
                                                 {{-- Get All_Payments of transaction Then Get "payment amount" --}}
-                                                <td>{{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount'), 2) }}
+                                                <td>{{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount'), num_of_digital_numbers()) }}
                                                 </td>
                                                 {{-- متاخرات --}}
                                                 <td>
@@ -189,7 +189,7 @@
                                                 <td>{{ $transaction_payment->invoice_no }}</td>
                                                 <td>{{ $transaction_payment->method }}</td>
                                                 {{-- Get All_Payments of transaction Then Get sum of "payment amounts" --}}
-                                                <td>{{ number_format($transaction_payment->transaction_payments->sum('amount'), 2) }}
+                                                <td>{{ number_format($transaction_payment->transaction_payments->sum('amount'), num_of_digital_numbers()) }}
                                                 </td>
                                                 {{-- Created_by --}}
                                                 <td>{{ !empty($transaction_payment->transaction_payments->first()) ? $transaction_payment->transaction_payments->first()->created_by_user->name ?? '' : '' }}

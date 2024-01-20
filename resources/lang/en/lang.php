@@ -749,6 +749,7 @@ return [
     'process'=>'Process',
     'created_at'=>'Created at',
     'sell'=>'Sell',
+    'num_of_digital_numbers'=>'Num Of Digital Numbers',
 ];
 
 

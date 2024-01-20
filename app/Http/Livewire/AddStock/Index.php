@@ -119,7 +119,7 @@ class Index extends Component
             }
         }
 
-        return number_format($pending,2);
+        return number_format($pending,num_of_digital_numbers());
     }
 
     public function calculatePaidAmount($transaction_id): string
@@ -151,7 +151,7 @@ class Index extends Component
             }
         }
 
-        return number_format($paid,2);
+        return number_format($paid,num_of_digital_numbers());
     }
 
     public function changePayingCurrency(){

@@ -829,5 +829,6 @@ return array(
     'process'=>'تجهيز',
     'created_at'=>'تاريخ الانشاء',
     'sell'=>'البيع',
+    'num_of_digital_numbers'=>'عدد الاعداد العشرية',
  );
 

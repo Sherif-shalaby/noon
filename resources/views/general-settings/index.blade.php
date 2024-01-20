@@ -152,6 +152,13 @@
                             <label class="custom-control-label"  for="update_processing" >{{__('lang.update_processing')}}</label>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        {!! Form::label('num_of_digital_numbers', __('lang.num_of_digital_numbers'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::text(
+                            'num_of_digital_numbers',!empty($settings['num_of_digital_numbers']) ? $settings['num_of_digital_numbers'] : null,
+                            ['class' => 'form-control'],
+                        ) !!}
+                    </div>
 
                     <div class="col-md-6 pt-5">
                         @include('general-settings.partials.add_loading_cost')
