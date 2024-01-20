@@ -322,6 +322,11 @@ class Create extends Component
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
     public function submit()
     {
+        if($this->toggle_suppliers){
+            $this->rules['supplier_id'] = 'required';
+        }else{
+            $this->rules['client_id'] = 'required';
+        }
         $this->validate();
         try {
             $customer=[];

@@ -35,7 +35,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>
-                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown']) !!}
+                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown','wire:change' => 'toggle_suppliers_dropdown']) !!}
                                     @lang('lang.toggle_customers_dropdown')
                                 </label>
                             </div>
@@ -54,23 +54,25 @@
                                 </div> --}}
                                 {{-- +++++++++++++++ supplier dropdown ++++++++++ --}}
                                 <div class="col-md-3">
-                                    {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
-                                    <div class="d-flex justify-content-center">
-                                        {!! Form::select('supplier_id', $suppliers, $supplier, [
-                                            'class' => 'form-control select2',
-                                            'data-live-search' => 'true',
-                                            'id' => 'supplier_id',
-                                            'placeholder' => __('lang.please_select'),
-                                            'data-name' => 'supplier',
-                                            'wire:model' => 'supplier',
-                                            'wire:change' => 'changeExchangeRate()',
-                                        ]) !!}
-                                        <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                            data-target=".add-supplier"><i class="fas fa-plus"></i></button>
-                                    </div>
-                                    @error('supplier')
-                                        <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
+                                    @if (empty($toggle_customers_dropdown))
+                                        {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
+                                        <div class="d-flex justify-content-center">
+                                            {!! Form::select('supplier_id', $suppliers, $supplier, [
+                                                'class' => 'form-control select2',
+                                                'data-live-search' => 'true',
+                                                'id' => 'supplier_id',
+                                                'placeholder' => __('lang.please_select'),
+                                                'data-name' => 'supplier',
+                                                'wire:model' => 'supplier',
+                                                'wire:change' => 'changeExchangeRate()',
+                                            ]) !!}
+                                            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
+                                                data-target=".add-supplier"><i class="fas fa-plus"></i></button>
+                                        </div>
+                                        @error('supplier')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
+                                    @endif
                                 </div>
 
                                 {{-- <div class="col-md-2">
@@ -124,8 +126,8 @@
                                     </div>
                                 </div>
                                 {{-- +++++++++++++++++ customers Dropdown +++++++++++++++++ --}}
+                                <div class="col-md-3">
                                 @if (!empty($toggle_customers_dropdown))
-                                    <div class="col-md-3">
                                         {!! Form::label('customer_id', __('lang.customers') . ':*', []) !!}
                                         <div class="d-flex justify-content-center">
                                             {!! Form::select('customer_id', $customers, $customer_id, [
@@ -141,8 +143,8 @@
                                         @error('customer_id')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
-                                    </div>
                                 @endif
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 mt-2">

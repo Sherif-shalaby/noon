@@ -37,6 +37,7 @@ class Create extends Component
             'name' => '',
             'store_id' => '',
             'supplier_id' => '',
+            'customer_id' => '',
             'category_id' => '',
             'subcategory_id1' => '',
             'subcategory_id2' => '',
@@ -99,7 +100,7 @@ class Create extends Component
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $variationSums = [], $customer_types = [],
         $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $units = [],
         $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [];
-    public $rows = []  , $toggle_customers_dropdown , $customer_id ,$variationStoreSums,$variationFillStoreSums;
+    public $rows = []  , $toggle_customers_dropdown , $customer_id ,$variationStoreSums,$variationFillStoreSums,$toggle_suppliers;
     public function messages()
     {
         return [
@@ -532,7 +533,8 @@ class Create extends Component
                 $transaction->transaction_date =  Carbon::now();
                 $transaction->purchase_type = 'local';
                 $transaction->type = 'initial_balance';
-                $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
+                $transaction->supplier_id = !empty($this->item[0]['supplier_id']) && !$this->toggle_customers_dropdown ? $this->item[0]['supplier_id'] : null;
+                $transaction->customer_id = !empty($this->item[0]['customer_id']) && $this->toggle_customers_dropdown ? $this->item[0]['customer_id'] : null;
                 $transaction->transaction_currency = $this->transaction_currency;
                 $transaction->created_by = Auth::user()->id;
                 $transaction->parent_transction = !empty($parent_transction[0]) ? $parent_transction[0] : 0;
@@ -1352,11 +1354,16 @@ class Create extends Component
         if ($this->transaction_currency == 2){
         $this->rows[$index]['prices'][$key]['dollar_sell_price']=number_format($this->rows[$index]['prices'][$key]['dinar_sell_price'],3);
         $this->rows[$index]['prices'][$key]['dinar_sell_price']=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price'])/$this->num_uf($this->exchange_rate),3);
-
         }else{
         $this->rows[$index]['prices'][$key]['dollar_sell_price']=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price'])*$this->num_uf($this->exchange_rate),3);
         }
         $this->changeUnitPrices($index);
     }
-
+    public function toggle_suppliers_dropdown(){
+        if($this->toggle_customers_dropdown){
+            $this->item[0]['supplier_id']=0;
+        }else{
+            $this->item[0]['customer_id']=0;
+        }
+    }
 }
