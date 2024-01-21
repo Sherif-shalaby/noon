@@ -12,6 +12,7 @@ LANG ={
     all_transactions_related_to_this_products_will_be_deleted:'All Transactions related to this product will be deleted; stocks, sales, purchases, etc.',
     it_will_delete_the_product_and_all_its_operations:'It Will Delete The Product & All Its Operations',
     cancel:'Cancel',
-    po: 'PO +'
+    po: 'PO +',
+    column_visibility:'Column Visibility'
 
 }

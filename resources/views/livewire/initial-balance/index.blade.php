@@ -20,6 +20,7 @@
                             <th>@lang('lang.product')</th>
                             <th>@lang('lang.supplier')</th>
                             <th>@lang('lang.store')</th>
+                            <th>@lang('lang.branch')</th>
                             <th>@lang('lang.quantity')</th>
                             <th>@lang('lang.created_by')</th>
                             <th class="notexport">@lang('lang.action')</th>
@@ -42,6 +43,7 @@
                                             @endforeach
                                     @endif
                                 </td>
+                                <td>{{$stock->store?->branch->name??''}}</td>
                                 <td>
                                      @foreach($stock->add_stock_lines as $index => $line)
                                          {{ @num_format( $line->quantity) .' ( '. $line->variation?->unit->name .' ) ' }}
