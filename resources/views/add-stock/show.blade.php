@@ -171,7 +171,7 @@
                                                                 data-tooltip="@lang('lang.quantity')">
 
                                                                 @if (isset($line->quantity))
-                                                                    {{ number_format($line->quantity, App\Models\System::getProperty('numbers_length_after_dot')) }}@else{{ 1 }}
+                                                                    {{ number_format($line->quantity, App\Models\System::getProperty('num_of_digital_numbers()')) }}@else{{ 1 }}
                                                                 @endif
                                                             </span>
                                                         </td>
@@ -220,7 +220,7 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.sub_total')">
-                                                                {{ number_format($line->sub_total, 2) }}
+                                                                {{ number_format($line->sub_total, num_of_digital_numbers()) }}
                                                             </span>
                                                         </td>
                                                         <td class="dollar-cell">
@@ -228,7 +228,7 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.sub_total')$">
-                                                                {{ number_format($line->dollar_sub_total, 2) }}
+                                                                {{ number_format($line->dollar_sub_total, num_of_digital_numbers()) }}
                                                             </span>
                                                         </td>
                                                         {{--                                                <td>{{$line->batch_number}}</td> --}}

@@ -187,7 +187,7 @@
                                                                         style="font-size: 12px;font-weight: 600"
                                                                         data-tooltip="المبلغ الاجمالي">
 
-                                                                        {{ number_format($customer_transactions_sell_line->final_total, 2) }}
+                                                                        {{ number_format($customer_transactions_sell_line->final_total, num_of_digital_numbers()) }}
                                                                     </span>
                                                                 </td>
                                                                 {{-- Get All_Payments of transaction Then Get "payment amount" --}}
@@ -196,7 +196,7 @@
                                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                         style="font-size: 12px;font-weight: 600"
                                                                         data-tooltip="دفٌعت">
-                                                                        {{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount'), 2) }}
+                                                                        {{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount'), num_of_digital_numbers()) }}
                                                                     </span>
                                                                 </td>
 
@@ -391,7 +391,7 @@
                                                                         style="font-size: 12px;font-weight: 600"
                                                                         data-tooltip="المبلغ">
 
-                                                                        {{ number_format($transaction_payment->transaction_payments->sum('amount'), 2) }}
+                                                                        {{ number_format($transaction_payment->transaction_payments->sum('amount'), num_of_digital_numbers()) }}
                                                                     </span>
                                                                 </td>
                                                                 {{-- Created_by --}}

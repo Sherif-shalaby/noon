@@ -870,7 +870,10 @@
                     <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
                 </div>
             </div>
-
+            <div class="col-md-6">
+                <input type="hidden" value="0" class="add_stock_val" name="add_stock_val" />
+                <button type="submit" class="btn btn-primary add_stock">@lang('lang.add-stock')</button>
+            </div>
             {!! Form::close() !!}
         </div>
         @include('products.crop-image-modal')
@@ -908,6 +911,13 @@
                 });
             }
         @endif
+        $(document).on('click', '.add_stock', function(e) {
+            e.preventDefault();
+            var add_stock_val = parseInt($('.add_stock_val').val());
+            $('.add_stock_val').val(1);
+            $(document).off('click', '.add_stock');
+            $('.add_stock').submit();
+        });
     </script>
 @endpush
 {{--  --}}

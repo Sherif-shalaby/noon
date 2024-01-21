@@ -28,7 +28,11 @@ $(document).ready(function () {
                 {
                     extend: 'print',
                     exportOptions: { columns: ":visible:not(.notexport)" }
-                }
+                },
+                {
+                    extend: "colvis",
+                    columns: ":gt(0)",
+                },
             ],
 
 

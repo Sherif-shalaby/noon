@@ -115,7 +115,7 @@
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.value')">
-                                                        {{ number_format($stock->dollar_final_total, 2) }}
+                                                        {{ number_format($stock->dollar_final_total, num_of_digital_numbers()) }}
                                                     </span>
                                                 </td>
                                             @else
@@ -124,7 +124,7 @@
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.value')">
-                                                        {{ number_format($stock->final_total, 2) }}
+                                                        {{ number_format($stock->final_total, num_of_digital_numbers()) }}
                                                     </span>
                                                 </td>
                                             @endif

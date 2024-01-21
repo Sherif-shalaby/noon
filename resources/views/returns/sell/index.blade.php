@@ -150,7 +150,7 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.grand_total')">
-                                                                {{ number_format($return->final_total, 2) }}
+                                                                {{ number_format($return->final_total, num_of_digital_numbers()) }}
                                                             </span>
                                                         </td>
                                                         <td>

@@ -149,7 +149,7 @@ class AddStockController extends Controller
         $supplier = $transaction->supplier->id;
 
         if(isset($supplier->exchange_rate)) {
-            $exchange_rate = number_format($supplier->exchange_rate, 2);
+        $exchange_rate = number_format($supplier->exchange_rate,num_of_digital_numbers());
         }
 
         return view('add-stock.partials.add-payment')->with(compact(
@@ -413,7 +413,7 @@ class AddStockController extends Controller
             }
         }
 
-        return number_format($pending,3);
+        return number_format($pending,num_of_digital_numbers());
     }
 
     public function calculatePaidAmount($transaction_id): string
@@ -445,7 +445,7 @@ class AddStockController extends Controller
             }
         }
 
-        return number_format($paid,3);
+        return number_format($paid,num_of_digital_numbers());
     }
     // +++++++++++++++++++ recentTransactions() +++++++++++++++++++
     public function recentTransactions(Request $request)

@@ -779,4 +779,5 @@ return [
     'loading_cost' => 'Loading Cost',
     'loading_cost_currency' => 'Loading Cost Currency',
     'sell' => 'Sell',
+    'num_of_digital_numbers' => 'Num Of Digital Numbers',
 ];

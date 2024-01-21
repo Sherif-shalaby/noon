@@ -154,7 +154,6 @@ class Edit extends Component
             $products = Product::paginate();
         }
 
-        //        $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
         return view(
             'livewire.add-stock.edit',
@@ -567,7 +566,6 @@ class Edit extends Component
             'total_cost' => 0,
             'current_stock' => 0,
             'total_stock' => 0 + 1,
-
             'prices' => [
                 [
                     'price_type' => null,
@@ -628,19 +626,19 @@ class Edit extends Component
                     $sell_price = $this->num_uf($total_sell_price) / $this->num_uf($total_quantity);
                 }
                 if ($this->items[$index]['prices'][$key]['price_type'] == 'fixed') {
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format($this->num_uf($sell_price) -  $this->num_uf($this->items[$index]['prices'][$key]['price']), 3);
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format($this->num_uf($sell_price) -  $this->num_uf($this->items[$index]['prices'][$key]['price']), num_of_digital_numbers());
                 } elseif ($this->items[$index]['prices'][$key]['price_type'] == 'percentage') {
                     $percent = $this->num_uf($sell_price) * $this->num_uf($this->items[$index]['prices'][$key]['price']) / 100;
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($this->num_uf($sell_price) - $percent), 3);
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($this->num_uf($sell_price) - $percent), num_of_digital_numbers());
                 }
             }
             $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? $this->num_uf($this->items[$index]['prices'][$key]['price_after_desc']) : $this->num_uf($sell_price);
             if (empty($this->discount_from_original_price)) {
-                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1), 3);
-                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $total_quantity : 1), 3);
+                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1), num_of_digital_numbers());
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $total_quantity : 1), num_of_digital_numbers());
             } else {
-                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1), 3);
-                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1), 3);
+                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1), num_of_digital_numbers());
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1), num_of_digital_numbers());
             }
         }
     }
@@ -691,7 +689,7 @@ class Edit extends Component
 
             $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
 
-            return number_format($this->items[$index]['sub_total'], 2);
+            return number_format($this->items[$index]['sub_total'], num_of_digital_numbers());
         } else {
             $this->items[$index]['purchase_price'] = null;
         }
@@ -705,7 +703,7 @@ class Edit extends Component
 
             $this->items[$index]['dollar_sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
 
-            return number_format($this->items[$index]['dollar_sub_total'], 2);
+            return number_format($this->items[$index]['dollar_sub_total'], num_of_digital_numbers());
         } else {
             $this->items[$index]['dollar_purchase_price'] = null;
         }
@@ -778,13 +776,13 @@ class Edit extends Component
         } else {
             $this->items[$index]['cost'] = (float)$purchase_price;
         }
-        return number_format($this->num_uf($this->items[$index]['cost']), 2);
+        return number_format($this->num_uf($this->items[$index]['cost']), num_of_digital_numbers());
     }
 
     public function total_cost($index)
     {
         $this->items[$index]['total_cost'] = (float)$this->items[$index]['cost'] * $this->items[$index]['quantity'];
-        return number_format($this->items[$index]['total_cost'], 2);
+        return number_format($this->items[$index]['total_cost'], num_of_digital_numbers());
     }
 
     public function dollar_cost($index)
@@ -821,7 +819,7 @@ class Edit extends Component
         } else {
             $this->items[$index]['dollar_cost'] = (float)$purchase_price;
         }
-        return number_format($this->items[$index]['dollar_cost'], 2);
+        return number_format($this->items[$index]['dollar_cost'], num_of_digital_numbers());
     }
 
     public function dollar_total_cost($index)
@@ -838,7 +836,7 @@ class Edit extends Component
                 $totalCost += (float)$item['total_cost'];
             }
         }
-        $this->changeAmount(number_format($totalCost, 2));
+        $this->changeAmount(number_format($totalCost, num_of_digital_numbers()));
         return $this->num_uf($totalCost);
     }
 
@@ -851,7 +849,7 @@ class Edit extends Component
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-        $this->changeAmount(number_format($totalDollarCost, 2));
+        $this->changeAmount(number_format($totalDollarCost, num_of_digital_numbers()));
         //        dd($totalDollarCost);
         return $this->num_uf($totalDollarCost);
     }
@@ -1004,11 +1002,11 @@ class Edit extends Component
                         ->orWhereNull('end_date');
                 })->first();
             if (isset($supplier->exchange_rate)) {
-                return $this->exchangeRate = number_format(str_replace(',', '', $supplier->exchange_rate), 2);
+                return $this->exchangeRate = number_format(str_replace(',', '', $supplier->exchange_rate), num_of_digital_numbers());
             } else
-                return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'), 2);
+                return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'), num_of_digital_numbers());
         } else {
-            return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'), 2);
+            return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'), num_of_digital_numbers());
         }
     }
     public function changeExchangeRateBasedPrices()

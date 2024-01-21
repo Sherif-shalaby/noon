@@ -107,7 +107,7 @@
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="مبلغ المشتريات">
-                                                        {{ number_format($purchase_price_var, 2) }}
+                                                        {{ number_format($purchase_price_var, num_of_digital_numbers()) }}
                                                     </span>
                                                 </td>
                                                 {{-- ++++++++++ الكمية المشتراة++++++++++ --}}

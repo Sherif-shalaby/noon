@@ -200,14 +200,14 @@ class Edit extends Component
         $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
 
 
-        $price = !empty($current_stock->sell_price) ? number_format($current_stock->sell_price,2) : 0;
-        $dollar_price = !empty($current_stock->dollar_sell_price) ? number_format($current_stock->dollar_sell_price,2) : 0;
+        $price = !empty($current_stock->sell_price) ? number_format($current_stock->sell_price,num_of_digital_numbers()) : 0;
+        $dollar_price = !empty($current_stock->dollar_sell_price) ? number_format($current_stock->dollar_sell_price,num_of_digital_numbers()) : 0;
         $this->items[] = [
             'purchase_order_line' => $line->id,
             'product' => $product,
-            'quantity' => number_format($line->quantity,3),
+            'quantity' => number_format($line->quantity,num_of_digital_numbers()),
             'extra_quantity' => $line->extra_quantity,
-            'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price,3)) : 0,
+            'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price,num_of_digital_numbers())) : 0,
             // 'category_id' => $product->category?->id,
             'category_id' => isset($product->category) ? $product->category->id : null,
             // 'department_name' => $product->category?->name,
@@ -224,13 +224,13 @@ class Edit extends Component
             'purchasing_price' => isset($line->purchase_price) ? $line->purchase_price : 0 ,
             // 'discount_categories' =>  $current_stock->prices()->get(),
             'discount' => $line->product_discount_category,
-            'discount_price' => number_format($line->product_discount_amount,3),
+            'discount_price' => number_format($line->product_discount_amount,num_of_digital_numbers()),
             'discount_type' =>  $line->product_discount_type,
             'discount_category' =>  null,
-            'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price,2) : 0  ,
+            'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price,num_of_digital_numbers()) : 0  ,
             'unit_name' =>!empty($product->unit) ? $product->unit->name : '',
             'base_unit_multiplier' =>!empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
-            'total_quantity' => !empty($product->unit) ?  number_format($line->quantity,3) * $product->unit->base_unit_multiplier : number_format($line->quantity,3),
+            'total_quantity' => !empty($product->unit) ?  number_format($line->quantity,num_of_digital_numbers()) * $product->unit->base_unit_multiplier : number_format($line->quantity,num_of_digital_numbers()),
             'stores' => isset($product_stores) ? $product_stores : null,
             'sell_line_id' => $line->id,
         ];
@@ -584,14 +584,14 @@ class Edit extends Component
         $this->items[$index]['dollar_total_cost'] = (float)($this->items[$index]['dollar_purchasing_price'] * $this->items[$index]['quantity']);
         // $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_purchasing_price'] * $this->items[$index]['quantity'];
         $this->items[$index]['dollar_total_cost_var'] = (float)($this->items[$index]['dollar_total_cost']);
-        return number_format($this->items[$index]['dollar_total_cost'], 2);
+        return number_format($this->items[$index]['dollar_total_cost'], num_of_digital_numbers());
     }
     // ++++++++++++++++++++++++++ Task : اجمالي التكاليف بالدينار ++++++++++++++++++++++++++
     public function total_cost($index)
     {
         $this->items[$index]['total_cost'] = (float)($this->items[$index]['purchasing_price'] * $this->items[$index]['quantity']);
         $this->items[$index]['total_cost_var'] = (float)($this->items[$index]['total_cost']) ;
-        return number_format($this->items[$index]['total_cost'],2) ;
+        return number_format($this->items[$index]['total_cost'],num_of_digital_numbers()) ;
     }
     // ++++++++++++++++++++++++++ Task : convert_dinar_price() : سعر البيع بالدينار ++++++++++++++++++++++++++
     public function convert_dinar_price($index)
@@ -632,7 +632,7 @@ class Edit extends Component
                 $totalCost += (float)$item['total_cost'];
             }
         }
-        return number_format($this->num_uf($totalCost),2);
+        return number_format($this->num_uf($totalCost),num_of_digital_numbers());
     }
     // +++++++++++++++ sum_dollar_total_cost() : sum all "dollar_sell_price" values ++++++++++++++++
     public function sum_dollar_total_cost()
@@ -644,7 +644,7 @@ class Edit extends Component
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-        return number_format($totalDollarCost,2);
+        return number_format($totalDollarCost,num_of_digital_numbers());
     }
     // +++++++++++++++++++++++ sub_total() +++++++++++++++++++++++
     public function sub_total($index)
@@ -656,7 +656,7 @@ class Edit extends Component
 
             $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
 
-            return number_format($this->items[$index]['sub_total'], 3);
+            return number_format($this->items[$index]['sub_total'], num_of_digital_numbers());
         }
         else{
             $this->items[$index]['purchase_price'] = null;
@@ -670,7 +670,7 @@ class Edit extends Component
         foreach ($this->items as $item) {
             $totalSubTotal += $item['sub_total'];
         }
-        return number_format($totalSubTotal,2);
+        return number_format($totalSubTotal,num_of_digital_numbers());
     }
     // +++++++++ Task : "مجموع اجمالي التكاليف " بالدولار +++++++++
     public function sum_dollar_sub_total()
@@ -681,7 +681,7 @@ class Edit extends Component
         {
             $totalDollarSubTotal += $item['dollar_total_cost'];
         }
-        return number_format($totalDollarSubTotal,2);
+        return number_format($totalDollarSubTotal,num_of_digital_numbers());
     }
     // +++++++++ Task : "مجموع اجمالي التكاليف " بالدينار +++++++++
     public function sum_dinar_sub_total()
@@ -692,7 +692,7 @@ class Edit extends Component
         {
             $totalDinarSubTotal += $item['total_cost'];
         }
-        return number_format($totalDinarSubTotal,2);
+        return number_format($totalDinarSubTotal,num_of_digital_numbers());
     }
 
     public function changeCurrentStock($index)

@@ -256,8 +256,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3 justify-content-end animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif update_processing"
-                            style="visibility:{{ isset($settings['activate_processing']) && $settings['activate_processing'] == '1' ? 'visible' : 'hidden' }}"
-                            style="animation-delay: 1.75s">
+                            style="visibility:{{ isset($settings['activate_processing']) && $settings['activate_processing'] == '1' ? 'visible' : 'hidden' }}">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="update_processing"
                                     name="update_processing"
@@ -266,10 +265,25 @@
                                     for="update_processing">{{ __('lang.update_processing') }}</label>
                             </div>
                         </div>
-                        <div class="col-md-6 py-2">
-                            @include('general-settings.partials.add_loading_cost')
+                        <div class="col-sm-6 col-md-3 justify-content-end animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.8s">
+                            {!! Form::label('num_of_digital_numbers', __('lang.num_of_digital_numbers'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            {!! Form::text(
+                                'num_of_digital_numbers',
+                                !empty($settings['num_of_digital_numbers']) ? $settings['num_of_digital_numbers'] : null,
+                                ['class' => 'form-control initial-balance-input m-0'],
+                            ) !!}
                         </div>
-                        <div class="col-md-12 pt-1">
+                        <div class="col-md-12 d-flex justify-content-center py-2">
+                            <div class="col-md-6">
+                                @include('general-settings.partials.add_loading_cost')
+                            </div>
+                        </div>
+                        <div class="col-md-12
+                            pt-1">
                             <div class="row">
                                 <div class="col-md-4 animate__animated animate__bounceInLeft "
                                     style="animation-delay: 1.75s">

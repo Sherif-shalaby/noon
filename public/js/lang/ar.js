@@ -13,4 +13,5 @@ LANG = {
     it_will_delete_the_product_and_all_its_operations: 'هل انت متاكد من حذف المنتج وكل العمليات الخاصة به',
     cancel: 'الغاء',
     po: '+ امر شراء',
+    column_visibility: 'اظهار الاعمدة',
 };

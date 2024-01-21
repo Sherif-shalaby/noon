@@ -138,11 +138,13 @@
                                                         <td title="@lang('lang.salary')">
                                                             {{ $wage->employee->fixed_wage_value }}</td>
                                                         <td title="@lang('lang.commission')">
-                                                            {{ number_format($wage->employee->commission_value, 2) }}</td>
-                                                        <td title="@lang('lang.paid_amount')">{{ number_format($totalAmount, 2) }}
+                                                            {{ number_format($wage->employee->commission_value, num_of_digital_numbers()) }}
+                                                        </td>
+                                                        <td title="@lang('lang.paid_amount')">
+                                                            {{ number_format($totalAmount, num_of_digital_numbers()) }}
                                                         </td>
                                                         <td title="@lang('lang.duePaid')">
-                                                            {{ number_format($wage->wage_transaction->final_total - $totalAmount, 2) }}
+                                                            {{ number_format($wage->wage_transaction->final_total - $totalAmount, num_of_digital_numbers()) }}
                                                         </td>
                                                         <td title="@lang('lang.payment_status')">
                                                             {{ $wage->wage_transaction->payment_status }}

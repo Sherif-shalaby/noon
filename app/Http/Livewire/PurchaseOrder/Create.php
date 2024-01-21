@@ -86,39 +86,6 @@ class Create extends Component
         }
     }
     // ++++++++++++++++++ when click on filters , execute updatedDepartmentId() ++++++++++++++++++
-    // public function updatedDepartmentId($value, $name)
-    // {
-    //     // Handle department and brand filters
-    //     $query = Product::query();
-    //     // "department" filter
-    //     if ($name == 'department_id')
-    //     {
-    //         $query->where(function ($query) use ($value)
-    //         {
-    //             $query->where('category_id', $value)
-    //                 ->orWhere('subcategory_id1', $value)
-    //                 ->orWhere('subcategory_id2', $value)
-    //                 ->orWhere('subcategory_id3', $value);
-    //         });
-    //     }
-    //     // "brand" filter
-    //     if ($name == 'brand_id')
-    //     {
-    //         $query->where('brand_id', $value);
-    //     }
-    //     // "supplier" filter
-    //     if ($name == 'supplier_id')
-    //     {
-    //         // Get the stock transaction IDs associated with the supplier ID
-    //         $stockTransactionIds = StockTransaction::where('supplier_id', $value)->pluck('id');
-    //         // Get all product IDs associated with the stock transaction IDs
-    //         $productIds = AddStockLine::whereIn('stock_transaction_id', $stockTransactionIds)->pluck('product_id');
-    //         // Apply the filter to the products based on the retrieved product IDs
-    //         $query->whereIn('id', $productIds);
-    //     }
-    //     // Get the filtered products
-    //     $this->allproducts = $query->get();
-    // }
     public function updatedDepartmentId($value, $name)
     {
         // Handle department and brand filters
@@ -191,9 +158,6 @@ class Create extends Component
         // dd($this->allproducts);
     }
 
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
     // Get "suppliers" and "stores" and "product number"
     public function mount()
     {
@@ -204,6 +168,7 @@ class Create extends Component
 
         // +++++++++ get "product number" +++++++++
         $this->loadPoNo();
+
         if (!empty($this->store_id)) {
             $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
             $this->allproducts = Product::whereIn('id', $products_store)->get();
@@ -289,8 +254,8 @@ class Create extends Component
             }
 
         }
-        // ++++++++++++++++++++++++++++++ end : search_by_product_symbol ++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++ start : search_by_product_name ++++++++++++++++++++++++++++++
+        // ++++++++++++ end : search_by_product_symbol ++++++++++++
+        // ++++++++++++ start : search_by_product_name ++++++++++++
         if(!empty($this->searchProduct))
         {
             $search_result = Product::when($this->searchProduct,function ($query){
@@ -312,7 +277,7 @@ class Create extends Component
                 $this->searchProduct = '';
             }
         }
-        // ++++++++++++++++++++++++++++++ end : search_by_product_name ++++++++++++++++++++++++++++++
+        // ++++++++++++ end : search_by_product_name ++++++++++++
         if ($this->source_type == 'pos')
         {
             $users = StorePos::pluck('name', 'id');
@@ -571,7 +536,8 @@ class Create extends Component
         $this->updateCurrentStock();
     }
 
-    public function getVariationData($index){
+    public function getVariationData($index)
+    {
        $variant = Variation::find($this->items[$index]['variation_id']);
        $this->items[$index]['unit'] = $variant->unit->name;
        $this->items[$index]['base_unit_multiplier'] = $variant->equal;
@@ -636,14 +602,14 @@ class Create extends Component
         $this->items[$index]['dollar_total_cost'] = (float)($this->items[$index]['dollar_purchasing_price'] * $this->items[$index]['quantity']);
         // $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_purchasing_price'] * $this->items[$index]['quantity'];
         $this->items[$index]['dollar_total_cost_var'] = (float)($this->items[$index]['dollar_total_cost']);
-        return number_format($this->items[$index]['dollar_total_cost'], 2);
+        return number_format($this->items[$index]['dollar_total_cost'], num_of_digital_numbers());
     }
     // ++++++++++++++++++++++++++ Task : اجمالي التكاليف بالدينار ++++++++++++++++++++++++++
     public function total_cost($index)
     {
         $this->items[$index]['total_cost'] = (float)($this->items[$index]['purchasing_price'] * $this->items[$index]['quantity']);
         $this->items[$index]['total_cost_var'] = (float)($this->items[$index]['total_cost']) ;
-        return number_format($this->items[$index]['total_cost'],2) ;
+        return number_format($this->items[$index]['total_cost'],num_of_digital_numbers()) ;
     }
     // ++++++++++++++++++++++++++ Task : convert_dinar_price() : سعر البيع بالدينار ++++++++++++++++++++++++++
     public function convert_dinar_price($index)
@@ -684,7 +650,7 @@ class Create extends Component
                 $totalCost += (float)$item['total_cost'];
             }
         }
-        return number_format($this->num_uf($totalCost),2);
+        return number_format($this->num_uf($totalCost),num_of_digital_numbers());
     }
     // +++++++++++++++ sum_dollar_total_cost() : sum all "dollar_sell_price" values ++++++++++++++++
     public function sum_dollar_total_cost()
@@ -693,12 +659,10 @@ class Create extends Component
         if(!empty($this->items)){
             foreach ($this->items as $item)
             {
-            //    dd($item['dollar_total_cost']);
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-//        dd($totalDollarCost);
-        return number_format($totalDollarCost,2);
+        return number_format($totalDollarCost,num_of_digital_numbers());
     }
     // +++++++++++++++++++++++ sub_total() +++++++++++++++++++++++
     public function sub_total($index)
@@ -710,7 +674,7 @@ class Create extends Component
 
             $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
 
-            return number_format($this->items[$index]['sub_total'], 3);
+            return number_format($this->items[$index]['sub_total'], num_of_digital_numbers());
         }
         else{
             $this->items[$index]['purchase_price'] = null;
@@ -724,7 +688,7 @@ class Create extends Component
         foreach ($this->items as $item) {
             $totalSubTotal += $item['sub_total'];
         }
-        return number_format($totalSubTotal,2);
+        return number_format($totalSubTotal,num_of_digital_numbers());
     }
     // +++++++++ Task : "مجموع اجمالي التكاليف " بالدولار +++++++++
     public function sum_dollar_sub_total()
@@ -735,7 +699,7 @@ class Create extends Component
         {
             $totalDollarSubTotal += $item['dollar_total_cost'];
         }
-        return number_format($totalDollarSubTotal,2);
+        return number_format($totalDollarSubTotal,num_of_digital_numbers());
     }
     // +++++++++ Task : "مجموع اجمالي التكاليف " بالدينار +++++++++
     public function sum_dinar_sub_total()
@@ -746,7 +710,7 @@ class Create extends Component
         {
             $totalDinarSubTotal += $item['total_cost'];
         }
-        return number_format($totalDinarSubTotal,2);
+        return number_format($totalDinarSubTotal,num_of_digital_numbers());
     }
 
     public function changeCurrentStock($index)

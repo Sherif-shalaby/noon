@@ -347,7 +347,8 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.grand_total') @lang('lang.dinar_c')">
-                                                                {{ number_format($line->final_total, 2) }} د.ع
+                                                                {{ number_format($line->final_total, num_of_digital_numbers()) }}
+                                                                د.ع
                                                             </span>
                                                         </td>
                                                         <td class="col13">
@@ -371,7 +372,8 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.grand_total') @lang('lang.dollar_c')">
-                                                                {{ number_format($line->dollar_final_total, 2) }} $
+                                                                {{ number_format($line->dollar_final_total, num_of_digital_numbers()) }}
+                                                                $
                                                             </span>
                                                         </td>
                                                         <td class="col13 dollar-cell">

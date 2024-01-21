@@ -849,4 +849,5 @@ return array(
     'loading_cost' => 'تكلفة التحميل',
     'loading_cost_currency' => 'عملة تكاليف التحميل',
     'sell' => 'البيع',
+    'num_of_digital_numbers'=>'عدد الاعداد العشرية',
 );

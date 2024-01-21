@@ -141,8 +141,8 @@
                         <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" value="0" class="add_stock_val" name="add_stock_val" />
-                        <button type="submit" class="btn btn-primary add_stock">@lang('lang.add_stock')</button>
+                        <input type="hidden" value="0" class="add_stock_val" name="add_stock_val" />
+                        <button type="submit" class="btn btn-primary add_stock">@lang('lang.add-stock')</button>
                     </div>
                     {!! Form::close() !!}
                 </div>

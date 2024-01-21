@@ -263,10 +263,10 @@
                     @foreach ($transaction->transaction_sell_lines as $line)
                         <tr style="text-align: center;">
                             <td style="text-align: center;background-color: #dddddd !important;">
-                                {{ number_format($line->sub_total, 2) }}</td>
+                                {{ number_format($line->sub_total, num_of_digital_numbers()) }}</td>
                             <td style="text-align: center;background-color: #dddddd !important;">
                                 @if (!empty($line->dollar_sell_price))
-                                    {{ number_format($line->dollar_sell_price * $line->exchange_rate, 2) }}
+                                    {{ number_format($line->dollar_sell_price * $line->exchange_rate, num_of_digital_numbers()) }}
                                 @else
                                     {{ $line->sell_price }}
                                 @endif
@@ -274,7 +274,8 @@
                             <td style="text-align: center;">{{ $line->quantity ?? 0 }}</td>
                             <td style="text-align: center;">{{ $line->extra_quantity ?? 0 }}</td>
                             <td style="text-align: center">
-                                {{ number_format($line->quantity ?? (0 + $line->extra_quantity ?? 0), 2) }}</td>
+                                {{ number_format($line->quantity ?? (0 + $line->extra_quantity ?? 0), num_of_digital_numbers()) }}
+                            </td>
                             <td style="text-align: center"> {{ $line->product->name }}</td>
                             <td></td>
                         </tr>

@@ -253,7 +253,7 @@ class ProductController extends Controller
         foreach ($users as $user) {
             Notification::send($user, new AddProductNotification($product->id, $userCreateEmp, $product_name, $type));
         }
-        if($request->add_stock_val=="1"){
+        if(isset($request->add_stock_val) && $request->add_stock_val=="1"){
         return redirect()->to('/add-stock/create?product_ids='.implode(',', $productIds));
         }
         return redirect()->back()->with('status', $output);
@@ -420,6 +420,7 @@ class ProductController extends Controller
   public function update($id,Request $request)
   {
     try{
+      $productIds=[];
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
@@ -445,6 +446,7 @@ class ProductController extends Controller
 
     ];
     $product = Product::find($id);
+    $productIds[]=$product->id;
     $product->update($product_data);
     // ++++++++++++++++++++ product_tax : update pivot Table ++++++++++++++++++++
     // When Change "product_tax" update "products_taxes" table
@@ -508,7 +510,9 @@ class ProductController extends Controller
         ];
         ProductDimension::where('product_id',$product->id)->update($product_dimensions);
     }
-
+    if(isset($request->add_stock_val) && $request->add_stock_val=="1"){
+        return redirect()->to('/add-stock/create?product_ids='.implode(',', $productIds));
+    }
     $output = [
         'success' => true,
         'msg' => __('lang.success')

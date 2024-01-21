@@ -59,7 +59,7 @@
                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                 style="font-size: 12px;font-weight: 600"
                                                 data-tooltip="@lang('lang.current_stock')">
-                                                {{ number_format($stock_line->avail_current_stock - $stock_line->damaged_current_stock, 3) }}
+                                                {{ number_format($stock_line->avail_current_stock - $stock_line->damaged_current_stock, num_of_digital_numbers()) }}
                                             </span>
                                         </td>
                                         <td>

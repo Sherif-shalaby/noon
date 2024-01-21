@@ -182,7 +182,7 @@
                                                     style="font-size: 12px;font-weight: 600"
                                                     data-tooltip="@lang('lang.grand_total')">
 
-                                                    {{ number_format($line->final_total, 2) }}
+                                                    {{ number_format($line->final_total, num_of_digital_numbers()) }}
                                                 </span>
                                             </td>
                                             <td>
