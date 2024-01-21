@@ -16,7 +16,7 @@
                 <div class="widgetbar">
                     <a href="{{route('wages.create')}}" class="btn btn-primary">
                         @lang('lang.add_wages')
-                      </a>
+                    </a>
                 </div>
             </div>
         </div>
