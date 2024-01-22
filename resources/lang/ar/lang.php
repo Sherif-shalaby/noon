@@ -852,5 +852,6 @@ return array(
     'num_of_digital_numbers' => 'عدد الاعداد العشرية',
     'percente' => 'النسبة',
     'final_purchase_for_piece' => 'سعر الشراء للفطعة',
-    'final_purchase' => 'سعر الشراءالنهائى'
+    'final_purchase' => 'سعر الشراءالنهائى',
+    'price_after_discount' => 'السعر بعد الخصم'
 );

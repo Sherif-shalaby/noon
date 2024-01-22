@@ -16,6 +16,12 @@ label {
     font-size: 10px !important;
 }
 
+input::placeholder {
+    color: #444 !important;
+    font-weight: 400 !important;
+    /* Replace with the desired color code */
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;

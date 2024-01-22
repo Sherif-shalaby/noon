@@ -205,7 +205,7 @@
                 wire:model="items.{{ $index }}.purchase_price"
                 wire:input="convertPurchasePrice({{ $index }})" required>
             <span class="dollar-cell"
-                style='font-weight:500;font-size:10px;color:#888'>{{ $product['dollar_purchase_price'] ?? 0 }}$</span>
+                style='font-weight:500;font-size:10px;color:#888'>{{ @number_format($product['dollar_purchase_price'], num_of_digital_numbers()) ?? 0 }}$</span>
             @error('items.' . $index . '.purchase_price')
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
