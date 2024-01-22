@@ -70,10 +70,11 @@
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
-
-                                    <input type="datetime-local" wire:model="transaction_date"
+                                    <b
+                                        class="d-flex justify-content-center align-items-center initial-balance-input width-full m-0">{{ $this->getTransactionDate() }}</b>
+                                    {{-- <input type="datetime-local" wire:model="transaction_date"
                                         value="{{ date('Y-m-d\TH:i') }}"
-                                        class="form-control initial-balance-input width-full m-0">
+                                        class="form-control initial-balance-input width-full m-0"> --}}
                                 </div>
 
                                 <div
@@ -112,7 +113,7 @@
                                                 'placeholder' => __('lang.please_select'),
                                                 'data-name' => 'supplier',
                                                 'wire:model' => 'supplier',
-
+                                            
                                                 'wire:change' => 'changeExchangeRate()',
                                             ]) !!}
 

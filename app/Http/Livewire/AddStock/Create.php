@@ -149,6 +149,10 @@ class Create extends Component
             }
         }
     }
+    public function getTransactionDate()
+    {
+        return $this->transaction_date = date('Y-m-d \a\t h:i A');
+    }
     public function changesupplier()
     {
         if ($this->supplier != null) {
