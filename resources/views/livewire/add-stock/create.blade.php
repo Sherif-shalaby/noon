@@ -531,7 +531,7 @@
                                     {{-- @if ($paying_currency == 2) --}}
                                     {{-- {{$this->sum_dollar_total_cost() ?? 0.00}} --}}
                                     {{-- @else --}}
-                                    {{ $this->sum_total_cost() ?? 0.0 }}
+                                    {{ @number_format($this->sum_total_cost(),num_of_digital_numbers()) ?? 0.0 }}
                                     {{-- @endif --}}
                                     <span class="final_total_span"></span>
                                 </h3>
@@ -542,7 +542,7 @@
                             <div class="col-md-3 offset-md-8 text-right">
                                 <h3> @lang('lang.total')$ :
                                     {{-- @if ($paying_currency == 2) --}}
-                                    {{ $this->sum_dollar_total_cost() ?? 0.0 }}
+                                    {{ @number_format($this->sum_dollar_total_cost(),num_of_digital_numbers()) ?? 0.0 }}
                                     {{-- @else --}}
                                     {{-- {{$this->sum_total_cost() ?? 0.00}} --}}
                                     {{-- @endif --}}
@@ -655,9 +655,9 @@
                                         <label for="due_amount" style="margin-top: 25px;">@lang('lang.duePaid'):
                                             <span class="due_amount_span">
                                                 @if ($paying_currency == 2)
-                                                    {{ $this->sum_dollar_total_cost() - $amount ?? '' }}
+                                                    {{ @number_format(@num_uf($this->sum_dollar_total_cost()) - $amount,num_of_digital_numbers()) ?? '' }}
                                                 @else
-                                                    {{ @num_uf($this->sum_total_cost()) - $amount ?? '' }}
+                                                    {{ @number_format(@num_uf($this->sum_total_cost()) - $amount,num_of_digital_numbers()) ?? '' }}
                                                 @endif
                                             </span>
                                         </label>
