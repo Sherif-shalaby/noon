@@ -100,6 +100,7 @@
                         ]) !!}
                     </div>
                 </div>
+                {{--  --}}
                 @if (!$reprsenative_sell_car)
                     <div class="col-sm-2">
                         {!! Form::label('s', __('lang.deliveryman') . '*', [
