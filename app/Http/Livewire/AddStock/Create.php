@@ -150,7 +150,8 @@ class Create extends Component
         }
     }
     public function getTransactionDate(){
-        return $this->transaction_date = date('Y-m-d \a\t h:i A');
+        $this->transaction_date = date('Y-m-d\TH:i');
+        return date('Y-m-d \a\t h:i A');
     }
     public function changesupplier()
     {
