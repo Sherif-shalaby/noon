@@ -52,7 +52,7 @@ class Create extends Component
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
         $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0,$representative_id, $loading_cost,
-        $dollar_loading_cost,$toggle_suppliers;
+        $dollar_loading_cost,$toggle_suppliers,$delivery_date;
 
 
     protected $rules =[
@@ -191,6 +191,7 @@ class Create extends Component
                 $this->reprsenative_sell_car = true;
             }
         }
+        $this->delivery_date = now()->format('Y-m-d');
         $this->changeAllProducts();
         $this->client_id = 1;
         $this->getCustomerData($this->client_id);
@@ -372,6 +373,7 @@ class Create extends Component
                 'representative_id' => $this->representative_id ?? null,
                 'loading_cost' => $this->loading_cost ?? null,
                 'dollar_loading_cost' => $this->dollar_loading_cost ?? null,
+                'delivery_date'=> isset($this->delivery_date) ? $this->delivery_date : null,
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
@@ -500,6 +502,8 @@ class Create extends Component
                     }
                     $process_invoice->invoice_no=$transaction->invoice_no;
                     $process_invoice->is_processed=0;
+                    // $process_invoice->delivery_date = isset($this->delivery_date) ? $this->delivery_date : null;
+
                     $process_invoice->save();
                 }
             }
