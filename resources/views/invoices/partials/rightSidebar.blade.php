@@ -87,6 +87,19 @@
         <div class="body-card-app pt-2 pb-0 d-flex flex-wrap justify-content-end align-items-center position-relative">
 
             <div class="col-md-8 p-0 d-flex justify-content-end">
+                <div class="col-sm-2">
+                    {!! Form::label('delivery_date', __('lang.delivery_date'), [
+                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                        'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                    ]) !!}
+                    <div class="input-wrapper width-full">
+                        {!! Form::date('delivery_date', now()->format('Y-m-d'), [
+                            'class' => 'form-control initial-balance-input width-full py-1',
+                            'wire:model' => 'delivery_date',
+                            'placeholder' => __('lang.delivery_date'),
+                        ]) !!}
+                    </div>
+                </div>
                 @if (!$reprsenative_sell_car)
                     <div class="col-sm-2">
                         {!! Form::label('s', __('lang.deliveryman') . '*', [
@@ -243,6 +256,7 @@
                         </div>
                     </div>
                 @endif
+
                 <div class="col-sm-2">
                     {!! Form::label('representative_id', __('lang.representative') . '*', [
                         'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -359,6 +373,8 @@
                 {{--  --}}
 
             </div>
+
+
 
             <div class="d-flex flex-column">
 

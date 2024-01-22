@@ -431,8 +431,8 @@ class Create extends Component
 
     public function updated($propertyName)
     {
-        $this->dispatchBrowserEvent('componentRefreshed');
         $this->validateOnly($propertyName);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function store(): Redirector|Application|RedirectResponse
     {
@@ -913,6 +913,7 @@ class Create extends Component
                 $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
             }
         }
+        $this->count_total_by_variations();
     }
 
     public function addNewProduct($variations, $product, $show_product_data, $index = null, $stock)
@@ -1333,6 +1334,46 @@ class Create extends Component
                 $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
                 $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight : 0;
                 $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * 1 : 0;
+            } else if (!empty($product_data->product_dimensions) && !empty($product_data->product_dimensions->variation_id)) {
+                $variation = Variation::find($product_data->product_dimensions->variation_id);
+                // dd($variation->basic_unit_id);
+                $basic_variation = Variation::where('product_id', $product_data->id)->where('basic_unit_id', $variation->unit_id)->first();
+                // $dimension_is_basic_variation=Variation::where('product_id',$product_data->id)->where('basic_unit_id',$variant->unit_id)->first();
+                // dd($variant->unit_id);
+                if (!empty($basic_variation) && $variant->unit_id == $basic_variation->unit_id) {
+                    $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * $basic_variation->equal : 0;
+                    $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) * $basic_variation->equal : 0;
+                    $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $basic_variation->equal : 0;
+                    $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $basic_variation->equal : 0;
+                } elseif ($variation->basic_unit_id == $variant->unit_id) {
+                    $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size / $basic_variation->equal : 0;
+                    $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $basic_variation->equal : 0;
+                    $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $basic_variation->equal : 0;
+                    $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $basic_variation->equal : 0;
+                } else {
+                    $equal = 1;
+                    $variation_units = Variation::where('product_id', $product_data->id)
+                        ->where('id', '>=', $variation->id)->where('id', '<=', $variant->id)->get();
+                    if (count($variation_units) > 0) {
+                        foreach ($variation_units as $i => $var) {
+                            $equal *= $var->equal;
+                        }
+                        $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size / $equal : 0;
+                        $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $equal : 0;
+                        $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $equal : 0;
+                        $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $equal : 0;
+                    } else {
+                        $variation_units = Variation::where('product_id', $product_data->id)
+                            ->where('id', '<=', $variation->id)->where('id', '>=', $variant->id)->get();
+                        foreach ($variation_units as $i => $var) {
+                            $equal *= $var->equal;
+                        }
+                        $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * $equal : 0;
+                        $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) * $equal : 0;
+                        $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $equal : 0;
+                        $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $equal : 0;
+                    }
+                }
             } else {
                 $this->items[$index]['size'] = 0;
                 $this->items[$index]['total_size'] = 0;
@@ -2384,10 +2425,10 @@ class Create extends Component
 
     public function count_total_by_variations()
     {
+        // dd($this->items);
         $this->variationSums = [];
         foreach ($this->items as $item) {
             $variation_name = $item['unit'];
-
             if (isset($this->variationSums[$variation_name])) {
                 // If the variation_id already exists in the sums array, add the quantity
                 $this->variationSums[$variation_name] += (float)$item['quantity'];
@@ -2398,6 +2439,7 @@ class Create extends Component
         }
         //        dd($this->variationSums);
     }
+
     public function getPurchaseOrderStatusArray()
     {
         return [
