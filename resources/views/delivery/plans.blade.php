@@ -29,6 +29,7 @@
                 <div class="card-header d-flex align-items-center">
                     <h4 class="print-title">@lang('lang.show_plans')</h4>
                 </div>
+
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12">
@@ -78,35 +79,118 @@
                             </div>
                         </div>
                     </div>
+                    {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
+                    <style>
+                        .selectBox {
+                        position: relative;
+                        }
+
+                        /* selectbox style */
+                        .selectBox select
+                        {
+                            width: 100%;
+                            padding: 0 !important;
+                            padding-left: 4px;
+                            padding-right: 4px;
+                            color: #fff;
+                            border: 1px solid #596fd7;
+                            background-color: #596fd7;
+                            height: 39px !important;
+                        }
+
+                        .overSelect {
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                        }
+
+                        #checkboxes {
+                        display: none;
+                        border: 1px #dadada solid;
+                        height: 125px;
+                        overflow: auto;
+                        padding-top: 10px;
+                        /* text-align: end;  */
+                        }
+
+                        #checkboxes label {
+                        display: block;
+                        padding: 5px;
+
+                        }
+
+                        #checkboxes label:hover {
+                        background-color: #ddd;
+                        }
+                        #checkboxes label span
+                        {
+                            font-weight: normal;
+                        }
+                    </style>
+                    {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
+                    <div class="col-md-4 col-lg-4">
+                        <div class="multiselect col-md-6">
+                            <div class="selectBox" onclick="showCheckboxes()">
+                                <select class="form-select form-control form-control-lg">
+                                    <option>@lang('lang.show_hide_columns')</option>
+                                </select>
+                                <div class="overSelect"></div>
+                            </div>
+                            <div id="checkboxes">
+                                {{-- +++++++++++++++++ checkbox1 : date +++++++++++++++++ --}}
+                                <label for="col1_id">
+                                    <input type="checkbox" id="col1_id" name="col1" checked="checked" />
+                                    <span>@lang('lang.date')</span> &nbsp;
+                                </label>
+                                {{-- +++++++++++++++++ checkbox2 : city +++++++++++++++++ --}}
+                                <label for="col2_id">
+                                    <input type="checkbox" id="col2_id" name="col2" checked="checked" />
+                                    <span>@lang('lang.city')</span>
+                                </label>
+                                {{-- +++++++++++++++++ checkbox3 : delivery +++++++++++++++++ --}}
+                                <label for="col3_id">
+                                    <input type="checkbox" id="col3_id" name="col3" checked="checked" />
+                                    <span>@lang('lang.delivery')</span>
+                                </label>
+                                {{-- +++++++++++++++++ checkbox4 : status +++++++++++++++++ --}}
+                                <label for="col4_id">
+                                    <input type="checkbox" id="col4_id" name="col4" checked="checked" />
+                                    <span>@lang('lang.status')</span>
+                                </label>
+                                {{-- +++++++++++++++++ checkbox5 : action +++++++++++++++++ --}}
+                                <label for="col5_id">
+                                    <input type="checkbox" id="col5_id" name="col5" checked="checked" />
+                                    <span>@lang('lang.action')</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div> <br/>
                     <div class="table-responsive">
                         <table id="datatable-buttons" class="table dataTable">
                             <thead>
-                            <tr>
-                                <th>@lang('lang.date')</th>
-                                <th>@lang('lang.city')</th>
-                                {{-- @can('') --}}
-                                    <th>@lang('lang.delivery')</th>
-                                    <th>@lang('lang.status')</th>
-                                {{-- @endcan --}}
-                                <th class="notexport">@lang('lang.action')</th>
-                            </tr>
+                                <tr>
+                                    <th class="col1">@lang('lang.date')</th>
+                                    <th class="col2">@lang('lang.city')</th>
+                                    <th class="col3">@lang('lang.delivery')</th>
+                                    <th class="col4">@lang('lang.status')</th>
+                                    <th class="col5 notexport">@lang('lang.action')</th>
+                                </tr>
                             </thead>
                             <tbody>
-
                                 @foreach($plans as $key => $plan)
                                     <tr>
-
-                                        <td>
+                                        <td class="col1">
                                             {{$plan->date}}
                                         </td>
-                                        <td>
+                                        <td class="col2">
                                             {{$plan->city->name}}
                                         </td>
-                                        <td>
-{{--                                            @dd($plan->employee)--}}
+                                        <td class="col3">
                                             {{!empty($plan->employee->user) ? $plan->employee->user->name : ''}}
                                         </td>
-                                        <td>
+                                        <td class="col4">
                                             @php
                                                 $delivery_plan = App\Models\DeliveryCustomerPlan::where('delivery_location_id',$plan->id)->get();
                                                 $allPlansSignedAndSubmitted = true;
@@ -125,7 +209,7 @@
                                                 @endif
 
                                         </td>
-                                        <td>
+                                        <td class="col5">
                                              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
                                                      aria-haspopup="true" aria-expanded="false">
                                                  @lang('lang.action')
@@ -158,14 +242,39 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+@section('javascript')
+    {{-- +++++++++++++++ Show/Hide checkboxes +++++++++++++++ --}}
+    <script>
+        // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
+        $("input:checkbox:not(:checked)").each(function() {
+            var column = "table ." + $(this).attr("name");
+            $(column).hide();
+        });
 
-
+        $("input:checkbox").click(function(){
+            var column = "table ." + $(this).attr("name");
+            $(column).toggle();
+        });
+        // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
+        var expanded = false;
+        function showCheckboxes()
+        {
+            var checkboxes = document.getElementById("checkboxes");
+            if (!expanded) {
+                checkboxes.style.display = "block";
+                expanded = true;
+            } else {
+                checkboxes.style.display = "none";
+                expanded = false;
+            }
+        }
+    </script>
 @endsection
 
