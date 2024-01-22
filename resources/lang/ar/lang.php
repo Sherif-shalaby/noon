@@ -214,7 +214,7 @@ return array(
     'partially_received' => 'تم الاستلام جزئيًا',
     'date_and_time' => 'التاريخ والوقت',
     'select_products' => 'حدد المنتجات',
-    'items_count' => 'عدد الأصناف',
+    'items_count' => 'عدد التعبئات',
     'items_quantity' => 'الكميه الاجماليه',
     'total' => 'مجموع',
     'files' => 'الملفات',
@@ -849,5 +849,5 @@ return array(
     'loading_cost' => 'تكلفة التحميل',
     'loading_cost_currency' => 'عملة تكاليف التحميل',
     'sell' => 'البيع',
-    'num_of_digital_numbers'=>'عدد الاعداد العشرية',
+    'num_of_digital_numbers' => 'عدد الاعداد العشرية',
 );
