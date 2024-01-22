@@ -169,11 +169,7 @@
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-3">
-                                    {!! Form::label('transaction_date', __('lang.print_date'), []) !!}
-                                    <input type="datetime-local" wire:model="transaction_date"
-                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control">
-                                </div>
+                                
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
                                     <input type="text" class="form-control changeExchangerateForSupplier"
@@ -186,7 +182,12 @@
                                             wire:model="end_date">
                                     </div>
                                 @endif
-
+                                <div class="col-md-3">
+                                    {!! Form::label('transaction_date', __('lang.print_date'), []) !!}<br>
+                                    <b class="pt-5">{{$this->getTransactionDate()}}</b>
+                                    {{-- <input type="datetime-local" wire:model="transaction_date"
+                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control"> --}}
+                                </div>
                             </div>
                             <div class="row">
                                 {{-- <div class="col-md-2">
