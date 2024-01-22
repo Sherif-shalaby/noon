@@ -43,6 +43,7 @@
                     'data-live-search' => 'true',
                     'required' => 'required',
                     'wire:model' => 'items.' . $index . '.used_currency',
+                    'wire:input' => "convertPurchasePrice($index)",
                 ]) !!}
             </div>
             @error('items.' . $index . '.used_currency')
@@ -97,7 +98,7 @@
                 <div class="input-wrapper" style="width: 100%!important">
                     <select name="items.{{ $index }}.variation_id" class="form-select "
                         wire:model="items.{{ $index }}.variation_id"
-                        wire:change="getVariationData({{ $index }})">
+                        wire:input="getVariationData({{ $index }})">
                         <option value="" selected>{{ __('lang.please_select') }}</option>
                         @foreach ($product['variations'] as $variant)
                             @if (!empty($variant['unit_id']))
@@ -148,7 +149,7 @@
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.quantity') }}</label>
 
             <input type="text" class="form-control quantity  initial-balance-input width-full" required
-                wire:model="items.{{ $index }}.quantity" wire:change="changeCurrentStock({{ $index }})">
+                wire:model="items.{{ $index }}.quantity" wire:input="changeCurrentStock({{ $index }})">
             @error('items.{{ $index }}.quantity')
                 <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
@@ -162,7 +163,7 @@
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.b_qty') }}</label>
             <input type="text" class="form-control bonus_quantity initial-balance-input width-full"
                 placeholder="{{ __('lang.b_qty') }}" wire:model="items.{{ $index }}.bonus_quantity"
-                wire:change="changeCurrentStock({{ $index }})">
+                wire:input="changeCurrentStock({{ $index }})">
             @error('items.{{ $index }}.bonus_quantity')
                 <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
@@ -202,7 +203,7 @@
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.purchase_price') }}</label>
             <input type="text" class="form-control initial-balance-input width-full"
                 wire:model="items.{{ $index }}.purchase_price"
-                wire:change="convertPurchasePrice({{ $index }})" required>
+                wire:input="convertPurchasePrice({{ $index }})" required>
             <span class="dollar-cell"
                 style='font-weight:500;font-size:10px;color:#888'>{{ $product['dollar_purchase_price'] ?? 0 }}$</span>
             @error('items.' . $index . '.purchase_price')
@@ -235,10 +236,10 @@
             <div class="d-flex width-full">
                 <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
                     wire:model="items.{{ $index }}.purchase_discount" style='font-weight:500;font-size:10px;'
-                    wire:change="changePurchasePrice({{ $index }})" placeholder="amount">
+                    wire:input="changePurchasePrice({{ $index }})" placeholder="amount">
                 <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
                     wire:model="items.{{ $index }}.purchase_discount_percent"
-                    style='font-weight:500;font-size:10px;' wire:change="changePurchasePrice({{ $index }})"
+                    style='font-weight:500;font-size:10px;' wire:input="changePurchasePrice({{ $index }})"
                     placeholder="%">
             </div>
             <div class="d-flex width-full dollar-cell">
@@ -252,8 +253,7 @@
                     name="discount_on_bonus_quantity{{ $index }}"
                     id="discount_on_bonus_quantity_{{ $index }}"
                     wire:model="items.{{ $index }}.discount_on_bonus_quantity"
-                    wire:change="changePurchasePrice({{ $index }})" style="font-size: 0.75rem"
-                    value="true">
+                    wire:input="changePurchasePrice({{ $index }})" style="font-size: 0.75rem" value="true">
                 <label class="custom-control-label"
                     for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_from_original_price')</label>
             </div>
@@ -358,7 +358,7 @@
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.annual_discount')</label>
                     <input type="text" class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.annual_discount"
-                        wire:change="purchase_final({{ $index }})" placeholder="@lang('lang.annual_discount')">
+                        wire:input="purchase_final({{ $index }})" placeholder="@lang('lang.annual_discount')">
                 </div>
 
 
@@ -369,7 +369,7 @@
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.seasonal_discount')</label>
                     <input type="text" class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.seasonal_discount"
-                        wire:change="purchase_final({{ $index }})" placeholder="@lang('lang.seasonal_discount')">
+                        wire:input="purchase_final({{ $index }})" placeholder="@lang('lang.seasonal_discount')">
                 </div>
 
                 <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
@@ -379,13 +379,13 @@
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.cash_discount')</label>
                     <input type="text" class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.cash_discount"
-                        wire:change="purchase_final({{ $index }})" placeholder="@lang('lang.cash_discount')">
+                        wire:input="purchase_final({{ $index }})" placeholder="@lang('lang.cash_discount')">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input"
                             name="discount_dependency{{ $index }}"
                             id="discount_dependency_{{ $index }}"
                             wire:model="items.{{ $index }}.discount_dependency"
-                            wire:change="purchase_final({{ $index }})" style="font-size: 0.75rem"
+                            wire:input="purchase_final({{ $index }})" style="font-size: 0.75rem"
                             value="true">
                         <label class="custom-control-label"
                             for="discount_dependency_{{ $index }}">@lang('lang.discount_dependency')</label>
@@ -422,12 +422,12 @@
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase for piece') }}</label>
                 <b style="font-weight: 700;color: #333"
                     class="final_total_span d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
-                    aria-placeholder="final purchase for piece">
+                    aria-placeholder="{{ __('lang.final purchase for piece') }}">
                     {{ $this->final_purchase_for_piece($index) }}
                 </b>
                 <b style="font-weight: 700;color: #333"
                     class="final_total_span d-flex justify-content-center align-items-center initial-balance-input width-full m-0 mt-1 dollar-cell"
-                    aria-placeholder="final purchase for piece">
+                    aria-placeholder="{{ __('lang.final purchase for piece') }}">
                     {{ $this->dollar_final_purchase_for_piece($index) }} $
 
                 </b>
@@ -523,7 +523,7 @@
                 <input type="text"
                     class="form-control initial-balance-input width-full mx-0 percent{{ $index }} {{ $key }}"
                     name="items.{{ $index }}.customer_prices.{{ $key }}.percent"
-                    wire:change="changePercent({{ $index }},{{ $key }})"
+                    wire:input="changePercent({{ $index }},{{ $key }})"
                     wire:model="items.{{ $index }}.customer_prices.{{ $key }}.percent"
                     maxlength="6" placeholder="%">
             </div>
@@ -532,7 +532,7 @@
                 <input type="text" class="form-control mb-0 initial-balance-input width-full mx-0 dinar_sell_price"
                     wire:model="items.{{ $index }}.customer_prices.{{ $key }}.dinar_increase"
                     placeholder = "{{ $items[$index]['customer_prices'][$key]['customer_name'] }}"
-                    wire:change="changeIncrease({{ $index }},{{ $key }})">
+                    wire:input="changeIncrease({{ $index }},{{ $key }})">
                 <span class="dollar-cell"
                     style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['customer_prices'][$key]['dollar_increase'] }}
                     $</span>
@@ -627,7 +627,7 @@
                         <select name="items.{{ $index }}.stores.{{ $i }}.variation_id"
                             class="form-select"
                             wire:model="items.{{ $index }}.stores.{{ $i }}.variation_id"
-                            wire:change="getVariationData({{ $index }},'stores',{{ $i }})">
+                            wire:input="getVariationData({{ $index }},'stores',{{ $i }})">
                             <option value="" selected>{{ __('lang.please_select') }}</option>
                             @foreach ($store['variations'] as $variant)
                                 @if (!empty($variant['unit_id']))
@@ -671,7 +671,7 @@
                 ]) !!}
                 <input type="text" class="form-control initial-balance-input width-full quantity" required
                     wire:model="items.{{ $index }}.stores.{{ $i }}.quantity"
-                    wire:change="changeCurrentStock({{ $index }},'stores',{{ $i }})">
+                    wire:input="changeCurrentStock({{ $index }},'stores',{{ $i }})">
                 @error('items.{{ $index }}.quantity')
                     <span class="error text-danger">{{ $message }}</span>
                 @enderror
@@ -686,7 +686,7 @@
                 <input type="text" class="form-control initial-balance-input width-full bonus_quantity"
                     placeholder="bonus_quantity"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.bonus_quantity"
-                    wire:change="changeCurrentStock({{ $index }},'stores',{{ $i }})">
+                    wire:input="changeCurrentStock({{ $index }},'stores',{{ $i }})">
                 @error('items.' . $index . '.stores' . $i . '.bonus_quantity')
                     <span class="error text-danger">{{ $message }}</span>
                 @enderror
@@ -699,7 +699,7 @@
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.purchase_price') }}</label>
                 <input type="number" class="form-control initial-balance-input width-full purchase_price"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price"
-                    wire:change="convertPurchasePrice({{ $index }},'stores',{{ $i }})" required>
+                    wire:input="convertPurchasePrice({{ $index }},'stores',{{ $i }})" required>
                 <span style='font-weight:500;font-size:10px;color:#888'
                     class="dollar-cell">{{ $items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
                 @error('items.' . $index . '.stores' . $i . '.purchase_price')
@@ -733,12 +733,12 @@
                     <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount"
                         style='font-weight:500;font-size:10px;'
-                        wire:change="changePurchasePrice({{ $index }},'stores',{{ $i }})"
+                        wire:input="changePurchasePrice({{ $index }},'stores',{{ $i }})"
                         placeholder="amount">
                     <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent"
                         style='font-weight:500;font-size:10px;'
-                        wire:change="changePurchasePrice({{ $index }},'stores',{{ $i }})"
+                        wire:input="changePurchasePrice({{ $index }},'stores',{{ $i }})"
                         placeholder="%">
 
                 </div>
@@ -754,7 +754,7 @@
                         name="discount_on_bonus_quantity{{ $index }}{{ $i }}"
                         id="discount_on_bonus_quantity{{ $i }}"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.discount_on_bonus_quantity"
-                        wire:change="changePurchasePrice({{ $index }}, 'stores', {{ $i }})"
+                        wire:input="changePurchasePrice({{ $index }}, 'stores', {{ $i }})"
                         style="font-size: 0.75rem" value="true">
                     <label class="custom-control-label"
                         for="discount_on_bonus_quantity{{ $i }}">@lang('lang.discount_from_original_price')</label>
@@ -788,12 +788,12 @@
                     <input type="text" class="form-control   initial-balance-input width-full col-6 p-0 px-2"
                         style='font-weight:500;font-size:10px;'
                         wire:model="items.{{ $index }}.stores.{{ $i }}.discount_percent"
-                        wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
+                        wire:input="purchase_final({{ $index }},'stores',{{ $i }})"
                         placeholder="%">
                     <input type="text" class="form-control   initial-balance-input width-full col-6 p-0 px-2"
                         style='font-weight:500;font-size:10px;'
                         wire:model="items.{{ $index }}.stores.{{ $i }}.discount"
-                        wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
+                        wire:input="purchase_final({{ $index }},'stores',{{ $i }})"
                         placeholder="discount amount">
                 </div>
             </div>
@@ -806,14 +806,14 @@
                 <input type="text" class="form-control  initial-balance-input width-full mx-0"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.cash_discount"
                     style="width: 100px;"
-                    wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
+                    wire:input="purchase_final({{ $index }},'stores',{{ $i }})"
                     placeholder="@lang('lang.cash_discount')">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input"
                         name="discount_dependency{{ $index }}{{ $i }}"
                         id="discount_dependency{{ $i }}"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.discount_dependency"
-                        wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
+                        wire:input="purchase_final({{ $index }},'stores',{{ $i }})"
                         style="font-size: 0.75rem" value="true">
                     <label class="custom-control-label"
                         for="discount_dependency{{ $i }}">@lang('lang.discount_dependency')</label>
@@ -828,7 +828,7 @@
                     style='font-weight:500;font-size:10px;color:#888'>@lang('lang.seasonal_discount')</label>
                 <input type="text" class="form-control initial-balance-input width-full mx-0""
                     wire:model="items.{{ $index }}.stores.{{ $i }}.seasonal_discount"
-                    wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
+                    wire:input="purchase_final({{ $index }},'stores',{{ $i }})"
                     placeholder="@lang('lang.seasonal_discount')">
             </div>
 
@@ -839,7 +839,7 @@
                     style='font-weight:500;font-size:10px;color:#888'>@lang('lang.annual_discount')</label>
                 <input type="text" class="form-control initial-balance-input width-full mx-0"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.annual_discount"
-                    wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
+                    wire:input="purchase_final({{ $index }},'stores',{{ $i }})"
                     placeholder="@lang('lang.annual_discount')">
             </div>
 
@@ -870,12 +870,12 @@
                         style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase for piece') }}</label>
                     <span style="font-weight: 700;color: #333"
                         class="final_total_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
-                        aria-placeholder="final purchase for piece">
+                        aria-placeholder="{{ __('lang.final purchase for piece') }}">
                         {{ $this->final_purchase_for_piece($index, 'stores', $i) }}
                     </span>
                     <span style="font-weight: 700;color: #333"
                         class="final_total_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0 mt-1"
-                        aria-placeholder="final purchase for piece">
+                        aria-placeholder="{{ __('lang.final purchase for piece') }}">
                         {{ $this->dollar_final_purchase_for_piece($index, 'stores', $i) }} $
                     </span>
                 </div>
@@ -890,12 +890,14 @@
                     {{ $this->cost($index, 'stores', $i) }}
                     <span
                         class="cost_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
-                        style="font-weight:700;color: #333" aria-placeholder="final purchase for piece">
+                        style="font-weight:700;color: #333"
+                        aria-placeholder="{{ __('lang.final purchase for piece') }}">
                         {{ $store['cost'] }}
                     </span>
                     <span
                         class="cost_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0 mt-1 dollar-cell"
-                        style="font-weight:700;color: #333" aria-placeholder="final purchase for piece">
+                        style="font-weight:700;color: #333"
+                        aria-placeholder="{{ __('lang.final purchase for piece') }}">
                         {{ $store['dollar_cost'] }} $
                     </span>
                 </div>
@@ -932,7 +934,7 @@
                         id="percent{{ $i }}"
                         name="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.percent"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.percent"
-                        wire:change="changePercent({{ $index }},{{ $key }},'stores',{{ $i }})"
+                        wire:input="changePercent({{ $index }},{{ $key }},'stores',{{ $i }})"
                         maxlength="6" placeholder="%">
                 </div>
 
@@ -941,7 +943,7 @@
                     <input type="text" class="form-control initial-balance-input width-full mx-0  dinar_sell_price"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.dinar_increase"
                         placeholder = "{{ $items[$index]['stores'][$i]['customer_prices'][$key]['customer_name'] }}"
-                        wire:change="changeIncrease({{ $index }},{{ $key }},'stores',{{ $i }})">
+                        wire:input="changeIncrease({{ $index }},{{ $key }},'stores',{{ $i }})">
                     <span class="dollar-cell"
                         style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] }}
                         $</span>

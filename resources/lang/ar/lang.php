@@ -850,4 +850,7 @@ return array(
     'loading_cost_currency' => 'عملة تكاليف التحميل',
     'sell' => 'البيع',
     'num_of_digital_numbers' => 'عدد الاعداد العشرية',
+    'percente' => 'النسبة',
+    'final_purchase_for_piece' => 'سعر الشراء للفطعة',
+    'final_purchase' => 'سعر الشراءالنهائى'
 );

@@ -780,4 +780,7 @@ return [
     'loading_cost_currency' => 'Loading Cost Currency',
     'sell' => 'Sell',
     'num_of_digital_numbers' => 'Num Of Digital Numbers',
+    'percente' => 'Percentage',
+    'final_purchase_for_piece' => 'final purchase for piece',
+    'final_purchase' => 'final purchase',
 ];

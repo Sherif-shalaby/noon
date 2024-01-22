@@ -106,7 +106,7 @@
                                             'wire:key' => 'collapseOndiscountsaxas',
                                             'placeholder' => __('lang.please_select'),
                                             'wire:model' => 'items.' . $index . '.prices.' . $key . '.price_type',
-                                            'wire:change' => 'changePrice(' . $index . ',' . $key . ')',
+                                            'wire:input' => 'changePrice(' . $index . ',' . $key . ')',
                                         ],
                                     ) !!}
                                 </div>
@@ -116,7 +116,7 @@
                                         id="items.{{ $index }}.prices.{{ $key }}.discount_from_original_price"
                                         style="font-size: 0.75rem;border-radius: 12px;height: 30px;"
                                         @if ($items[$index]['prices'][$key]['discount_from_original_price']) checked @endif
-                                        wire:change="change_discount_from_original_price({{ $index }}, {{ $key }})">
+                                        wire:input="change_discount_from_original_price({{ $index }}, {{ $key }})">
                                     <label class="custom-control-label" style="font-size: 8px"
                                         for="items.{{ $index }}.prices.{{ $key }}.discount_from_original_price">
                                         @lang('lang.discount_from_original_price')
@@ -138,7 +138,7 @@
                                 <input type="text" style="height:30px;font-size:12px;" name="price"
                                     class="form-control initial-balance-input width-full mt-0 price"
                                     wire:model="items.{{ $index }}.prices.{{ $key }}.price"
-                                    wire:change="changePrice({{ $index }}, {{ $key }})"
+                                    wire:input="changePrice({{ $index }}, {{ $key }})"
                                     placeholder = "{{ !empty($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}">
                             </div>
 
@@ -160,7 +160,7 @@
                                 <input style="height:30px;font-size:12px;" type="text"
                                     class="form-control initial-balance-input width-full mt-0 discount_quantity"
                                     wire:model="items.{{ $index }}.prices.{{ $key }}.discount_quantity"
-                                    wire:change="changePrice({{ $index }}, {{ $key }})"
+                                    wire:input="changePrice({{ $index }}, {{ $key }})"
                                     placeholder = "{{ __('lang.quantity') }}">
 
                             </div>
@@ -174,7 +174,7 @@
                                 <input style="height:30px;font-size:12px;" type="text"
                                     class="form-control  initial-balance-input width-full mt-0 bonus_quantity"
                                     wire:model="items.{{ $index }}.prices.{{ $key }}.bonus_quantity"
-                                    wire:change="changePrice({{ $index }}, {{ $key }})"
+                                    wire:input="changePrice({{ $index }}, {{ $key }})"
                                     placeholder = "{{ __('lang.b_qty') }}">
 
                             </div>

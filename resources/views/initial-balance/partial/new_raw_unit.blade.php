@@ -138,7 +138,7 @@
                         style="width: 75px">
                         <label
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                            style='font-weight:500;font-size:10px;color:#888'>%</label>
+                            style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
                         <input type="text" class="form-control initial-balance-input percent" name="percent"
                             wire:change="changePercent({{ $index }},{{ $key }})"
                             style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
@@ -146,10 +146,19 @@
                             placeholder="%">
                     </div>
                     <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  align-items-center pl-1"
-                        style="width: 75px">
-                        <label
-                            class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                            style='font-weight:500;font-size:10px;color:#888'>{{ $rows[$index]['prices'][$key]['customer_name'] }}</label>
+                        style="width: 100px">
+                        <div class="d-flex justify-content-between">
+                            <label
+                                class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                style='font-weight:500;font-size:10px;color:#333'>{{ $rows[$index]['prices'][$key]['customer_name'] }}</label>
+                            <span style='font-weight:500;font-size:10px;color:#333'>
+                                :
+                            </span>
+                            <label
+                                class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                style='font-weight:500;font-size:10px;color:#333'>{{ __('lang.amount') }} </label>
+
+                        </div>
                         <input type="text" class="form-control initial-balance-input dinar_sell_price"
                             style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
