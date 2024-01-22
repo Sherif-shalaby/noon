@@ -1919,7 +1919,7 @@ class Create extends Component
                     $purchase_price = ($this->num_uf($this->items[$index]['purchase_price']) *  $this->num_uf($this->items[$index]['quantity'])) /  $this->num_uf($total_quantity);
                     $dollar_purchase_price = ($this->num_uf($this->items[$index]['dollar_purchase_price']) * $this->num_uf($this->items[$index]['quantity'])) / $this->num_uf($total_quantity);
                 }
-                if ($this->items[$index]['purchase_discount'] != null) {
+                if (isset($this->items[$index]['purchase_discount']) && $this->items[$index]['purchase_discount'] != null) {
                     if ($this->items[$index]['used_currency'] == 2) {
                         $actual_price = $this->items[$index]['purchase_discount'];
                         $this->items[$index]['dollar_purchase_discount'] = $actual_price;
