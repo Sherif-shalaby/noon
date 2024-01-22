@@ -437,6 +437,7 @@ class Create extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function store(): Redirector|Application|RedirectResponse
     {
