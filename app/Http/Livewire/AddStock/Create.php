@@ -2704,6 +2704,7 @@ class Create extends Component
         //    $otherPayments = is_numeric($this->other_payments) ? (float)$this->other_payments : 0;
         return ($discountAmount + $totalExpenses);
     }
+
     public function getSubUnits($index, $via = null, $i = null)
     {
         $units = [];
