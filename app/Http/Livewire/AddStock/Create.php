@@ -1784,7 +1784,7 @@ class Create extends Component
         $totalSubTotal = 0;
 
         foreach ($this->items as $index => $item) {
-            $totalSubTotal += $this->purchase_final_dollar($index);
+            $totalSubTotal += $this->num_uf($this->purchase_final_dollar($index));
             if (!empty($item['stores'])) {
                 foreach ($item['stores'] as $key => $store) {
                     $totalSubTotal += $this->purchase_final_dollar($index, 'stores', $key);
