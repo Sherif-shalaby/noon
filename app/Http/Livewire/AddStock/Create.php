@@ -151,7 +151,8 @@ class Create extends Component
     }
     public function getTransactionDate()
     {
-        return $this->transaction_date = date('Y-m-d \a\t h:i A');
+        $this->transaction_date = date('Y-m-d\TH:i');
+        return date('Y-m-d \a\t h:i A');
     }
     public function changesupplier()
     {
@@ -436,7 +437,6 @@ class Create extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function store(): Redirector|Application|RedirectResponse
     {
@@ -1811,7 +1811,7 @@ class Create extends Component
         $totalSubTotal = 0;
 
         foreach ($this->items as $index => $item) {
-            $totalSubTotal += $this->purchase_final_dollar($index);
+            $totalSubTotal += $this->num_uf($this->purchase_final_dollar($index));
             if (!empty($item['stores'])) {
                 foreach ($item['stores'] as $key => $store) {
                     $totalSubTotal += $this->purchase_final_dollar($index, 'stores', $key);
