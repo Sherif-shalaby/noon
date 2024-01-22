@@ -54,7 +54,9 @@
                 {{-- Iterate through units and display each unit name and value as a span --}}
                 @if(isset($items[$index]['units']))
                 @foreach ($items[$index]['units'] as $unitName => $unitValue)
-                    <span>{{ $unitName }}: {{ $unitValue }}</span>
+                    @if(!empty($unitName))
+                        <span>{{ $unitName }}: {{ @number_format($unitValue,num_of_digital_numbers()) }}</span>
+                    @endif
                 @endforeach
                 @endif
             </div>
@@ -299,7 +301,9 @@
                     {{-- Iterate through units and display each unit name and value as a span --}}
                     @if(isset($items[$index]['stores'][$i]['units']))
                     @foreach ($items[$index]['stores'][$i]['units'] as $unitName => $unitValue)
-                        <span>{{ $unitName }}: {{ $unitValue }}</span>
+                    @if(!empty($unitName))
+                        <span>{{ $unitName }}: {{ @number_format($unitValue,num_of_digital_numbers()) }}</span>
+                    @endif
                     @endforeach
                     @endif
                 </div>
