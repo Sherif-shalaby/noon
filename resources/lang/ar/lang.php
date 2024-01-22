@@ -830,5 +830,7 @@ return array(
     'created_at'=>'تاريخ الانشاء',
     'sell'=>'البيع',
     'num_of_digital_numbers'=>'عدد الاعداد العشرية',
+    'final_purchase_for_piece'=>'سعر الشراء للفطعة',
+    'final_purchase'=>'سعر الشراءالنهائى'
  );
 
