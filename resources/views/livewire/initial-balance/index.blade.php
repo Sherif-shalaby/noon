@@ -66,13 +66,14 @@
                     <table id="datatable-buttons" class="table dataTable">
                         <thead>
                         <tr>
-                            <th class="col1">@lang('lang.date_and_time')</th>
-                            <th class="col2">@lang('lang.product')</th>
-                            <th class="col3">@lang('lang.supplier')</th>
-                            <th class="col4">@lang('lang.store')</th>
-                            <th class="col5">@lang('lang.quantity')</th>
-                            <th class="col6">@lang('lang.created_by')</th>
-                            <th class="col7 notexport">@lang('lang.action')</th>
+                            <th>@lang('lang.date_and_time')</th>
+                            <th>@lang('lang.product')</th>
+                            <th>@lang('lang.supplier')</th>
+                            <th>@lang('lang.store')</th>
+                            <th>@lang('lang.branch')</th>
+                            <th>@lang('lang.quantity')</th>
+                            <th>@lang('lang.created_by')</th>
+                            <th class="notexport">@lang('lang.action')</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -92,7 +93,9 @@
                                             @endforeach
                                     @endif
                                 </td>
-                                <td class="col5">
+
+                                <td>{{$stock->store?->branch->name??''}}</td>
+                                <td>
                                      @foreach($stock->add_stock_lines as $index => $line)
                                          {{ @num_format( $line->quantity) .' ( '. $line->variation?->unit->name .' ) ' }}
                                         {{ !empty($transaction->add_stock_lines[$index+1]) ? '<br>' : '' }}

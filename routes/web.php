@@ -50,10 +50,10 @@ use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ProcessInvoiceController;
 use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\TransactionPaymentController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
-use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 
 /*
@@ -113,6 +113,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('wages/update-other-payment/', [WageController::class,'update_other_payment'])->name('update_other_payment');
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
+    Route::get('toggle-dollar', [SettingController::class, 'toggleDollar'])->name('toggleDollar');
+    
     // Get "مصدر الاموال" depending on "طريقة الدفع"
     Route::get('/wage/get-source-by-type-dropdown/{type}', [WageController::class,'getSourceByTypeDropdown']);
     // +++++++++++ Get "طريقة الحساب " depending on "الموظف" +++++++++++
@@ -209,6 +211,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('pay_due_view/{id}', [CustomerController::class,'pay_due_view'])->name('customers.pay_due_view');
 
     Route::get('customer/show-invoices/{customer_id}/{delivery_id}', [CustomerController::class,'show_customer_invoices'])->name('show_customer_invoices');
+    Route::get('customer/show-invoices/{customer_id}', [CustomerController::class,'customer_invoices'])->name('customer_invoices');
 
 
     // stocks
@@ -295,6 +298,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
 
     Route::resource('pos',SellPosController::class);
+    Route::resource('process-invoice',ProcessInvoiceController::class);
     // Route::get('transaction-payment/add-payment/{id}', [TransactionPaymentController::class,'addPayment'])->name('transaction-payment.add-payment');
     Route::resource('pos-pay',TransactionPaymentController::class);
     Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
@@ -412,6 +416,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('cash/save-add-closing-cash', [CashController::class,'saveAddClosingCash'])->name('cash.save-add-closing-cash');
     Route::resource('cash-register', CashRegisterController::class);
     Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class,'getSourceByTypeDropdown']);
+    Route::get('get_currency', [SettingController::class,'get_currency']);
 
 });
 

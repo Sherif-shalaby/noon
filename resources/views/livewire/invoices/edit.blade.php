@@ -386,6 +386,8 @@
         </div>
         {!! Form::close() !!}
         <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
+        <button class="btn btn-danger" wire:click="getPreviousTransaction"> <</button>
+        <button class="btn btn-danger" wire:click="getNextTransaction"> ></button>
     </div>
 </section>
 @include('customers.quick_add',['quick_add'=>1])

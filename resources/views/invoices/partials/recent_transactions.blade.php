@@ -157,13 +157,13 @@
                                 @endforeach
                             </td>
                             <td>
-                                {{ number_format($line->final_total, 2) }}
+                                {{ number_format($line->final_total, num_of_digital_numbers()) }}
                             </td>
                             <td>
                                 {{ $line->transaction_payments->sum('amount') }}
                             </td>
                             <td>
-                                {{ number_format($line->dollar_final_total, 2) }}
+                                {{ number_format($line->dollar_final_total, num_of_digital_numbers()) }}
                             </td>
                             <td>
                                 {{ $line->transaction_payments->sum('dollar_amount') }}

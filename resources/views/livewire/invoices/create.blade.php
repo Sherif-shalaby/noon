@@ -136,11 +136,12 @@
                         </div>
                     </div>
                     {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
+                    @if(empty($toggle_suppliers))
                     <div class="col-md-4">
                         <label for="" class="text-primary">العملاء</label>
                         <div class="d-flex justify-content-center">
 
-                            <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id">
+                            <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id" required>
                                 <option  value="0 " readonly >اختر </option>
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}> {{ $customer->name }} - {{($customer->phone != '[null]' ) ? $customer->phone : ''}}</option>
@@ -152,23 +153,35 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    @endif
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('invoice_status', __('lang.invoice') . ':*', []) !!}
+                            {!! Form::select('invoice_status', ['monetary' => __('lang.monetary') , 'deferred_time' => __('lang.deferred_time')], $invoice_status,
+                            ['class' => 'select2 form-control','data-name'=>'store_pos_id', 'data-live-search' => 'true', 'required',
+                            'placeholder' => __('lang.please_select'), 'wire:model' => 'invoice_status']) !!}
+                            @error('store_pos_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>
-                                {!! Form::checkbox('toggle_suppliers_dropdown', 1, false,['wire:model' => 'toggle_suppliers_dropdown']) !!}
+                                {!! Form::checkbox('toggle_suppliers_dropdown', 1, false,['wire:model'=>'toggle_suppliers','wire:change' => 'toggle_suppliers_dropdown']) !!}
                                 @lang('lang.toggle_suppliers_dropdown')
                             </label>
                         </div>
                     </div>
                     {{-- +++++++++++++++++ suppliers Dropdown +++++++++++++++++ --}}
-                    @if(!empty($toggle_suppliers_dropdown))
+                    @if(!empty($toggle_suppliers))
                         <div class="col-md-3">
                             {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
                             <div class="d-flex justify-content-center">
                             {!! Form::select('supplier_id', $suppliers, $supplier_id,
                                 ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
-                                'data-name' => 'supplier', 'wire:model' => 'supplier_id'
+                                'data-name' => 'supplier', 'wire:model' => 'supplier_id','required'=>'required'
                                 ]) !!}
                                 {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
                             </div>
@@ -323,7 +336,8 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="form-control select2" style="height:30% !important;width:100px;" data-name="customer_type_id" data-index="{{$key}}" wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
+                                                    <select class="form-control select2" style="height:30% !important;width:100px;" data-name="customer_type_id" data-index="{{$key}}"
+                                                            wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
                                                         <option value="0">select</option>
                                                          @if(!empty($item['customer_types']))
                                                          {{-- {{dd($item['customer_types'])}} --}}
@@ -413,6 +427,9 @@
         </div>
         {!! Form::close() !!}
         <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
+        <button class="btn btn-danger" wire:click="getPreviousTransaction"> <</button>
+        <button class="btn btn-danger" disabled wire:click="getNextTransaction"> ></button>
+
     </div>
 </section>
 @include('customers.quick_add',['quick_add'=>1])
@@ -430,7 +447,7 @@
             });
         </script>
     @endif
-    
+
     @if(empty($store_pos))
     <script>
     window.addEventListener('NoUserPos', function(event) {

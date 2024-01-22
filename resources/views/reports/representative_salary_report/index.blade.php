@@ -180,7 +180,7 @@
                                             <td class="col4" title="@lang('lang.salary')">{{ $wage->employee->fixed_wage_value }}</td>
                                             <td class="col5" title="@lang('lang.commission')">{{ number_format($wage->employee->commission_value,2) }}</td>
                                             <td class="col6" title="@lang('lang.paid_amount')">{{ number_format($totalAmount,2) }}</td>
-                                            <td class="col7" title="@lang('lang.duePaid')">{{ number_format($wage->wage_transaction->final_total - $totalAmount,2) }}</td>
+                                            <td class="col7" title="@lang('lang.duePaid')">{{ number_format($wage->wage_transaction->final_total - $totalAmount,num_of_digital_numbers()) }}</td>
                                             <td class="col8" title="@lang('lang.payment_status')">{{ $wage->wage_transaction->payment_status }}</td>
                                         </tr>
                                     @endforeach

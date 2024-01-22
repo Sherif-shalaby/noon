@@ -105,7 +105,8 @@
                     </div>
                 </div>
                 <div class="col-md-12 ">
-                    <button class="btn btn-danger {{$this->add_to_balance=='0'?'d-none':''}}" wire:click="addToBalance()">{{__('lang.add_to_balance')}}</button>
+{{--                    {{$add_to_balance}}--}}
+                    <button class="btn btn-danger {{$add_to_balance == '0' ? 'd-none' : ''}}" wire:click="addToBalance()">{{__('lang.add_to_balance')}}</button>
                 </div>
                 {{-- +++++++++++ الواصل دولار +++++++++++ --}}
                 <div class="col-md-6">
@@ -190,7 +191,53 @@
                             ]) !!}
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label('delivery_date', __('lang.delivery_date'), ['class' => 'text-primary']) !!}
+                            {!! Form::date('delivery_date', now()->format('Y-m-d'), [
+                                'class' => 'form-control',
+                                'wire:model' => 'delivery_date',
+                                'placeholder' => __('lang.delivery_date'),
+                            ]) !!}
+                        </div>
+                    </div>
                 @endif
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('representative_id', __('lang.representative') . ':*', []) !!}
+                        {!! Form::select('representative_id', $representatives, null, [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'representative_id',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'representative_id',
+                            'wire:model' => 'representative_id',
+                        ]) !!}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('loading_cost', __('lang.loading_cost'), ['class' => 'text-primary']) !!}
+                        {!! Form::number('loading_cost', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'loading_cost',
+                            'placeholder' => __('lang.loading_cost'),
+                        ]) !!}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('dollar_loading_cost', __('lang.loading_cost').' $', ['class' => 'text-primary']) !!}
+                        {!! Form::number('dollar_loading_cost', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'dollar_loading_cost',
+                            'placeholder' => __('lang.loading_cost') .' $',
+                        ]) !!}
+                        <div class="{{$dollar_loading_cost > 0 ? '':'d-none'}}" title="{{__('lang.change_remaining_to_dinar')}}">
+                            <button class="btn btn-sm btn-danger text-white" type="button" wire:click="change_dollar_loading_cost_to_dinar()">></button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row hide-print">
