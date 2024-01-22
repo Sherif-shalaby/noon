@@ -10,6 +10,7 @@
                 'data-live-search' => 'true',
                 'required' => 'required',
                 'wire:model' => 'items.' . $index . '.used_currency',
+                'wire:change'=>"convertPurchasePrice($index)"
 
             ]) !!}
             @error('items.'.$index.'.used_currency')

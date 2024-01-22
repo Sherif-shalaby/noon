@@ -1284,83 +1284,87 @@ class Create extends Component
     {
         if ($via == 'stores') {
             $variant = Variation::find($this->items[$index]['stores'][$i]['variation_id']);
-            $product_data = Product::find($variant->product_id);
-            $product = $this->items[$index]['stores'][$i]['product'];
-            if (!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id == $variant->id) {
-                $this->items[$index]['stores'][$i]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size : 0;
-                $this->items[$index]['stores'][$i]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
-                $this->items[$index]['stores'][$i]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight : 0;
-                $this->items[$index]['stores'][$i]['total_weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * 1 : 0;
-            } else {
-                $this->items[$index]['stores'][$i]['size'] = 0;
-                $this->items[$index]['stores'][$i]['total_size'] = 0;
-                $this->items[$index]['stores'][$i]['weight'] = 0;
-                $this->items[$index]['stores'][$i]['total_weight'] = 0;
+            if(!empty($variant)){
+                $product_data = Product::find($variant->product_id);
+                $product = $this->items[$index]['stores'][$i]['product'];
+                if (!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id == $variant->id) {
+                    $this->items[$index]['stores'][$i]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size : 0;
+                    $this->items[$index]['stores'][$i]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
+                    $this->items[$index]['stores'][$i]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight : 0;
+                    $this->items[$index]['stores'][$i]['total_weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * 1 : 0;
+                } else {
+                    $this->items[$index]['stores'][$i]['size'] = 0;
+                    $this->items[$index]['stores'][$i]['total_size'] = 0;
+                    $this->items[$index]['stores'][$i]['weight'] = 0;
+                    $this->items[$index]['stores'][$i]['total_weight'] = 0;
+                }
+                $this->items[$index]['unit'] = $variant->unit->name ?? '';
+                $this->items[$index]['stores'][$i]['base_unit_multiplier'] = $variant->equal ?? 0;
             }
-            $this->items[$index]['unit'] = $variant->unit->name ?? '';
-            $this->items[$index]['stores'][$i]['base_unit_multiplier'] = $variant->equal ?? 0;
-
-            $this->getSubUnits($index, 'stores', $i);
+                $this->getSubUnits($index, 'stores', $i);
+            
         } else {
             $variant = Variation::find($this->items[$index]['variation_id']);
-            $product_data = Product::find($variant->product_id);
-            $product = $this->items[$index]['product'];
-            if (!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id == $variant->id) {
-                $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size : 0;
-                $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
-                $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight : 0;
-                $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * 1 : 0;
-            } else if (!empty($product_data->product_dimensions) && !empty($product_data->product_dimensions->variation_id)) {
-                $variation = Variation::find($product_data->product_dimensions->variation_id);
-                // dd($variation->basic_unit_id);
-                $basic_variation = Variation::where('product_id', $product_data->id)->where('basic_unit_id', $variation->unit_id)->first();
-                // $dimension_is_basic_variation=Variation::where('product_id',$product_data->id)->where('basic_unit_id',$variant->unit_id)->first();
-                // dd($variant->unit_id);
-                if (!empty($basic_variation) && $variant->unit_id == $basic_variation->unit_id) {
-                    $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * $basic_variation->equal : 0;
-                    $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) * $basic_variation->equal : 0;
-                    $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $basic_variation->equal : 0;
-                    $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $basic_variation->equal : 0;
-                } elseif ($variation->basic_unit_id == $variant->unit_id) {
-                    $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size / $basic_variation->equal : 0;
-                    $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $basic_variation->equal : 0;
-                    $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $basic_variation->equal : 0;
-                    $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $basic_variation->equal : 0;
-                } else {
-                    $equal = 1;
-                    $variation_units = Variation::where('product_id', $product_data->id)
-                        ->where('id','>=', $variation->id)->where('id','<=',$variant->id)->get();
-                    if(count($variation_units)>0){
-                        foreach($variation_units as $i=>$var){
-                            $equal*=$var->equal;
-                        }
-                    $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size / $equal : 0;
-                    $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $equal : 0;
-                    $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $equal : 0;
-                    $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $equal : 0;
-                    }else{
+            if(!empty($variant)){
+                $product_data = Product::find($variant->product_id);
+                $product = $this->items[$index]['product'];
+                if (!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id == $variant->id) {
+                    $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size : 0;
+                    $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
+                    $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight : 0;
+                    $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * 1 : 0;
+                } else if (!empty($product_data->product_dimensions) && !empty($product_data->product_dimensions->variation_id)) {
+                    $variation = Variation::find($product_data->product_dimensions->variation_id);
+                    // dd($variation->basic_unit_id);
+                    $basic_variation = Variation::where('product_id', $product_data->id)->where('basic_unit_id', $variation->unit_id)->first();
+                    // $dimension_is_basic_variation=Variation::where('product_id',$product_data->id)->where('basic_unit_id',$variant->unit_id)->first();
+                    // dd($variant->unit_id);
+                    if (!empty($basic_variation) && $variant->unit_id == $basic_variation->unit_id) {
+                        $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * $basic_variation->equal : 0;
+                        $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) * $basic_variation->equal : 0;
+                        $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $basic_variation->equal : 0;
+                        $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $basic_variation->equal : 0;
+                    } elseif ($variation->basic_unit_id == $variant->unit_id) {
+                        $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size / $basic_variation->equal : 0;
+                        $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $basic_variation->equal : 0;
+                        $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $basic_variation->equal : 0;
+                        $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $basic_variation->equal : 0;
+                    } else {
+                        $equal = 1;
                         $variation_units = Variation::where('product_id', $product_data->id)
-                        ->where('id','<=', $variation->id)->where('id','>=',$variant->id)->get();
-                        foreach($variation_units as $i=>$var){
-                            $equal*=$var->equal;
+                            ->where('id','>=', $variation->id)->where('id','<=',$variant->id)->get();
+                        if(count($variation_units)>0){
+                            foreach($variation_units as $i=>$var){
+                                $equal*=$var->equal;
+                            }
+                        $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size / $equal : 0;
+                        $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $equal : 0;
+                        $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $equal : 0;
+                        $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $equal : 0;
+                        }else{
+                            $variation_units = Variation::where('product_id', $product_data->id)
+                            ->where('id','<=', $variation->id)->where('id','>=',$variant->id)->get();
+                            foreach($variation_units as $i=>$var){
+                                $equal*=$var->equal;
+                            }
+                        $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * $equal : 0;
+                        $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) * $equal : 0;
+                        $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $equal : 0;
+                        $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $equal : 0;
                         }
-                    $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * $equal : 0;
-                    $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) * $equal : 0;
-                    $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $equal : 0;
-                    $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $equal : 0;
+                        
                     }
-                    
+                } else {
+                    $this->items[$index]['size'] = 0;
+                    $this->items[$index]['total_size'] = 0;
+                    $this->items[$index]['weight'] = 0;
+                    $this->items[$index]['total_weight'] = 0;
                 }
-            } else {
-                $this->items[$index]['size'] = 0;
-                $this->items[$index]['total_size'] = 0;
-                $this->items[$index]['weight'] = 0;
-                $this->items[$index]['total_weight'] = 0;
+                $this->items[$index]['unit'] = $variant->unit->name ?? '';
+                $this->items[$index]['base_unit_multiplier'] = $variant->equal ?? 0;
             }
-            $this->items[$index]['unit'] = $variant->unit->name ?? '';
-            $this->items[$index]['base_unit_multiplier'] = $variant->equal ?? 0;
-
-            $this->getSubUnits($index);
+                $this->getSubUnits($index);
+            
         }
 
         //    dd($product_data->product_dimensions);
@@ -1791,7 +1795,11 @@ class Create extends Component
                 }
             }
         }
-        return $this->num_uf($totalSubTotal);
+        if($totalSubTotal>0){
+            return $this->num_uf($totalSubTotal);
+        }else{
+            return 1;
+        }
     }
     public function sum_dollar_sub_total()
     {
