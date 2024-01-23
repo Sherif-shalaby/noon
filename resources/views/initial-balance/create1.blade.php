@@ -117,7 +117,7 @@
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
-                        <input type="text"  class="form-control" id="exchange_rate" name="exchange_rate" value="{{number_format($exchange_rate,2)}}" disabled>
+                        <input type="text"  class="form-control" id="exchange_rate" name="exchange_rate" value="{{number_format($exchange_rate,num_of_digital_numbers())}}" disabled>
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('status', __('lang.status') . ':*', []) !!}

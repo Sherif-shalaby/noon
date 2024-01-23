@@ -52,12 +52,11 @@ class Create extends Component
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
         $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0,$representative_id, $loading_cost,
-        $dollar_loading_cost;
+        $dollar_loading_cost,$toggle_suppliers,$delivery_date;
 
 
-    protected $rules = [
+    protected $rules =[
         'items' => 'array|min:1',
-        'client_id' => 'required',
         'store_id' => 'required',
         'store_pos_id' => 'required',
         'payment_status' => 'required',
@@ -192,6 +191,7 @@ class Create extends Component
                 $this->reprsenative_sell_car = true;
             }
         }
+        $this->delivery_date = now()->format('Y-m-d');
         $this->changeAllProducts();
         $this->client_id = 1;
         $this->getCustomerData($this->client_id);
@@ -323,13 +323,19 @@ class Create extends Component
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
     public function submit()
     {
+        if($this->toggle_suppliers){
+            $this->rules['supplier_id'] = 'required';
+        }else{
+            $this->rules['client_id'] = 'required';
+        }
         $this->validate();
         try {
-
+            $customer=[];
             // Add Transaction Sell Line
             $transaction_data = [
                 'store_id' => $this->store_id,
-                'customer_id' => $this->client_id,
+                'customer_id' => !$this->toggle_suppliers?$this->client_id:null,
+                'supplier_id' => $this->toggle_suppliers?$this->supplier_id:null,
                 //                'supplier_id ' => $this->supplier_id ,
                 'employee_id' => Employee::where('user_id', auth()->user()->id)->first()->id,
                 'store_pos_id' => $this->store_pos_id,
@@ -367,6 +373,7 @@ class Create extends Component
                 'representative_id' => $this->representative_id ?? null,
                 'loading_cost' => $this->loading_cost ?? null,
                 'dollar_loading_cost' => $this->dollar_loading_cost ?? null,
+                'delivery_date'=> isset($this->delivery_date) ? $this->delivery_date : null,
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
@@ -463,13 +470,22 @@ class Create extends Component
                 }
 
                 $transaction=$this->updateTransactionPaymentStatus($transaction->id);
-
+                if(!$this->toggle_suppliers){
                 $customer = Customer::find($transaction->customer_id);
                 if ($this->added_to_balance == 1) {
                     $customer->dollar_balance += $this->num_uf($this->new_added_dollar_balance);
                     $customer->balance += $this->num_uf($this->new_added_dinar_balance);
                     $customer->save();
                 }
+                }else{
+                    $supplier=Supplier::find($transaction->supplier_id);
+                    // if ($this->added_to_balance == 1) {
+                    //     $supplier->dollar_balance += $this->num_uf($this->new_added_dollar_balance);
+                    //     $supplier->balance += $this->num_uf($this->new_added_dinar_balance);
+                    //     $supplier->save();
+                    // }
+                }
+                
 
                 $payment_types = $this->getPaymentTypeArrayForPos();
                 $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
@@ -479,13 +495,20 @@ class Create extends Component
                 if($is_process_invoice=="1"){
                     $process_invoice=new ProcessInvoice();
                     $process_invoice->transaction_id=$transaction->id;
+                    if(!$this->toggle_suppliers){
                     $process_invoice->customer_id=$customer->id;
+                    }else{
+                    $process_invoice->supplier_id=$supplier->id;
+                    }
                     $process_invoice->invoice_no=$transaction->invoice_no;
                     $process_invoice->is_processed=0;
+                    // $process_invoice->delivery_date = isset($this->delivery_date) ? $this->delivery_date : null;
+
                     $process_invoice->save();
                 }
             }
             // dd($transaction->payment_status);
+            if(!$this->toggle_suppliers){
             if ($transaction->payment_status== 'partial' || $transaction->payment_status== 'pending') {
                 $balance = $this->payCustomerDue($transaction->customer_id);
                 $new_dinar_balance = $balance[0];
@@ -499,6 +522,8 @@ class Create extends Component
                     $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
                     $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance,$this->new_added_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
                 }
+            }
+
             }
 
             DB::commit();
@@ -520,7 +545,6 @@ class Create extends Component
     }
     public function createCashRegisterTransaction($register, $amount,$dollar_amount, $transaction_type, $type, $source_id, $notes, $referenced_id = null,$transaction_id=null)
     {
-        // dd($source_id);
         $cash_register_transaction = CashRegisterTransaction::create([
             'cash_register_id' => $register->id,
             'transaction_id' => $transaction_id,
@@ -788,11 +812,11 @@ class Create extends Component
                 $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
                 if (empty($get_Variation_price->first()->id)) {
-                    $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->first()->sell_price ?? 0), 3) : 0;
-                    $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->first()->dollar_sell_price ?? 0), 3) : 0;
+                    $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->first()->sell_price ?? 0), num_of_digital_numbers()) : 0;
+                    $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->first()->dollar_sell_price ?? 0), num_of_digital_numbers()) : 0;
                 } else {
-                    $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->where('variation_price_id', $get_Variation_price->first()->id ?? 0)->first()->sell_price ?? 0), 3) : 0;
-                    $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->where('variation_price_id', $get_Variation_price->first()->id)->first()->dollar_sell_price ?? 0), 3) : 0;
+                    $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->where('variation_price_id', $get_Variation_price->first()->id ?? 0)->first()->sell_price ?? 0), num_of_digital_numbers()) : 0;
+                    $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->where('variation_price_id', $get_Variation_price->first()->id)->first()->dollar_sell_price ?? 0), num_of_digital_numbers()) : 0;
                 }
                 $dollar_exchange = System::getProperty('dollar_exchange');
                 if ($this->num_uf($dollar_exchange) > $this->num_uf($exchange_rate)) {
@@ -1023,13 +1047,13 @@ class Create extends Component
     public function changePrice($key)
     {
         if (!empty($this->items[$key]['price'])) {
-            $this->items[$key]['dollar_price'] = number_format($this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']), 3);
-            $this->items[$key]['dollar_sub_total'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity']), 3);
+            $this->items[$key]['dollar_price'] = number_format($this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']), num_of_digital_numbers());
+            $this->items[$key]['dollar_sub_total'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity']), num_of_digital_numbers());
             $this->items[$key]['sub_total'] = 0;
             $this->items[$key]['price'] = 0;
         } else {
-            $this->items[$key]['price'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['exchange_rate']), 3);
-            $this->items[$key]['sub_total'] = number_format($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity']), 3);
+            $this->items[$key]['price'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['exchange_rate']), num_of_digital_numbers());
+            $this->items[$key]['sub_total'] = number_format($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity']), num_of_digital_numbers());
             $this->items[$key]['dollar_sub_total'] = 0;
             $this->items[$key]['dollar_price'] = 0;
         }
@@ -1046,15 +1070,15 @@ class Create extends Component
             $dollar_exchange = System::getProperty('dollar_exchange');
             if ($this->num_uf($dollar_exchange) > $this->num_uf($this->items[$key]['current_stock']['exchange_rate']) && $this->items[$key]['current_stock']['exchange_rate'] != null) {
                 if ($variation_stock_line->sell_price == 0) {
-                    $this->items[$key]['price'] = number_format($this->num_uf($variation_stock_line->dollar_sell_price) * $this->num_uf($this->items[$key]['current_stock']['exchange_rate']),3);
+                    $this->items[$key]['price'] = number_format($this->num_uf($variation_stock_line->dollar_sell_price) * $this->num_uf($this->items[$key]['current_stock']['exchange_rate']),num_of_digital_numbers());
                     $this->items[$key]['dollar_price'] = 0;
                 } else {
-                    $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
-                    $this->items[$key]['price'] = number_format($variation_stock_line->sell_price, 3);
+                    $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, num_of_digital_numbers());
+                    $this->items[$key]['price'] = number_format($variation_stock_line->sell_price, num_of_digital_numbers());
                 }
             } else {
-                $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
-                $this->items[$key]['price'] = number_format($variation_stock_line->sell_price, 3);
+                $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, num_of_digital_numbers());
+                $this->items[$key]['price'] = number_format($variation_stock_line->sell_price, num_of_digital_numbers());
             }
         }
         $this->subtotal($key);
@@ -1477,7 +1501,7 @@ class Create extends Component
         }
         //add to cash register pos return amount as sell amount
         if (!empty($pos_return_transactions)) {
-            $payments_formatted[0]['amount'] = $payments_formatted[0]['amount'] + !empty($pos_return_transactions) ? number_format($pos_return_transactions->final_total, 2) : 0;
+            $payments_formatted[0]['amount'] = $payments_formatted[0]['amount'] + !empty($pos_return_transactions) ? number_format($pos_return_transactions->final_total, num_of_digital_numbers()) : 0;
         }
 
         if (!empty($payments_formatted) && !empty($register)) {
@@ -1691,16 +1715,16 @@ class Create extends Component
                 $product_variations = Variation::where('product_id', $this->items[$key]['product']['id'])->get();
                 $unit = Variation::where('id', $variation_id)->first();
                 $qtyByUnit = $this->getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id);
-                $this->items[$key]['price'] = number_format($this->items[$key]['current_stock']['sell_price'] * $qtyByUnit ?? 0, 2);
-                $this->items[$key]['dollar_price'] = number_format($this->items[$key]['current_stock']['dollar_sell_price'] * $qtyByUnit ?? 0, 2);
+                $this->items[$key]['price'] = number_format($this->items[$key]['current_stock']['sell_price'] * $qtyByUnit ?? 0, num_of_digital_numbers());
+                $this->items[$key]['dollar_price'] = number_format($this->items[$key]['current_stock']['dollar_sell_price'] * $qtyByUnit ?? 0, num_of_digital_numbers());
             } else {
-                $this->items[$key]['price'] = number_format($stock_line->sell_price ?? 0, 2);
-                $this->items[$key]['dollar_price'] = number_format($stock_line->dollar_sell_price ?? 0, 2);
+                $this->items[$key]['price'] = number_format($stock_line->sell_price ?? 0, num_of_digital_numbers());
+                $this->items[$key]['dollar_price'] = number_format($stock_line->dollar_sell_price ?? 0, num_of_digital_numbers());
                 $this->items[$key]['current_stock'] = $stock_line;
                 $this->items[$key]['discount_categories'] = $stock_line->prices()->get();
             }
-            $this->items[$key]['sub_total'] = number_format($this->num_uf($this->items[$key]['price']) * $this->items[$key]['quantity'], 2);
-            $this->items[$key]['dollar_sub_total'] = number_format($this->items[$key]['dollar_price'] * $this->items[$key]['quantity'], 2);
+            $this->items[$key]['sub_total'] = number_format($this->num_uf($this->items[$key]['price']) * $this->items[$key]['quantity'], num_of_digital_numbers());
+            $this->items[$key]['dollar_sub_total'] = number_format($this->items[$key]['dollar_price'] * $this->items[$key]['quantity'], num_of_digital_numbers());
             $this->items[$key]['discount'] = 0;
             // $discount=ProductPrice::where('unit_id',$this->items[$key]['unit_id'])->where('stock_line_id', $stock_line->id)->first();
             $this->items[$key]['extra_quantity'] = 0;
@@ -1726,7 +1750,7 @@ class Create extends Component
                             }
                         }
                     }
-                    $this->items[$key]['quantity_available'] = number_format($product_store->quantity_available / $amount, 3);
+                    $this->items[$key]['quantity_available'] = number_format($product_store->quantity_available / $amount, num_of_digital_numbers());
                 }
             } else {
                 $this->items[$key]['quantity_available'] = $qty;
@@ -1895,7 +1919,7 @@ class Create extends Component
                 }
                 // if (isset($variation_stock->dollar_sell_price) && $variation_stock->dollar_sell_price !== 0) {
                 //     $variation_stock->dollar_sell_price = $this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']);
-                //     $this->items[$key]['dollar_price'] = number_format($this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']), 3);
+                //     $this->items[$key]['dollar_price'] = number_format($this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']), num_of_digital_numbers());
                 // }
                 $variation_stock->save();
                 $this->subtotal($key);
@@ -1946,7 +1970,12 @@ class Create extends Component
         return redirect('/invoices/edit/'.$latest_transaction);
         
     }
-    public function getNextTransaction(){
-        
+    public function toggle_suppliers_dropdown(){
+        if($this->toggle_suppliers){
+            $this->client_id=0;
+        }else{
+            $this->supplier_id=0;
+        }
     }
+
 }

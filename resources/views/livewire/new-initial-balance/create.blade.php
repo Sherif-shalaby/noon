@@ -33,7 +33,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>
-                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown']) !!}
+                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown','wire:change' => 'toggle_suppliers_dropdown']) !!}
                                     @lang('lang.toggle_customers_dropdown')
                                 </label>
                             </div>
@@ -65,6 +65,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-2">
+                                @if (empty($toggle_customers_dropdown))
                                 {!! Form::label('supplier_id ', __('lang.supplier') . ':*', []) !!}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select('supplier_id', $suppliers, $item[0]['supplier_id'], [
@@ -83,6 +84,7 @@
                                 @error('item.0.supplier_id ')
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
+                                @endif
                             </div>
 
 
@@ -703,15 +705,14 @@
                                 </div>
                                 <div class="row {{ $show_store == 0 ? 'd-none' : '' }}">
                                     <div class="col-md-12 text-center">
-                                        {{ $this->count_fill_stores_unit($i) }}
-                                        @if (!empty($variationFillStoreSums))
-                                            @foreach ($variationFillStoreSums as $unit_name => $variant)
-                                                <h5 class="items_quantity_span" style="margin-right: 15px;">
-                                                    {{ $unit_name }}: {{ $variant }} </h5><br>
-                                            @endforeach
-                                        @endif
-                                        <h5 class="items_quantity_span" style="margin-right: 15px;">
-                                            {{ $this->getExtraFillStore($i) }}</h5>
+                                            @if (!empty($this->count_fill_stores_unit($i)))
+                                                @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
+                                                    <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                                        {{ $unit_name }}: {{ $variant }} </h2><br>
+                                                @endforeach
+                                            @endif
+                                            <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                                {{ $this->getExtraFillStore($i) }}</h2>
                                     </div>
                                 </div>
                             @empty

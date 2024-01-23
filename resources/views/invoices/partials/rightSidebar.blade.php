@@ -191,6 +191,16 @@
                             ]) !!}
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label('delivery_date', __('lang.delivery_date'), ['class' => 'text-primary']) !!}
+                            {!! Form::date('delivery_date', now()->format('Y-m-d'), [
+                                'class' => 'form-control',
+                                'wire:model' => 'delivery_date',
+                                'placeholder' => __('lang.delivery_date'),
+                            ]) !!}
+                        </div>
+                    </div>
                 @endif
                 <div class="col-md-6">
                     <div class="form-group">

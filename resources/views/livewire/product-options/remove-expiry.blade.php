@@ -31,7 +31,7 @@
                             @endif --}}
                         </td>
                         <td>{{$stock_line->variation->sku??''}}</td>
-                        <td>{{ number_format($stock_line->avail_current_stock - $stock_line->expired_current_stock,3)  }}</td>
+                        <td>{{ number_format($stock_line->avail_current_stock - $stock_line->expired_current_stock,num_of_digital_numbers())  }}</td>
                         <td> <input type="text" wire:model="rows.{{$i}}.quantity_to_remove" wire:change="changeStockRemovedValue({{$i}})" /></td>
                         <td>{{$stock_line->expired_current_stock}}</td>
                         <td>{{$stock_line->exp_date}}</td>

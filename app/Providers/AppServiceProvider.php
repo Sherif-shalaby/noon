@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
             $currency_precision =3;
             return "number_format($expression,  $currency_precision, '.', ',')";
         });
-
+   
         //Blade directive to format date.
         Blade::directive('format_date', function ($date = null) {
             if (!empty($date)) {

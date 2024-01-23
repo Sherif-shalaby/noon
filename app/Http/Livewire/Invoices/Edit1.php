@@ -210,8 +210,8 @@ class Edit1 extends Component
         $this->items[] =
         [
             'product' => $product,
-            'quantity' => number_format($line->quantity,2),
-            'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price,2)) : 0,
+            'quantity' => number_format($line->quantity,num_of_digital_numbers()),
+            'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price,num_of_digital_numbers())) : 0,
             'category_id' => $product->category?->id,
             'extra_quantity' => 0,
             'customer_id' => $product->customer?->id,
@@ -219,7 +219,7 @@ class Edit1 extends Component
             'quantity_available' => $this->quantityAvailable($product),
             'discount_price' => $line->discount_amount,
             'discount_type' =>  $line->discount_type,
-            'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price,2) : 0  ,
+            'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price,num_of_digital_numbers()) : 0  ,
             'customer_offer_id' => $line->id,
             'selling_price' => $line->sell_price ,
             'dollar_selling_price' => $line->dollar_sell_price,

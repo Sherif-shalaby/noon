@@ -148,6 +148,7 @@ class ProductController extends Controller
         try
         {
                 DB::beginTransaction();
+                $productIds=[];
                 foreach ($request->products as $re_product) {
                     if ($re_product['name'] != null) {
                         $product_data = [
@@ -168,6 +169,7 @@ class ProductController extends Controller
                             'balance_return_request' => !empty($re_product['balance_return_request']) ? $re_product['balance_return_request'] : null,
                         ];
                         $product = Product::create($product_data);
+                        $productIds[]=$product->id;
                         // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
                         if (!empty($re_product['product_tax_id'])) {
                             ProductTax::create([
@@ -250,6 +252,9 @@ class ProductController extends Controller
         // Send notification to All users Except "auth()->user()"
         foreach ($users as $user) {
             Notification::send($user, new AddProductNotification($product->id, $userCreateEmp, $product_name, $type));
+        }
+        if(isset($request->add_stock_val) && $request->add_stock_val=="1"){
+        return redirect()->to('/add-stock/create?product_ids='.implode(',', $productIds));
         }
         return redirect()->back()->with('status', $output);
     }
@@ -415,6 +420,7 @@ class ProductController extends Controller
   public function update($id,Request $request)
   {
     try{
+      $productIds=[];
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
@@ -440,6 +446,7 @@ class ProductController extends Controller
 
     ];
     $product = Product::find($id);
+    $productIds[]=$product->id;
     $product->update($product_data);
     // ++++++++++++++++++++ product_tax : update pivot Table ++++++++++++++++++++
     // When Change "product_tax" update "products_taxes" table
@@ -503,7 +510,9 @@ class ProductController extends Controller
         ];
         ProductDimension::where('product_id',$product->id)->update($product_dimensions);
     }
-
+    if(isset($request->add_stock_val) && $request->add_stock_val=="1"){
+        return redirect()->to('/add-stock/create?product_ids='.implode(',', $productIds));
+    }
     $output = [
         'success' => true,
         'msg' => __('lang.success')
@@ -762,7 +771,7 @@ class ProductController extends Controller
         //     DB::raw('(SELECT SUM(add_stock_lines.quantity)  FROM add_stock_lines  JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . '  ) as avail_current_stock'),
         //     DB::raw('(SELECT AVG(add_stock_lines.purchase_price) FROM add_stock_lines JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . ') as avg_purchase_price'),
         //     DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as expired_current_stock'),
-        // )->get();
+        // )->e();
             // return $addStockLines;
     return view("product_expiry_damage.create",compact('id'));
     }
