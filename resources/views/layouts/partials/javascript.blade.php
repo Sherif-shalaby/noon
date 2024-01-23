@@ -176,21 +176,15 @@
 </script>
 
 <script>
-    // var columnVis = document.querySelector('.buttons-collection');
-    // var columnVisList = document.querySelector('.dt-button-collection');
     $(document).on("click", ".buttons-collection", function() {
-        if (!$(this).classList.contains('toggleVisColList')) {
-
+        if (!$(this).hasClass('toggleVisColList')) {
             $(this).addClass('toggleVisColList')
         }
+        console.log("dwedewed");
     })
-
     $(document).on("click", ".toggleVisColList", function() {
         $('.dt-button-collection').toggle()
     })
-    // columnVis.addEventListener("click", function() {
-    //     console.log("dwedewedw");
-    // });
 </script>
 
 
