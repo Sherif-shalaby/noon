@@ -171,7 +171,7 @@
                 {{$this->final_purchase_for_piece($index)}}
             </span>
             <span class="final_total_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
-                {{$this->dollar_final_purchase_for_piece($index)}} $
+                {{$this->dollar_final_purchase_for_piece($index)}} $ 
             </span>
         @endif
     </td>
@@ -179,7 +179,7 @@
         @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
         {{$this->cost($index)}}
             <span class="cost" aria-placeholder="dollar cost">
-                {{ $product['cost'] }}
+                {{ $product['cost'] }} 
             </span>
             <span class="dollar_cost" aria-placeholder="dollar cost">
                 {{ $product['dollar_cost'] }} $

@@ -376,6 +376,8 @@
 
                                                     <th style="width: 10%">@lang('lang.action')</th>
                                                     <th></th>
+                                                    <th style="width: 10%"></th>
+                                                    <th style="width: 10%"></th>
                                                     <th style="width: 10%">@lang('lang.cost')</th>
                                                     <th style="width: 10%">@lang('lang.size')</th>
                                                     <th style="width: 10%">@lang('lang.total_size')</th>
@@ -542,7 +544,7 @@
                             <div class="col-md-3 offset-md-8 text-right">
                                 <h3> @lang('lang.total')$ :
                                     {{-- @if ($paying_currency == 2) --}}
-                                    {{ @number_format($this->sum_dollar_total_cost(),num_of_digital_numbers()) ?? 0.0 }}
+                                    {{ @number_format(@num_uf($this->sum_dollar_total_cost()),num_of_digital_numbers()) ?? 0.0 }}
                                     {{-- @else --}}
                                     {{-- {{$this->sum_total_cost() ?? 0.00}} --}}
                                     {{-- @endif --}}

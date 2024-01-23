@@ -1569,11 +1569,9 @@ class Create extends Component
                     (float)$this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                 }
             } else {
-                $this->items[$index]['cost'] = number_format($dollar_purchase_price, num_of_digital_numbers());
+                $this->items[$index]['cost'] = number_format($this->num_uf($dollar_purchase_price), num_of_digital_numbers());
             }
         }
-
-        // return number_format($this->num_uf($this->items[$index]['cost']),num_of_digital_numbers());
     }
 
     public function total_cost($index)
@@ -1772,12 +1770,6 @@ class Create extends Component
                             $this->dollar_remaining = 0;
                         }
                     }
-                    // else{
-                    //     $this->dollar_remaining = $this->dollar_final_total - ($this->total_amount_dollar + ($this->amount / System::getProperty('dollar_exchange')));
-                    //     $this->dinar_remaining = $this->final_total - ($this->amount + ($this->total_amount_dollar * System::getProperty('dollar_exchange')));
-                    // }
-                    // Convert remaining dinar to dollars using the exchange rate
-                    // $this->dollar_remaining = $this->dinar_remaining * System::getProperty('dollar_exchange');
                 }
             }
         }
@@ -1786,7 +1778,6 @@ class Create extends Component
     public function sum_sub_total()
     {
         $totalSubTotal = 0;
-
         foreach ($this->items as $index => $item) {
             $totalSubTotal += $this->num_uf($this->purchase_final_dollar($index));
             if (!empty($item['stores'])) {
@@ -1916,8 +1907,8 @@ class Create extends Component
                     $this->items[$index]['dollar_purchase_after_discount'] =  number_format($this->num_uf($dollar_purchase_price) - ($this->num_uf($percent) * $this->num_uf($dollar_purchase_price)), num_of_digital_numbers());
                 }
             } else {
-                $this->items[$index]['purchase_after_discount'] = number_format($this->items[$index]['purchase_price'], num_of_digital_numbers());
-                $this->items[$index]['dollar_purchase_after_discount'] =  number_format($this->items[$index]['dollar_purchase_price'], num_of_digital_numbers());
+                $this->items[$index]['purchase_after_discount'] = number_format($this->num_uf($this->items[$index]['purchase_price']), num_of_digital_numbers());
+                $this->items[$index]['dollar_purchase_after_discount'] =  number_format($this->num_uf($this->items[$index]['dollar_purchase_price']), num_of_digital_numbers());
             }
         }
     }
