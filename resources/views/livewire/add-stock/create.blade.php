@@ -130,7 +130,15 @@
                                         @enderror
                                     </div>
                                 @endif
-
+                                <div
+                                    class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                    {!! Form::label('transaction_date', __('lang.date_and_time'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                    ]) !!}
+                                    <input type="datetime-local" readonly value="{{ date('Y-m-d\TH:i') }}"
+                                        class="form-control initial-balance-input width-full m-0 ">
+                                </div>
                                 <div
                                     class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate'), [

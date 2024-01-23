@@ -60,6 +60,48 @@
                         class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                         <h6 class="print-title">@lang('lang.branches')</h6>
                     </div>
+                    <div class="col-md-4 col-lg-4">
+                        <div class="multiselect col-md-6">
+                            <div class="selectBox" onclick="showCheckboxes()">
+                                <select class="form-select form-control form-control-lg">
+                                    <option>@lang('lang.show_hide_columns')</option>
+                                </select>
+                                <div class="overSelect"></div>
+                            </div>
+                            <div id="checkboxes">
+                                {{-- +++++++++++++++++ checkbox1 : branch_name +++++++++++++++++ --}}
+                                <label for="col1_id">
+                                    <input type="checkbox" id="col1_id" name="col1" checked="checked" />
+                                    <span>@lang('lang.branch_name')</span> &nbsp;
+                                </label>
+                                {{-- +++++++++++++++++ checkbox2 : stores +++++++++++++++++ --}}
+                                <label for="col2_id">
+                                    <input type="checkbox" id="col2_id" name="col2" checked="checked" />
+                                    <span>@lang('lang.stores')</span>
+                                </label>
+                                {{-- +++++++++++++++++ checkbox3 : date_of_creation +++++++++++++++++ --}}
+                                <label for="col3_id">
+                                    <input type="checkbox" id="col3_id" name="col3" checked="checked" />
+                                    <span>@lang('lang.date_of_creation')</span>
+                                </label>
+                                {{-- +++++++++++++++++ checkbox4 : created_by +++++++++++++++++ --}}
+                                <label for="col4_id">
+                                    <input type="checkbox" id="col4_id" name="col4" checked="checked" />
+                                    <span>@lang('lang.created_by')</span>
+                                </label>
+                                {{-- +++++++++++++++++ checkbox5 : updated_by +++++++++++++++++ --}}
+                                <label for="col5_id">
+                                    <input type="checkbox" id="col5_id" name="col5" checked="checked" />
+                                    <span>@lang('lang.updated_by')</span>
+                                </label>
+                                {{-- +++++++++++++++++ checkbox6 : action +++++++++++++++++ --}}
+                                <label for="col6_id">
+                                    <input type="checkbox" id="col6_id" name="col6" checked="checked" />
+                                    <span>@lang('lang.action')</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                             <div class="div1"></div>
