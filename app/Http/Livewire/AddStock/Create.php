@@ -1302,7 +1302,7 @@ class Create extends Component
                 $this->items[$index]['stores'][$i]['base_unit_multiplier'] = $variant->equal ?? 0;
             }
                 $this->getSubUnits($index, 'stores', $i);
-            
+
         } else {
             $variant = Variation::find($this->items[$index]['variation_id']);
             if(!empty($variant)){
@@ -1352,7 +1352,7 @@ class Create extends Component
                         $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $equal : 0;
                         $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $equal : 0;
                         }
-                        
+
                     }
                 } else {
                     $this->items[$index]['size'] = 0;
@@ -1364,7 +1364,7 @@ class Create extends Component
                 $this->items[$index]['base_unit_multiplier'] = $variant->equal ?? 0;
             }
                 $this->getSubUnits($index);
-            
+
         }
 
         //    dd($product_data->product_dimensions);
@@ -1513,7 +1513,7 @@ class Create extends Component
         $cost = 0;
         // convert purchase price from Dollar To Dinar
         if ($stores == 'stores') {
-            $dollar_purchase_price = $this->dollar_final_purchase_for_piece($index, 'stores', $key);
+            $dollar_purchase_price = $this->items[$index]['stores'][$key]['dollar_purchase_after_discount'];
 
 
             if (isset($this->divide_costs)) {
@@ -1542,8 +1542,8 @@ class Create extends Component
                 $this->items[$index]['stores'][$key]['cost'] = number_format($dollar_purchase_price, num_of_digital_numbers());
             }
         } else {
-            $purchase_price = $this->final_purchase_for_piece($index);
-            $dollar_purchase_price = $this->dollar_final_purchase_for_piece($index);
+            $dollar_purchase_price = $this->items[$index]['dollar_purchase_after_discount'];
+            $purchase_price = $this->items[$index]['purchase_after_discount'];
 
 
             if (isset($this->divide_costs)) {
@@ -1569,7 +1569,8 @@ class Create extends Component
                     (float)$this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                 }
             } else {
-                $this->items[$index]['cost'] = number_format($this->num_uf($dollar_purchase_price), num_of_digital_numbers());
+                $this->items[$index]['cost'] = number_format($this->num_uf($purchase_price), num_of_digital_numbers());
+                $this->items[$index]['dollar_cost'] = number_format($this->num_uf($dollar_purchase_price), num_of_digital_numbers());
             }
         }
     }
@@ -2415,7 +2416,7 @@ class Create extends Component
         }
         //        dd($this->variationSums);
     }
-    
+
     public function getPurchaseOrderStatusArray()
     {
         return [
