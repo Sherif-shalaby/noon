@@ -684,7 +684,7 @@
                     'class' => 'mx-2 mb-0 d-block text-end',
                 ]) !!}
                 <input type="text" class="form-control initial-balance-input width-full bonus_quantity"
-                    placeholder="bonus_quantity"
+                    placeholder="{{ __('lang.b_qty') }}"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.bonus_quantity"
                     wire:input="changeCurrentStock({{ $index }},'stores',{{ $i }})">
                 @error('items.' . $index . '.stores' . $i . '.bonus_quantity')
