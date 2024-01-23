@@ -236,7 +236,7 @@
             <div class="d-flex width-full">
                 <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
                     wire:model="items.{{ $index }}.purchase_discount" style='font-weight:500;font-size:10px;'
-                    wire:input="changePurchasePrice({{ $index }})" placeholder="amount">
+                    wire:input="changePurchasePrice({{ $index }})" placeholder="@lang('lang.amount')">
                 <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
                     wire:model="items.{{ $index }}.purchase_discount_percent"
                     style='font-weight:500;font-size:10px;' wire:input="changePurchasePrice({{ $index }})"
@@ -288,7 +288,7 @@
                     placeholder="%">
                 <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
                     wire:model="items.{{ $index }}.discount" style='font-weight:500;font-size:10px;'
-                    placeholder="discount amount">
+                    placeholder="@lang('lang.discount_amount')">
             </div>
         </div>
 
@@ -734,7 +734,7 @@
                         wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount"
                         style='font-weight:500;font-size:10px;'
                         wire:input="changePurchasePrice({{ $index }},'stores',{{ $i }})"
-                        placeholder="amount">
+                        placeholder="@lang('lang.amount')">
                     <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent"
                         style='font-weight:500;font-size:10px;'
@@ -794,7 +794,7 @@
                         style='font-weight:500;font-size:10px;'
                         wire:model="items.{{ $index }}.stores.{{ $i }}.discount"
                         wire:input="purchase_final({{ $index }},'stores',{{ $i }})"
-                        placeholder="discount amount">
+                        placeholder="@lang('lang.discount_amount')">
                 </div>
             </div>
 

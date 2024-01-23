@@ -149,8 +149,7 @@ class Create extends Component
             }
         }
     }
-    public function getTransactionDate()
-    {
+    public function getTransactionDate(){
         $this->transaction_date = date('Y-m-d\TH:i');
         return date('Y-m-d \a\t h:i A');
     }
@@ -437,7 +436,6 @@ class Create extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function store(): Redirector|Application|RedirectResponse
     {
@@ -968,10 +966,6 @@ class Create extends Component
             'purchase_after_discount' => null,
             'dollar_purchase_after_discount' => null,
             'discount_on_bonus_quantity' => true,
-            'show_discount' => false,
-            'show_validity' => false,
-            'show_discount_details' => false,
-            'show_unit_details' => false,
             'prices' => [
                 [
                     'price_type' => null,
@@ -998,30 +992,7 @@ class Create extends Component
             $this->items[] = $new_item;
         }
     }
-    public function stayShowDiscount($index)
-    {
-        $this->items[$index]['show_discount'] =
-            !$this->items[$index]['show_discount'];
-        $this->dispatchBrowserEvent('componentRefreshed');
-    }
-    public function stayShowValidity($index)
-    {
-        $this->items[$index]['show_validity'] =
-            !$this->items[$index]['show_validity'];
-        $this->dispatchBrowserEvent('componentRefreshed');
-    }
-    public function stayShowshowDiscountDetails($index)
-    {
-        $this->items[$index]['show_discount_details'] =
-            !$this->items[$index]['show_discount_details'];
-        $this->dispatchBrowserEvent('componentRefreshed');
-    }
-    public function stayShowUnitDetails($index)
-    {
-        $this->items[$index]['show_unit_details'] =
-            !$this->items[$index]['show_unit_details'];
-        $this->dispatchBrowserEvent('componentRefreshed');
-    }
+
     public function add_by_po()
     {
         if (!empty($this->items)) {
@@ -1313,7 +1284,7 @@ class Create extends Component
     {
         if ($via == 'stores') {
             $variant = Variation::find($this->items[$index]['stores'][$i]['variation_id']);
-            if (!empty($variant)) {
+            if(!empty($variant)){
                 $product_data = Product::find($variant->product_id);
                 $product = $this->items[$index]['stores'][$i]['product'];
                 if (!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id == $variant->id) {
@@ -1330,10 +1301,11 @@ class Create extends Component
                 $this->items[$index]['unit'] = $variant->unit->name ?? '';
                 $this->items[$index]['stores'][$i]['base_unit_multiplier'] = $variant->equal ?? 0;
             }
-            $this->getSubUnits($index, 'stores', $i);
+                $this->getSubUnits($index, 'stores', $i);
+            
         } else {
             $variant = Variation::find($this->items[$index]['variation_id']);
-            if (!empty($variant)) {
+            if(!empty($variant)){
                 $product_data = Product::find($variant->product_id);
                 $product = $this->items[$index]['product'];
                 if (!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id == $variant->id) {
@@ -1360,26 +1332,27 @@ class Create extends Component
                     } else {
                         $equal = 1;
                         $variation_units = Variation::where('product_id', $product_data->id)
-                            ->where('id', '>=', $variation->id)->where('id', '<=', $variant->id)->get();
-                        if (count($variation_units) > 0) {
-                            foreach ($variation_units as $i => $var) {
-                                $equal *= $var->equal;
+                            ->where('id','>=', $variation->id)->where('id','<=',$variant->id)->get();
+                        if(count($variation_units)>0){
+                            foreach($variation_units as $i=>$var){
+                                $equal*=$var->equal;
                             }
-                            $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size / $equal : 0;
-                            $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $equal : 0;
-                            $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $equal : 0;
-                            $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $equal : 0;
-                        } else {
+                        $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size / $equal : 0;
+                        $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $equal : 0;
+                        $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $equal : 0;
+                        $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $equal : 0;
+                        }else{
                             $variation_units = Variation::where('product_id', $product_data->id)
-                                ->where('id', '<=', $variation->id)->where('id', '>=', $variant->id)->get();
-                            foreach ($variation_units as $i => $var) {
-                                $equal *= $var->equal;
+                            ->where('id','<=', $variation->id)->where('id','>=',$variant->id)->get();
+                            foreach($variation_units as $i=>$var){
+                                $equal*=$var->equal;
                             }
-                            $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * $equal : 0;
-                            $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) * $equal : 0;
-                            $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $equal : 0;
-                            $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $equal : 0;
+                        $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * $equal : 0;
+                        $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) * $equal : 0;
+                        $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $equal : 0;
+                        $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $equal : 0;
                         }
+                        
                     }
                 } else {
                     $this->items[$index]['size'] = 0;
@@ -1390,7 +1363,8 @@ class Create extends Component
                 $this->items[$index]['unit'] = $variant->unit->name ?? '';
                 $this->items[$index]['base_unit_multiplier'] = $variant->equal ?? 0;
             }
-            $this->getSubUnits($index);
+                $this->getSubUnits($index);
+            
         }
 
         //    dd($product_data->product_dimensions);
@@ -1595,11 +1569,9 @@ class Create extends Component
                     (float)$this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                 }
             } else {
-                $this->items[$index]['cost'] = number_format($dollar_purchase_price, num_of_digital_numbers());
+                $this->items[$index]['cost'] = number_format($this->num_uf($dollar_purchase_price), num_of_digital_numbers());
             }
         }
-
-        // return number_format($this->num_uf($this->items[$index]['cost']),num_of_digital_numbers());
     }
 
     public function total_cost($index)
@@ -1798,12 +1770,6 @@ class Create extends Component
                             $this->dollar_remaining = 0;
                         }
                     }
-                    // else{
-                    //     $this->dollar_remaining = $this->dollar_final_total - ($this->total_amount_dollar + ($this->amount / System::getProperty('dollar_exchange')));
-                    //     $this->dinar_remaining = $this->final_total - ($this->amount + ($this->total_amount_dollar * System::getProperty('dollar_exchange')));
-                    // }
-                    // Convert remaining dinar to dollars using the exchange rate
-                    // $this->dollar_remaining = $this->dinar_remaining * System::getProperty('dollar_exchange');
                 }
             }
         }
@@ -1812,7 +1778,6 @@ class Create extends Component
     public function sum_sub_total()
     {
         $totalSubTotal = 0;
-
         foreach ($this->items as $index => $item) {
             $totalSubTotal += $this->num_uf($this->purchase_final_dollar($index));
             if (!empty($item['stores'])) {
@@ -1821,9 +1786,9 @@ class Create extends Component
                 }
             }
         }
-        if ($totalSubTotal > 0) {
+        if($totalSubTotal>0){
             return $this->num_uf($totalSubTotal);
-        } else {
+        }else{
             return 1;
         }
     }
@@ -1942,8 +1907,8 @@ class Create extends Component
                     $this->items[$index]['dollar_purchase_after_discount'] =  number_format($this->num_uf($dollar_purchase_price) - ($this->num_uf($percent) * $this->num_uf($dollar_purchase_price)), num_of_digital_numbers());
                 }
             } else {
-                $this->items[$index]['purchase_after_discount'] = number_format($this->items[$index]['purchase_price'], num_of_digital_numbers());
-                $this->items[$index]['dollar_purchase_after_discount'] =  number_format($this->items[$index]['dollar_purchase_price'], num_of_digital_numbers());
+                $this->items[$index]['purchase_after_discount'] = number_format($this->num_uf($this->items[$index]['purchase_price']), num_of_digital_numbers());
+                $this->items[$index]['dollar_purchase_after_discount'] =  number_format($this->num_uf($this->items[$index]['dollar_purchase_price']), num_of_digital_numbers());
             }
         }
     }
@@ -2450,7 +2415,7 @@ class Create extends Component
         }
         //        dd($this->variationSums);
     }
-
+    
     public function getPurchaseOrderStatusArray()
     {
         return [
