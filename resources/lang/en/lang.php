@@ -753,6 +753,9 @@ return [
     'final_purchase_for_piece'=>'final purchase for piece',
     'final_purchase'=>'final purchase',
     'keyboord_letter_to_toggle_dollar'=>'Keyboord letter to toggle dollar',
+    'discount_type'=>'Discount Type',
+    'piece_discount'=>'Piece Discount',
+    'total_discount'=>'Total Discount',
 ];
 
 
