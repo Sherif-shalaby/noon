@@ -476,6 +476,11 @@ class AddStockController extends Controller
                 $query->where('phone', 'like', '%' . request()->phone_number . '%');
             });
         }
+        $toggle_dollar=System::getProperty('toggle_dollar');
+        if (isset($toggle_dollar) && $toggle_dollar=="1") {
+            $sell_lines->where('transaction_sell_lines.dollar_final_total','=',0);
+            $sell_lines->where('transaction_sell_lines.final_total','!=',0);
+        }
         // dd($sell_lines);
         if (!empty(request()->deliveryman_id)) {
             $sell_lines->where('transaction_sell_lines.deliveryman_id', request()->deliveryman_id);

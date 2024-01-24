@@ -52,7 +52,7 @@ class Create extends Component
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
         $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0,$representative_id, $loading_cost,
-        $dollar_loading_cost,$toggle_suppliers,$delivery_date;
+        $dollar_loading_cost,$toggle_suppliers,$delivery_date,$toggle_dollar=0;
 
 
     protected $rules =[
@@ -191,6 +191,7 @@ class Create extends Component
                 $this->reprsenative_sell_car = true;
             }
         }
+        $this->toggle_dollar=System::getProperty('toggle_dollar');
         $this->delivery_date = now()->format('Y-m-d');
         $this->changeAllProducts();
         $this->client_id = 1;
@@ -331,6 +332,7 @@ class Create extends Component
         $this->validate();
         try {
             $customer=[];
+            $this->toggle_dollar=System::getProperty('toggle_dollar');
             // Add Transaction Sell Line
             $transaction_data = [
                 'store_id' => $this->store_id,
@@ -345,11 +347,11 @@ class Create extends Component
                 'final_total' => $this->num_uf(round_250($this->final_total)),
                 'grand_total' => $this->num_uf(round_250($this->total)),
                 // 'dollar_final_total' :  'النهائي بالدولار'
-                'dollar_final_total' => $this->num_uf($this->dollar_final_total),
-                'dollar_grand_total' => $this->num_uf($this->total_dollar),
+                'dollar_final_total' => $this->toggle_dollar=="0"?$this->num_uf($this->dollar_final_total):0,
+                'dollar_grand_total' => $this->toggle_dollar=="0"?$this->num_uf($this->total_dollar):0,
                 'transaction_date' => Carbon::now(),
                 // "dollar_remaining" inputField : الباقي بالدولار
-                'dollar_remaining' => $this->num_uf($this->dollar_remaining),
+                'dollar_remaining' => $this->toggle_dollar=="0"?$this->num_uf($this->dollar_remaining):0,
                 // "dinar_remaining" inputField : الباقي بالدينار
                 'dinar_remaining' => $this->num_uf($this->dinar_remaining),
                 'invoice_no' => $this->generateInvoivceNumber(),
@@ -406,12 +408,12 @@ class Create extends Component
                 $sell_line->stock_sell_price = !empty($item['current_stock']['sell_price']) ? $item['current_stock']['sell_price'] : null;
                 $sell_line->stock_dollar_sell_price = !empty($item['current_stock']['dollar_sell_price']) ? $item['current_stock']['dollar_sell_price'] : null;
                 $sell_line->sell_price = !empty($item['price']) ? $this->num_uf($item['price']) : null;
-                $sell_line->dollar_sell_price = !empty($item['dollar_price']) ? $item['dollar_price'] : null;
+                $sell_line->dollar_sell_price = $this->toggle_dollar=="0"?(!empty($item['dollar_price']) ? $item['dollar_price'] : null):0;
                 $sell_line->purchase_price = !empty($item['current_stock']['purchase_price']) ? $item['current_stock']['purchase_price'] : null;
-                $sell_line->dollar_purchase_price = !empty($item['current_stock']['dollar_purchase_price']) ? $item['current_stock']['dollar_purchase_price'] : null;
+                $sell_line->dollar_purchase_price = $this->toggle_dollar=="0"?(!empty($item['current_stock']['dollar_purchase_price']) ? $item['current_stock']['dollar_purchase_price'] : null):0;
                 $sell_line->exchange_rate = $item['exchange_rate'];
                 $sell_line->sub_total = $this->num_uf($item['sub_total']);
-                $sell_line->dollar_sub_total = $this->num_uf($item['dollar_sub_total']);
+                $sell_line->dollar_sub_total = $this->toggle_dollar=="0"?$this->num_uf($item['dollar_sub_total']):0;
                 $sell_line->stock_line_id  = !empty($item['current_stock']['id']) ? $item['current_stock']['id'] : null;
                 $sell_line->save();
 
@@ -433,13 +435,13 @@ class Create extends Component
                     //  final_amount : 'النهائي بالدينار'
                     $final_amount = $transaction->final_total;
                     //  dollar_final_amount : 'النهائي بالدولار'
-                    $dollar_final_amount = $transaction->dollar_final_total;
+                    $dollar_final_amount = $this->toggle_dollar=="0"?$transaction->dollar_final_total:0;
                     // dinar_remaining : الباقي دينار
                     $transaction->dinar_remaining =  $final_amount;
                     //  dollar_remaining : 'الباقي بالدولار'
-                    $transaction->dollar_remaining =  $dollar_final_amount;
+                    $transaction->dollar_remaining = $this->toggle_dollar=="0"?$dollar_final_amount:0;
                     $this->amount = $total_paid;
-                    $this->dollar_amount = $dollar_total_paid;
+                    $this->dollar_amount = $this->toggle_dollar=="0"?$dollar_total_paid:0;
                     $transaction->save();
                 }
                 // dd($this->dollar_amount,$this->amount);
@@ -447,9 +449,9 @@ class Create extends Component
                     $payment_data = [
                         'transaction_id' => $transaction->id,
                         'amount' => $this->amount,
-                        'dollar_amount' => $this->dollar_amount,
+                        'dollar_amount' => $this->toggle_dollar=="0"?$this->dollar_amount:0,
                         // "dollar_remaining" inputField
-                        'dollar_remaining' => $this->dollar_remaining,
+                        'dollar_remaining' => $this->toggle_dollar=="0"?$this->dollar_remaining:0,
                         // "dinar_remaining" inputField
                         'dinar_remaining' => $this->dinar_remaining,
                         'method' => 'cash',
@@ -473,7 +475,9 @@ class Create extends Component
                 if(!$this->toggle_suppliers){
                 $customer = Customer::find($transaction->customer_id);
                 if ($this->added_to_balance == 1) {
-                    $customer->dollar_balance += $this->num_uf($this->new_added_dollar_balance);
+                    if($this->toggle_dollar=="0"){
+                        $customer->dollar_balance += $this->num_uf($this->new_added_dollar_balance);
+                    }
                     $customer->balance += $this->num_uf($this->new_added_dinar_balance);
                     $customer->save();
                 }
@@ -549,7 +553,7 @@ class Create extends Component
             'cash_register_id' => $register->id,
             'transaction_id' => $transaction_id,
             'amount' => $amount,
-            'dollar_amount' => $dollar_amount,
+            'dollar_amount' => $this->toggle_dollar=="0"?$dollar_amount:0,
             'pay_method' => 'cash',
             'type' => $type,
             'transaction_type' => $transaction_type,
@@ -824,6 +828,10 @@ class Create extends Component
                         $price = $this->num_uf($dollar_price) * $this->num_uf($exchange_rate);
                         $dollar_price = 0;
                     }
+                }
+                if($this->toggle_dollar=="1" && $price == 0 && $dollar_price>0){
+                    $price = $this->num_uf($dollar_price) * $this->num_uf($exchange_rate);
+                    $dollar_price = 0;
                 }
 //                dd($current_stock->prices);
                 $new_item = [

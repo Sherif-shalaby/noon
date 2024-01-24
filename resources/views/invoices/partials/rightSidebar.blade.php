@@ -30,7 +30,7 @@
         </div>
         <div class="body-card-app pt-2">
             <div class="row">
-                <div class="col-md-9 {{(($dollar_final_total!=0 && $total_dollar!=0 && $back_to_dollar==0)||$back_to_dollar==2 )?'':'d-none'}}">
+                <div class="col-md-9 {{(($dollar_final_total!=0 && $total_dollar!=0 && $back_to_dollar==0)||$back_to_dollar==2 )&& $toggle_dollar=='0'?'':'d-none'}}">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="customSwitch1" >
                         <label class="custom-control-label" for="customSwitch1" wire:click="ChangeBillToDinar()" {{$back_to_dollar==1?'checked':''}}>{{__('lang.change_bill_to')}} {{$back_to_dollar==0?__('lang.dinar_c'):__('lang.dollar_c')}}</label>
@@ -43,6 +43,7 @@
             <div class="row ">
                 {{-- +++++++++++ الاجمالي بالدولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     <div class="form-group">
                         {!! Form::label('dollar_grand_total', 'الاجمالي بالدولار', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_grand_total', $total_dollar, [
@@ -52,6 +53,7 @@
                             'placeholder' => __('lang.dollar_price'),
                             'wire:model' => 'total_dollar',
                         ]) !!}
+                    </div>
                     </div>
                 </div>
                 {{-- +++++++++++ الاجمالي بالدينار +++++++++++ --}}
@@ -69,6 +71,7 @@
                 </div>
                 {{-- +++++++++++ الخصم دولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     <div class="form-group">
                         {!! Form::label('dollar_discount', 'الخصم دولار', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_discount', null, [
@@ -77,6 +80,7 @@
                             'wire:model' => 'discount_dollar',
                             'wire:change' => 'changeDollarTotal',
                         ]) !!}
+                    </div>
                     </div>
                 </div>
                 {{-- +++++++++++ الخصم دينار +++++++++++ --}}
@@ -92,10 +96,12 @@
                 </div>
                 {{-- +++++++++++ النهائي دولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     {!! Form::label('dollar_final_total', 'النهائي دولار', ['class' => 'text-primary']) !!}
                         <div class="form-group">
                             {!! Form::number('dollar_final_total', $dollar_final_total, ['class' => 'form-control', 'readonly']) !!}
                         </div>
+                    </div>
                 </div>
                 {{-- +++++++++++ النهائي دينار +++++++++++ --}}
                 <div class="col-md-6">
@@ -110,6 +116,7 @@
                 </div>
                 {{-- +++++++++++ الواصل دولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     <div class="form-group">
                         {!! Form::label('dollar_amount', 'الواصل دولار', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_amount', null, [
@@ -118,7 +125,7 @@
                             'wire:change' => 'changeReceivedDollar',
                         ]) !!}
                     </div>
-
+                    </div>
                 </div>
                 {{-- +++++++++++ الواصل دينار +++++++++++ --}}
                 <div class="col-md-6">
@@ -133,6 +140,7 @@
                 </div>
                 {{-- +++++++++++ الباقي دولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     {!! Form::label('dollar_remaining', 'الباقي دولار', ['class' => 'text-primary']) !!}
                     <div class="d-flex justify-content-between">
                         <div class="form-group">
@@ -145,6 +153,7 @@
                         <div class="{{$dollar_remaining > 0 ? '':'d-none'}}" title="{{__('lang.change_remaining_to_dinar')}}">
                             <button class="btn btn-sm btn-danger text-white" type="button" wire:click="changeRemaining()">></button>
                         </div>
+                    </div>
                     </div>
                 </div>
                 {{-- +++++++++++ الباقي دينار +++++++++++ --}}
