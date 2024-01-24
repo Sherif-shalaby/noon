@@ -106,8 +106,8 @@
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="amount">
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="%">
         </div>
-        <span> {{ $product['dollar_purchase_discount'] }} $</span>
-        <span> {{ $product['dollar_purchase_discount_percent'] }} $ </span>
+        <span> {{ @number_format(num_uf($product['dollar_purchase_discount']),num_of_digital_numbers())  }} $</span>
+        <span> {{ @number_format(num_uf($product['dollar_purchase_discount_percent']),num_of_digital_numbers())  }} $ </span>
         <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}" id="discount_on_bonus_quantity_{{ $index }}"
                    wire:model="items.{{ $index }}.discount_on_bonus_quantity"
@@ -117,10 +117,10 @@
     </td>
     <td>
         <span class="price_after_discount" >
-            {{ $product['purchase_after_discount'] }}
+            {{ @number_format(num_uf($product['purchase_after_discount']),num_of_digital_numbers())  }}
         </span><br>
         <span class="dollar_price_after_discount" >
-            {{ $product['dollar_purchase_after_discount'] }}
+            {{ @number_format(num_uf($product['dollar_purchase_after_discount']),num_of_digital_numbers())  }}
         </span>
     </td>
     <td>
@@ -355,8 +355,8 @@
                     <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="amount">
                 <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="%">
             </div>
-            <span> {{ $items[$index]['stores'][$i]['dollar_purchase_discount'] }} $</span>
-            <span> {{ $items[$index]['stores'][$i]['dollar_purchase_discount_percent'] }} $ </span>
+            <span> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount'],num_of_digital_numbers()) }} $</span>
+            <span> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount_percent'],num_of_digital_numbers()) }} $ </span>
             <div class="input-group-prepend">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}{{$i}}" id="discount_on_bonus_quantity{{$i}}"
@@ -368,10 +368,10 @@
         </td>
         <td>
         <span class="price_after_discount" >
-            {{ $items[$index]['stores'][$i]['purchase_after_discount'] ?? null }}
+            {{ @number_format($items[$index]['stores'][$i]['purchase_after_discount'],num_of_digital_numbers()) ?? null }}
         </span><br>
             <span class="dollar_price_after_discount" >
-            {{ $items[$index]['stores'][$i]['dollar_purchase_after_discount'] ?? null }}
+            {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_after_discount'],num_of_digital_numbers()) ?? null }}
         </span>
         </td>
         <td>
