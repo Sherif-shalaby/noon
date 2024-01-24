@@ -833,5 +833,8 @@ return array(
     'final_purchase_for_piece'=>'سعر الشراء للفطعة',
     'final_purchase'=>'سعر الشراءالنهائى',
     'keyboord_letter_to_toggle_dollar'=>'حرف من لوحة المفاتيح لتبديل الدولار',
+    'discount_type'=>'نوع الخصم',
+    'piece_discount'=>'خصم القطعة',
+    'total_discount'=>'خصم على الكلى',
  );
 

@@ -102,7 +102,7 @@
         @endif
     </td>
     <td>
-        {!! Form::select('items'.$index.'.discount_type',[1=>'piece_discount',2=>'total_discount'] , 1, ['class' => 'form-control select store_id'.$index, 'data-live-search' => 'true',
+        {!! Form::select('items'.$index.'.discount_type',[1=>__('lang.piece_discount'),2=>__('lang.total_discount')] , 1, ['class' => 'form-control select store_id'.$index, 'data-live-search' => 'true',
         'required', 'placeholder' => __('lang.please_select'),
         'wire:model' => 'items.' . $index . '.discount_type']) !!}
     </td>
