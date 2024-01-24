@@ -1303,7 +1303,8 @@ class Create extends Component
             }
                 $this->getSubUnits($index, 'stores', $i);
 
-        } else {
+        }
+        else {
             $variant = Variation::find($this->items[$index]['variation_id']);
             if(!empty($variant)){
                 $product_data = Product::find($variant->product_id);
@@ -1313,23 +1314,24 @@ class Create extends Component
                     $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
                     $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight : 0;
                     $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * 1 : 0;
-                } else if (!empty($product_data->product_dimensions) && !empty($product_data->product_dimensions->variation_id)) {
+                }
+                else if (!empty($product_data->product_dimensions) && !empty($product_data->product_dimensions->variation_id)) {
                     $variation = Variation::find($product_data->product_dimensions->variation_id);
-                    // dd($variation->basic_unit_id);
                     $basic_variation = Variation::where('product_id', $product_data->id)->where('basic_unit_id', $variation->unit_id)->first();
-                    // $dimension_is_basic_variation=Variation::where('product_id',$product_data->id)->where('basic_unit_id',$variant->unit_id)->first();
-                    // dd($variant->unit_id);
                     if (!empty($basic_variation) && $variant->unit_id == $basic_variation->unit_id) {
                         $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * $basic_variation->equal : 0;
                         $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) * $basic_variation->equal : 0;
                         $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $basic_variation->equal : 0;
                         $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $basic_variation->equal : 0;
-                    } elseif ($variation->basic_unit_id == $variant->unit_id) {
+                    }
+                    elseif ($variation->basic_unit_id == $variant->unit_id) {
+                        dd($basic_variation);
                         $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size / $basic_variation->equal : 0;
                         $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $basic_variation->equal : 0;
                         $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $basic_variation->equal : 0;
                         $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $basic_variation->equal : 0;
-                    } else {
+                    }
+                    else {
                         $equal = 1;
                         $variation_units = Variation::where('product_id', $product_data->id)
                             ->where('id','>=', $variation->id)->where('id','<=',$variant->id)->get();
@@ -1341,7 +1343,8 @@ class Create extends Component
                         $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? ($product_data->product_dimensions->size * 1) / $equal : 0;
                         $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight / $equal : 0;
                         $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) / $equal : 0;
-                        }else{
+                        }
+                        else{
                             $variation_units = Variation::where('product_id', $product_data->id)
                             ->where('id','<=', $variation->id)->where('id','>=',$variant->id)->get();
                             foreach($variation_units as $i=>$var){
@@ -1352,9 +1355,9 @@ class Create extends Component
                         $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * $equal : 0;
                         $this->items[$index]['total_weight'] = !empty($product_data->product_dimensions->weight) ? ($product_data->product_dimensions->weight * 1) * $equal : 0;
                         }
-
                     }
-                } else {
+                }
+                else {
                     $this->items[$index]['size'] = 0;
                     $this->items[$index]['total_size'] = 0;
                     $this->items[$index]['weight'] = 0;
@@ -1364,10 +1367,7 @@ class Create extends Component
                 $this->items[$index]['base_unit_multiplier'] = $variant->equal ?? 0;
             }
                 $this->getSubUnits($index);
-
         }
-
-        //    dd($product_data->product_dimensions);
     }
 
     public function changeFilling($index)
@@ -1546,7 +1546,9 @@ class Create extends Component
         }
         else {
             $purchase_price = $this->final_purchase_for_piece($index);
+
             $dollar_purchase_price = $this->dollar_final_purchase_for_piece($index);
+//            dd($dollar_purchase_price);
 
 
             if (isset($this->divide_costs)) {
@@ -1915,6 +1917,7 @@ class Create extends Component
                 $this->items[$index]['dollar_purchase_after_discount'] =  number_format($this->num_uf($this->items[$index]['dollar_purchase_price']), num_of_digital_numbers());
             }
         }
+        $this->cost($index,$var,$i);
     }
 
     public function purchase_final($index, $var = null, $i = null)
