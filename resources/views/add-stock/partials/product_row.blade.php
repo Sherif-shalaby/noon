@@ -102,6 +102,11 @@
         @endif
     </td>
     <td>
+        {!! Form::select('items'.$index.'.discount_type',[1=>'piece_discount',2=>'total_discount'] , 1, ['class' => 'form-control select store_id'.$index, 'data-live-search' => 'true',
+        'required', 'placeholder' => __('lang.please_select'),
+        'wire:model' => 'items.' . $index . '.discount_type']) !!}
+    </td>
+    <td class="{{$items[$index]['discount_type']!="1"?'d-none':''}}">
         <div class="input-group-prepend">
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="amount">
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="%">
@@ -115,7 +120,7 @@
             <label class="custom-control-label" for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_from_original_price')</label>
         </div>
     </td>
-    <td>
+    <td class="{{$items[$index]['discount_type']!="1"?'d-none':''}}">
         <span class="price_after_discount">
             {{ @number_format(num_uf($product['purchase_after_discount']),num_of_digital_numbers())  }}
         </span><br>
@@ -123,9 +128,10 @@
             {{ @number_format(num_uf($product['dollar_purchase_after_discount']),num_of_digital_numbers())  }}
         </span>
     </td>
-    <td>
+    <td class="{{$items[$index]['discount_type']!="2"?'d-none':''}}">
         <div class="d-flex justify-content-between">
             <div class="input-group-prepend">
+                {{$items[$index]['discount_type']!="2"?'d-none':''}}
                 <input type="text" class="form-control" wire:model="items.{{ $index }}.discount_percent" style="width: 100px;"  placeholder="%">
             </div>
             <input type="text" class="form-control" wire:model="items.{{ $index }}.discount" style="width: 100px;" placeholder="discount amount">

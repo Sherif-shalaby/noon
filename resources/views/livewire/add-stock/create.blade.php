@@ -368,6 +368,7 @@
                                                     <th style="width: 10%">@lang('lang.purchase_price') </th>
                                                     {{-- <th style="width: 10%">@lang('lang.selling_price') </th> --}}
                                                     <th style="width: 10%">@lang('lang.sub_total')</th>
+                                                    <th style="width: 10%">@lang('lang.discount_type')</th>
 
                                                     {{--                                        @if ($showColumn) --}}
                                                     {{-- <th style="width: 10%">@lang('lang.cost')$</th>
