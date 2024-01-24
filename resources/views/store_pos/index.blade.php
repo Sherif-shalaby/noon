@@ -3,15 +3,19 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 85px;
+            top: 33px;
         }
 
-        .Wrapper1 {
-            margin-top: 70px
+        .rightbar {
+            z-index: 2;
+        }
+
+        .wrapper1 {
+            margin-top: 35px;
         }
 
         @media(max-width:768px) {
-            .Wrapper1 {
+            .wrapper1 {
                 margin-top: 140px
             }
         }

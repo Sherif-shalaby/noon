@@ -3,11 +3,15 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 85px;
+            top: 32px;
+        }
+
+        .rightbar {
+            z-index: 2;
         }
 
         .wrapper1 {
-            margin-top: 70px;
+            margin-top: 35px;
         }
 
         @media(max-width:768px) {

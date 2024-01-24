@@ -47,7 +47,7 @@
         }
 
         .wrapper1 {
-            margin-top: 0;
+            margin-top: 15px;
         }
 
         @media(max-width:767px) {
@@ -86,52 +86,6 @@
             outline: 0;
             box-shadow: 0 0 0 0 !important;
             background-color: white !important;
-        }
-
-        .selectBox {
-            position: relative;
-        }
-
-        /* selectbox style */
-        .selectBox select {
-            width: 100%;
-            padding: 0 !important;
-            padding-left: 4px;
-            padding-right: 4px;
-            color: #000;
-            border: 1px solid #ccc;
-            background-color: #dedede;
-            /* height: 39px !important; */
-        }
-
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        #checkboxes {
-            display: none;
-            border: 1px #dadada solid;
-            height: 125px;
-            overflow: auto;
-            padding-top: 10px;
-            /* text-align: end;  */
-        }
-
-        #checkboxes label {
-            display: block;
-            padding: 5px;
-        }
-
-        #checkboxes label:hover {
-            background-color: #ddd;
-        }
-
-        #checkboxes label span {
-            font-weight: normal;
         }
     </style>
     <div class="animate-in-page">
@@ -180,117 +134,8 @@
                         <div class="container-fluid">
                             @include('add-stock.partials.filters')
                         </div>
-
                     </div>
 
-                    {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                    <div class="col-md-4" style="position: relative;z-index: 9;margin-top: 20px">
-                        <div class="multiselect col-md-6">
-                            <div class="selectBox" onclick="showCheckboxes()">
-                                <select class="form-select">
-                                    <option>@lang('lang.show_hide_columns')</option>
-                                </select>
-                                <div class="overSelect"></div>
-                            </div>
-                            <div id="checkboxes">
-                                {{-- +++++++++++++++++ checkbox1 : po_ref_no +++++++++++++++++ --}}
-                                <label for="col1_id">
-                                    <input type="checkbox" id="col1_id" name="col1" checked="checked" />
-                                    <span>{{ __('lang.po_ref_no') }}</span> &nbsp;
-                                </label>
-                                {{-- +++++++++++++++++ checkbox2 : invoice_no +++++++++++++++++ --}}
-                                <label for="col2_id">
-                                    <input type="checkbox" id="col2_id" name="col2" checked="checked" />
-                                    <span>@lang('lang.invoice_no')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox3 : date_and_time +++++++++++++++++ --}}
-                                <label for="col3_id">
-                                    <input type="checkbox" id="col3_id" name="col3" checked="checked" />
-                                    <span>@lang('lang.date_and_time')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox4 : invoice_date +++++++++++++++++ --}}
-                                <label for="col4_id">
-                                    <input type="checkbox" id="col4_id" name="col4" checked="checked" />
-                                    <span>@lang('lang.invoice_date')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox5 : supplier +++++++++++++++++ --}}
-                                <label for="col5_id">
-                                    <input type="checkbox" id="col5_id" name="col5" checked="checked" />
-                                    <span>@lang('lang.supplier')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox6 : products +++++++++++++++++ --}}
-                                <label for="col6_id">
-                                    <input type="checkbox" id="col6_id" name="col6" checked="checked" />
-                                    <span>@lang('lang.products')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox7 : created_by +++++++++++++++++ --}}
-                                <label for="col7_id">
-                                    <input type="checkbox" id="col7_id" name="col7" checked="checked" />
-                                    <span>@lang('lang.created_by')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox8 : value +++++++++++++++++ --}}
-                                <label for="col8_id">
-                                    <input type="checkbox" id="col8_id" name="col8" checked="checked" />
-                                    <span>@lang('lang.value')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox9 : paid_amount +++++++++++++++++ --}}
-                                <label for="col9_id">
-                                    <input type="checkbox" id="col9_id" name="col9" checked="checked" />
-                                    <span>@lang('lang.paid_amount')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox10 : pending_amount +++++++++++++++++ --}}
-                                <label for="col10_id">
-                                    <input type="checkbox" id="col10_id" name="col10" checked="checked" />
-                                    <span>@lang('lang.pending_amount')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox11 : due_date +++++++++++++++++ --}}
-                                <label for="col11_id">
-                                    <input type="checkbox" id="col11_id" name="col11" checked="checked" />
-                                    <span>@lang('lang.due_date')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox12 : invoice_discount +++++++++++++++++ --}}
-                                <label for="col12_id">
-                                    <input type="checkbox" id="col12_id" name="col12" checked="checked" />
-                                    <span>@lang('lang.invoice_discount')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox13 : product_discount +++++++++++++++++ --}}
-                                <label for="col13_id">
-                                    <input type="checkbox" id="col13_id" name="col13" checked="checked" />
-                                    <span>@lang('lang.product_discount')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox14 : product_discount_percent +++++++++++++++++ --}}
-                                <label for="col14_id">
-                                    <input type="checkbox" id="col14_id" name="col14" checked="checked" />
-                                    <span>@lang('lang.product_discount_percent')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox15 : cash_discount +++++++++++++++++ --}}
-                                <label for="col15_id">
-                                    <input type="checkbox" id="col15_id" name="col15" checked="checked" />
-                                    <span>@lang('lang.cash_discount')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox16 : seasonal_discount +++++++++++++++++ --}}
-                                <label for="col16_id">
-                                    <input type="checkbox" id="col16_id" name="col16" checked="checked" />
-                                    <span>@lang('lang.seasonal_discount')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox17 : annual_discount +++++++++++++++++ --}}
-                                <label for="col17_id">
-                                    <input type="checkbox" id="col17_id" name="col17" checked="checked" />
-                                    <span>@lang('lang.annual_discount')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox18 : notes +++++++++++++++++ --}}
-                                <label for="col18_id">
-                                    <input type="checkbox" id="col18_id" name="col18" checked="checked" />
-                                    <span>@lang('lang.notes')</span>
-                                </label>
-                                {{-- +++++++++++++++++ checkbox19 : action +++++++++++++++++ --}}
-                                <label for="col19_id">
-                                    <input type="checkbox" id="col19_id" name="col19" checked="checked" />
-                                    <span>@lang('lang.action')</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="card-body">

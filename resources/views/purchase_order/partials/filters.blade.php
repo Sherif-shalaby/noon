@@ -4,7 +4,9 @@
             {{-- ++++++++++++++++++ "main_category" filter ++++++++++++++++++ --}}
             <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
-                {!! Form::label('category_id', __('lang.category') . ' 1') !!}
+                {!! Form::label('category_id', __('lang.category') . ' 1', [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper width-full">
                     {!! Form::select('category_id', $categories, request()->category_id, [
                         'class' => 'form-control select2 category',
@@ -16,7 +18,9 @@
             {{-- ++++++++++++++++++ "sub1_category" filter ++++++++++++++++++ --}}
             <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
-                {!! Form::label('category_id', __('lang.category') . ' 2') !!}
+                {!! Form::label('category_id', __('lang.category') . ' 2', [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper width-full">
                     {!! Form::select('subcategory_id1', $subcategories1, request()->subcategory_id1, [
                         'class' => 'form-control select2 subcategory1',
@@ -28,7 +32,9 @@
             {{-- ++++++++++++++++++ "sub2_category" filter ++++++++++++++++++ --}}
             <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
-                {!! Form::label('category_id', __('lang.category') . ' 3') !!}
+                {!! Form::label('category_id', __('lang.category') . ' 3', [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper width-full">
                     {!! Form::select('subcategory_id2', $subcategories2, request()->subcategory_id2, [
                         'class' => 'form-control select2 subcategory2',
@@ -40,7 +46,9 @@
             {{-- ++++++++++++++++++ "sub3_category" filter ++++++++++++++++++ --}}
             <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
-                {!! Form::label('category_id', __('lang.category') . ' 4') !!}
+                {!! Form::label('category_id', __('lang.category') . ' 4', [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper width-full">
                     {!! Form::select('subcategory_id3', $subcategories3, request()->subcategory_id3, [
                         'class' => 'form-control select2 subcategory3',
@@ -52,7 +60,9 @@
             {{-- +++++++++++++++ products filter +++++++++++++++ --}}
             <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
-                {!! Form::label('category_id', __('lang.select_products')) !!}
+                {!! Form::label('category_id', __('lang.select_products'), [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper width-full">
                     {!! Form::select('product_id', $products, request()->product_id, [
                         'class' => 'form-control select2 products',
@@ -64,7 +74,9 @@
             {{-- +++++++++++++++ purchase_type filter +++++++++++++++ --}}
             <div class="col-6 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="animation-delay: 1.15s">
-                {!! Form::label('category_id', __('lang.purchase_type')) !!}
+                {!! Form::label('category_id', __('lang.purchase_type'), [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper width-full">
                     {!! Form::select('purchase_type', [__('lang.local'), __('lang.export')], request()->purchase_type, [
                         'class' => 'form-control select2 purchase_type',
@@ -83,54 +95,7 @@
                 </button>
 
             </div>
-            <div class="col-md-4 d-flex justify-content-center align-items-center"
-                style="position: relative;z-index: 9;">
-                <div class="multiselect col-md-6">
-                    <div class="selectBox" onclick="showCheckboxes()">
-                        <select class="form-select ">
-                            <option>@lang('lang.show_hide_columns')</option>
-                        </select>
-                        <div class="overSelect"></div>
-                    </div>
-                    <div id="checkboxes">
-                        {{-- +++++++++++++++++ checkbox1 : reference_no +++++++++++++++++ --}}
-                        <label for="col1_id">
-                            <input type="checkbox" id="col1_id" name="col1" checked="checked" />
-                            <span>@lang('lang.reference_no')</span> &nbsp;
-                        </label>
-                        {{-- +++++++++++++++++ checkbox2 : date +++++++++++++++++ --}}
-                        <label for="col2_id">
-                            <input type="checkbox" id="col2_id" name="col2" checked="checked" />
-                            <span>@lang('lang.date')</span>
-                        </label>
-                        {{-- +++++++++++++++++ checkbox3 : created_by +++++++++++++++++ --}}
-                        <label for="col3_id">
-                            <input type="checkbox" id="col3_id" name="col3" checked="checked" />
-                            <span>@lang('lang.created_by')</span>
-                        </label>
-                        {{-- +++++++++++++++++ checkbox4 : supplier +++++++++++++++++ --}}
-                        <label for="col4_id">
-                            <input type="checkbox" id="col4_id" name="col4" checked="checked" />
-                            <span>@lang('lang.supplier')</span>
-                        </label>
-                        {{-- +++++++++++++++++ checkbox5 : value +++++++++++++++++ --}}
-                        <label for="col5_id">
-                            <input type="checkbox" id="col5_id" name="col5" checked="checked" />
-                            <span>@lang('lang.value')</span>
-                        </label>
-                        {{-- +++++++++++++++++ checkbox6 : status +++++++++++++++++ --}}
-                        <label for="col6_id">
-                            <input type="checkbox" id="col6_id" name="col6" checked="checked" />
-                            <span>@lang('lang.status')</span>
-                        </label>
-                        {{-- +++++++++++++++++ checkbox7 : action +++++++++++++++++ --}}
-                        <label for="col7_id">
-                            <input type="checkbox" id="col7_id" name="col7" checked="checked" />
-                            <span>@lang('lang.action')</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </form>
 </div>

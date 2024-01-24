@@ -3,7 +3,7 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 40px;
+            top: 0px;
         }
     </style>
     <div class="animate-in-page">
@@ -42,55 +42,6 @@
             </div>
         </div>
     </div>
-    {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
-    <style>
-        .selectBox {
-            position: relative;
-        }
-
-        /* selectbox style */
-        .selectBox select {
-            width: 100%;
-            padding: 0 !important;
-            padding-left: 4px;
-            padding-right: 4px;
-            color: #fff;
-            border: 1px solid #596fd7;
-            background-color: #596fd7;
-            /* height: 39px !important; */
-        }
-
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        #checkboxes {
-            display: none;
-            border: 1px #dadada solid;
-            height: 125px;
-            overflow: auto;
-            padding-top: 10px;
-            /* text-align: end;  */
-        }
-
-        #checkboxes label {
-            display: block;
-            padding: 5px;
-
-        }
-
-        #checkboxes label:hover {
-            background-color: #ddd;
-        }
-
-        #checkboxes label span {
-            font-weight: normal;
-        }
-    </style>
 @endsection
 @section('content')
     <div class="animate-in-page">
@@ -108,80 +59,6 @@
                         <div class="card-body">
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                             <div class="table-responsive ">
-                                {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                                <div class="col-md-3 col-lg-3">
-                                    {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                                    <div class="multiselect col-md-12">
-                                        <div class="selectBox" onclick="showCheckboxes()">
-                                            <select class="form-select form-control form-control-lg">
-                                                <option>@lang('lang.show_hide_columns')</option>
-                                            </select>
-                                            <div class="overSelect"></div>
-                                        </div>
-                                        <div id="checkboxes">
-                                            {{-- +++++++++++++++++ checkbox1 : name +++++++++++++++++ --}}
-                                            <label for="col1_id">
-                                                <input type="checkbox" id="col1_id" name="col1" checked="checked" />
-                                                <span>@lang('lang.name')</span> &nbsp;
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox2 : company_name +++++++++++++++++ --}}
-                                            <label for="col2_id">
-                                                <input type="checkbox" id="col2_id" name="col2" checked="checked" />
-                                                <span>@lang('lang.company_name')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox3 : email +++++++++++++++++ --}}
-                                            <label for="col3_id">
-                                                <input type="checkbox" id="col3_id" name="col3" checked="checked" />
-                                                <span>@lang('lang.email')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox4 : phone +++++++++++++++++ --}}
-                                            <label for="col4_id">
-                                                <input type="checkbox" id="col4_id" name="col4" checked="checked" />
-                                                <span>@lang('lang.phone')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox5 : state +++++++++++++++++ --}}
-                                            <label for="col5_id">
-                                                <input type="checkbox" id="col5_id" name="col5" checked="checked" />
-                                                <span>@lang('lang.state')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox6 : city +++++++++++++++++ --}}
-                                            <label for="col6_id">
-                                                <input type="checkbox" id="col6_id" name="col6" checked="checked" />
-                                                <span>@lang('lang.city')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox7 : exchange_rate +++++++++++++++++ --}}
-                                            <label for="col7_id">
-                                                <input type="checkbox" id="col7_id" name="col7" checked="checked" />
-                                                <span>@lang('lang.exchange_rate')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox8 : owner_debt_in_dinar +++++++++++++++++ --}}
-                                            <label for="col8_id">
-                                                <input type="checkbox" id="col8_id" name="col8" checked="checked" />
-                                                <span>@lang('lang.owner_debt_in_dinar')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox9 : owner_debt_in_dollar +++++++++++++++++ --}}
-                                            <label for="col9_id">
-                                                <input type="checkbox" id="col9_id" name="col9" checked="checked" />
-                                                <span>@lang('lang.owner_debt_in_dollar')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox10 : created_by +++++++++++++++++ --}}
-                                            <label for="col10_id">
-                                                <input type="checkbox" id="col10_id" name="col10" checked="checked" />
-                                                <span>@lang('lang.created_by')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox11 : updated_by +++++++++++++++++ --}}
-                                            <label for="col11_id">
-                                                <input type="checkbox" id="col11_id" name="col11" checked="checked" />
-                                                <span>@lang('lang.updated_by')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox12 : action +++++++++++++++++ --}}
-                                            <label for="col12_id">
-                                                <input type="checkbox" id="col12_id" name="col12" checked="checked" />
-                                                <span>@lang('lang.action')</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
                                 <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif"

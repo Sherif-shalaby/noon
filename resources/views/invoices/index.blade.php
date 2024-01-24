@@ -2,55 +2,8 @@
 @section('title', __('lang.sells'))
 @section('breadcrumbbar')
     <style>
-        .selectBox {
-            position: relative;
-        }
-
-        /* selectbox style */
-        .selectBox select {
-            width: 100%;
-            padding: 0 !important;
-            padding-left: 4px;
-            padding-right: 4px;
-            color: #000;
-            border: 1px solid #ccc;
-            background-color: #dadada;
-            /* height: 39px !important; */
-        }
-
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        #checkboxes {
-            display: none;
-            border: 1px #dadada solid;
-            height: 125px;
-            overflow: auto;
-            padding-top: 10px;
-            background-color: white
-                /* text-align: end;  */
-        }
-
-        #checkboxes label {
-            display: block;
-            padding: 5px;
-        }
-
-        #checkboxes label:hover {
-            background-color: #ddd;
-        }
-
-        #checkboxes label span {
-            font-weight: normal;
-        }
-
         .table-top-head {
-            top: 315px !important;
+            top: 265px !important;
         }
 
         .table-scroll-wrapper {
@@ -67,7 +20,7 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 315px !important
+                top: 265px !important
             }
         }
 
@@ -90,7 +43,7 @@
         }
 
         .wrapper1 {
-            margin-top: 35px;
+            margin-top: 25px;
         }
 
         .input-wrapper {

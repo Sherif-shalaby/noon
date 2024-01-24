@@ -15,7 +15,7 @@
         }
 
         .wrapper1 {
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         @media(max-width:768px) {
@@ -27,54 +27,6 @@
                 margin-top: 115px !important;
             }
         }
-
-        /* +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++  */
-
-        .selectBox {
-            position: relative;
-        }
-
-        /* selectbox style */
-        .selectBox select {
-            width: 100%;
-            padding: 0 !important;
-            padding-left: 4px;
-            padding-right: 4px;
-            color: #000;
-            border: 1px solid #ccc;
-            background-color: #dedede;
-            /* height: 39px !important; */
-        }
-
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        #checkboxes {
-            display: none;
-            border: 1px #dadada solid;
-            height: 125px;
-            overflow: auto;
-            padding-top: 10px;
-            /* text-align: end;  */
-        }
-
-        #checkboxes label {
-            display: block;
-            padding: 5px;
-        }
-
-        #checkboxes label:hover {
-            background-color: #ddd;
-        }
-
-        #checkboxes label span {
-            font-weight: normal;
-        }
     </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -82,7 +34,7 @@
                 class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div>
                     <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.show_purchase_order')</h4> <br />
+                        @lang('lang.show_purchase_order')</h4>
                     <div class="breadcrumb-list">
                         <ul style=" list-style: none;"
                             class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -97,17 +49,17 @@
                                 aria-current="page">@lang('lang.show_purchase_order')</li>
                         </ul>
                     </div>
-                    <br />
+
                 </div>
                 <div
                     class="col-md-4  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
                     <div class="widgetbar">
                         {{-- ++++++++++++++++++++ show Recycle_Bin ++++++++++++ --}}
-                        <a href="{{ route('purchase_order.show_soft_deleted_records') }}" class="btn btn-danger">
+                        <a href="{{ route('purchase_order.show_soft_deleted_records') }}" class="btn btn-sm btn-danger">
                             @lang('lang.show_recycle_bin')
                         </a>
                         {{-- ++++++++++++++++++++ create purchase_order ++++++++++++ --}}
-                        <a href="{{ route('purchase_order.create') }}" class="btn btn-primary">
+                        <a href="{{ route('purchase_order.create') }}" class="btn btn-sm btn-primary">
                             @lang('lang.create_purchase_order')
                         </a>
                     </div>
@@ -130,7 +82,7 @@
                         </div>
                         {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
 
-                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:25px ">
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                             <div class="div1"></div>
                         </div>
                         <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">

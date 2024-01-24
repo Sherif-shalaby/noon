@@ -958,6 +958,9 @@ thead tr {
     padding: 0.5rem 1.5rem;
     color: #596fd7;
     transition: 0.4s;
+    font-size: 12px;
+    position: relative;
+    font-weight: 600;
 }
 
 .dropdown-menu .dropdown-item:hover {
@@ -972,18 +975,40 @@ thead tr {
     color: #282828;
     text-decoration: none;
     transition: 0.4s;
+    font-size: 12px;
     position: relative;
+    font-weight: 600;
+    /* border-bottom: 1px solid #282828; */
+}
+
+.dropdown-menu .dropdown-item::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 0;
+    background-color: #596fd7;
+    top: 0;
+    left: 0px;
+    transition: 0.5s;
+}
+
+.dropdown-menu .dropdown-item:hover::after {
+    height: 100%;
 }
 
 .dropdown-menu .dropdown-item.active::before {
     content: url('/images/check.svg');
     position: absolute;
     top: 25%;
-    left: 20%;
+    left: 8%;
     width: 10px;
     height: 10px;
 }
 
 .dropdown-menu .dropdown-item.active:hover {
     background-color: #7575753c;
+}
+
+.dt-button-collection {
+    min-width: 200px !important;
 }

@@ -230,6 +230,12 @@
                     <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>
                 <a href="{{ route('pos.index') }}" class="btn btn-danger px-1 mx-1"
                     style="font-size: 14px;font-weight: 400">@lang('lang.clear_filters')</a>
+
+                {{-- +++++++++ delete_all button ++++++++ --}}
+                <button id="btn_delete_all" class=" btn btn-danger  px-1 delete_all"
+                    style="font-size: 14px;font-weight: 400">
+                    <i class="fa fa-trash"></i>@lang('lang.delete_all')
+                </button>
             </div>
             {{-- +++++++++ delete_all button ++++++++ --}}
             {{-- <div class="col-2">

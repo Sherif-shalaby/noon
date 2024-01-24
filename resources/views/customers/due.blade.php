@@ -3,7 +3,7 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 100px !important;
+            top: 75px !important;
         }
 
         .table-scroll-wrapper {
@@ -18,7 +18,7 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 100px !important
+                top: 75px !important
             }
         }
 
@@ -35,7 +35,7 @@
         }
 
         .wrapper1 {
-            margin-top: 25px;
+            margin-top: 8px;
         }
 
         @media(max-width:767px) {

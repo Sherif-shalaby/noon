@@ -157,7 +157,9 @@
             </div>
             <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
-                {!! Form::label('created_by', __('lang.created_by')) !!}
+                {!! Form::label('created_by', __('lang.created_by'), [
+                    'class' => 'mb-0',
+                ]) !!}
                 <div class="input-wrapper width-full">
                     {!! Form::select('created_by', $users, request()->created_by, [
                         'class' => 'form-control select2',

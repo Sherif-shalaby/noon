@@ -3,7 +3,7 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 103px;
+            top: 83px;
         }
     </style>
     <div class="animate-in-page">
@@ -26,12 +26,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    {{-- <div class="widgetbar"> --}}
-                    {{-- <a class="btn btn-primary" href="{{ route('employees.create') }}">@lang('lang.add_employee')</a> --}}
-                    {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i --}}
-                    {{--                            class="dripicons-plus"></i> --}}
-                    {{--                        @lang('lang.add_new_employee')</a> --}}
-                    {{-- </div> --}}
+
                 </div>
             </div>
         </div>
@@ -44,7 +39,7 @@
             <div class="col-md-12  no-print">
                 <div class="card mt-1">
                     <div
-                        class="card-headerd-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+                        class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                         <h6 class="print-title">@lang('lang.employees')</h6>
                     </div>
                     <div class="card-body">

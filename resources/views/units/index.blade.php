@@ -3,7 +3,21 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 85px;
+            top: 32px;
+        }
+
+        .rightbar {
+            z-index: 2;
+        }
+
+        .wrapper1 {
+            margin-top: 30px;
+        }
+
+        @media(max-width:768px) {
+            .wrapper1 {
+                margin-top: 140px
+            }
         }
     </style>
     <div class="animate-in-page">
@@ -58,7 +72,7 @@
                                     <div class="div2 table-scroll-wrapper">
                                         <!-- content goes here -->
                                         <div style="min-width:1300px;max-height: 90vh;overflow: auto">
-                                            <table class="table table-striped table-bordered">
+                                            <table id="datatable-buttons" class="table table-striped table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>

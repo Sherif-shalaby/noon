@@ -16,7 +16,7 @@
         }
 
         .table-top-head {
-            top: 205px !important;
+            top: 165px !important;
         }
 
         .table-scroll-wrapper {
@@ -31,7 +31,7 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 205px !important
+                top: 165px !important
             }
         }
 
@@ -48,7 +48,7 @@
         }
 
         .wrapper1 {
-            margin-top: 45px;
+            margin-top: 30px;
         }
 
         @media(max-width:767px) {
@@ -60,48 +60,48 @@
         /* +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++  */
 
         /* .selectBox {
-                    position: relative;
-                }
+                            position: relative;
+                        }
 
 
-                .selectBox select {
-                    width: 100%;
-                    padding: 0 !important;
-                    padding-left: 4px;
-                    padding-right: 4px;
-                    color: #000;
-                    border: 1px solid #ccc;
-                    background-color: #dedede;
-                }
+                        .selectBox select {
+                            width: 100%;
+                            padding: 0 !important;
+                            padding-left: 4px;
+                            padding-right: 4px;
+                            color: #000;
+                            border: 1px solid #ccc;
+                            background-color: #dedede;
+                        }
 
-                .overSelect {
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    top: 0;
-                    bottom: 0;
-                }
+                        .overSelect {
+                            position: absolute;
+                            left: 0;
+                            right: 0;
+                            top: 0;
+                            bottom: 0;
+                        }
 
-                #checkboxes {
-                    display: none;
-                    border: 1px #dadada solid;
-                    height: 125px;
-                    overflow: auto;
-                    padding-top: 10px;
-                }
+                        #checkboxes {
+                            display: none;
+                            border: 1px #dadada solid;
+                            height: 125px;
+                            overflow: auto;
+                            padding-top: 10px;
+                        }
 
-                #checkboxes label {
-                    display: block;
-                    padding: 5px;
-                }
+                        #checkboxes label {
+                            display: block;
+                            padding: 5px;
+                        }
 
-                #checkboxes label:hover {
-                    background-color: #ddd;
-                }
+                        #checkboxes label:hover {
+                            background-color: #ddd;
+                        }
 
-                #checkboxes label span {
-                    font-weight: normal;
-                } */
+                        #checkboxes label span {
+                            font-weight: normal;
+                        } */
     </style>
     <div class="animate-in-page">
 

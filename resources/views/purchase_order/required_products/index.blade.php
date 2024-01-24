@@ -11,53 +11,16 @@
             top: 0;
         }
 
-        /* +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++  */
-
-        .selectBox {
-            position: relative;
+        .wrapper1 {
+            margin-top: -15px;
         }
 
-        /* selectbox style */
-        .selectBox select {
-            width: 100%;
-            padding: 0 !important;
-            padding-left: 4px;
-            padding-right: 4px;
-            color: #000;
-            border: 1px solid #ccc;
-            background-color: #dedede;
-            /* height: 39px !important; */
-        }
+        @media(max-width:768px) {
 
 
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        #checkboxes {
-            display: none;
-            border: 1px #dadada solid;
-            height: 125px;
-            overflow: auto;
-            padding-top: 10px;
-            /* text-align: end;  */
-        }
-
-        #checkboxes label {
-            display: block;
-            padding: 5px;
-        }
-
-        #checkboxes label:hover {
-            background-color: #ddd;
-        }
-
-        #checkboxes label span {
-            font-weight: normal;
+            .wrapper1 {
+                margin-top: 115px !important;
+            }
         }
     </style>
     <div class="animate-in-page">
@@ -100,83 +63,10 @@
                                         @include('purchase_order.required_products.partials.filters')
                                     </div>
                                 </div>
-                                {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                                <div class="col-md-4" style="position: relative;z-index: 9;">
-                                    <div class="multiselect col-md-6">
-                                        <div class="selectBox" onclick="showCheckboxes()">
-                                            <select class="form-select">
-                                                <option>@lang('lang.show_hide_columns')</option>
-                                            </select>
-                                            <div class="overSelect"></div>
-                                        </div>
-                                        <div id="checkboxes">
-                                            {{-- +++++++++++++++++ checkbox1 : id +++++++++++++++++ --}}
-                                            <label for="col1_id">
-                                                <input type="checkbox" id="col1_id" name="col1" checked="checked" />
-                                                <span>#</span> &nbsp;
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox2 : Checkboxes +++++++++++++++++ --}}
-                                            <label for="col2_id">
-                                                <input type="checkbox" id="col2_id" name="col2" checked="checked" />
-                                                <span>Checkboxes</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox3 : employee_name +++++++++++++++++ --}}
-                                            <label for="col3_id">
-                                                <input type="checkbox" id="col3_id" name="col3" checked="checked" />
-                                                <span>@lang('lang.employee_name')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox4 : date +++++++++++++++++ --}}
-                                            <label for="col4_id">
-                                                <input type="checkbox" id="col4_id" name="col4" checked="checked" />
-                                                <span>@lang('lang.date')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox5 : product_name +++++++++++++++++ --}}
-                                            <label for="col5_id">
-                                                <input type="checkbox" id="col5_id" name="col5" checked="checked" />
-                                                <span>@lang('lang.product_name')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox6 : store +++++++++++++++++ --}}
-                                            <label for="col6_id">
-                                                <input type="checkbox" id="col6_id" name="col6" checked="checked" />
-                                                <span>@lang('lang.store')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox7 : status +++++++++++++++++ --}}
-                                            <label for="col7_id">
-                                                <input type="checkbox" id="col7_id" name="col7" checked="checked" />
-                                                <span>@lang('lang.status')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox8 : supplier_name +++++++++++++++++ --}}
-                                            <label for="col8_id">
-                                                <input type="checkbox" id="col8_id" name="col8" checked="checked" />
-                                                <span>@lang('lang.supplier_name')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox9 : branch_name +++++++++++++++++ --}}
-                                            <label for="col9_id">
-                                                <input type="checkbox" id="col9_id" name="col9" checked="checked" />
-                                                <span>@lang('lang.branch_name')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox10 : purchase_price +++++++++++++++++ --}}
-                                            <label for="col10_id">
-                                                <input type="checkbox" id="col10_id" name="col10" checked="checked" />
-                                                <span>@lang('lang.purchase_price')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox11 : required_quantity +++++++++++++++++ --}}
-                                            <label for="col11_id">
-                                                <input type="checkbox" id="col11_id" name="col11" checked="checked" />
-                                                <span>@lang('lang.required_quantity')</span>
-                                            </label>
-                                            {{-- +++++++++++++++++ checkbox12 : action +++++++++++++++++ --}}
-                                            <label for="col12_id">
-                                                <input type="checkbox" id="col12_id" name="col12" checked="checked" />
-                                                <span>@lang('lang.action')</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="col-sm-12">
                                     <form class="form-group" id="productForm"
                                         action="{{ route('required-products.store') }}" method="POST"
-                                        enctype="multipart/form-data" style="margin-top: 55px">
+                                        enctype="multipart/form-data" style="margin-top: 25px">
                                         @csrf
                                         <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif"
                                             style="margin-top:25px ">
@@ -194,7 +84,11 @@
                                                                 <th class="col1">#</th>
                                                                 {{-- "select_all" checkbox --}}
                                                                 <th class="col2"> <input type="checkbox"
-                                                                        id="select_all_ids" /> </th>
+                                                                        id="select_all_ids" />
+                                                                    <span class="d-none">
+                                                                        @lang('lang.select_all')
+                                                                    </span>
+                                                                </th>
                                                                 <th class="col3">@lang('lang.employee_name')</th>
                                                                 <th class="col4">@lang('lang.date')</th>
                                                                 <th class="col5">@lang('lang.product_name')</th>

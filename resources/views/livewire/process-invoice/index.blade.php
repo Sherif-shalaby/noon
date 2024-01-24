@@ -5,7 +5,8 @@
             <!-- Start col -->
             <div class="col-lg-12">
                 <div class="card m-b-30">
-                    <div class="card-header">
+                    <div
+                        class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                         <h5 class="card-title">@lang('lang.process_invs')</h5>
                     </div>
                     <div class="card-body">
