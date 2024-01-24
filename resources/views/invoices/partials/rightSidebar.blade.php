@@ -234,7 +234,7 @@
                         ]) !!}
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 {{$settings['toggle_dollar']=='1'?'d-none':''}}">
                     <div class="form-group">
                         {!! Form::label('dollar_loading_cost', __('lang.loading_cost').' $', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_loading_cost', null, [

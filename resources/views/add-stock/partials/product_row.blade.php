@@ -84,7 +84,7 @@
     </td>
     <td title="{{__('lang.purchase_price')}}">
         <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_price" wire:input="convertPurchasePrice({{$index}})" style="width: 61px;"  required>
-        <span>{{@number_format($product['dollar_purchase_price'],num_of_digital_numbers()) ?? 0 }}$</span>
+        <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{@number_format($product['dollar_purchase_price'],num_of_digital_numbers()) ?? 0 }}$</span>
         @error('items.'.$index.'.purchase_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
@@ -95,8 +95,8 @@
             <span class="sub_total_span" >
                 {{$this->sub_total($index)}}
             </span>
-            <span class="sub_total_span" >
-                {{$this->dollar_sub_total($index)}}$
+            <span class="sub_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                {{$this->dollar_sub_total($index)}}$  عععععع
             </span>
 
         @endif
@@ -106,8 +106,8 @@
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="amount">
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="%">
         </div>
-        <span> {{ @number_format(num_uf($product['dollar_purchase_discount']),num_of_digital_numbers())  }} $</span>
-        <span> {{ @number_format(num_uf($product['dollar_purchase_discount_percent']),num_of_digital_numbers())  }} $ </span>
+        <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount']),num_of_digital_numbers())  }} $</span>
+        <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount_percent']),num_of_digital_numbers())  }} $ </span>
         <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}" id="discount_on_bonus_quantity_{{ $index }}"
                    wire:model="items.{{ $index }}.discount_on_bonus_quantity"
@@ -116,10 +116,10 @@
         </div>
     </td>
     <td>
-        <span class="price_after_discount" >
+        <span class="price_after_discount">
             {{ @number_format(num_uf($product['purchase_after_discount']),num_of_digital_numbers())  }}
         </span><br>
-        <span class="dollar_price_after_discount" >
+        <span class="dollar_price_after_discount {{$settings['toggle_dollar']=='1'?'d-none':''}}">
             {{ @number_format(num_uf($product['dollar_purchase_after_discount']),num_of_digital_numbers())  }}
         </span>
     </td>
@@ -159,7 +159,7 @@
             <span class="final_total_span" aria-placeholder="final purchase">
                 {{$this->purchase_final($index)}}
             </span>
-            <span class="final_total_span" aria-placeholder="final purchase">
+            <span class="final_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="final purchase">
                 {{$this->purchase_final_dollar($index)}} $
             </span>
         @endif
@@ -170,7 +170,7 @@
             <span class="final_total_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
                 {{$this->final_purchase_for_piece($index)}}
             </span>
-            <span class="final_total_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
+            <span class="final_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="{{__('lang.final purchase for piece')}}">
                 {{$this->dollar_final_purchase_for_piece($index)}} $ 
             </span>
         @endif
@@ -181,7 +181,7 @@
             <span class="cost" aria-placeholder="dollar cost">
                 {{ $product['cost'] }} 
             </span>
-            <span class="dollar_cost" aria-placeholder="dollar cost">
+            <span class="dollar_cost {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="dollar cost">
                 {{ $product['dollar_cost'] }} $
             </span>
         @endif
@@ -246,7 +246,7 @@
             <input type="text" class="form-control dinar_sell_price"
                    wire:model="items.{{ $index }}.customer_prices.{{ $key }}.dinar_increase"
                    placeholder = "{{ $items[$index]['customer_prices'][$key]['customer_name'] }}" wire:input="changeIncrease({{$index}},{{$key}})">
-            <span>{{ $items[$index]['customer_prices'][$key]['dollar_increase'] }} $</span>
+            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{ $items[$index]['customer_prices'][$key]['dollar_increase'] }} $</span>
             @error('items.' . $index.'customer_prices'. $key . '.dinar_increase')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
@@ -257,7 +257,7 @@
             <input type="text" class="form-control dinar_sell_price"
                    wire:model="items.{{ $index }}.customer_prices.{{ $key }}.dinar_sell_price"
                    placeholder = "{{ $items[$index]['customer_prices'][$key]['customer_name'] }}">
-            <span>{{$items[$index]['customer_prices'][$key]['dollar_sell_price']}} $</span>
+            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{$items[$index]['customer_prices'][$key]['dollar_sell_price']}} $</span>
             @error('items.' . $index.'customer_prices'. $key . '.dinar_sell_price')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
@@ -332,7 +332,7 @@
         <td title="{{__('lang.purchase_price')}}">
             <input type="number" class="form-control purchase_price" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price" wire:input="convertPurchasePrice({{$index}},'stores',{{$i}})"
                    style="width: 61px;"  required>
-            <span>{{$items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
+            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{$items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
             @error('items.'.$index.'.stores'. $i .'.purchase_price')
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
@@ -344,7 +344,7 @@
                 <span class="sub_total_span" >
                     {{$this->sub_total($index,'stores',$i)}}
                 </span>
-                <span class="sub_total_span" >
+                <span class="sub_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}">
                     {{$this->dollar_sub_total($index,'stores',$i)}}$
                 </span>
 
@@ -355,8 +355,8 @@
                     <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="amount">
                 <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="%">
             </div>
-            <span> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount'],num_of_digital_numbers()) }} $</span>
-            <span> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount_percent'],num_of_digital_numbers()) }} $ </span>
+            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount'],num_of_digital_numbers()) }} $</span>
+            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount_percent'],num_of_digital_numbers()) }} $ </span>
             <div class="input-group-prepend">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}{{$i}}" id="discount_on_bonus_quantity{{$i}}"
@@ -370,7 +370,7 @@
         <span class="price_after_discount" >
             {{ @number_format($items[$index]['stores'][$i]['purchase_after_discount'],num_of_digital_numbers()) ?? null }}
         </span><br>
-            <span class="dollar_price_after_discount" >
+            <span class="dollar_price_after_discount {{$settings['toggle_dollar']=='1'?'d-none':''}}">
             {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_after_discount'],num_of_digital_numbers()) ?? null }}
         </span>
         </td>
@@ -408,7 +408,7 @@
                <span class="final_total_span" aria-placeholder="final purchase">
                     {{$this->purchase_final($index,'stores',$i)}}
                 </span>
-               <span class="final_total_span" aria-placeholder="final purchase">
+               <span class="final_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="final purchase">
                    {{$this->purchase_final_dollar($index,'stores',$i)}} $
                 </span>
             @endif
@@ -419,7 +419,7 @@
                 <span class="final_total_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
                     {{$this->final_purchase_for_piece($index,'stores',$i)}}
                 </span>
-                <span class="final_total_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
+                <span class="final_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="{{__('lang.final purchase for piece')}}">
                     {{$this->dollar_final_purchase_for_piece($index,'stores',$i)}} $
                 </span>
            @endif
@@ -430,7 +430,7 @@
                  <span class="cost_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
                      {{$store['cost']}}
                  </span>
-                 <span class="cost_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
+                 <span class="cost_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="{{__('lang.final purchase for piece')}}">
                     {{$store['dollar_cost']}} $
                  </span>
             @endif
@@ -468,7 +468,7 @@
                 <input type="text" class="form-control dinar_sell_price"
                        wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.dinar_increase"
                        placeholder = "{{ $items[$index]['stores'][$i]['customer_prices'][$key]['customer_name'] }}" wire:input="changeIncrease({{$index}},{{$key}},'stores',{{$i}})">
-                <span>{{ $items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] }} $</span>
+                <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{ $items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] }} $</span>
                 @error('items.' . $index.'.stores'. $i .'customer_prices'. $key . '.dinar_increase')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>
@@ -479,7 +479,7 @@
                 <input type="text" class="form-control dinar_sell_price"
                        wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.dinar_sell_price"
                        placeholder = "{{ $items[$index]['stores'][$i]['customer_prices'][$key]['customer_name'] }}">
-                <span>{{$items[$index]['stores'][$i]['customer_prices'][$key]['dollar_sell_price']}} $</span>
+                <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{$items[$index]['stores'][$i]['customer_prices'][$key]['dollar_sell_price']}} $</span>
                 @error('items.' . $index.'.stores'. $i .'customer_prices'. $key . '.dinar_sell_price')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>

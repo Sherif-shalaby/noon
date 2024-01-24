@@ -198,10 +198,10 @@
                     <div class="col-md-5">
                         <div class="card-app">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-2 {{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                     <span> @lang('lang.min_amount_in_dollar') : {{ $customer_data->min_amount_in_dollar ?? 0 }}</span>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 {{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                     <span> @lang('lang.max_amount_in_dollar') : {{ $customer_data->max_amount_in_dollar ?? 0 }}</span>
                                 </div>
                                 <div class="col-md-2">
@@ -213,7 +213,7 @@
                                 <div class="col-md-2">
                                     <span> @lang('lang.balance_in_dinar') : {{ $customer_data->balance_in_dinar ?? 0 }}</span>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 {{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                     <span> @lang('lang.balance_in_dollar') : {{ $customer_data->balance_in_dollar ?? 0 }}</span>
                                 </div>
                                 <div class="col-md-2">
@@ -285,12 +285,12 @@
                                             <th >@lang('lang.unit')</th>
                                             <th >@lang('lang.c_type')</th>
                                             <th >@lang('lang.price')</th>
-                                            <th >@lang('lang.price') $ </th>
+                                            <th class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.price') $ </th>
                                             <th> @lang('lang.exchange_rate')</th>
                                             <th >@lang('lang.discount')</th>
                                             <th >@lang('lang.discount_category')</th>
                                             <th >@lang('lang.sub_total')</th>
-                                            <th >@lang('lang.sub_total') $</th>
+                                            <th class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.sub_total') $</th>
                                             <th >@lang('lang.current_stock')</th>
                                             <th >@lang('lang.action')</th>
                                         </tr>
@@ -355,7 +355,7 @@
                                                     <input class="form-control dinarPrice" data-key="{{ $key }}" type="text" wire:model="items.{{ $key }}.price" style="width: 65px"/>
                                                     {{-- {{$item['price']??''}} --}}
                                                 </td>
-                                                    <td >
+                                                    <td class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                                     <input class="form-control dollarPrice" data-key="{{ $key }}" type="text" wire:model="items.{{ $key }}.dollar_price" style="width: 65px"/>
 
                                                         {{-- {{ number_format($item['dollar_price']??0 , 2)}} --}}
@@ -390,7 +390,7 @@
                                                 <td>
                                                     {{ $item['sub_total']??0 }}
                                                 </td>
-                                                <td>
+                                                <td class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                                     {{$item['dollar_sub_total']??0}}
                                                 </td>
                                                 <td>
@@ -399,7 +399,7 @@
                                                     </span>
                                                 </td>
                                                 <td  class="text-center">
-                                                    <div class="btn btn-sm btn-success py-0 px-1 my-1"
+                                                    <div class="btn btn-sm btn-success py-0 px-1 my-1 {{$settings['toggle_dollar']=='1'?'d-none':''}}"
                                                          wire:click="changePrice({{ $key }})">
                                                         <i class="fas fa-undo"></i>
                                                     </div>

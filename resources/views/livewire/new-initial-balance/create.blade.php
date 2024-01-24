@@ -556,7 +556,7 @@
                                             wire:change="changePrice({{ $key }})"
                                             placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                             @if (empty($prices[$key]['price_type'])) readonly @endif>
-                                        <p>
+                                        <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                             {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price'] ?? '' }}
                                         </p>
                                     </div>
@@ -567,7 +567,7 @@
                                             class="form-control price"
                                             wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                             placeholder = "{{ __('lang.price') }}">
-                                        <p>
+                                        <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                             {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price_after_desc'] ?? '' }}
                                         </p>
                                     </div>
@@ -577,7 +577,7 @@
                                             class="form-control total_price"
                                             wire:model="prices.{{ $key }}.dinar_total_price"
                                             placeholder = "{{ __('lang.total_price') }}">
-                                        <p>
+                                        <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                             {{ __('lang.total_price') . ' $' }}:{{ $this->prices[$key]['total_price'] ?? '' }}
                                         </p>
                                     </div>
@@ -588,7 +588,7 @@
                                             wire:model="prices.{{ $key }}.dinar_piece_price"
                                             placeholder = "{{ __('lang.total_price') }}">
                                         {{--                                             <span>{{$rows[$index]['prices'][$key]['dollar_piece_price']??0}} $</span> --}}
-                                        <p>
+                                        <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                             {{ __('lang.piece_price') . ' $' }}:{{ $this->prices[$key]['piece_price'] ?? '' }}
                                         </p>
                                     </div>

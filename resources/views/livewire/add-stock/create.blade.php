@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="col-md-12 pt-2 pb-2 {{ $supplier != null ? '' : 'd-none' }}">
                                     <div class="row">
-                                        <div class="col-md-2">@lang('lang.debit') {{ $supplier_data['dollar_debit'] }} $
+                                        <div class="col-md-2 {{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.debit') {{ $supplier_data['dollar_debit'] }} $
                                         </div>
                                         <div class="col-md-2">@lang('lang.debit') {{ $supplier_data['dinar_debit'] }} د.ع
                                         </div>
@@ -242,7 +242,7 @@
                                 </div>
                                 <div class="col-md-2 pt-3">
                                     {{$this->getTotalExpenses()}}
-                                    <h3 class="{{$dollar_expenses>0?'':'d-none'}}">@lang('lang.total_expenses') {{$dollar_expenses}} $</h3>
+                                    <h3 class="{{$dollar_expenses>0?'':'d-none'}} {{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.total_expenses') {{$dollar_expenses}} $</h3>
                                     <h3 class="{{$dinar_expenses>0?'':'d-none'}}">@lang('lang.total_expenses') {{$dinar_expenses}} </h3>
                                     {{$this->total_expenses}}
                                 </div>
@@ -547,7 +547,7 @@
                         <br>
                         <div class="col-md-12">
                             <div class="col-md-3 offset-md-8 text-right">
-                                <h3> @lang('lang.total')$ :
+                                <h3 class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> @lang('lang.total')$ :
                                     {{-- @if ($paying_currency == 2) --}}
                                     {{ @number_format(@num_uf($this->sum_dollar_total_cost()),num_of_digital_numbers()) ?? 0.0 }}
                                     {{-- @else --}}
@@ -662,7 +662,7 @@
                                         <label for="due_amount" style="margin-top: 25px;">@lang('lang.duePaid'):
                                             <span class="due_amount_span">
                                                 @if ($paying_currency == 2)
-                                                    {{ @number_format(@num_uf($this->sum_dollar_total_cost()) - $amount,num_of_digital_numbers()) ?? '' }}
+                                                    <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{ @number_format(@num_uf($this->sum_dollar_total_cost()) - $amount,num_of_digital_numbers()) ?? '' }}</span>
                                                 @else
                                                     {{ @number_format(@num_uf($this->sum_total_cost()) - $amount,num_of_digital_numbers()) ?? '' }}
                                                 @endif
