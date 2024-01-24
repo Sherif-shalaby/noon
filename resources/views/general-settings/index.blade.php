@@ -277,6 +277,18 @@
                                 ['class' => 'form-control initial-balance-input m-0'],
                             ) !!}
                         </div>
+                        <div class="col-sm-6 col-md-3 justify-content-end animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.8s">
+                            {!! Form::label('keyboord_letter_to_toggle_dollar', __('lang.keyboord_letter_to_toggle_dollar'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : ' mx-2 mb-0 ',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            {!! Form::text(
+                                'keyboord_letter_to_toggle_dollar',
+                                !empty($settings['keyboord_letter_to_toggle_dollar']) ? $settings['keyboord_letter_to_toggle_dollar'] : null,
+                                ['class' => 'form-control initial-balance-input m-0'],
+                            ) !!}
+                        </div>
                         <div class="col-md-12 d-flex justify-content-center py-2">
                             <div class="col-md-6">
                                 @include('general-settings.partials.add_loading_cost')

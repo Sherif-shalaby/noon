@@ -244,9 +244,11 @@
             </div>
             <div class="d-flex width-full dollar-cell">
                 <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0">
-                    {{ $product['dollar_purchase_discount'] }} $</span>
+                    {{ @number_format(num_uf($product['dollar_purchase_discount']), num_of_digital_numbers()) }}
+                    $</span>
                 <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0">
-                    {{ $product['dollar_purchase_discount_percent'] }} $ </span>
+                    {{ @number_format(num_uf($product['dollar_purchase_discount_percent']), num_of_digital_numbers()) }}
+                    $ </span>
             </div>
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input"
@@ -267,11 +269,11 @@
             <div class="d-flex flex-column width-full">
                 <b class="price_after_discount width-full  p-0 d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                     style='font-weight:700;font-size:14px;color:#333;'>
-                    {{ $product['purchase_after_discount'] }}
+                    {{ @number_format(num_uf($product['purchase_after_discount']), num_of_digital_numbers()) }}
                 </b>
                 <b class="dollar_price_after_discount dollar-cell width-full  p-0 d-flex justify-content-center align-items-center initial-balance-input width-full m-0 mt-1"
                     style='font-weight:700;font-size:14px;color:#333;'>
-                    {{ $product['dollar_purchase_after_discount'] }}
+                    {{ @number_format(num_uf($product['dollar_purchase_after_discount']), num_of_digital_numbers()) }}
                 </b>
             </div>
         </div>
@@ -744,9 +746,11 @@
                 </div>
                 <div class="d-flex width-full dollar-cell">
                     <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0">
-                        {{ $items[$index]['stores'][$i]['dollar_purchase_discount'] }} $</span>
+                        {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount'], num_of_digital_numbers()) }}
+                        $</span>
                     <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0">
-                        {{ $items[$index]['stores'][$i]['dollar_purchase_discount_percent'] }} $ </span>
+                        {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount_percent'], num_of_digital_numbers()) }}
+                        $ </span>
                 </div>
 
                 <div class="custom-control custom-switch">
@@ -770,11 +774,11 @@
                 <div class="d-flex width-full flex-column">
                     <b class="price_after_discount price_after_discount width-full  d-flex justify-content-center align-items-center initial-balance-input width-full m-0 p-0"
                         style='font-weight:500;color:#333'>
-                        {{ $items[$index]['stores'][$i]['purchase_after_discount'] ?? null }}
+                        {{ @number_format($items[$index]['stores'][$i]['purchase_after_discount'], num_of_digital_numbers()) ?? null }}
                     </b>
                     <b class="dollar_price_after_discount dollar-cell price_after_discount width-full  d-flex justify-content-center align-items-center initial-balance-input width-full m-0 mt-1 p-0"
                         style='font-weight:500;color:#333'>
-                        {{ $items[$index]['stores'][$i]['dollar_purchase_after_discount'] ?? null }}
+                        {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_after_discount'], num_of_digital_numbers()) ?? null }}
                     </b>
                 </div>
             </div>

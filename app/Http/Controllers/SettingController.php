@@ -275,6 +275,10 @@ class SettingController extends Controller
                 ['key' => 'num_of_digital_numbers'],
                 ['value' => $request->num_of_digital_numbers, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
+            System::updateOrCreate(
+                ['key' => 'keyboord_letter_to_toggle_dollar'],
+                ['value' => $request->keyboord_letter_to_toggle_dollar, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
             $data['letter_header'] = null;
             if ($request->has('letter_header') && !is_null('letter_header')) {
                 $imageData = $this->getCroppedImage($request->letter_header);

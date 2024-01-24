@@ -210,7 +210,12 @@
             $cash_register = App\Models\CashRegister::where('user_id', Auth::user()->id)
                 ->where('status', 'open')
                 ->first();
+            $toggle_dollar = App\Models\System::getProperty('toggle_dollar');
+            $keyboord_letter_to_toggle_dollar = App\Models\System::getProperty('keyboord_letter_to_toggle_dollar') ?? '';
         @endphp
+        <input type="hidden" class="keyboord_letter_to_toggle_dollar"
+            value="{{ $keyboord_letter_to_toggle_dollar }}" />
+        <input type="hidden" class="toggle_dollar" value="{{ $toggle_dollar }}" />
         <input type="hidden" name="is_register_close" id="is_register_close"
             value="@if (!empty($cash_register)) {{ 0 }}@else{{ 1 }} @endif">
         <input type="hidden" name="cash_register_id" id="cash_register_id"
@@ -289,6 +294,32 @@
     <x-livewire-alert::scripts /> --}}
     @stack('js')
     <script>
+        $(document).ready(function() {
+            if ($('.toggle_dollar').val() == "1") {
+                $('#toggleDollar').click();
+            }
+        });
+        $(document).ready(function() {
+            // Event handler for key press
+            $(document).on('keydown', function(event) {
+                // Check if Ctrl+G is pressed
+                if (event.ctrlKey && event.key === $('.keyboord_letter_to_toggle_dollar').val()) {
+                    // Prevent the default Ctrl+G behavior (e.g., find)
+                    event.preventDefault();
+                    $.ajax({
+                        url: '/toggle-dollar',
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire("Success", response.msg, "success");
+                                $('#toggleDollar').click();
+                                location.reload(true);
+                            }
+                        }
+                    });
+                }
+            });
+        });
         window.addEventListener('swal:modal', event => {
             Swal.fire({
                 title: event.detail.message,

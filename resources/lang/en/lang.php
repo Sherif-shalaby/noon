@@ -783,6 +783,7 @@ return [
     'percente' => 'Percentage',
     'final_purchase_for_piece' => 'final purchase for piece',
     'final_purchase' => 'final purchase',
-    'price_after_discount' => 'Price after discount'
+    'price_after_discount' => 'Price after discount',
+    'keyboord_letter_to_toggle_dollar' => 'Keyboord letter to toggle dollar',
 
 ];

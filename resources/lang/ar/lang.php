@@ -853,5 +853,7 @@ return array(
     'percente' => 'النسبة',
     'final_purchase_for_piece' => 'سعر الشراء للفطعة',
     'final_purchase' => 'سعر الشراءالنهائى',
-    'price_after_discount' => 'السعر بعد الخصم'
+    'price_after_discount' => 'السعر بعد الخصم',
+    'final_purchase' => 'سعر الشراءالنهائى',
+    'keyboord_letter_to_toggle_dollar' => 'حرف من لوحة المفاتيح لتبديل الدولار',
 );

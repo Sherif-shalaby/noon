@@ -461,25 +461,25 @@
     $('.select2').select2();
     $('.datepicker').datepicker();
 
-    $(document).ready(function() {
-        // Event handler for key press
-        $(document).on('keydown', function(event) {
-            // Check if Ctrl+G is pressed
-            if (event.ctrlKey && event.key === 'g') {
-                // Prevent the default Ctrl+G behavior (e.g., find)
-                event.preventDefault();
-                $.ajax({
-                    url: '/toggle-dollar',
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire("Success", response.msg, "success");
-                        }
-                    }
-                });
-            }
-        });
-    });
+    // $(document).ready(function() {
+    //     // Event handler for key press
+    //     $(document).on('keydown', function(event) {
+    //         // Check if Ctrl+G is pressed
+    //         if (event.ctrlKey && event.key === 'g') {
+    //             // Prevent the default Ctrl+G behavior (e.g., find)
+    //             event.preventDefault();
+    //             $.ajax({
+    //                 url: '/toggle-dollar',
+    //                 method: 'GET',
+    //                 success: function(response) {
+    //                     if (response.success) {
+    //                         Swal.fire("Success", response.msg, "success");
+    //                     }
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
 </script>
 
 @stack('javascripts')

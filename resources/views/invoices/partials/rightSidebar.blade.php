@@ -60,7 +60,8 @@
                 </div>
 
                 <div
-                    class="col-md-1 p-0 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) || $back_to_dollar == 2
+                    class="col-md-1 p-0 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) ||
+                    ($back_to_dollar == 2 && $toggle_dollar == '0')
                         ? ''
                         : 'd-none' }}">
                     <div class="custom-control custom-switch">
@@ -138,7 +139,7 @@
                     </div>
                 </div>
                 {{-- +++++++++++ الاجمالي بالدولار +++++++++++ --}}
-                <div class="col-sm-2 dollar-cell">
+                <div class="col-sm-2 dollar-cell {{ $toggle_dollar == '1' ? 'd-none' : '' }}">
                     <div class="form-group">
                         {!! Form::label('dollar_grand_total', 'الاجمالي بالدولار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -187,7 +188,7 @@
                 </div>
 
                 {{-- +++++++++++ الواصل دولار +++++++++++ --}}
-                <div class="col-sm-2  dollar-cell">
+                <div class="col-sm-2  dollar-cell {{ $toggle_dollar == '1' ? 'd-none' : '' }}">
                     <div class="form-group">
                         {!! Form::label('dollar_amount', 'الواصل دولار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -203,7 +204,7 @@
                 </div>
 
                 {{-- +++++++++++ الباقي دولار +++++++++++ --}}
-                <div class="col-sm-2 dollar-cell">
+                <div class="col-sm-2 dollar-cell {{ $toggle_dollar == '1' ? 'd-none' : '' }}">
                     <div class="form-group">
                         {!! Form::label('dollar_remaining', 'الباقي دولار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
