@@ -259,7 +259,7 @@
                                 <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="font-weight: 500">
                                     <div
-                                        class="col-md-1 p-0 d-flex dollar-cell border-left border-2 flex-column justify-content-start align-items-center">
+                                        class="col-md-1 p-0 d-flex  border-left border-2 flex-column justify-content-start align-items-center dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} s">
                                         <span>
                                             @lang('lang.debit')
                                         </span>
@@ -432,8 +432,9 @@
 
                                             <div>
                                                 <span style="font-weight:700;font-size: 14px;"
-                                                    class="dollar-cell">$@lang('lang.total')</span>
-                                                <span style="font-weight:700;font-size: 16px;" class="dollar-cell">
+                                                    class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">$@lang('lang.total')</span>
+                                                <span style="font-weight:700;font-size: 16px;"
+                                                    class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                                                     {{ $this->sum_dollar_sub_total() }} </span>
                                             </div>
 
@@ -459,9 +460,9 @@
 
                                             <div>
                                                 <span style="font-weight:700;font-size: 14px;"
-                                                    class="dollar-cell">$@lang('lang.total_cost')</span>
+                                                    class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">$@lang('lang.total_cost')</span>
                                                 <span style="font-weight:700;font-size: 16px;"
-                                                    class="dollar-cell">{{ $this->sum_dollar_total_cost() ?? 0 }}</span>
+                                                    class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">{{ $this->sum_dollar_total_cost() ?? 0 }}</span>
                                             </div>
 
                                             <div>
@@ -592,7 +593,8 @@
                                     <span class="final_total_span"></span>
                                 </h4>
 
-                                <h4 class="dollar-cell"> @lang('lang.total')$ :
+                                <h4 class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
+                                    @lang('lang.total')$ :
                                     {{-- @if ($paying_currency == 2) --}}
                                     {{ @number_format(@num_uf($this->sum_dollar_total_cost()), num_of_digital_numbers()) ?? 0.0 }}
                                     {{-- @else --}}
@@ -629,7 +631,8 @@
                                     </div> --}}
                                     <div class="col-md-2 mx-3">
                                         {{ $this->getTotalExpenses() }}
-                                        <h3 class="dollar-cell {{ $dollar_expenses > 0 ? '' : 'd-none' }}">
+                                        <h3
+                                            class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}  {{ $dollar_expenses > 0 ? '' : 'd-none' }}">
                                             @lang('lang.total_expenses')
                                             {{ $dollar_expenses }} $</h3>
                                         <h3 class="{{ $dinar_expenses > 0 ? '' : 'd-none' }}">@lang('lang.total_expenses')
@@ -832,7 +835,10 @@
                                                 style="margin-top: 25px;font-size: 12px;font-weight: 500;">@lang('lang.duePaid'):
                                                 <span class="due_amount_span">
                                                     @if ($paying_currency == 2)
-                                                        {{ @number_format(@num_uf($this->sum_dollar_total_cost()) - $amount, num_of_digital_numbers()) ?? '' }}
+                                                        <span
+                                                            class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
+                                                            {{ @number_format(@num_uf($this->sum_dollar_total_cost()) - $amount, num_of_digital_numbers()) ?? '' }}
+                                                        </span>
                                                     @else
                                                         {{ @number_format(@num_uf($this->sum_total_cost()) - $amount, num_of_digital_numbers()) ?? '' }}
                                                     @endif

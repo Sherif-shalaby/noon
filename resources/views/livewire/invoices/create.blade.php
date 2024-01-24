@@ -157,7 +157,8 @@
                 style="border-left: 1px solid #ccc;width: 120px">
                 <span class="d-flex justify-content-center align-items-center"
                     style='width:100%;font-weight: 700;font-size: 12px'>@lang('lang.min_amount_in_dollar')</span>
-                <span class="d-flex justify-content-center align-items-center"
+                <span
+                    class="d-flex justify-content-center align-items-center {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                     style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->min_amount_in_dollar ?? 0 }}</span>
             </div>
 
@@ -165,7 +166,8 @@
                 style="border-left: 1px solid #ccc;width: 120px">
                 <span class="d-flex justify-content-center align-items-center"
                     style='width:100%;font-weight: 700;font-size: 12px'> @lang('lang.max_amount_in_dollar')</span>
-                <span class="d-flex justify-content-center align-items-center"
+                <span
+                    class="d-flex justify-content-center align-items-center {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}s"
                     style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->max_amount_in_dollar ?? 0 }}</span>
             </div>
 
@@ -196,7 +198,8 @@
             <div class="col-md-2 p-0 dollar-cell d-flex flex-column justify-content-center align-items-center ">
                 <span class="d-flex justify-content-center align-items-center"
                     style='width:100%;font-weight: 700;font-size: 12px'> @lang('lang.balance_in_dollar')</span>
-                <span class="d-flex justify-content-center align-items-center"
+                <span
+                    class="d-flex justify-content-center align-items-center {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                     style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->balance_in_dollar ?? 0 }}</span>
             </div>
         </div>
@@ -435,7 +438,7 @@
                                             @lang('lang.c_type')</th>
                                         <th style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                             @lang('lang.price')</th>
-                                        <th class="dollar-cell"
+                                        <th class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                             style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                             @lang('lang.price') $ </th>
                                         <th style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
@@ -446,7 +449,7 @@
                                             @lang('lang.discount_category')</th>
                                         <th style="font-weight: 700;font-size: 10px;text-align: center">
                                             @lang('lang.sub_total')</th>
-                                        <th class="dollar-cell"
+                                        <th class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                             style="font-weight: 700;font-size: 10px;text-align: center">
                                             @lang('lang.sub_total') $</th>
                                         <th style="font-weight: 700;font-size: 10px;text-align: center">
@@ -570,10 +573,10 @@
                                             </td>
 
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
-                                                class="px-1 border-right dollar-cell">
+                                                class="px-1 border-right dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
-                                                    <input class="form-control initial-balance-input dollarPrice"
+                                                    <input class="form-control initial-balance-input dollarPrice "
                                                         data-key="{{ $key }}" type="text"
                                                         wire:model="items.{{ $key }}.dollar_price"
                                                         style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece" />
@@ -649,7 +652,7 @@
                                                 </div>
                                             </td>
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
-                                                class="px-1 border-right dollar-cell">
+                                                class="px-1 border-right dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                     {{ $item['dollar_sub_total'] ?? 0 }}
@@ -664,7 +667,7 @@
                                                 </span>
                                             </td>
                                             <td class="text-center px-1 border-right">
-                                                <div class="btn btn-sm btn-success py-0 px-1 my-1"
+                                                <div class="btn btn-sm btn-success py-0 px-1 my-1 {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                                     wire:click="changePrice({{ $key }})">
                                                     <i class="fas fa-undo"></i>
                                                 </div>

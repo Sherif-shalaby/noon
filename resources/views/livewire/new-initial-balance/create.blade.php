@@ -1046,7 +1046,7 @@
                                                     wire:change="changePrice({{ $key }})"
                                                     placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                                     @if (empty($prices[$key]['price_type'])) readonly @endif>
-                                                <p class="dollar-cell d-flex flex-row-reverse"
+                                                <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                                     style="font-weight:500;font-size:10px;">
                                                     <span>
                                                         {{ __('lang.price') . ' $' }}
@@ -1069,7 +1069,7 @@
                                                     class="form-control initial-balance-input m-0 price"
                                                     wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                                     placeholder = "{{ __('lang.price') }}">
-                                                <p class="dollar-cell d-flex flex-row-reverse"
+                                                <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                                     style="font-weight:500;font-size:10px;">
                                                     <span>
                                                         {{ __('lang.price') . ' $' }}
@@ -1092,7 +1092,7 @@
                                                     class="form-control initial-balance-input m-0 total_price"
                                                     wire:model="prices.{{ $key }}.dinar_total_price"
                                                     placeholder = "{{ __('lang.total_price') }}">
-                                                <p class="dollar-cell d-flex flex-row-reverse"
+                                                <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                                     style="font-weight:500;font-size:10px;">
                                                     <span>
                                                         {{ __('lang.total_price') . ' $' }}
@@ -1115,7 +1115,7 @@
                                                     class="form-control initial-balance-input m-0 piece_price"
                                                     wire:model="prices.{{ $key }}.dinar_piece_price"
                                                     placeholder = "{{ __('lang.piece_price') }}">
-                                                <p class="dollar-cell d-flex flex-row-reverse"
+                                                <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                                     style="font-weight:500;font-size:10px;">
                                                     <span>
                                                         {{ __('lang.piece_price') . ' $' }}

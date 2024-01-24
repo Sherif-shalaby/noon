@@ -120,7 +120,7 @@
                         </div>
                     </div>
                 @endif
-                <div class="col-md-2 dollar-cell">
+                <div class="col-md-2 dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                     {!! Form::label('dollar_loading_cost', __('lang.loading_cost') . ' $', [
                         'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',

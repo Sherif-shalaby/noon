@@ -164,7 +164,7 @@
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
                             placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
                             wire:change="changeIncrease({{ $index }},{{ $key }})">
-                        <span class="dollar-cell"
+                        <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                             style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_increase'] ?? 0 }}
                             $</span>
                         @error('rows.' . $index . 'prices' . $key . '.dinar_increase')
@@ -182,7 +182,7 @@
                             wire:change="changeSellPrice({{ $index }},{{ $key }})"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                             placeholder = "{{ __('lang.price') }}">
-                        <span class="dollar-cell"
+                        <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                             style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_sell_price'] }}
                             $</span>
                         @error('rows.' . $index . 'prices' . $key . '.dinar_sell_price')
