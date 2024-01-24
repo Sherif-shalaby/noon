@@ -831,6 +831,7 @@ return array(
     'sell'=>'البيع',
     'num_of_digital_numbers'=>'عدد الاعداد العشرية',
     'final_purchase_for_piece'=>'سعر الشراء للفطعة',
-    'final_purchase'=>'سعر الشراءالنهائى'
+    'final_purchase'=>'سعر الشراءالنهائى',
+    'keyboord_letter_to_toggle_dollar'=>'حرف من لوحة المفاتيح لتبديل الدولار',
  );
 

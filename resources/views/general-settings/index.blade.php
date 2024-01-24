@@ -176,6 +176,14 @@
                             ['class' => 'form-control'],
                         ) !!}
                     </div>
+                    <div class="col-md-3">
+                        {!! Form::label('keyboord_letter_to_toggle_dollar', __('lang.keyboord_letter_to_toggle_dollar'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::text(
+                            'keyboord_letter_to_toggle_dollar',
+                            !empty($settings['keyboord_letter_to_toggle_dollar']) ? $settings['keyboord_letter_to_toggle_dollar'] : null,
+                            ['class' => 'form-control'],
+                        ) !!}
+                    </div>
 
                     <div class="col-md-6 pt-5">
                         @include('general-settings.partials.add_loading_cost')

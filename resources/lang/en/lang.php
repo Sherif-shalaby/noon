@@ -752,6 +752,7 @@ return [
     'num_of_digital_numbers'=>'Num Of Digital Numbers',
     'final_purchase_for_piece'=>'final purchase for piece',
     'final_purchase'=>'final purchase',
+    'keyboord_letter_to_toggle_dollar'=>'Keyboord letter to toggle dollar',
 ];
 
 

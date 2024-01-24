@@ -92,7 +92,7 @@ class Create extends Component
         ]
     ];
     public $subcategories1 = [], $subcategories2 = [], $subcategories3 = [];
-    public $quantity = [], $purchase_price = [], $selling_price = [],
+    public $quantity = [], $purchase_price = [], $selling_price = [],$toggle_dollar=0,
         $base_unit = [], $divide_costs, $total_size = [], $total_weight = [],
         $sub_total = [], $change_price_stock = [], $store_id, $status,
         $supplier, $exchange_rate, $exchangeRate, $transaction_date, $transaction_currency,
@@ -242,7 +242,13 @@ class Create extends Component
     {
         $this->branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
         $customers = Customer::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
-        $currenciesId = [System::getProperty('currency'), 2];
+        $toggle_dollar=System::getProperty('toggle_dollar');
+        $currenciesId = [];
+        if($toggle_dollar=='1'){
+            $currenciesId = [System::getProperty('currency')];
+        }else{
+            $currenciesId = [System::getProperty('currency'), 2];
+        }
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         // $this->discount_from_original_price = 1;
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
@@ -431,6 +437,7 @@ class Create extends Component
                 // Add stock transaction
                 //Add Product
                 $product = [];
+                $this->toggle_dollar=System::getProperty('toggle_dollar');
                 if ($this->item[0]['isExist'] == 1) {
                     $product = Product::find($this->item[0]['id']);
                     $product->name = $this->item[0]['name'];
@@ -483,7 +490,7 @@ class Create extends Component
                             $Variation_price->variation_id = $Variation->id;
                             $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
                             $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
-                            $Variation_price->dollar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null;
+                            $Variation_price->dollar_sell_price = $this->toggle_dollar=="0"?($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null):0;
                             $Variation_price->percent = $this->rows[$index]['prices'][$key]['percent'] ?? null;
                             $Variation_price->save();
                         }
@@ -559,7 +566,7 @@ class Create extends Component
                         'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
                         'sell_price' => null,
                         // 'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
-                        'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
+                        'dollar_purchase_price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null):0,
                         'dollar_sell_price' =>  null,
                         'dollar_sub_total' =>  null,
                         'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
@@ -577,9 +584,9 @@ class Create extends Component
                                         'stock_line_id' => $stockLine->id,
                                         'unit_id' => !empty($price['fill_id']) ? $price['fill_id'] : null,
                                         'price_type' => !empty($price['price_type']) ? $price['price_type'] : null,
-                                        'price' => ($this->transaction_currency == 2) ? (!empty($price['price']) ? $this->num_uf($price['price'])  : null) : null,
+                                        'price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? (!empty($price['price']) ? $this->num_uf($price['price'])  : null) : null):0,
                                         'dinar_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null) : null,
-                                        'price_customers' => ($this->transaction_currency == 2) ? (!empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null) : null,
+                                        'price_customers' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? (!empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null) : null):0,
                                         'dinar_price_customers' => ($this->transaction_currency != 2) ? (!empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc']) : null) : null,
                                         'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
                                         'quantity' => !empty($price['discount_quantity']) ? $this->num_uf($price['discount_quantity']) : null,
@@ -587,9 +594,9 @@ class Create extends Component
                                         'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : null,
                                         'created_by' => Auth::user()->id,
                                         'dinar_total_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_total_price']) ? $this->num_uf($price['total_price']) : null) : null,
-                                        'total_price' => ($this->transaction_currency == 2) ? (!empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null) : null,
+                                        'total_price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? (!empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null) : null):0,
                                         'dinar_piece_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price']) : null) : null,
-                                        'piece_price' => ($this->transaction_currency == 2) ? (!empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null) : null,
+                                        'piece_price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? (!empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null) : null):0,
                                         'discount_from_original_price'=>0,
                                     ];
                                     ProductPrice::create($price_data);
@@ -609,9 +616,9 @@ class Create extends Component
                                     'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price']) : null,
                                     'sell_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price'])  : 0,
                                     'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
-                                    'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
-                                    'dollar_sell_price' => ($this->transaction_currency == 2) ? ($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']))  : 0,
-                                    'dollar_sub_total' => !empty($this->dollar_sub_total($index, $key)) ? $this->num_uf((float)$this->dollar_sub_total($index, $key))  : null,
+                                    'dollar_purchase_price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null):0,
+                                    'dollar_sell_price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? ($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']))  : 0):0,
+                                    'dollar_sub_total' => $this->toggle_dollar=="0"?(!empty($this->dollar_sub_total($index, $key)) ? $this->num_uf((float)$this->dollar_sub_total($index, $key))  : null):0,
                                     // 'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
                                 ];
                                 $variationstockLine =  VariationStockline::create($add_variation_stock_data);
