@@ -228,6 +228,34 @@
             </div>
         @endif
 
+        <div class=" animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+            style="width: 100px;min-height: 60px">
+            <label for="discount_type"
+                class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
+                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.discount_type') }}</label>
+
+            <div class="input-wrapper" style="width: 100%">
+                {!! Form::select(
+                    'items' . $index . '.discount_type',
+                    [1 => __('lang.piece_discount'), 2 => __('lang.total_discount')],
+                    1,
+                    [
+                        'class' => 'form-select select store_id' . $index,
+                        'data-live-search' => 'true',
+                        'required',
+                        'placeholder' => __('lang.please_select'),
+                        'wire:model' => 'items.' . $index . '.discount_type',
+                    ],
+                ) !!}
+
+            </div>
+            @error('items.' . $index . '.used_currency')
+                <span class="error validation-error text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+
+
+
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
             style="width: 150px;min-height: 60px">
             <div class="d-flex width-full">

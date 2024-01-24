@@ -972,6 +972,7 @@ class Create extends Component
             'store_id' => null,
             'customer_prices' => $customer_prices,
             'units' => [],
+            'discount_type' => 1,
             'dollar_purchase_discount' => null,
             'dollar_purchase_discount_percent' => null,
             'purchase_after_discount' => null,

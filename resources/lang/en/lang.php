@@ -785,5 +785,7 @@ return [
     'final_purchase' => 'final purchase',
     'price_after_discount' => 'Price after discount',
     'keyboord_letter_to_toggle_dollar' => 'Keyboord letter to toggle dollar',
-
+    'discount_type' => 'Discount Type',
+    'piece_discount' => 'Piece Discount',
+    'total_discount' => 'Total Discount',
 ];
