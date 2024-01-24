@@ -402,7 +402,7 @@
                 style="width: 150px;min-height: 60px">
                 <label for="final purchase"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
-                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase') }}</label>
+                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final_purchase') }}</label>
                 <span style="font-weight: 700;color: #333"
                     class="final_total_span d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                     aria-placeholder="final purchase">
@@ -421,7 +421,7 @@
                 style="width: 150px;min-height: 60px">
                 <label for="final purchase for piece"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
-                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase for piece') }}</label>
+                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final_purchase_for_piece') }}</label>
                 <b style="font-weight: 700;color: #333"
                     class="final_total_span d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                     aria-placeholder="{{ __('lang.final purchase for piece') }}">
@@ -852,7 +852,7 @@
                     style="width: 150px;min-height: 60px">
                     <label for="final purchase"
                         class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
-                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase') }}</label>
+                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final_purchase') }}</label>
                     <span style="font-weight: 700;color: #333"
                         class="final_total_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                         aria-placeholder="final purchase">
@@ -871,7 +871,7 @@
                     style="width: 150px;min-height: 60px">
                     <label for="final purchase for piece"
                         class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
-                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase for piece') }}</label>
+                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final_purchase_for_piece') }}</label>
                     <span style="font-weight: 700;color: #333"
                         class="final_total_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                         aria-placeholder="{{ __('lang.final purchase for piece') }}">
