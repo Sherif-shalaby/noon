@@ -51,30 +51,40 @@
             @enderror
         </div>
 
-        <div class="animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center align-items-center mr-1"
-            style="font-size: 12px;font-weight: 500;min-height: 60px;min-width: 70px;">
-            <span class="text-center">
+        <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
+            style="min-width: 100px;min-height: 60px">
+            <label class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
+                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.product_n') }}</label>
+            <span style='font-weight:700;font-size:14px;color:#333;'
+                class="text-center d-flex justify-content-center py-1 align-items-center initial-balance-input width-full m-0">
                 {{ $product['product']['name'] }}
             </span>
-            <span class="text-center">
-                {{ $product['product']['sku'] }}
-            </span>
+
         </div>
 
-
+        @if (!empty($product['product']['sku']))
+            <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
+                style="min-width: 100px;min-height: 60px">
+                <label class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
+                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.sku') }}</label>
+                <span style='font-weight:700;font-size:14px;color:#333;'
+                    class="text-center d-flex justify-content-center py-1 align-items-center initial-balance-input width-full m-0">
+                    {{ $product['product']['sku'] }}
+                </span>
+            </div>
+        @endif
 
         <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
-            style="width: 120px;min-height: 60px">
+            style="width: 200px;min-height: 60px">
             <label for="store"
                 class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') }}</label>
-            <div class="input-wrapper" style="width: 100% !important">
+            <div class="input-wrapper  justify-content-between" style="width: 100% !important">
                 {!! Form::select('store_id', $stores, $store_id, [
                     'class' => ' form-select store_id' . $index,
                     'data-live-search' => 'true',
                     'required',
                     'placeholder' => __('lang.please_select'),
-                    'style' => 'width:70% !important',
                     'wire:model' => 'items.' . $index . '.store_id',
                 ]) !!}
 
@@ -204,8 +214,9 @@
             <input type="text" class="form-control initial-balance-input width-full"
                 wire:model="items.{{ $index }}.purchase_price"
                 wire:input="convertPurchasePrice({{ $index }})" required>
-            <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
-                style='font-weight:500;font-size:10px;color:#888'>{{ @number_format($product['dollar_purchase_price'], num_of_digital_numbers()) ?? 0 }}$</span>
+            <span
+                class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} text-center d-flex justify-content-center py-1 align-items-center initial-balance-input width-full m-0"
+                style='font-weight:700;font-size:14px;color:#333;'>{{ @number_format($product['dollar_purchase_price'], num_of_digital_numbers()) ?? 0 }}$</span>
             @error('items.' . $index . '.purchase_price')
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
@@ -255,7 +266,7 @@
         </div>
 
 
-
+        {{--
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
             style="width: 150px;min-height: 60px">
             <div class="d-flex width-full">
@@ -298,9 +309,9 @@
                 <label class="custom-control-label"
                     for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_from_original_price')</label>
             </div>
-        </div>
+        </div> --}}
 
-        <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+        {{-- <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
             style="width: 120px;min-height: 60px">
             <label for="purchase_price"
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
@@ -315,7 +326,7 @@
                     {{ @number_format(num_uf($product['dollar_purchase_after_discount']), num_of_digital_numbers()) }}
                 </b>
             </div>
-        </div>
+        </div> --}}
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
             style="width: 150px;min-height: 60px">
@@ -641,18 +652,17 @@
 
 
             <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
-                style="width: 120px;min-height: 60px;">
+                style="width: 200px;min-height: 60px;">
                 <label for="store"
                     class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') }}</label>
 
-                <div class="input-wrapper" style="width: 100% !important">
+                <div class="input-wrapper justify-content-between" style="width: 100% !important">
                     {!! Form::select('stores.' . $i . '.store_id', $stores, $store_id, [
                         'class' => 'form-select store_id' . $index . $i,
                         'data-live-search' => 'true',
                         'required',
                         'placeholder' => __('lang.please_select'),
-                        'style' => 'width:70% !important',
                         'wire:model' => 'items.' . $index . '.stores.' . $i . '.store_id',
                     ]) !!}
                     <button type="button"

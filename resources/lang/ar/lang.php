@@ -859,4 +859,5 @@ return array(
     'discount_type' => 'نوع الخصم',
     'piece_discount' => 'خصم القطعة',
     'total_discount' => 'خصم على الكلى',
+    'product_n' => 'اسم المنتج'
 );
