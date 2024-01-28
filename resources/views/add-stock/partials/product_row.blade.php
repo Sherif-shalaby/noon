@@ -77,7 +77,7 @@
     </td>
     <td title="{{__('lang.bonus_quantity')}}">
         <input type="text" class="form-control bonus_quantity" style="width: 61px;" placeholder="bonus_quantity"
-               wire:model="items.{{ $index }}.bonus_quantity" wire:input="changeCurrentStock({{ $index }})">
+               wire:model="items.{{ $index }}.bonus_quantity" wire:input="convertPurchasePrice({{ $index }})">
         @error('items.{{ $index }}.bonus_quantity')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
