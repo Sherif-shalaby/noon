@@ -806,7 +806,7 @@
 
 
                                 <div
-                                    class="mb-2 col-md-3 payment_fields hide align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  {{ $show_payment == 1 ? 'd-none' : '' }}">
+                                    class="mb-2 col-md-3 payment_fields align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  {{ $payment_status != 'pending' ? '' : 'd-none' }}">
                                     <div
                                         class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
                                         {!! Form::label('method', __('lang.payment_type'), [

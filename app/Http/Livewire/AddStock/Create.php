@@ -63,7 +63,7 @@ class Create extends Component
         'items.*.purchase_price' => 'required_if:items.*.dollar_purchase_price,==,null,0,|nullable|numeric',
         'items.*.dollar_selling_price' => 'required_if:items.*.purchase_price,!=,null,0,|nullable|numeric',
         'items.*.selling_price' => 'required_if:items.*.dollar_purchase_price,!=,null,0,|nullable|numeric',
-        'items.*.store_id' => 'required',
+        // 'items.*.store_id' => 'required',
         'items.*.used_currency' => 'required',
     ];
 
@@ -449,8 +449,7 @@ class Create extends Component
     {
         if (!empty($this->expenses)) {
             $this->rules = [
-                'store_id' => 'required',
-                'transaction_currency' => 'required',
+
                 'purchase_type' => 'required',
                 'divide_costs' => 'required',
                 'payment_status' => 'required',
@@ -460,8 +459,7 @@ class Create extends Component
         }
         if ($this->method != 'cash') {
             $this->rules = [
-                'store_id' => 'required',
-                'transaction_currency' => 'required',
+
                 'payment_status' => 'required',
                 'method' => 'required',
                 'amount' => 'required',

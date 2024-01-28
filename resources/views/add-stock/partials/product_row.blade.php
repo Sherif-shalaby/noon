@@ -94,9 +94,9 @@
                     <i class="fas fa-plus"></i>
                 </button>
             </div>
-            @error('store_id')
+            {{-- @error('items.' . $index . '.store_id')
                 <span class="error  validation-error text-danger">{{ $message }}</span>
-            @enderror
+            @enderror --}}
         </div>
 
         <div class=" animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
@@ -251,7 +251,7 @@
                     [1 => __('lang.piece_discount'), 2 => __('lang.total_discount')],
                     1,
                     [
-                        'class' => 'form-select select store_id' . $index,
+                        'class' => 'form-select select2 store_id' . $index,
                         'data-live-search' => 'true',
                         'required',
                         'placeholder' => __('lang.please_select'),
