@@ -1509,7 +1509,6 @@ class Create extends Component
 
     public function cost($index, $stores = null, $key = null)
     {
-        // dd(77);
         $totalExpenses = 0;
         $cost = 0;
         // convert purchase price from Dollar To Dinar
@@ -1547,8 +1546,6 @@ class Create extends Component
             $purchase_price = $this->final_purchase_for_piece($index);
 
             $dollar_purchase_price = $this->dollar_final_purchase_for_piece($index);
-//            dd($dollar_purchase_price);
-
 
             if (isset($this->divide_costs)) {
 
@@ -1569,20 +1566,14 @@ class Create extends Component
                         (float)$this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                     }
                 } else {
-                    // $this->items[$index]['dollar_cost'] = $this->dollar_final_purchase_for_piece($index);
-                    // $this->items[$index]['cost'] = $this->final_purchase_for_piece($index);
-                    // dd((($this->total_expenses / $this->sum_sub_total()) * (float)$dollar_purchase_price) + (float)$dollar_purchase_price);
                     $this->items[$index]['dollar_cost'] = number_format((($this->total_expenses / $this->sum_sub_total()) * (float)$dollar_purchase_price) + (float)$dollar_purchase_price, num_of_digital_numbers());
                     $this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                 }
             } else {
-                // $this->items[$index]['dollar_cost'] = $this->dollar_final_purchase_for_piece($index);
-                // $this->items[$index]['cost'] = $this->final_purchase_for_piece($index);
                 $this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['purchase_after_discount']), num_of_digital_numbers());
                 $this->items[$index]['dollar_cost'] = number_format($this->num_uf($this->items[$index]['dollar_purchase_after_discount']), num_of_digital_numbers());
             }
         }
-        // $this->convertPurchasePrice($index);
     }
 
     public function total_cost($index)
