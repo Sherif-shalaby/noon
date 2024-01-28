@@ -639,7 +639,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-3 payment_fields{{$payment_status!='pending'?'':'d-none'}}">
+                            <div class="col-md-3 payment_fields {{$payment_status!='pending'?'':'d-none'}}">
                                 <div class="form-group">
                                     {!! Form::label('method', __('lang.payment_type'), []) !!}
                                     {!! Form::select('method', $payment_type_array, $method, [

@@ -75,7 +75,7 @@ class Create extends Component
         $transaction_currency, $expenses_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name, $total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $exchangeRate, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
-        $variationSums = [], $expenses = [], $customer_types, $total_amount_dollar, $dollar_remaining, $dinar_remaining, $units,
+        $variationSums = [], $expenses = [], $customer_types, $total_amount_dollar, $dollar_remaining, $dinar_remaining, $units,$date_and_time,
         $toggle_customers_dropdown, $customer_id, $total_expenses = 0, $market_exchange_rate = 1, $dinar_expenses = 0, $dollar_expenses = 0, $productIds, $add_specific_product = 0,$toggle_dollar=0;
     public $supplier_data = [
         'dollar_debit' => '',
@@ -149,7 +149,7 @@ class Create extends Component
         }
     }
     public function getTransactionDate(){
-        $this->transaction_date = date('Y-m-d\TH:i');
+        $this->date_and_time = date('Y-m-d\TH:i');
         return date('Y-m-d \a\t h:i A');
     }
     public function changesupplier()
@@ -1509,14 +1509,13 @@ class Create extends Component
 
     public function cost($index, $stores = null, $key = null)
     {
+        // dd(77);
         $totalExpenses = 0;
         $cost = 0;
         // convert purchase price from Dollar To Dinar
         if ($stores == 'stores') {
             $dollar_purchase_price = $this->dollar_final_purchase_for_piece($index, 'stores', $key);
             $purchase_price = $this->final_purchase_for_piece($index, 'stores', $key);
-
-
             if (isset($this->divide_costs)) {
 
                 if ($this->divide_costs == 'size') {
@@ -1570,12 +1569,15 @@ class Create extends Component
                         (float)$this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                     }
                 } else {
+                    // dd((($this->total_expenses / $this->sum_sub_total()) * (float)$dollar_purchase_price) + (float)$dollar_purchase_price);
                     $this->items[$index]['dollar_cost'] = number_format((($this->total_expenses / $this->sum_sub_total()) * (float)$dollar_purchase_price) + (float)$dollar_purchase_price, num_of_digital_numbers());
-                    (float)$this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), num_of_digital_numbers());
+                    $this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['dollar_cost']) * $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                 }
             } else {
-                $this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['purchase_after_discount']), num_of_digital_numbers());
-                $this->items[$index]['dollar_cost'] = number_format($this->num_uf($this->items[$index]['dollar_purchase_after_discount']), num_of_digital_numbers());
+                // $this->items[$index]['dollar_cost'] = $this->dollar_final_purchase_for_piece($index);
+                // $this->items[$index]['cost'] = $this->final_purchase_for_piece($index);
+                // $this->items[$index]['cost'] = number_format($this->num_uf($this->items[$index]['purchase_after_discount']), num_of_digital_numbers());
+                // $this->items[$index]['dollar_cost'] = number_format($this->num_uf($this->items[$index]['dollar_purchase_after_discount']), num_of_digital_numbers());
             }
         }
     }
@@ -1586,45 +1588,45 @@ class Create extends Component
         return number_format($this->items[$index]['total_cost'], num_of_digital_numbers());
     }
 
-    public function dollar_cost($index)
-    {
+    // public function dollar_cost($index)
+    // {
 
-        $totalExpenses = 0;
-        foreach ($this->expenses as $expense) {
-            $totalExpenses += (float)$expense['amount'];
-        }
-        if ($this->expenses_currency == 2) {
-            $dollar_cost = ((float)$totalExpenses) * $this->num_uf($this->exchange_rate);
-        } else {
-            $dollar_cost = (float)$totalExpenses;
-        }
-        // convert purchase price from Dinar to Dollar
-        $purchase_price = $this->convertDinarPrice($index);
+    //     $totalExpenses = 0;
+    //     foreach ($this->expenses as $expense) {
+    //         $totalExpenses += (float)$expense['amount'];
+    //     }
+    //     if ($this->expenses_currency == 2) {
+    //         $dollar_cost = ((float)$totalExpenses) * $this->num_uf($this->exchange_rate);
+    //     } else {
+    //         $dollar_cost = (float)$totalExpenses;
+    //     }
+    //     // convert purchase price from Dinar to Dollar
+    //     $purchase_price = $this->convertDinarPrice($index);
 
-        if (isset($this->divide_costs)) {
+    //     if (isset($this->divide_costs)) {
 
-            if ($this->divide_costs == 'size') {
-                if ($this->sum_size() == 0) {
-                    $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_sizes_less_equal_zero']);
-                    unset($this->divide_costs);
-                } else {
-                    (float)$this->items[$index]['dollar_cost'] = (($dollar_cost / $this->sum_size()) * $this->items[$index]['size']) + (float)$purchase_price;
-                }
-            } elseif ($this->divide_costs == 'weight') {
-                if ($this->sum_weight() == 0) {
-                    $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_weights_less_equal_zero']);
-                    unset($this->divide_costs);
-                } else {
-                    (float)$this->items[$index]['dollar_cost'] = (($dollar_cost / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$purchase_price;
-                }
-            } else {
-                (float)$this->items[$index]['dollar_cost'] = $this->num_uf((($dollar_cost / $this->sum_dollar_sub_total()) * (float)$purchase_price) + (float)$purchase_price);
-            }
-        } else {
-            $this->items[$index]['dollar_cost'] = (float)$purchase_price;
-        }
-        return number_format($this->items[$index]['dollar_cost'], num_of_digital_numbers());
-    }
+    //         if ($this->divide_costs == 'size') {
+    //             if ($this->sum_size() == 0) {
+    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_sizes_less_equal_zero']);
+    //                 unset($this->divide_costs);
+    //             } else {
+    //                 (float)$this->items[$index]['dollar_cost'] = (($dollar_cost / $this->sum_size()) * $this->items[$index]['size']) + (float)$purchase_price;
+    //             }
+    //         } elseif ($this->divide_costs == 'weight') {
+    //             if ($this->sum_weight() == 0) {
+    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.sum_weights_less_equal_zero']);
+    //                 unset($this->divide_costs);
+    //             } else {
+    //                 (float)$this->items[$index]['dollar_cost'] = (($dollar_cost / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$purchase_price;
+    //             }
+    //         } else {
+    //             (float)$this->items[$index]['dollar_cost'] = $this->num_uf((($dollar_cost / $this->sum_dollar_sub_total()) * (float)$purchase_price) + (float)$purchase_price);
+    //         }
+    //     } else {
+    //         $this->items[$index]['dollar_cost'] = (float)$purchase_price;
+    //     }
+    //     return number_format($this->items[$index]['dollar_cost'], num_of_digital_numbers());
+    // }
 
     public function dollar_total_cost($index)
     {
@@ -2332,16 +2334,19 @@ class Create extends Component
                 } else {
                     $final_purchase_for_piece =   $this->purchase_final($index, $var, $i) / $this->num_uf($this->items[$index]['stores'][$i]['quantity']);
                 }
-                return   number_format($final_purchase_for_piece, num_of_digital_numbers());
+                // $this->cost($index);
+                return number_format($final_purchase_for_piece, num_of_digital_numbers());
             }
         } else {
             if ($this->purchase_final($index) > 0) {
                 if (isset($this->items[$index]['bonus_quantity'])) {
+                    // dd($this->num_uf($this->items[$index]['bonus_quantity']) );
                     $final_purchase_for_piece =  $this->num_uf($this->purchase_final($index)) / ($this->num_uf($this->items[$index]['bonus_quantity']) + $this->num_uf($this->items[$index]['quantity']));
                 } else {
                     $final_purchase_for_piece =   $this->num_uf($this->purchase_final($index)) / $this->num_uf($this->items[$index]['quantity']);
                 }
-                return   number_format($final_purchase_for_piece, num_of_digital_numbers());
+                // $this->cost($index);
+                return number_format($final_purchase_for_piece, num_of_digital_numbers());
             }
         }
     }
