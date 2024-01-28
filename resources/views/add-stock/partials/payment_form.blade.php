@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <div class="row">
 
-        <div class="col-md-2 payment_fields hide {{$show_payment==1?'d-none':''}}">
+        <div class="col-md-2 payment_fields {{$payment_status!='pending'?'':'d-none'}}">
             <div class="form-group">
                 {!! Form::label('amount', __('lang.amount'), []) !!} <br>
                 <input type="number" placeholder="{{__('lang.amount')}}" class="form-control"  wire:model="total_amount" wire:change="changeReceivedDinar()">
@@ -14,7 +14,7 @@
                 @enderror
             </div>
         </div>
-        <div class="col-md-2 payment_fields hide {{$show_payment==1?'d-none':''}}">
+        <div class="col-md-2 payment_fields {{$payment_status!='pending'?'':'d-none'}}">
             <div class="form-group">
                 {!! Form::label('amount', __('lang.amount'), []) !!} $<br>
                 <input type="number" placeholder="{{__('lang.amount')}}$" class="form-control"  wire:model="total_amount_dollar" wire:change="changeReceivedDollar()">
