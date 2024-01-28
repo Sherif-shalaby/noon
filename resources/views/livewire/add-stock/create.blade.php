@@ -731,48 +731,54 @@
 
 
                                 <div
-                                    class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif {{ $payment_status == 'pending' ? 'd-none' : '' }}">
-                                    {!! Form::label('source_type', __('lang.source_type') . '*', [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
-                                    ]) !!}
-                                    <div class="input-wrapper">
-                                        {!! Form::select('source_type', ['pos' => __('lang.pos'), 'safe' => __('lang.safe')], $source_type, [
-                                            'class' => 'form-control select2',
-                                            'data-live-search' => 'true',
-                                            'placeholder' => __('lang.please_select'),
-                                            'data-name' => 'source_type',
-                                            'wire:model' => 'source_type',
+                                    class="mb-2 col-md-3 align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif {{ $payment_status == 'pending' ? 'd-none' : '' }}">
+                                    <div
+                                        class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+                                        {!! Form::label('source_type', __('lang.source_type') . '*', [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                            'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
+                                        <div class="input-wrapper">
+                                            {!! Form::select('source_type', ['pos' => __('lang.pos'), 'safe' => __('lang.safe')], $source_type, [
+                                                'class' => 'form-control select2',
+                                                'data-live-search' => 'true',
+                                                'placeholder' => __('lang.please_select'),
+                                                'data-name' => 'source_type',
+                                                'wire:model' => 'source_type',
+                                            ]) !!}
+                                        </div>
+                                        @error('source_type')
+                                            <span style="font-size: 10px;font-weight: 700;"
+                                                class="error validation-error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    @error('source_type')
-                                        <span style="font-size: 10px;font-weight: 700;"
-                                            class="error validation-error text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
 
 
                                 <div
-                                    class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif {{ $payment_status == 'pending' ? 'd-none' : '' }}">
-                                    {!! Form::label(null, null, [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
-                                    ]) !!}
-                                    <div class="input-wrapper">
-                                        {!! Form::select('source_id', $users, $source_id, [
-                                            'class' => 'form-control select2',
-                                            'data-live-search' => 'true',
-                                            'placeholder' => __('lang.please_select'),
-                                            'id' => 'source_id',
-                                            'required',
-                                            'data-name' => 'source_id',
-                                            'wire:model' => 'source_id',
+                                    class="mb-2 col-md-3 align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif {{ $payment_status == 'pending' ? 'd-none' : '' }}">
+                                    <div
+                                        class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+                                        {!! Form::label(null, null, [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                            'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
+                                        <div class="input-wrapper">
+                                            {!! Form::select('source_id', $users, $source_id, [
+                                                'class' => 'form-control select2',
+                                                'data-live-search' => 'true',
+                                                'placeholder' => __('lang.please_select'),
+                                                'id' => 'source_id',
+                                                'required',
+                                                'data-name' => 'source_id',
+                                                'wire:model' => 'source_id',
+                                            ]) !!}
+                                        </div>
+                                        @error('source_id')
+                                            <span style="font-size: 10px;font-weight: 700;"
+                                                class="error validation-error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    @error('source_id')
-                                        <span style="font-size: 10px;font-weight: 700;"
-                                            class="error validation-error text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
 
 
@@ -800,25 +806,28 @@
 
 
                                 <div
-                                    class="mb-2 col-md-3 payment_fields hide d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  {{ $show_payment == 1 ? 'd-none' : '' }}">
-                                    {!! Form::label('method', __('lang.payment_type'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
-                                    ]) !!}
-                                    <div class="input-wrapper">
-                                        {!! Form::select('method', $payment_type_array, $method, [
-                                            'class' => 'form-control select2',
-                                            'data-live-search' => 'true',
-                                            'required',
-                                            'placeholder' => __('lang.please_select'),
-                                            'data-name' => 'method',
-                                            'wire:model' => 'method',
-                                            'wire:change' => 'reset_change()',
+                                    class="mb-2 col-md-3 payment_fields hide align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  {{ $show_payment == 1 ? 'd-none' : '' }}">
+                                    <div
+                                        class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+                                        {!! Form::label('method', __('lang.payment_type'), [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                            'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
+                                        <div class="input-wrapper">
+                                            {!! Form::select('method', $payment_type_array, $method, [
+                                                'class' => 'form-control select2',
+                                                'data-live-search' => 'true',
+                                                'required',
+                                                'placeholder' => __('lang.please_select'),
+                                                'data-name' => 'method',
+                                                'wire:model' => 'method',
+                                                'wire:change' => 'reset_change()',
+                                            ]) !!}
+                                        </div>
+                                        @error('method')
+                                            <span class="error validation-error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    @error('method')
-                                        <span class="error validation-error text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
 
 
@@ -829,33 +838,38 @@
                                 @if ($payment_status != 'paid' && isset($payment_status))
                                     @if (!empty($amount))
                                         <div
-                                            class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div {{ $show_payment == 1 ? 'd-none' : '' }}">
-                                            <label for="due_amount"
-                                                class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
-                                                style="margin-top: 25px;font-size: 12px;font-weight: 500;">@lang('lang.duePaid'):
-                                                <span class="due_amount_span">
-                                                    @if ($paying_currency == 2)
-                                                        <span
-                                                            class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
-                                                            {{ @number_format(@num_uf($this->sum_dollar_total_cost()) - $amount, num_of_digital_numbers()) ?? '' }}
-                                                        </span>
-                                                    @else
-                                                        {{ @number_format(@num_uf($this->sum_total_cost()) - $amount, num_of_digital_numbers()) ?? '' }}
-                                                    @endif
-                                                </span>
-                                            </label>
+                                            class="col-md-3 mb-2 align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div {{ $show_payment == 1 ? 'd-none' : '' }}">
+                                            <div
+                                                class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+                                                <label for="due_amount"
+                                                    class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
+                                                    style="margin-top: 25px;font-size: 12px;font-weight: 500;">@lang('lang.duePaid'):
+                                                    <span class="due_amount_span">
+                                                        @if ($paying_currency == 2)
+                                                            <span
+                                                                class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
+                                                                {{ @number_format(@num_uf($this->sum_dollar_total_cost()) - $amount, num_of_digital_numbers()) ?? '' }}
+                                                            </span>
+                                                        @else
+                                                            {{ @number_format(@num_uf($this->sum_total_cost()) - $amount, num_of_digital_numbers()) ?? '' }}
+                                                        @endif
+                                                    </span>
+                                                </label>
+                                            </div>
                                         </div>
                                     @endif
                                     <div
-                                        class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div {{ $show_payment == 1 ? 'd-none' : '' }}">
-
-                                        <label
-                                            class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
-                                            for="due_date">@lang('lang.due')</label>
-                                        <input class="form-control m-0 initial-balance-input"
-                                            placeholder="@lang('lang.due')" name="due_date" type="date"
-                                            id="due_date" autocomplete="off" fdprocessedid="pipnea"
-                                            wire:model="due_date">
+                                        class="col-md-3 mb-2 align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div {{ $show_payment == 1 ? 'd-none' : '' }}">
+                                        <div
+                                            class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+                                            <label
+                                                class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
+                                                for="due_date">@lang('lang.due')</label>
+                                            <input class="form-control m-0 initial-balance-input"
+                                                placeholder="@lang('lang.due')" name="due_date" type="date"
+                                                id="due_date" autocomplete="off" fdprocessedid="pipnea"
+                                                wire:model="due_date">
+                                        </div>
                                     </div>
 
                                     {{-- <div
@@ -880,24 +894,27 @@
                                     </div> --}}
                                     {{--  --}}
                                     <div
-                                        class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">
-                                        {!! Form::label('notify_before_days', __('lang.notify_before_days'), [
-                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                            'style' => 'font-size: 12px;font-weight: 500;',
-                                        ]) !!}
-                                        {!! Form::text(
-                                            'notify_before_days',
-                                            !empty($transaction_payment) && !empty($transaction_payment->notify_before_days)
-                                                ? $transaction_payment->notify_before_days
-                                                : (!empty($payment)
-                                                    ? $payment->notify_before_days
-                                                    : null),
-                                            [
-                                                'class' => 'form-control m-0 initial-balance-input',
-                                                'placeholder' => __('lang.notify_before_days'),
-                                                'wire:model' => 'notify_before_days',
-                                            ],
-                                        ) !!}
+                                        class="col-md-3 mb-2 align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">
+                                        <div
+                                            class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+                                            {!! Form::label('notify_before_days', __('lang.notify_before_days'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
+                                            ]) !!}
+                                            {!! Form::text(
+                                                'notify_before_days',
+                                                !empty($transaction_payment) && !empty($transaction_payment->notify_before_days)
+                                                    ? $transaction_payment->notify_before_days
+                                                    : (!empty($payment)
+                                                        ? $payment->notify_before_days
+                                                        : null),
+                                                [
+                                                    'class' => 'form-control m-0 initial-balance-input',
+                                                    'placeholder' => __('lang.notify_before_days'),
+                                                    'wire:model' => 'notify_before_days',
+                                                ],
+                                            ) !!}
+                                        </div>
                                     </div>
 
 
