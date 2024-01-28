@@ -39,7 +39,7 @@
             <span class="error text-danger">{{ $message }}</span>
             @enderror
         </div> --}}
-        <div class="col-md-3 payment_fields hide {{$show_payment==1?'d-none':''}}">
+        <div class="col-md-3 payment_fields {{$payment_status!='pending'?'':'d-none'}}">
             <div class="form-group">
                 {!! Form::label('paid_on', __('lang.payment_date'). ':', []) !!} <br>
                 {!! Form::date('paid_on', $paid_on,
@@ -54,8 +54,8 @@
                 <input type="file" name="upload_documents[]" id="upload_documents" wire:model="upload_documents">
             </div>
         </div>
-        @if(isset( $method) && $method != 'cash')
-            <div class="col-md-3 not_cash_fields  {{$show_payment==1?'d-none':''}}">
+        {{-- @if(isset( $method) && $method != 'cash') --}}
+            <div class="col-md-3 {{$payment_status!='pending'?'':'d-none'}}">
                 <div class="form-group">
                     {!! Form::label('ref_number', __('lang.ref_number'). ':*', []) !!} <br>
                     {!! Form::text('ref_number', !empty($transaction_payment)&&!empty($transaction_payment->ref_number)?$transaction_payment->ref_number:(!empty($payment) ? $payment->ref_number : null), ['class' => 'form-control
@@ -66,7 +66,7 @@
                 <span class="error text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="col-md-3 not_cash_fields {{$show_payment==1?'d-none':''}}">
+            <div class="col-md-3 {{$payment_status!='pending'?'':'d-none'}}">
                 <div class="form-group">
                     {!! Form::label('bank_deposit_date', __('lang.bank_deposit_date'). ':*', []) !!} <br>
                     {!! Form::date('bank_deposit_date', $bank_deposit_date,
@@ -77,7 +77,7 @@
                 <span class="error text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="col-md-3 not_cash_fields {{$show_payment==1?'d-none':''}}">
+            <div class="col-md-3  {{$payment_status!='pending'?'':'d-none'}}">
                 <div class="form-group">
                     {!! Form::label('bank_name', __('lang.bank_name'). ':*', []) !!} <br>
                     {!! Form::text('bank_name', !empty($transaction_payment)&&!empty($transaction_payment->bank_name)?$transaction_payment->bank_name:(!empty($payment) ? $payment->bank_name : null), ['class' => 'form-control
@@ -89,6 +89,6 @@
                 @enderror
             </div>
         </div>
-    @endif
+    {{-- @endif --}}
 </div>
 

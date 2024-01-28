@@ -31,11 +31,11 @@
                         data-target="#createStoreModal">
                         <i class="fas fa-plus"></i>
                 </button>
-
-                 {!! Form::select('store_id', $stores, $store_id, ['class' => ' form-control select store_id'.$index, 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),  'wire:model' => 'items.' . $index . '.store_id']) !!}
-                 @error('store_id')
+                 {!! Form::select('store_id', $stores, $store_id, ['class' => ' form-control store_id'.$index, 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 
+                  'wire:model' => 'items.' . $index . '.store_id']) !!}
+                 {{-- @error('items.'.$index.'.store_id')
                  <span class="error text-danger">{{ $message }}</span>
-                 @enderror
+                 @enderror --}}
             </div>
          </div>
     </td>
