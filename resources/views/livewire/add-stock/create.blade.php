@@ -589,8 +589,8 @@
                                     ]) !!}
                                 </div>
                             </div>
-                            <div class="col-md-3 {{ $payment_status == 'pending' ? 'd-none':'' }}">
-                                <div class="form-group">
+                            <div class="col-md-3">
+                                <div class="form-group {{ $payment_status == 'pending' ? 'd-none':'' }}">
                                     {!! Form::label('source_type', __('lang.source_type') . ':*', []) !!} <br>
                                     {!! Form::select('source_type', ['pos' => __('lang.pos'), 'safe' => __('lang.safe')], $source_type, [
                                         'class' => 'form-control select2',
