@@ -1,5 +1,5 @@
-<div class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}"
-    style="animation-delay: 2.2s">
+<div
+    class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}">
     {!! Form::label('amount', __('lang.amount'), [
         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
         'style' => 'font-size: 12px;font-weight: 500;',
@@ -12,13 +12,12 @@
         <span wire:model="dinar_remaining">Change: {{ $dinar_remaining }}</span>
     @endif
     @error('amount')
-        <span style="font-size: 10px;font-weight: 700;"
-            class="error validation-error text-danger">{{ $message }}</span>
+        <span style="font-size: 10px;font-weight: 700;" class="error validation-error text-danger">{{ $message }}</span>
     @enderror
 </div>
 
-<div class="col-md-3 mb-2 d-flex align-items-center dollar-cell  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}"
-    style="animation-delay: 2.25s">
+<div
+    class="col-md-3 mb-2 d-flex align-items-center dollar-cell  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}">
     {!! Form::label('amount', __('lang.amount'), [
         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
         'style' => 'font-size: 12px;font-weight: 500;',
@@ -61,8 +60,8 @@
     @enderror
 </div> --}}
 
-<div class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}"
-    style="animation-delay: 2.35">
+<div
+    class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}">
     {!! Form::label('paid_on', __('lang.payment_date'), [
         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
         'style' => 'font-size: 12px;font-weight: 500;',
@@ -77,8 +76,8 @@
 
 </div>
 
-<div class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide "
-    style="animation-delay: 2.4s">
+<div
+    class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}">
     {!! Form::label('upload_documents', __('lang.upload_documents'), [
         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
         'style' => 'font-size: 12px;font-weight: 500;',
