@@ -173,7 +173,7 @@
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.b_qty') }}</label>
             <input type="text" class="form-control bonus_quantity initial-balance-input width-full"
                 placeholder="{{ __('lang.b_qty') }}" wire:model="items.{{ $index }}.bonus_quantity"
-                wire:input="changeCurrentStock({{ $index }})">
+                wire:input="convertPurchasePrice({{ $index }})">
             @error('items.{{ $index }}.bonus_quantity')
                 <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
