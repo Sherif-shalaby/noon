@@ -112,7 +112,7 @@
                                                 'placeholder' => __('lang.please_select'),
                                                 'data-name' => 'supplier',
                                                 'wire:model' => 'supplier',
-
+                                            
                                                 'wire:change' => 'changeExchangeRate()',
                                             ]) !!}
 
@@ -436,7 +436,8 @@
                                                     class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">$@lang('lang.total')</span>
                                                 <span style="font-weight:700;font-size: 16px;"
                                                     class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
-                                                    {{ $this->sum_dollar_sub_total() }} </span>
+                                                    {{ @number_format($this->sum_dollar_sub_total(), num_of_digital_numbers()) ?? 0.0 }}
+                                                </span>
                                             </div>
 
                                             <div>
@@ -444,7 +445,8 @@
                                                 <span
                                                     style="font-weight:700;font-size: 14px;">@lang('lang.total')</span>
                                                 <span style="font-weight:700;font-size: 16px;">
-                                                    {{ $this->sum_sub_total() }} </span>
+                                                    {{ @number_format($this->sum_sub_total(), num_of_digital_numbers()) ?? 0.0 }}
+                                                </span>
                                             </div>
                                             {{--
                                             <div>
@@ -710,8 +712,8 @@
 
                                 </div>
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                    >
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('discount_amount', __('lang.discount'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -728,8 +730,8 @@
                                 </div>
 
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif {{ $payment_status == 'pending' ? 'd-none' : '' }}"
-                                   >
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif {{ $payment_status == 'pending' ? 'd-none' : '' }}">
                                     {!! Form::label('source_type', __('lang.source_type') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -750,8 +752,8 @@
                                 </div>
 
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif {{ $payment_status == 'pending' ? 'd-none' : '' }}"
-                                   >
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif {{ $payment_status == 'pending' ? 'd-none' : '' }}">
                                     {!! Form::label(null, null, [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -774,8 +776,8 @@
                                 </div>
 
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                    >
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('payment_status', __('lang.payment_status') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -797,8 +799,8 @@
                                 </div>
 
 
-                                <div class="mb-2 col-md-3 payment_fields hide d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  {{ $show_payment == 1 ? 'd-none' : '' }}"
-                                    >
+                                <div
+                                    class="mb-2 col-md-3 payment_fields hide d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  {{ $show_payment == 1 ? 'd-none' : '' }}">
                                     {!! Form::label('method', __('lang.payment_type'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
