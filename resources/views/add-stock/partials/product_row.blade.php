@@ -251,7 +251,7 @@
                     [1 => __('lang.piece_discount'), 2 => __('lang.total_discount')],
                     1,
                     [
-                        'class' => 'form-select select2 store_id' . $index,
+                        'class' => 'form-select store_id' . $index,
                         'data-live-search' => 'true',
                         'required',
                         'placeholder' => __('lang.please_select'),
@@ -309,7 +309,7 @@
             </div>
         </div>
 
-        <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+        {{-- <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
             style="width: 120px;min-height: 60px">
             <label for="purchase_price"
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
@@ -324,7 +324,7 @@
                     {{ @number_format(num_uf($product['dollar_purchase_after_discount']), num_of_digital_numbers()) }}
                 </b>
             </div>
-        </div>
+        </div> --}}
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 {{ $items[$index]['discount_type'] != '2' ? 'd-none' : '' }}"
             style="width: 150px;min-height: 60px">
@@ -822,7 +822,7 @@
 
             </div>
 
-            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+            {{-- <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                 style="width: 120px;min-height: 60px">
                 <label for="purchase_price"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
@@ -837,7 +837,7 @@
                         {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_after_discount'], num_of_digital_numbers()) ?? null }}
                     </b>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                 style="width: 150px;min-height: 60px">
