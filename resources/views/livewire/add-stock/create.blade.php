@@ -172,8 +172,9 @@
                                 
                                 <div class="col-md-3">
                                     {!! Form::label('transaction_date', __('lang.date_and_time'), []) !!}
-                                    <input type="datetime-local" readonly
-                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control">
+                                    <br><b class="pt-5">{{$this->getTransactionDate()}}</b>
+                                    {{-- <input type="datetime-local" readonly
+                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control"> --}}
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
@@ -189,9 +190,9 @@
                                 @endif
                                 <div class="col-md-3">
                                     {!! Form::label('transaction_date', __('lang.print_date'), []) !!}<br>
-                                    <b class="pt-5">{{$this->getTransactionDate()}}</b>
-                                    {{-- <input type="datetime-local" wire:model="transaction_date"
-                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control"> --}}
+                                    
+                                    <input type="datetime-local" wire:model="transaction_date"
+                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
