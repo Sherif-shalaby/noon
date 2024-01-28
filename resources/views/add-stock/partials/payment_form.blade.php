@@ -77,7 +77,7 @@
 
 </div>
 
-<div class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}"
+<div class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide "
     style="animation-delay: 2.4s">
     {!! Form::label('upload_documents', __('lang.upload_documents'), [
         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
