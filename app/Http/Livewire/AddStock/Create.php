@@ -63,8 +63,6 @@ class Create extends Component
         'items.*.purchase_price' => 'required_if:items.*.dollar_purchase_price,==,null,0,|nullable|numeric',
         'items.*.dollar_selling_price' => 'required_if:items.*.purchase_price,!=,null,0,|nullable|numeric',
         'items.*.selling_price' => 'required_if:items.*.dollar_purchase_price,!=,null,0,|nullable|numeric',
-        'source_type' => 'required',
-        'source_id' => 'required',
         'items.*.store_id' => 'required',
         'items.*.used_currency' => 'required',
     ];
@@ -475,6 +473,10 @@ class Create extends Component
         } else {
             $this->rules['supplier'] = 'required';
         }
+        if($this->payment_status!='pending'){
+            $this->rules['source_type'] = 'required';
+            $this->rules['source_id'] = 'required';
+        }
         $this->validate();
 
         try {
@@ -698,7 +700,7 @@ class Create extends Component
                                 'transaction_date' => !empty($this->transaction_date) ? $this->transaction_date : Carbon::now(),
                                 'currency_id' => $this->paying_currency,
                                 'amount' => $this->amount,
-                                'dollar_amount' => $this->toggle_dollar=="0"?$this->dollar_amount:0,
+                                'dollar_amount' => $this->toggle_dollar=="0"?$this->total_amount_dollar:0,
                                 'money_safe_id' => $money_safe->id,
                             ];
                             $transaction = $money_safe->transactions()->latest()->first();

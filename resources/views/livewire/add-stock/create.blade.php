@@ -605,7 +605,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div class="form-group {{ $payment_status == 'pending' ? 'd-none':'' }}">
                                     {!! Form::label(null, null, []) !!} <br>
                                     {!! Form::select('source_id', $users, $source_id, [
                                         'class' => 'form-control select2',
