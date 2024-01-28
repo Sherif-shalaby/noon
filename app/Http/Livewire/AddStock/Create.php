@@ -199,7 +199,7 @@ class Create extends Component
                 $this->changeTotalAmount();
             }
             if ($data['var1'] == 'payment_status') {
-                if ($this->payment_status == 'pending') {
+                if ($this->payment_status == 'paid' ) {
                     $this->show_payment = 1;
                 } else {
                     $this->show_payment = 0;
