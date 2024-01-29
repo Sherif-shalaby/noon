@@ -114,22 +114,19 @@
                 </div>
                 <div style="width:50px">
                     <button class="plus-button h-100 py-1 px-1 "data-bs-toggle=" collapse"
-                        data-bs-target="#panelsStayOpen-collapse{{ $index }}" data-index="{{ $index }}"
-                        aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}"
-                        wire:click="stayShow({{ $index }})">
-                        @if ($rows[$index]['show_prices'])
-                            <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
-                        @else
-                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                        @endif
+                        onclick="toggleFillAccordion('accordionPricing' , 'accordionPricingArrow')">
+                        <span class="accordionPricingArrow mx-2">
+                            <i class="fas fa-arrow-down d-flex justify-content-center align-items-center"
+                                style="font-size: 0.8rem;color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                        </span>
                     </button>
                 </div>
 
             </td>
         </div>
     </div>
-    <div id="panelsStayOpen-collapse{{ $index }}"
-        class="accordion-collapse flex-column collapse @if ($rows[$index]['show_prices']) show @endif">
+
+    <div class="accordion-collapse accordionPricing flex-column collapse">
         @foreach ($rows[$index]['prices'] as $key => $price)
             <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div

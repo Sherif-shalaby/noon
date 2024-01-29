@@ -86,8 +86,8 @@
                                     @enderror
                                 </div>
                                 @if (empty($toggle_customers_dropdown))
-                                    <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
-                                        style="animation-delay: 1.2s;width: 200px">
+                                    <div class="mb-2 align-items-center animate__animated animate__bounceInLeft supplier  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
+                                        style="animation-delay: 1.2s;min-width: 200px">
                                         {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         ]) !!}
@@ -145,8 +145,8 @@
                                         'placeholder' => __('lang.balance_return_request'),
                                     ]) !!}
                                 </div>
-                                <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                    style="animation-delay: 1.2s;width: 160px">
+                                <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column store  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                    style="animation-delay: 1.2s;min-width: 200px">
                                     {!! Form::label('store_id', __('lang.store') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                     ]) !!}

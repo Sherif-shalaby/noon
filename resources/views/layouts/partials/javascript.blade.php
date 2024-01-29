@@ -102,6 +102,70 @@
             }
         }
     }
+
+    function toggleFillAccordion(sectionId, sectionArrowId) {
+        let sections = document.querySelectorAll(`.${sectionId}`);
+        let arrows = document.querySelectorAll(`.${sectionArrowId}`);
+
+        sections.forEach(section => {
+            if (section.style.display === "block") {
+                section.style.display = "none";
+
+
+                // Check if the element exists
+
+                arrows.forEach(arrow => {
+                    // Remove all children from the "wrap" element
+                    while (arrow.firstChild) {
+                        arrow.removeChild(arrow.firstChild);
+                    }
+
+                    // Create a new <i> element with the desired attributes
+                    let newIElement = document.createElement('i');
+                    newIElement.className =
+                        'fas fa-arrow-down d-flex justify-content-center align-items-center';
+                    newIElement.style.fontSize = '0.8rem';
+                    newIElement.style.color = 'white';
+                    newIElement.style.width = '20px';
+                    newIElement.style.height = '20px';
+                    newIElement.style.borderRadius = '50%';
+
+                    // Append the new <i> element to the "wrap" element
+                    arrow.appendChild(newIElement);
+
+                })
+
+            } else {
+                section.style.display = "block";
+
+                // Check if the element exists
+
+                arrows.forEach(arrow => {
+                    // Remove all children from the "wrap" element
+                    while (arrow.firstChild) {
+                        arrow.removeChild(arrow.firstChild);
+                    }
+
+                    // Create a new <i> element with the desired attributes
+                    let newIElement = document.createElement('i');
+                    newIElement.className =
+                        'fas fa-arrow-up d-flex justify-content-center align-items-center';
+                    newIElement.style.fontSize = '0.8rem';
+                    newIElement.style.color = 'white';
+                    newIElement.style.width = '20px';
+                    newIElement.style.height = '20px';
+                    newIElement.style.borderRadius = '50%';
+
+
+                    // Append the new <i> element to the "wrap" element
+                    arrow.appendChild(newIElement);
+                })
+
+
+            }
+        });
+
+    }
 </script>
 
 <script>

@@ -2,6 +2,11 @@
 @section('title', __('lang.initial_balance'))
 @section('breadcrumbbar')
     <style>
+        .store .select2-selection__rendered,
+        .supplier .select2-selection__rendered {
+            width: 100%
+        }
+
         .select2-selection__rendered {
             width: 100px;
         }

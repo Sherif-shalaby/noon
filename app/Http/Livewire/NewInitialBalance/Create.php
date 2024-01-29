@@ -1047,7 +1047,7 @@ class Create extends Component
     {
         $newRow = [
             'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
-            '', 'show_prices' => false,
+            ''
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -1067,12 +1067,7 @@ class Create extends Component
             array_unshift($this->rows[$index]['prices'], $new_price);
         }
     }
-    public function stayShow($index)
-    {
-        $this->rows[$index]['show_prices'] =
-            !$this->rows[$index]['show_prices'];
-        $this->dispatchBrowserEvent('componentRefreshed');
-    }
+
     public function changeUnitPrices($key)
     {
         foreach ($this->rows as $index => $row) {
