@@ -1846,6 +1846,7 @@ class Create extends Component
                 $this->final_purchase_for_piece($index);
             }
         }
+        $this->cost($index);
     }
     public function total_quantity()
     {
