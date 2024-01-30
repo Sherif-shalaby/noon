@@ -637,9 +637,9 @@
                                         <h3
                                             class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}  {{ $dollar_expenses > 0 ? '' : 'd-none' }}">
                                             @lang('lang.total_expenses')
-                                            {{ $dollar_expenses }} $</h3>
+                                            {{ @number_format($dollar_expenses, num_of_digital_numbers()) }} $</h3>
                                         <h3 class="{{ $dinar_expenses > 0 ? '' : 'd-none' }}">@lang('lang.total_expenses')
-                                            {{ $dinar_expenses }} </h3>
+                                            {{ @number_format($dinar_expenses, num_of_digital_numbers()) }} </h3>
                                         {{ $this->total_expenses }}
                                     </div>
                                     <button

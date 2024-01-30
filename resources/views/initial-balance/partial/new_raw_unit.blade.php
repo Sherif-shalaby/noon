@@ -87,7 +87,8 @@
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.cost') }}</label>
                 <input type="text" class="form-control initial-balance-input purchase_price"
                     style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
-                    wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.cost') }}">
+                    wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.cost') }}"
+                    wire:change="changeUnitPurchasePrice({{ $index }})">
                 @error('rows.' . $index . '.purchase_price')
                     <label class="text-danger validation-error error-msg">{{ $message }}</label>
                 @enderror
