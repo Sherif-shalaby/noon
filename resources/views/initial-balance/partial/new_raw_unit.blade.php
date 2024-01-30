@@ -131,8 +131,7 @@
             <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div
                     class="d-flex justify-content-start align-items-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  align-items-center pl-1"
-                        style="width: 75px">
+                    <div class="mb-2  d-flex flex-column  align-items-center pl-1" style="width: 75px">
                         <label
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                             style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
@@ -142,8 +141,7 @@
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.percent" maxlength="6"
                             placeholder="%">
                     </div>
-                    <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  align-items-center pl-1"
-                        style="width: 100px">
+                    <div class="mb-2  d-flex flex-column  align-items-center pl-1" style="width: 100px">
                         <div class="d-flex justify-content-between">
                             <label
                                 class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
@@ -168,8 +166,7 @@
                             <label class="text-danger validation-error error-msg">{{ $message }}</label>
                         @enderror
                     </div>
-                    <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  align-items-center pl-1"
-                        style="width: 75px">
+                    <div class="mb-2  d-flex flex-column  align-items-center pl-1" style="width: 75px">
                         <label
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                             style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.price') }}</label>

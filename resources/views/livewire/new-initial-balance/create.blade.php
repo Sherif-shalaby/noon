@@ -31,7 +31,6 @@
                         </div>
                         {{-- ++++++++++++++++ checkbox : Toggle Customer Dropdown ++++++++++++++ --}}
                         <div div class="col-md-3 animate__animated animate__bounceInLeft" style="animation-delay: 1.1s">
-
                             <label class="mb-0">
                                 {!! Form::checkbox('toggle_customers_dropdown', 1, false, [
                                     'wire:model' => 'toggle_customers_dropdown',
@@ -39,7 +38,6 @@
                                 ]) !!}
                                 @lang('lang.toggle_customers_dropdown')
                             </label>
-
                         </div>
                     </div>
                     {{-- {!! Form::open(['id' => 'add_stock_form']) !!} --}}
