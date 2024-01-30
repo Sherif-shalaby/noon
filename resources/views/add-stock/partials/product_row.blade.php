@@ -455,12 +455,12 @@
                 <b style="font-weight: 700;color: #333"
                     class="final_total_span d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                     aria-placeholder="{{ __('lang.final purchase for piece') }}">
-                    {{ $this->final_purchase_for_piece($index) }}
+                    {{@number_format($this->final_purchase_for_piece($index),num_of_digital_numbers()) }}
                 </b>
                 <b style="font-weight: 700;color: #333"
                     class="final_total_span d-flex justify-content-center align-items-center initial-balance-input width-full m-0 mt-1 dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
                     aria-placeholder="{{ __('lang.final purchase for piece') }}">
-                    {{ $this->dollar_final_purchase_for_piece($index) }} $
+                    {{@number_format($this->dollar_final_purchase_for_piece($index),num_of_digital_numbers()) }} $
 
                 </b>
             </div>
@@ -496,12 +496,12 @@
                 <span style="font-weight: 700;color: #333"
                     class="final_total_span d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                     aria-placeholder="final purchase">
-                    {{ $this->purchase_final($index) }}
+                    {{ @number_format($this->purchase_final($index), num_of_digital_numbers()) }}
                 </span>
                 <span style="font-weight: 700;color: #333"
                     class="final_total_span mt-1 d-flex justify-content-center align-items-center initial-balance-input width-full m-0 dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
                     aria-placeholder="final purchase">
-                    {{ $this->purchase_final_dollar($index) }} $
+                    {{ @number_format($this->purchase_final_dollar($index), num_of_digital_numbers()) }} $
                 </span>
             </div>
         @endif
@@ -913,12 +913,12 @@
                     <span style="font-weight: 700;color: #333"
                         class="final_total_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                         aria-placeholder="{{ __('lang.final purchase for piece') }}">
-                        {{ $this->final_purchase_for_piece($index, 'stores', $i) }}
+                        {{ @number_format($this->final_purchase_for_piece($index,'stores',$i),num_of_digital_numbers()) }}
                     </span>
                     <span style="font-weight: 700;color: #333"
                         class="final_total_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0 mt-1 dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
                         aria-placeholder="{{ __('lang.final purchase for piece') }}">
-                        {{ $this->dollar_final_purchase_for_piece($index, 'stores', $i) }} $
+                        {{ @number_format($this->dollar_final_purchase_for_piece($index,'stores',$i),num_of_digital_numbers()) }} $
                     </span>
                 </div>
             @endif --}}
@@ -955,12 +955,13 @@
                     <span style="font-weight: 700;color: #333"
                         class="final_total_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                         aria-placeholder="final purchase">
-                        {{ $this->purchase_final($index, 'stores', $i) }}
+                        {{ @number_format($this->purchase_final($index, 'stores', $i), num_of_digital_numbers()) }}
                     </span>
                     <span style="font-weight: 700;color: #333"
                         class="final_total_span  d-flex justify-content-center align-items-center initial-balance-input width-full m-0 mt-1 dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
                         aria-placeholder="final purchase">
-                        {{ $this->purchase_final_dollar($index, 'stores', $i) }} $
+                        {{ @number_format($this->purchase_final_dollar($index, 'stores', $i), num_of_digital_numbers()) }}
+                        $
                     </span>
                 </div>
             @endif
