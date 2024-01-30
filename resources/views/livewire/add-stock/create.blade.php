@@ -243,8 +243,8 @@
                                 </div>
                                 <div class="col-md-2 pt-3">
                                     {{$this->getTotalExpenses()}}
-                                    <h3 class="{{$dollar_expenses>0?'':'d-none'}} {{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.total_expenses') {{$dollar_expenses}} $</h3>
-                                    <h3 class="{{$dinar_expenses>0?'':'d-none'}}">@lang('lang.total_expenses') {{$dinar_expenses}} </h3>
+                                    <h3 class="{{$dollar_expenses>0?'':'d-none'}} {{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.total_expenses') {{@number_format($dollar_expenses, num_of_digital_numbers()) }} $</h3>
+                                    <h3 class="{{$dinar_expenses>0?'':'d-none'}}">@lang('lang.total_expenses') {{@number_format($dinar_expenses, num_of_digital_numbers())}} </h3>
                                     {{$this->total_expenses}}
                                 </div>
                                 {{-- <div class="col-md-3">
