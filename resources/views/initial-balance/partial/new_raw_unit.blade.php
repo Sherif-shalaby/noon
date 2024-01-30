@@ -34,7 +34,7 @@
                 wire:model="rows.{{ $index }}.fill" placeholder = "{{ __('lang.fill') }}" wire:change="changeFill({{$index}})">
 
                 <input type="text" class="form-control purchase_price" style="width:120px !important; "
-                    wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.purchase_price') }}">
+                    wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.purchase_price') }}" wire:change="changeUnitPurchasePrice({{$index}})">
                 @error('rows.' . $index . '.purchase_price')
                     <br>
                     <label class="text-danger error-msg">{{ $message }}</label>
