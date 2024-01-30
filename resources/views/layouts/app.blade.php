@@ -276,9 +276,7 @@
             <!-- End Topbar Mobile -->
             @yield('breadcrumbbar')
 
-
             <div class="animate-in-page">
-
                 <div class="breadcrumbbar m-0 px-3 py-0">
                     <div
                         class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
