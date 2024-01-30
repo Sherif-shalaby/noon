@@ -163,10 +163,10 @@
     <td title="{{__('lang.final_total')}}">
         @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
             <span class="final_total_span" aria-placeholder="final purchase">
-                {{$this->purchase_final($index)}}
+                {{@number_format($this->purchase_final($index),num_of_digital_numbers())}}
             </span>
             <span class="final_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="final purchase">
-                {{$this->purchase_final_dollar($index)}} $
+                {{@number_format($this->purchase_final_dollar($index),num_of_digital_numbers())}} $
             </span>
         @endif
     </td>
@@ -174,10 +174,10 @@
     <td title="{{__('lang.final_total')}}">
         @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
             <span class="final_total_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
-                {{$this->final_purchase_for_piece($index)}}
+                {{@number_format($this->final_purchase_for_piece($index),num_of_digital_numbers())}}
             </span>
             <span class="final_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="{{__('lang.final purchase for piece')}}">
-                {{$this->dollar_final_purchase_for_piece($index)}} $ 
+                {{@number_format($this->dollar_final_purchase_for_piece($index),num_of_digital_numbers())}} $ 
             </span>
         @endif
     </td>
@@ -412,10 +412,10 @@
         <td title="{{__('lang.final_total')}}">
             @if(!empty($store['quantity']) && (!empty($store['purchase_price'])))
                <span class="final_total_span" aria-placeholder="final purchase">
-                    {{$this->purchase_final($index,'stores',$i)}}
+                    {{@number_format($this->purchase_final($index,'stores',$i),num_of_digital_numbers())}}
                 </span>
                <span class="final_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="final purchase">
-                   {{$this->purchase_final_dollar($index,'stores',$i)}} $
+                   {{@number_format($this->purchase_final_dollar($index,'stores',$i),num_of_digital_numbers())}} $
                 </span>
             @endif
         </td>
@@ -423,10 +423,10 @@
         <td title="{{__('lang.final_total')}}">
            @if(!empty($store['quantity']) && (!empty($store['purchase_price'])))
                 <span class="final_total_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
-                    {{$this->final_purchase_for_piece($index,'stores',$i)}}
+                    {{@number_format($this->final_purchase_for_piece($index,'stores',$i),num_of_digital_numbers())}}
                 </span>
                 <span class="final_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="{{__('lang.final purchase for piece')}}">
-                    {{$this->dollar_final_purchase_for_piece($index,'stores',$i)}} $
+                    {{@number_format($this->dollar_final_purchase_for_piece($index,'stores',$i),num_of_digital_numbers())}} $
                 </span>
            @endif
         </td>
