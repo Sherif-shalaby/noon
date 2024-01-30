@@ -37,8 +37,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use App\Models\CashRegisterTransaction;
+use App\Models\City;
 use App\Models\StockTransactionPayment;
 use App\Models\PurchaseOrderTransaction;
+use App\Models\State;
+
 use function Symfony\Component\String\s;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Foundation\Application;
@@ -167,8 +170,8 @@ class Create extends Component
                 'dinar_debit' => $dinar_debit ?? 0,
                 'email' => json_decode($s_data->email, true),
                 'mobile' => json_decode($s_data->mobile_number, true),
-                'state' => !empty($s_data->state) ? $s_data->state->name : '',
-                'city' => !empty($s_data->city) ? $s_data->city->name : '',
+                'state' => State::find($s_data->state_id ?? 0)?->name ?? "",
+                'city' => City::find($s_data->city_id ?? 0)?->name ?? '',
                 'address' => $s_data->address ?? '',
                 'notes' => $s_data->notes ?? '',
             ];
