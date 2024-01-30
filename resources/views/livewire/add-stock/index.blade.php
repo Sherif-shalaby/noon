@@ -3,6 +3,16 @@
     .table-top-head {
         top: 190px;
     }
+
+    .table-scroll-wrapper {
+        width: fit-content;
+    }
+
+    @media(min-width:1900px) {
+        .table-scroll-wrapper {
+            width: 100%;
+        }
+    }
 </style>
 <section class="mb-0">
     <div class="col-md-22">
@@ -26,7 +36,7 @@
                 <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
                     <div class="div2 table-scroll-wrapper">
                         <!-- content goes here -->
-                        <div style="min-width: 1300px;max-height: 90vh;overflow: auto;">
+                        <div style="min-width: 1800px;max-height: 90vh;overflow: auto;">
 
                             <table id="datatable-buttons" class="table dataTable table-hover table-bordered">
                                 <thead>

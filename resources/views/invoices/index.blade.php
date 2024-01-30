@@ -16,8 +16,6 @@
             }
         }
 
-
-
         @media(max-width:991px) {
             .table-top-head {
                 top: 265px !important
