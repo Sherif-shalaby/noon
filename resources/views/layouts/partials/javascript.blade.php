@@ -237,17 +237,6 @@
             }
         }
 
-        let sections = document.querySelectorAll(`.accordionPricing`);
-
-
-        sections.forEach(section => {
-            if (section.style.display === "none") {
-                section.style.display = "none";
-            } else {
-                section.style.display = "block";
-            }
-        })
-
     });
 </script>
 

@@ -292,6 +292,7 @@ class Create extends Component
     }
 
 
+
     public function setSubCategoryValue($value)
     {
 
@@ -1056,9 +1057,10 @@ class Create extends Component
     }
     public function addPrices()
     {
+
         $newRow = [
             'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
-            ''
+            '', 'show_prices' => false,
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -1077,8 +1079,37 @@ class Create extends Component
             ];
             array_unshift($this->rows[$index]['prices'], $new_price);
         }
+
+        // Set 'show_prices' to false for all existing rows
+        if ($this->rows[0]['show_prices'] == true) {
+            foreach ($this->rows as &$row) {
+                $row['show_prices'] = true;
+            }
+        }
+        // Emit an event to update the rows on the front end, including the new row
+        // $this->emit('updateRows', $this->rows);
     }
 
+    public function stayShow()
+    {
+        foreach ($this->rows as &$row) {
+            $row['show_prices'] =
+                !$row['show_prices'];
+        }
+    }
+
+    // public function stayShow($index)
+    // {
+    //     $this->rows[$index]['show_prices'] = !$this->rows[$index]['show_prices'];
+    //     $this->emit('updateRows', $this->rows); // Emit an event to update the rows on the front end
+    // }
+
+    // public function applyStayShowToAll()
+    // {
+    //     foreach ($this->rows as $index => $row) {
+    //         $this->stayShow($index);
+    //     }
+    // }
     public function changeUnitPrices($key)
     {
         foreach ($this->rows as $index => $row) {
