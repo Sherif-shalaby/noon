@@ -52,7 +52,7 @@
         </div>
 
         <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
-            style="width: max-content;min-height: 60px">
+            style="min-width: max-content;min-height: 60px">
             <label class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.product_n') }}</label>
             <span style='font-weight:700;font-size:14px;color:#333;min-width: 100px'
@@ -64,10 +64,10 @@
 
         @if (!empty($product['product']['sku']))
             <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
-                style="min-width: 100px;min-height: 60px">
+                style="min-width: max-content;min-height: 60px">
                 <label class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.sku') }}</label>
-                <span style='font-weight:700;font-size:14px;color:#333;'
+                <span style='font-weight:700;font-size:14px;color:#333;min-width: 100px'
                     class="text-center d-flex justify-content-center py-1 align-items-center initial-balance-input width-full m-0">
                     {{ $product['product']['sku'] }}
                 </span>
@@ -75,11 +75,11 @@
         @endif
 
         <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
-            style="width: 200px;min-height: 60px">
+            style="width:fit-content;min-height: 60px">
             <label for="store"
                 class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') }}</label>
-            <div class="input-wrapper  justify-content-between" style="width: 100% !important">
+            <div class="input-wrapper  justify-content-between" style="width: 200px !important">
                 {!! Form::select('store_id', $stores, $store_id, [
                     'class' => ' form-select store_id' . $index,
                     'data-live-search' => 'true',
@@ -100,7 +100,7 @@
         </div>
 
         <div class=" animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
-            style="width: 100px;min-height: 60px;">
+            style="min-width: 100px;min-height: 60px;">
             <label for="unit"
                 class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.unit') }}</label>
@@ -152,13 +152,12 @@
 
 
         <div class="animate__animated   animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-            style="width: 80px;min-height: 60px">
-
+            style="width: max-content;min-height: 60px">
             <label for="quantity"
                 class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.quantity') }}</label>
 
-            <input type="text" class="form-control quantity  initial-balance-input width-full" required
+            <input type="text" class="form-control quantity  initial-balance-input" style="width: 80px" required
                 wire:model="items.{{ $index }}.quantity" wire:input="changeCurrentStock({{ $index }})">
             @error('items.{{ $index }}.quantity')
                 <span class="error  validation-error text-danger">{{ $message }}</span>
@@ -507,7 +506,7 @@
         @endif
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
-            style="width: 60px;min-height: 60px">
+            style="width: 80px;min-height: 60px">
             <label for="final purchase for piece"
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.size') }}</label>
@@ -533,7 +532,7 @@
         </div>
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
-            style="width: 60px;min-height: 60px">
+            style="width: 80px;min-height: 60px">
             <label for="final purchase for piece"
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.weight') }}</label>
