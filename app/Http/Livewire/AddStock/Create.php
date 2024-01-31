@@ -454,8 +454,6 @@ class Create extends Component
                 'purchase_type' => 'required',
                 'divide_costs' => 'required',
                 'payment_status' => 'required',
-                'method' => 'required',
-                'amount' => 'required',
             ];
         }
         if ($this->method != 'cash') {
@@ -467,6 +465,10 @@ class Create extends Component
                 'ref_number' => 'required',
                 'bank_deposit_date' => 'required',
             ];
+        }
+        if($this->payment_status!='pending'){
+            $this->rules['method'] = 'required';
+            $this->rules['amount'] = 'required';
         }
         if ($this->toggle_customers_dropdown) {
             $this->rules['customer_id'] = 'required';
@@ -952,6 +954,7 @@ class Create extends Component
             'selling_price_span' => !empty($stock) ? $stock->sell_price : null,
             'dollar_selling_price_span' => !empty($stock) ? $stock->dollar_sell_price : null,
             'quantity' => 1,
+            'bonus_quantity'=>'',
             'unit' => !empty($variant) ? $variant->unit->name : '',
             'base_unit_multiplier' => !empty($variant) ? $variant->equal : 0,
             'fill_type' => !empty($stock) ? $stock->fill_type : 'fixed',
@@ -1669,18 +1672,18 @@ class Create extends Component
 
     public function sum_dollar_total_cost()
     {
-        // dd('test');
         $totalDollarCost = 0;
         if (!empty($this->items)) {
             foreach ($this->items as $item) {
                 //                dd($item['dollar_total_cost']);
-                $totalDollarCost += $item['dollar_total_cost'];
+                // dd($this->items);
+                $totalDollarCost += $this->num_uf($item['dollar_total_cost']);
                 if (isset($item['stores']) && is_array($item['stores'])) {
                     foreach ($item['stores'] as $store) {
                         // Assuming 'total_cost' is the key for the total cost in each store
                         if (isset($store['dollar_total_cost'])) {
                             // dd($store['dollar_total_cost']);
-                            $totalDollarCost += (float)$store['dollar_total_cost'];
+                            $totalDollarCost += $this->num_uf($store['dollar_total_cost']);
                             // dd($totalDollarCost );
                         }
                     }
@@ -1898,8 +1901,8 @@ class Create extends Component
                     $dollar_purchase_price = $this->items[$index]['dollar_purchase_price'];
                 } else {
                     $total_quantity = $this->num_uf($this->items[$index]['quantity']) +  isset($this->items[$index]['bonus_quantity'])?$this->num_uf($this->items[$index]['bonus_quantity']):0;
-                    $purchase_price = ($this->num_uf($this->items[$index]['purchase_price']) *  $this->num_uf($this->items[$index]['quantity'])) /  $this->num_uf($total_quantity);
-                    $dollar_purchase_price = ($this->num_uf($this->items[$index]['dollar_purchase_price']) * $this->num_uf($this->items[$index]['quantity'])) / $this->num_uf($total_quantity);
+                    $purchase_price = ($this->num_uf($this->items[$index]['purchase_price']) *  $this->num_uf($this->items[$index]['quantity'])) /  ($this->num_uf($total_quantity)>0?$this->num_uf($total_quantity):1);
+                    $dollar_purchase_price = ($this->num_uf($this->items[$index]['dollar_purchase_price']) * $this->num_uf($this->items[$index]['quantity'])) / ($this->num_uf($total_quantity)>0?$this->num_uf($total_quantity):1);
                 }
                 if (isset($this->items[$index]['purchase_discount']) && $this->items[$index]['purchase_discount'] != null) {
                     if ($this->items[$index]['used_currency'] == 2) {
