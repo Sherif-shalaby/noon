@@ -217,11 +217,11 @@ class ProductController extends Controller
                                         'created_by' => Auth::user()->id
                                     ];
                                     $variation=Variation::create($var_data);
-                                    $var_equals=[
-                                        'variation_id'=>$variation->id,
-                                        'equal'=>!empty($variations[$key + 1]) ? $variations[$key + 1]['equal'] : null,
-                                    ];
-                                    VariationEquals::create($var_equals);
+                                    // $var_equals=[
+                                    //     'variation_id'=>$variation->id,
+                                    //     'equal'=>!empty($variations[$key + 1]) ? $variations[$key + 1]['equal'] : null,
+                                    // ];
+                                    // VariationEquals::create($var_equals);
                                 }
                             }
                         }

@@ -52,10 +52,10 @@
         </div>
 
         <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end  @else align-items-start @endif mr-1 "
-            style="min-width: 100px;min-height: 60px">
+            style="width: max-content;min-height: 60px">
             <label class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.product_n') }}</label>
-            <span style='font-weight:700;font-size:14px;color:#333;'
+            <span style='font-weight:700;font-size:14px;color:#333;min-width: 100px'
                 class="text-center d-flex justify-content-center py-1 align-items-center initial-balance-input width-full m-0">
                 {{ $product['product']['name'] }}
             </span>

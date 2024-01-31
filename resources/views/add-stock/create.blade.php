@@ -5,8 +5,12 @@
     <link rel="stylesheet" href="{{ asset('salescreen/css/main.css') }}" />
     <style>
         /* .select2-selection__rendered {
-                                                width: 100px;
-                                            } */
+                                                        width: 100px;
+                                                    } */
+        .initial-balance-input {
+            padding: 0 10px
+        }
+
         .extra_store_accordion .select2-selection__rendered {
             width: 100%;
         }

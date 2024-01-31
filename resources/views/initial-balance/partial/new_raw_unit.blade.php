@@ -135,17 +135,17 @@
             <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div
                     class="d-flex justify-content-start align-items-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div class="mb-2  d-flex flex-column  align-items-center pl-1" style="width: 75px">
+                    <div class="mb-2  d-flex flex-column  align-items-end pl-1" style="width: max-content">
                         <label
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                             style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
                         <input type="text" class="form-control initial-balance-input percent" name="percent"
                             wire:change="changePercent({{ $index }},{{ $key }})"
-                            style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                            style="min-width: 75px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.percent" maxlength="6"
                             placeholder="%">
                     </div>
-                    <div class="mb-2  d-flex flex-column  align-items-center pl-1" style="width: 100px">
+                    <div class="mb-2  d-flex flex-column  align-items-end pl-1" style="width: max-content">
                         <div class="d-flex justify-content-between">
                             <label
                                 class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
@@ -159,7 +159,7 @@
 
                         </div>
                         <input type="text" class="form-control initial-balance-input dinar_sell_price"
-                            style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                            style="min-width:100px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
                             placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
                             wire:change="changeIncrease({{ $index }},{{ $key }})">
@@ -170,13 +170,13 @@
                             <label class="text-danger validation-error error-msg">{{ $message }}</label>
                         @enderror
                     </div>
-                    <div class="mb-2  d-flex flex-column  align-items-center pl-1" style="width: 75px">
+                    <div class="mb-2  d-flex flex-column  align-items-end pl-1" style="width: max-content">
                         <label
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                             style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.price') }}</label>
 
                         <input type="text" class="form-control initial-balance-input dinar_sell_price"
-                            style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                            style="min-width:75px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                             wire:change="changeSellPrice({{ $index }},{{ $key }})"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                             placeholder = "{{ __('lang.price') }}">

@@ -3,6 +3,10 @@
 
 @push('css')
     <style>
+        .initial-balance-input {
+            padding: 0 10px;
+        }
+
         .store .select2-selection__rendered,
         .supplier .select2-selection__rendered {
             width: 100%
