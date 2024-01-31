@@ -1,27 +1,26 @@
 @extends('layouts.app')
 @section('title', __('site.show_invoice'))
-@push('css')
 
-@endpush
-@section('breadcrumbbar')
-    <div class="breadcrumbbar">
-        <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('site.show_invoice')</h4>
-                <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('site.show_invoice')</li>
-                    </ol>
-                </div>
-            </div>
+@section('page_title')
+    @lang('site.show_invoice')
+@endsection
 
-        </div>
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('site.show_invoice')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBrandModal">
+            @lang('lang.add_brand_name')
+        </button>
     </div>
 @endsection
-@section('content')
-@livewire('invoices.show', ['id' => $id])
 
+@section('content')
+    @livewire('invoices.show', ['id' => $id])
 @endsection
 {{-- @push('js')
     <script>

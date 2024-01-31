@@ -1,11 +1,11 @@
 <!-- Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
-    style="display: none;" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
+<div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel" style="display: none;"
+    aria-hidden="true">
+    <div class="modal-dialog  rollIn  animated modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header  d-flex justify-content-between py-0  flex-row">
                 <h5 class="modal-title" id="edit">@lang('lang.add_branch')</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

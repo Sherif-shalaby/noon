@@ -440,6 +440,7 @@
 
     <div class="view_modal no-print"></div>
 @endsection
+
 @push('javascripts')
     <script>
         window.addEventListener('openAddPaymentModal', event => {

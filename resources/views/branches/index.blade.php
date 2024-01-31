@@ -1,9 +1,10 @@
 @extends('layouts.app')
 @section('title', __('lang.jobs'))
-@section('breadcrumbbar')
+
+@push('css')
     <style>
         .table-top-head {
-            top: 33px;
+            top: 33px !important;
         }
 
 
@@ -21,41 +22,29 @@
             }
         }
     </style>
-    <div class="animate-in-page">
+@endpush
 
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.branches')</h4>
-                    <div class="breadcrumb-list">
-                        <ul
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.branches')</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div
-                        class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                        <a data-href="{{ route('branches.create') }}" data-container=".view_modal"
-                            class="btn btn-primary btn-modal text-white edit_job">
-                            @lang('lang.add_branch')
-                        </a>
-                        {{--                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-job">@lang('lang.add_branch')</button> --}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{--    --}}{{--     create job modal      --}}
-    {{--    @include('jobs.create') --}}
+@section('page_title')
+    @lang('lang.branches')
 @endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.branches')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <a data-href="{{ route('branches.create') }}" data-container=".view_modal"
+            class="btn btn-primary btn-modal text-white edit_job">
+            @lang('lang.add_branch')
+        </a>
+
+    </div>
+@endsection
+
+
 @section('content')
     <div class="animate-in-page">
         <div class="container-fluid">
@@ -158,4 +147,5 @@
     </div>
 
 @endsection
+
 <div class="view_modal no-print"></div>

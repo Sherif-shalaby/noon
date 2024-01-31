@@ -1012,3 +1012,14 @@ thead tr {
 .dt-button-collection {
     min-width: 200px !important;
 }
+
+.modal-backdrop {
+    display: none;
+}
+
+.modal.show {
+    padding-right: 10px;
+    display: block;
+    z-index: 88888888;
+    background-color: #0000008f;
+}
