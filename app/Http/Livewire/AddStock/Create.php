@@ -1643,19 +1643,19 @@ class Create extends Component
     {
         // dd('test');
         $totalCost = 0;
+        // dd($this->items);
         if (!empty($this->items)) {
-
             foreach ($this->items as $item) {
                 // dd($item['stores']);
                 // dd($item['total_cost']);
-                $totalCost += (float)$item['total_cost'];
+                $totalCost += $this->num_uf($item['total_cost']);
                 if (isset($item['stores']) && is_array($item['stores'])) {
                     foreach ($item['stores'] as $store) {
                         // dd($store);
                         // Assuming 'total_cost' is the key for the total cost in each store
                         if (isset($store['total_cost'])) {
                             // dd($store['total_cost']);
-                            $totalCost += (float)$store['total_cost'];
+                            $totalCost += $this->num_uf($store['total_cost']);
                         }
                     }
                 }
