@@ -1669,19 +1669,19 @@ class Create extends Component
     {
         // dd('test');
         $totalCost = 0;
+        // dd($this->items);
         if (!empty($this->items)) {
-
             foreach ($this->items as $item) {
                 // dd($item['stores']);
                 // dd($item['total_cost']);
-                $totalCost += (float)$item['total_cost'];
+                $totalCost += $this->num_uf($item['total_cost']);
                 if (isset($item['stores']) && is_array($item['stores'])) {
                     foreach ($item['stores'] as $store) {
                         // dd($store);
                         // Assuming 'total_cost' is the key for the total cost in each store
                         if (isset($store['total_cost'])) {
                             // dd($store['total_cost']);
-                            $totalCost += (float)$store['total_cost'];
+                            $totalCost += $this->num_uf($store['total_cost']);
                         }
                     }
                 }
@@ -1926,9 +1926,12 @@ class Create extends Component
                     $purchase_price = $this->items[$index]['purchase_price'];
                     $dollar_purchase_price = $this->items[$index]['dollar_purchase_price'];
                 } else {
-                    $total_quantity = $this->num_uf($this->items[$index]['quantity']) +  isset($this->items[$index]['bonus_quantity']) ? $this->num_uf($this->items[$index]['bonus_quantity']) : 0;
+                    $total_quantity = $this->num_uf($this->items[$index]['quantity']);
+                    $total_quantity +=  !empty($this->items[$index]['bonus_quantity']) ? $this->num_uf($this->items[$index]['bonus_quantity']) : 0;
                     $purchase_price = ($this->num_uf($this->items[$index]['purchase_price']) *  $this->num_uf($this->items[$index]['quantity'])) /  ($this->num_uf($total_quantity) > 0 ? $this->num_uf($total_quantity) : 1);
                     $dollar_purchase_price = ($this->num_uf($this->items[$index]['dollar_purchase_price']) * $this->num_uf($this->items[$index]['quantity'])) / ($this->num_uf($total_quantity) > 0 ? $this->num_uf($total_quantity) : 1);
+                    // dd($total_quantity);
+
                 }
                 if (isset($this->items[$index]['purchase_discount']) && $this->items[$index]['purchase_discount'] != null) {
                     if ($this->items[$index]['used_currency'] == 2) {
