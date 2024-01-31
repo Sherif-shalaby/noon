@@ -139,9 +139,19 @@
                         <label
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                             style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
-                        <input type="text" class="form-control initial-balance-input percent" name="percent"
+                        <input type="text" class="form-control percent" name="percent"
                             wire:change="changePercent({{ $index }},{{ $key }})"
-                            style="min-width: 75px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                            style="margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
+                             background-color: #dedede;
+    border: 2px solid #cececf;
+    border-radius: 16px;
+    color: #373737;
+    box-shadow: 0 8px 6px -5px #bbb;
+width: 75%;
+    height: 30px;
+    margin: auto;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.percent" maxlength="6"
                             placeholder="%">
                     </div>
@@ -158,8 +168,18 @@
                                 style='font-weight:500;font-size:10px;color:#333'>{{ __('lang.amount') }} </label>
 
                         </div>
-                        <input type="text" class="form-control initial-balance-input dinar_sell_price"
-                            style="min-width:100px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                        <input type="text" class="form-control dinar_sell_price"
+                            style="margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
+                             background-color: #dedede;
+    border: 2px solid #cececf;
+    border-radius: 16px;
+    color: #373737;
+    box-shadow: 0 8px 6px -5px #bbb;
+width: 75%;
+    height: 30px;
+    margin: auto;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
                             placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
                             wire:change="changeIncrease({{ $index }},{{ $key }})">
@@ -175,8 +195,18 @@
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                             style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.price') }}</label>
 
-                        <input type="text" class="form-control initial-balance-input dinar_sell_price"
-                            style="min-width:75px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                        <input type="text" class="form-control dinar_sell_price"
+                            style=" margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
+                             background-color: #dedede;
+    border: 2px solid #cececf;
+    border-radius: 16px;
+    color: #373737;
+    box-shadow: 0 8px 6px -5px #bbb;
+    width: 75%;
+    height: 30px;
+    margin: auto;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;"
                             wire:change="changeSellPrice({{ $index }},{{ $key }})"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                             placeholder = "{{ __('lang.price') }}">
