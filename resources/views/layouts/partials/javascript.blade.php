@@ -245,7 +245,7 @@
         if (!$(this).hasClass('toggleVisColList')) {
             $(this).addClass('toggleVisColList')
         }
-        console.log("dwedewed");
+
     })
     $(document).on("click", ".toggleVisColList", function() {
         $('.dt-button-collection').toggle()

@@ -59,8 +59,8 @@ class Create extends Component
         // 'paying_currency' => 'required',
         'purchase_type' => 'required',
         'payment_status' => 'required',
-        'method' => 'required',
-        'amount' => 'required',
+        // 'method' => 'required',
+        // 'amount' => 'required',
         // 'transaction_currency' => 'required',
         'items.*.dollar_purchase_price' => 'nullable|numeric',
         'items.*.purchase_price' => 'required_if:items.*.dollar_purchase_price,==,null,0,|nullable|numeric',
@@ -454,21 +454,22 @@ class Create extends Component
         if (!empty($this->expenses)) {
             $this->rules = [
                 'purchase_type' => 'required',
-                'divide_costs' => 'required',
+                // 'divide_costs' => 'required',
                 'payment_status' => 'required',
             ];
         }
-        if ($this->method != 'cash') {
-            $this->rules = [
-                'payment_status' => 'required',
-                'method' => 'required',
-                'amount' => 'required',
-                'bank_name' => 'required',
-                'ref_number' => 'required',
-                'bank_deposit_date' => 'required',
-            ];
-        }
+
         if ($this->payment_status != 'pending') {
+            if ($this->method != 'cash') {
+                $this->rules = [
+                    'payment_status' => 'required',
+                    // 'method' => 'required',
+                    // 'amount' => 'required',
+                    'bank_name' => 'required',
+                    'ref_number' => 'required',
+                    'bank_deposit_date' => 'required',
+                ];
+            }
             $this->rules['method'] = 'required';
             $this->rules['amount'] = 'required';
         }
@@ -483,6 +484,7 @@ class Create extends Component
         }
         // dd($this->rules);
         $this->validate();
+
 
         try {
             if (!empty($this->po_id)) {
@@ -665,7 +667,7 @@ class Create extends Component
                 $payment->stock_transaction_id  = $transaction->id;
                 $payment->amount  = $this->total_amount;
                 $payment->dollar_amount  = $this->toggle_dollar == "0" ? $this->total_amount_dollar : 0;
-                $payment->method = $this->method;
+                $payment->method = !empty($this->method) ? $this->method : ' ';
                 $payment->paid_on = !empty($this->paid_on) ? $this->paid_on :  Carbon::now();
                 $payment->source_type = !empty($this->source_type) ? $this->source_type : null;
                 $payment->source_id = !empty($this->source_id) ? $this->source_id : null;
