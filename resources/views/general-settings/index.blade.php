@@ -1,33 +1,20 @@
 @extends('layouts.app')
 @section('title', __('lang.general_settings'))
+
 @push('css')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
-@section('breadcrumbbar')
-    <div class="animate-in-page">
 
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.general_settings')
-                    </h4>
-                    <div class="breadcrumb-list mb-3">
-                        <ul style=" list-style: none;"
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  "><a
-                                    style="text-decoration: none;color: #596fd7"
-                                    href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif   active"
-                                aria-current="page">@lang('lang.general_settings')</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+@section('page_title')
+    @lang('lang.general_settings')
 @endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif   active" aria-current="page">
+        @lang('lang.general_settings')</li>
+@endsection
+
 @section('content')
     <div class="animate-in-page">
 

@@ -1,39 +1,25 @@
 @extends('layouts.app')
 @section('title', __('lang.purchase_order'))
-@section('breadcrumbbar')
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div class="animate__animated  animate__backInRight">
-                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.show_purchase_order')</h4>
-                    <div class="breadcrumb-list">
-                        <ul
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7"
-                                    href="{{ route('purchase_order.index') }}">/ @lang('lang.purchase_order')</a>
-                            </li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.view')</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4 ">
-                    <div
-                        class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                        <a type="button" class="btn btn-primary"
-                            href="{{ route('purchase_order.index') }}">@lang('lang.purchase_order')</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+@section('page_title')
+    @lang('lang.show_purchase_order')
+@endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+            style="text-decoration: none;color: #596fd7" href="{{ route('purchase_order.index') }}">/ @lang('lang.purchase_order')</a>
+    </li>
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.view')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <a type="button" class="btn btn-primary" href="{{ route('purchase_order.index') }}">@lang('lang.purchase_order')</a>
     </div>
 @endsection
+
 
 @section('content')
     <div class="animate-in-page">

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', __('lang.customer_report'))
-@section('breadcrumbbar')
+
+
+@push('css')
     <style>
         .table-top-head {
             top: -10px !important;
@@ -50,6 +52,22 @@
             }
         }
     </style>
+@endpush
+
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif ">
+        <a style="text-decoration: none;color: #596fd7" href="">@lang('lang.customer_report')</a>
+    </li>
+@endsection
+
+@section('page_title')
+    @lang('lang.customer_report')
+@endsection
+
+
+@section('content')
     <!-- Start row -->
     <div class="animate-in-page">
         <div class="row">
@@ -58,7 +76,8 @@
                 <div class="card mb-0">
                     <div class="card-header">
                         <h6 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            @lang('lang.customer_report')</h6>
+                            @lang('lang.customer_report')
+                        </h6>
                     </div>
                     <div class="card-body">
                         @include('reports.employee-sales.filters')
@@ -292,7 +311,4 @@
     <div class="view_modal no-print">
 
     </div>
-@endsection
-@section('content')
-
 @endsection

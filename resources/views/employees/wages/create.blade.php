@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', __('lang.add_wages'))
-@section('breadcrumbbar')
+
+@push('css')
     <style>
         . {
             width: 100% !important
@@ -12,39 +13,29 @@
             }
         }
     </style>
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.add_wages')</h4>
-                    <div class="breadcrumb-list">
-                        <ul
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ route('wages.index') }}">/
-                                    @lang('lang.wages')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.add_wages')</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div
-                        class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                        <a href="{{ route('wages.index') }}" class="btn btn-primary">
-                            @lang('lang.wages')
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+@endpush
+
+@section('page_title')
+    @lang('lang.add_wages')
+@endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+            style="text-decoration: none;color: #596fd7" href="{{ route('wages.index') }}">/
+            @lang('lang.wages')</a></li>
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.add_wages')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <a href="{{ route('wages.index') }}" class="btn btn-primary">
+            @lang('lang.wages')
+        </a>
     </div>
 @endsection
+
 @section('content')
     <!-- Start row -->
     <div class="animate-in-page">
@@ -280,8 +271,7 @@
                             <div class="col-6 mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="animation-delay: 1.8s">
                                 <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 ",
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="upload_files">@lang('lang.upload_files')</label>
+                                    style='font-size: 12px;font-weight: 500;' for="upload_files">@lang('lang.upload_files')</label>
                                 <div class="input-wrapper">
                                     {!! Form::file('upload_files[]', [
                                         'class' => 'form-control  initial-balance-input m-auto width-full',

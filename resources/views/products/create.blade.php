@@ -3,59 +3,30 @@
 @push('css')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/product.css') }}">
-    {{-- <style>
-        .form-select {
-            height: 100%;
-            padding-bottom: 0;
-            padding-top: 0;
-            background-color: #dedede !important;
-            border-radius: 16px;
-            border: 2px solid #cececf;
-            font-size: 14px;
-            font-weight: 500
-        }
-
-        .form-select:focus {
-            border-color: #cececf !important;
-            outline: 0;
-            box-shadow: 0 0 0 0 !important;
-            background-color: white !important;
-        }
-    </style> --}}
 @endpush
-@section('breadcrumbbar')
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.add_products')</h4>
-                    <div class="breadcrumb-list">
-                        <ul
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ route('products.index') }}">/
-                                    @lang('lang.products')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
-                                aria-current="page">@lang('lang.add_products')</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4 ">
-                    <div class="widgetbar">
-                        <a href="{{ route('products.index') }}" class="btn btn-primary">
-                            @lang('lang.products')
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+
+@section('page_title')
+    @lang('lang.add_products')
+@endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+            style="text-decoration: none;color: #596fd7" href="{{ route('products.index') }}">/
+            @lang('lang.products')</a></li>
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active" aria-current="page">
+        @lang('lang.add_products')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar">
+        <a href="{{ route('products.index') }}" class="btn btn-primary">
+            @lang('lang.products')
+        </a>
     </div>
 @endsection
+
 @section('content')
     <div class="animate-in-page">
         <!-- Start row -->
@@ -136,13 +107,13 @@
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="hidden" value="0" class="add_stock_val" name="add_stock_val" />
-                        <button type="submit" class="btn btn-primary add_stock">@lang('lang.add-stock')</button>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="hidden" value="0" class="add_stock_val" name="add_stock_val" />
+                            <button type="submit" class="btn btn-primary add_stock">@lang('lang.add-stock')</button>
+                        </div>
                     </div>
                     {!! Form::close() !!}
                 </div>

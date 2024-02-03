@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', __('lang.product_damage'))
-@section('breadcrumbbar')
+
+@push('css')
     <style>
         th {
             padding: 10px 25px !important;
@@ -56,38 +57,28 @@
             }
         }
     </style>
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.stock')</h4>
-                    <div class="breadcrumb-list">
-                        <ul
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ route('products.index') }}">/
-                                    @lang('lang.products')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.product_damage')</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div
-                        class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                        <a type="button" class="btn btn-primary"
-                            href="{{ $status == 'damage' ? route('getDamageProduct', ['id' => $id]) : route('addConvolution', ['id' => $id]) }}">{{ $status == 'damage' ? __('lang.remove_damage') : __('lang.remove_expiry') }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+@endpush
+
+@section('page_title')
+    @lang('lang.stock')
+@endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+            style="text-decoration: none;color: #596fd7" href="{{ route('products.index') }}">/
+            @lang('lang.products')</a></li>
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.product_damage')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <a type="button" class="btn btn-primary"
+            href="{{ $status == 'damage' ? route('getDamageProduct', ['id' => $id]) : route('addConvolution', ['id' => $id]) }}">{{ $status == 'damage' ? __('lang.remove_damage') : __('lang.remove_expiry') }}</a>
     </div>
 @endsection
+
 @section('content')
     <div class="animate-in-page">
 

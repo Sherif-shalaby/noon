@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', __('lang.moneysafes'))
-@section('breadcrumbbar')
+
+
+@push('css')
     <style>
         .table-top-head {
             top: 32px;
@@ -20,37 +22,28 @@
             }
         }
     </style>
-    <div class="breadcrumbbar m-0 px-3 py-0">
-        <div
-            class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-            <div>
-                <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.moneysafes')
-                </h4>
-                <div class="breadcrumb-list">
-                    <ul style=" list-style: none;"
-                        class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif ">
-                            <a style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/ @lang('lang.dashboard')</a>
-                        </li>
-                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                            aria-current="page">@lang('lang.moneysafes')</li>
-                    </ul>
-                </div>
-            </div>
-            {{-- +++++++++++++++++ اضافة خزينة +++++++++++++++++ --}}
-            <div class="col-md-4">
-                <div
-                    class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createMoneySafeModal">
-                        @lang('lang.add_moneysafe')
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @include('money_safe.create')
+@endpush
+
+@section('page_title')
+    @lang('lang.moneysafes')
 @endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.moneysafes')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createMoneySafeModal">
+            @lang('lang.add_moneysafe')
+        </button>
+    </div>
+@endsection
+
 @section('content')
+    @include('money_safe.create')
     <div class="animate-in-page">
 
         <!-- End Breadcrumbbar -->

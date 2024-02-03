@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', __('lang.product_tax'))
-@section('breadcrumbbar')
+
+@push('css')
     <style>
         .table-top-head {
             top: 32px;
@@ -20,49 +21,30 @@
             }
         }
     </style>
-    <div class="animate-in-page">
+@endpush
 
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.product_tax')
-                    </h4>
-                    <div class="breadcrumb-list">
-                        <ul style=" list-style: none;"
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item">
-                                <a style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a>
-                            </li>
-                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif ">
-                                <a style="text-decoration: none;color: #596fd7" href="">/ @lang('lang.settings')</a>
-                            </li>
-                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
-                                aria-current="page">@lang('lang.product_tax')</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div
-                        class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                        {{-- <a data-toggle="modal" data-target="#add_product_tax" class="btn btn-primary text-white"
-                        data-toggle="modal">
-                        @lang('lang.add_product_tax')
-                    </a>
-                    @include('product-tax.create') --}}
+@section('page_title')
+    @lang('lang.product_tax')
+@endsection
 
-                        <a data-href="{{ route('general-tax.create') }}" data-container=".view_modal"
-                            class="btn btn-modal btn-primary text-white" data-toggle="modal">
-                            @lang('lang.add_general_tax')
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif ">
+        <a style="text-decoration: none;color: #596fd7" href="">/ @lang('lang.settings')</a>
+    </li>
+    <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active" aria-current="page">
+        @lang('lang.product_tax')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <a data-href="{{ route('general-tax.create') }}" data-container=".view_modal"
+            class="btn btn-modal btn-primary text-white" data-toggle="modal">
+            @lang('lang.add_general_tax')
+        </a>
     </div>
 @endsection
+
 @section('content')
     <div class="animate-in-page">
 

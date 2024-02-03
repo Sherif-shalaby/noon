@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', __('lang.show_plans'))
-@section('breadcrumbbar')
+
+@push('css')
     <style>
         .table-top-head {
             top: 85px !important;
@@ -44,39 +45,29 @@
             }
         }
     </style>
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        {{ __('lang.show_plans') }}</h4>
-                    <div class="breadcrumb-list">
-                        <ul
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            @if (request()->segment(2) . '/' . request()->segment(3) == 'plans/representatives')
-                                <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
-                                    <a style="text-decoration: none;color: #596fd7"
-                                        href="{{ route('representatives.index') }}">/ @lang('lang.representatives')</a>
-                                </li>
-                            @else
-                                <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
-                                    <a style="text-decoration: none;color: #596fd7" href="#">/ @lang('lang.delivery')</a>
-                                </li>
-                            @endif
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.show_plans')</li>
-                        </ul>
-                    </div>
-                </div>
+@endpush
 
-            </div>
-        </div>
-    </div>
+@section('page_title')
+    {{ __('lang.show_plans') }}
 @endsection
+
+@section('breadcrumbs')
+    @parent
+    @if (request()->segment(2) . '/' . request()->segment(3) == 'plans/representatives')
+        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
+            <a style="text-decoration: none;color: #596fd7" href="{{ route('representatives.index') }}">/
+                @lang('lang.representatives')</a>
+        </li>
+    @else
+        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
+            <a style="text-decoration: none;color: #596fd7" href="#">/ @lang('lang.delivery')</a>
+        </li>
+    @endif
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.show_plans')</li>
+@endsection
+
+
 @section('content')
     <div class="animate-in-page">
         <div class="container-fluid">

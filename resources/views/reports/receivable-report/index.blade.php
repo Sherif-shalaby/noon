@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', __('lang.receivable_report'))
-@section('breadcrumbbar')
+
+
+@push('css')
     <style>
         .table-top-head {
             top: 95px !important;
@@ -50,31 +52,20 @@
             }
         }
     </style>
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.receivable_report')</h4>
-                    <div class="breadcrumb-list">
-                        <ul style=" list-style: none;"
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">/ @lang('lang.reports')</li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.receivable_report')</li>
-                        </ul>
-                    </div>
-                </div>
+@endpush
 
-            </div>
-        </div>
-    </div>
+@section('page_title')
+    @lang('lang.receivable_report')
 @endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">/
+        @lang('lang.reports')</li>
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.receivable_report')</li>
+@endsection
+
 @section('content')
     <div class="animate-in-page">
         <!-- Start Contentbar -->

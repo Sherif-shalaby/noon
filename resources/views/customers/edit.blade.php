@@ -1,264 +1,320 @@
 @extends('layouts.app')
 @section('title', __('lang.edit_customers'))
-@section('breadcrumbbar')
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0 mb-2">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.edit_customers')</h4>
-                    <div class="breadcrumb-list">
-                        <ul style=" list-style: none;"
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ route('customers.index') }}">/
-                                    @lang('lang.customers')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
-                                aria-current="page">@lang('lang.edit_customers')</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endsection
-    @section('content')
-        <!-- Start row -->
-        <div class="row d-flex justify-content-center">
-            <!-- Start col -->
-            <div class="col-lg-12">
-                <div class="card m-b-30 p-2">
-                    {!! Form::open(['route' => ['customers.update', $customer->id], 'method' => 'put', 'id' => 'brand-update-form']) !!}
-                    @csrf
-                    @method('PUT')
-                    <div class="container-fluid">
-                        <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            {{-- ++++++++++++++++++ customer_type ++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.1s;position: relative;z-index: 4;">
-                                {!! Form::label('customer_type_id', __('lang.customer_type') . '*', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                ]) !!}
-                                <div class="input-wrapper">
 
-                                    {!! Form::select('customer_type_id', $customer_types, $customer->customer_type_id, [
-                                        'class' => 'form-control selectpicker',
-                                        'required',
-                                        'placeholder' => __('lang.please_select'),
-                                    ]) !!}
-                                </div>
-                                @error('customer_type_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            {{-- ++++++++++++++++++ name ++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.15s">
-                                {!! Form::label('name', __('lang.name'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                ]) !!}
-                                <div class="input-wrapper">
-                                    {!! Form::text('name', $customer->name, [
-                                        'class' => 'form-control initial-balance-input m-auto width-full required',
-                                    ]) !!}
-                                </div>
-                                @error('name')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
 
-                            {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.2s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="min_amount_in_dollar">@lang('lang.min_amount_in_dollar')</label>
-                                <div class="input-wrapper">
-                                    <input type="number" class="form-control initial-balance-input m-auto width-full "
-                                        value="{{ $customer->min_amount_in_dollar }}" name="min_amount_in_dollar"
-                                        id="min_amount_in_dollar" />
-                                </div>
+@section('page_title')
+    @lang('lang.edit_customers')
+@endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+            style="text-decoration: none;color: #596fd7" href="{{ route('customers.index') }}">/
+            @lang('lang.customers')</a></li>
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active" aria-current="page">
+        @lang('lang.edit_customers')</li>
+@endsection
+
+
+@section('content')
+    <!-- Start row -->
+    <div class="row d-flex justify-content-center">
+        <!-- Start col -->
+        <div class="col-lg-12">
+            <div class="card m-b-30 p-2">
+                {!! Form::open(['route' => ['customers.update', $customer->id], 'method' => 'put', 'id' => 'brand-update-form']) !!}
+                @csrf
+                @method('PUT')
+                <div class="container-fluid">
+                    <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        {{-- ++++++++++++++++++ customer_type ++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.1s;position: relative;z-index: 4;">
+                            {!! Form::label('customer_type_id', __('lang.customer_type') . '*', [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+
+                                {!! Form::select('customer_type_id', $customer_types, $customer->customer_type_id, [
+                                    'class' => 'form-control selectpicker',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                ]) !!}
                             </div>
-                            {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.25s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="max_amount_in_dollar">@lang('lang.max_amount_in_dollar')</label>
-                                <div class="input-wrapper">
-                                    <input type="number" class="form-control initial-balance-input m-auto width-full"
-                                        value="{{ $customer->max_amount_in_dollar }}" name="max_amount_in_dollar"
-                                        id="max_amount_in_dollar" />
-                                </div>
+                            @error('customer_type_id')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                        </div>
+                        {{-- ++++++++++++++++++ name ++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.15s">
+                            {!! Form::label('name', __('lang.name'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+                                {!! Form::text('name', $customer->name, [
+                                    'class' => 'form-control initial-balance-input m-auto width-full required',
+                                ]) !!}
                             </div>
-                            {{-- +++++++++++++++++++++++ min_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.3s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="min_amount_in_dinar">@lang('lang.min_amount_in_dinar')</label>
-                                <div class="input-wrapper">
-                                    <input type="number" class="form-control initial-balance-input m-auto width-full"
-                                        value="{{ $customer->min_amount_in_dinar }}" name="min_amount_in_dinar"
-                                        id="min_amount_in_dinar" />
-                                </div>
+                            @error('name')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                        </div>
+
+                        {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.2s">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="min_amount_in_dollar">@lang('lang.min_amount_in_dollar')</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="form-control initial-balance-input m-auto width-full "
+                                    value="{{ $customer->min_amount_in_dollar }}" name="min_amount_in_dollar"
+                                    id="min_amount_in_dollar" />
                             </div>
-                            {{-- +++++++++++++++++++++++ max_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.35s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="max_amount_in_dinar">@lang('lang.max_amount_in_dinar')</label>
-                                <div class="input-wrapper">
-                                    <input type="number" class="form-control initial-balance-input m-auto width-full"
-                                        value="{{ $customer->max_amount_in_dinar }}" name="max_amount_in_dinar"
-                                        id="max_amount_in_dinar" />
-                                </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.25s">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="max_amount_in_dollar">@lang('lang.max_amount_in_dollar')</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="form-control initial-balance-input m-auto width-full"
+                                    value="{{ $customer->max_amount_in_dollar }}" name="max_amount_in_dollar"
+                                    id="max_amount_in_dollar" />
                             </div>
-                            {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.4s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="balance_in_dollar">@lang('lang.balance_in_dollar')</label>
-                                <div class="input-wrapper">
-                                    <input type="text" class="form-control initial-balance-input m-auto width-full"
-                                        value="{{ $customer->balance_in_dollar }}" name="balance_in_dollar"
-                                        id="balance_in_dollar" />
-                                </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ min_amount_in_dinar +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.3s">
+                            <label
+                                class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="min_amount_in_dinar">@lang('lang.min_amount_in_dinar')</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="form-control initial-balance-input m-auto width-full"
+                                    value="{{ $customer->min_amount_in_dinar }}" name="min_amount_in_dinar"
+                                    id="min_amount_in_dinar" />
                             </div>
-                            {{-- +++++++++++++++++++++++ balance_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.45s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="balance_in_dinar">@lang('lang.balance_in_dinar')</label>
-                                <div class="input-wrapper">
-                                    <input type="text" class="form-control initial-balance-input m-auto width-full"
-                                        value="{{ $customer->balance_in_dinar }}" name="balance_in_dinar"
-                                        id="balance_in_dinar" />
-                                </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ max_amount_in_dinar +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.35s">
+                            <label
+                                class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="max_amount_in_dinar">@lang('lang.max_amount_in_dinar')</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="form-control initial-balance-input m-auto width-full"
+                                    value="{{ $customer->max_amount_in_dinar }}" name="max_amount_in_dinar"
+                                    id="max_amount_in_dinar" />
                             </div>
-                            {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.5s;position: relative;z-index: 2;">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;' for="country-dd">@lang('lang.country')</label>
-                                <div class="input-wrapper">
-                                    <select id="country-dd" name="country"
-                                        class="form-control initial-balance-input m-auto width-full select2" disabled>
-                                        <option value="{{ $countryId }}">
-                                            {{ $countryName }}
+                        </div>
+                        {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.4s">
+                            <label
+                                class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;' for="balance_in_dollar">@lang('lang.balance_in_dollar')</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control initial-balance-input m-auto width-full"
+                                    value="{{ $customer->balance_in_dollar }}" name="balance_in_dollar"
+                                    id="balance_in_dollar" />
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ balance_in_dinar +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.45s">
+                            <label
+                                class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;' for="balance_in_dinar">@lang('lang.balance_in_dinar')</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control initial-balance-input m-auto width-full"
+                                    value="{{ $customer->balance_in_dinar }}" name="balance_in_dinar"
+                                    id="balance_in_dinar" />
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.5s;position: relative;z-index: 2;">
+                            <label
+                                class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;' for="country-dd">@lang('lang.country')</label>
+                            <div class="input-wrapper">
+                                <select id="country-dd" name="country"
+                                    class="form-control initial-balance-input m-auto width-full select2" disabled>
+                                    <option value="{{ $countryId }}">
+                                        {{ $countryName }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
+
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.55s;position: relative;z-index: 2;">
+                            <label
+                                class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;' for="state-dd">@lang('lang.state')</label>
+                            <div class="input-wrapper">
+                                <select id="state-dd" name="state_id" class="form-control select2">
+                                    @php
+                                        $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
+                                    @endphp
+                                    @foreach ($states as $state)
+                                        <option value="{{ $state->id }}">
+                                            {{ $state->name }}
                                         </option>
-                                    </select>
-                                </div>
+                                    @endforeach
+                                </select>
                             </div>
-                            {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
+                        </div>
+                        {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.6s;position: relative;z-index: 2;">
+                            <label
+                                class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.regions')</label>
+                            <div class="input-wrapper">
+                                <select id="city-dd" name="city_id" class="form-control select2"></select>
+                                <button type="button"
+                                    class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none"
+                                    data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                    <i class="fas fa-plus"></i>
+                                </button>
 
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.55s;position: relative;z-index: 2;">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;' for="state-dd">@lang('lang.state')</label>
-                                <div class="input-wrapper">
-                                    <select id="state-dd" name="state_id" class="form-control select2">
-                                        @php
-                                            $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
-                                        @endphp
-                                        @foreach ($states as $state)
-                                            <option value="{{ $state->id }}">
-                                                {{ $state->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
                             </div>
-                            {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.6s;position: relative;z-index: 2;">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.regions')</label>
-                                <div class="input-wrapper">
-                                    <select id="city-dd" name="city_id" class="form-control select2"></select>
-                                    <button type="button"
-                                        class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none"
-                                        data-toggle="modal" id="cities_id" data-target="#createRegionModal">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-
-                                </div>
+                        </div>
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.6s;position: relative;z-index: 2;">
+                            <label
+                                class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.quarters')</label>
+                            <div class="input-wrapper">
+                                <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
+                                <button type="button"
+                                    class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none"
+                                    data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
+                                    <i class="fas fa-plus"></i>
+                                </button>
                             </div>
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.6s;position: relative;z-index: 2;">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.quarters')</label>
-                                <div class="input-wrapper">
-                                    <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
-                                    <button type="button"
-                                        class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none"
-                                        data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
+                        </div>
 
 
-                            {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
-                            <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.7s">
+                        {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
+                        <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            style="animation-delay: 1.7s">
+                            <table class="bordered m-0" style="width: 100%">
+                                <thead class="email_thead">
+                                    <tr>
+                                        <th style="background: transparent !important;color: black !important;padding: 0!important;"
+                                            class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                            <label class="mb-0">
+                                                <span class="text-danger">*</span>@lang('lang.email')
+                                            </label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="email_tbody">
+                                    <tr>
+                                        <td class="col-md-12 p-0 mb-2">
+                                            <div
+                                                class="select_body input-wrapper d-flex justify-content-between align-items-center m-2 width-full">
+                                                @php
+                                                    $emailArray = explode(',', $customer->email);
+                                                    // Remove square brackets from each element in the emailArray
+                                                    foreach ($emailArray as $key => $email) {
+                                                        $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
+                                                    }
+                                                @endphp
+                                                {{-- Iterate over the email array elements --}}
+                                                @foreach ($emailArray as $key => $email)
+                                                    @if ($key == 0)
+                                                        <input type="text" class=" initial-balance-input m-0"
+                                                            width="100%;" style="flex-grow: 1"
+                                                            placeholder="@lang('lang.email')" name="email[]"
+                                                            value="{{ $email }}" required>
+
+                                                        {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                        <a href="javascript:void(0)"
+                                                            class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none addRow_email"
+                                                            type="button">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                        </td>
+                                        @error('email')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    @else
+                                    <tr>
+                                        <td class="col-md-12 p-0 mb-2">
+                                            <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                                                style="width: 100%">
+                                                <input type="text" class=" initial-balance-input m-0" width="100%;"
+                                                    style="flex-grow: 1" placeholder="@lang('lang.email')" name="email[]"
+                                                    value="{{ $email }}" required>
+                                                @error('email')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+
+
+                                                <a href="javascript:void(0)"
+                                                    class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none deleteRow_email">-</a>
+                                            </div>
+
+                                    </tr>
+                                    @endif
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {{-- +++++++++++++++++++++++++++++++ phone array ++++++++++++++++++++++++ --}}
+                        <div class="col-md-6 mb-2 px-5 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            style="animation-delay: 1.75s">
+                            <div class="m-0 " style="width: 100%">
                                 <table class="bordered m-0" style="width: 100%">
-                                    <thead class="email_thead">
+                                    <thead class="phone_thead">
                                         <tr>
                                             <th style="background: transparent !important;color: black !important;padding: 0!important;"
                                                 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                 <label class="mb-0">
-                                                    <span class="text-danger">*</span>@lang('lang.email')
+                                                    <span class="text-danger">*</span>@lang('lang.phone')
                                                 </label>
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody class="email_tbody">
+                                    <tbody class="phone_tbody">
                                         <tr>
                                             <td class="col-md-12 p-0 mb-2">
-                                                <div
-                                                    class="select_body input-wrapper d-flex justify-content-between align-items-center m-2 width-full">
+                                                <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                                                    style="width: 100%">
                                                     @php
-                                                        $emailArray = explode(',', $customer->email);
+                                                        $phoneArray = explode(',', $customer->phone);
                                                         // Remove square brackets from each element in the emailArray
-                                                        foreach ($emailArray as $key => $email) {
-                                                            $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
+                                                        foreach ($phoneArray as $key => $phone) {
+                                                            $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
                                                         }
                                                     @endphp
                                                     {{-- Iterate over the email array elements --}}
-                                                    @foreach ($emailArray as $key => $email)
-                                                        @if ($key == 0)
-                                                            <input type="text" class=" initial-balance-input m-0"
-                                                                width="100%;" style="flex-grow: 1"
-                                                                placeholder="@lang('lang.email')" name="email[]"
-                                                                value="{{ $email }}" required>
-
+                                                    @foreach ($phoneArray as $index => $phone)
+                                                        @if ($index == 0)
+                                                            <input type="text"
+                                                                class="form-control required  initial-balance-input m-0 width-full"
+                                                                placeholder="@lang('lang.phone')" name="phone[]"
+                                                                value="{{ $phone }}" required>
                                                             {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
                                                             <a href="javascript:void(0)"
-                                                                class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none addRow_email"
+                                                                class="add-button d-flex justify-content-center mb-0 align-items-center text-decoration-none addRow"
                                                                 type="button">
                                                                 <i class="fa fa-plus"></i>
                                                             </a>
                                             </td>
-                                            @error('email')
+                                            @error('phone')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                         @else
@@ -266,204 +322,132 @@
                                             <td class="col-md-12 p-0 mb-2">
                                                 <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
                                                     style="width: 100%">
-                                                    <input type="text" class=" initial-balance-input m-0"
-                                                        width="100%;" style="flex-grow: 1"
-                                                        placeholder="@lang('lang.email')" name="email[]"
-                                                        value="{{ $email }}" required>
-                                                    @error('email')
+                                                    <input type="text" class="form-control"
+                                                        placeholder="@lang('lang.phone')" name="phone[]"
+                                                        value="{{ $phone }}" required>
+                                                    @error('phone')
                                                         <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
 
 
                                                     <a href="javascript:void(0)"
-                                                        class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none deleteRow_email">-</a>
-                                                </div>
-
+                                                        class="btn btn-xs btn-danger deleteRow_phone">-</a>
+                                            </td>
                                         </tr>
                                         @endif
                                         @endforeach
 
+
                                     </tbody>
                                 </table>
                             </div>
-
-                            {{-- +++++++++++++++++++++++++++++++ phone array ++++++++++++++++++++++++ --}}
-                            <div class="col-md-6 mb-2 px-5 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.75s">
-                                <div class="m-0 " style="width: 100%">
-                                    <table class="bordered m-0" style="width: 100%">
-                                        <thead class="phone_thead">
+                        </div>
+                        {{-- ++++++++++++++++++ address ++++++++++++++++ --}}
+                        <div class="col-6 col-md-6 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.8s">
+                            {!! Form::label('address', __('lang.address'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class=" width-full" style="height: 100px;border-radius: 9px">
+                                {!! Form::textarea('address', $customer->address, [
+                                    'class' => 'form-control',
+                                    'style' => ' width: 100%;height:100%;background-color:#dedede',
+                                ]) !!}
+                            </div>
+                            @error('address')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                        </div>
+                        {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-6 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.85s">
+                            {!! Form::label('notes', __('lang.notes'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class=" width-full" style="height: 100px;border-radius: 9px">
+                                {!! Form::textarea('notes', $customer->notes, [
+                                    'class' => 'form-control',
+                                    'style' => ' width: 100%;height:100%;background-color:#dedede',
+                                ]) !!}
+                            </div>
+                            @error('address')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                        </div>
+                        {{-- ++++++++++++ images ++++++++++++ --}}
+                        <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.65s">
+                            <label
+                                class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
+                            <div class="input-wrapper">
+                                <input class="form-control initial-balance-input width-full img" name="image"
+                                    type="file" accept="image/*" id="image">
+                                {{-- Crop Image : cropper.js --}}
+                                {{-- <div class="dropzone" id="my-dropzone2" required>
+                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                </div> --}}
+                                @error('cover')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++++ important_dates ++++++++++++++++ --}}
+                        <div class="row pt-4 pb-5 animate__animated animate__bounceInLeft" style="animation-delay: 1.9s">
+                            <div class="col-md-12">
+                                <h3 class=" @if (app()->isLocale('ar')) text-end @endif">@lang('lang.important_dates')
+                                </h3>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <table class="table table-bordered  @if (app()->isLocale('ar')) dir-rtl @endif"
+                                        id="important_date_table">
+                                        <thead>
                                             <tr>
-                                                <th style="background: transparent !important;color: black !important;padding: 0!important;"
-                                                    class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
-                                                    <label class="mb-0">
-                                                        <span class="text-danger">*</span>@lang('lang.phone')
-                                                    </label>
+                                                <th class="text-center" style="width: 20%;">@lang('lang.important_date')</th>
+                                                <th class="text-center" style="width: 20%;">@lang('lang.date')</th>
+                                                <th class="text-center" style="width: 20%;">@lang('lang.notify_before_days')</th>
+                                                <th class="text-center" style="width: 10%;"><button type="button"
+                                                        class="add_date btn btn-success btn-xs"><i
+                                                            class="fa fa-plus"></i></button>
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody class="phone_tbody">
-                                            <tr>
-                                                <td class="col-md-12 p-0 mb-2">
-                                                    <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
-                                                        style="width: 100%">
-                                                        @php
-                                                            $phoneArray = explode(',', $customer->phone);
-                                                            // Remove square brackets from each element in the emailArray
-                                                            foreach ($phoneArray as $key => $phone) {
-                                                                $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
-                                                            }
-                                                        @endphp
-                                                        {{-- Iterate over the email array elements --}}
-                                                        @foreach ($phoneArray as $index => $phone)
-                                                            @if ($index == 0)
-                                                                <input type="text"
-                                                                    class="form-control required  initial-balance-input m-0 width-full"
-                                                                    placeholder="@lang('lang.phone')" name="phone[]"
-                                                                    value="{{ $phone }}" required>
-                                                                {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                                <a href="javascript:void(0)"
-                                                                    class="add-button d-flex justify-content-center mb-0 align-items-center text-decoration-none addRow"
-                                                                    type="button">
-                                                                    <i class="fa fa-plus"></i>
-                                                                </a>
-                                                </td>
-                                                @error('phone')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            @else
-                                            <tr>
-                                                <td class="col-md-12 p-0 mb-2">
-                                                    <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
-                                                        style="width: 100%">
-                                                        <input type="text" class="form-control"
-                                                            placeholder="@lang('lang.phone')" name="phone[]"
-                                                            value="{{ $phone }}" required>
-                                                        @error('phone')
-                                                            <div class="alert alert-danger">{{ $message }}</div>
-                                                        @enderror
-
-
-                                                        <a href="javascript:void(0)"
-                                                            class="btn btn-xs btn-danger deleteRow_phone">-</a>
-                                                </td>
-                                            </tr>
-                                            @endif
+                                        <tbody>
+                                            @foreach ($customer->customer_important_dates as $important_date)
+                                                @include('customers.important_date_row', [
+                                                    'index' => $loop->index,
+                                                    'important_date' => $important_date,
+                                                ])
                                             @endforeach
-
-
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            {{-- ++++++++++++++++++ address ++++++++++++++++ --}}
-                            <div class="col-6 col-md-6 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.8s">
-                                {!! Form::label('address', __('lang.address'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                ]) !!}
-                                <div class=" width-full" style="height: 100px;border-radius: 9px">
-                                    {!! Form::textarea('address', $customer->address, [
-                                        'class' => 'form-control',
-                                        'style' => ' width: 100%;height:100%;background-color:#dedede',
-                                    ]) !!}
-                                </div>
-                                @error('address')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-6 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.85s">
-                                {!! Form::label('notes', __('lang.notes'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                ]) !!}
-                                <div class=" width-full" style="height: 100px;border-radius: 9px">
-                                    {!! Form::textarea('notes', $customer->notes, [
-                                        'class' => 'form-control',
-                                        'style' => ' width: 100%;height:100%;background-color:#dedede',
-                                    ]) !!}
-                                </div>
-                                @error('address')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            {{-- ++++++++++++ images ++++++++++++ --}}
-                            <div class="col-6 col-md-3 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.65s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
-                                <div class="input-wrapper">
-                                    <input class="form-control initial-balance-input width-full img" name="image"
-                                        type="file" accept="image/*" id="image">
-                                    {{-- Crop Image : cropper.js --}}
-                                    {{-- <div class="dropzone" id="my-dropzone2" required>
-                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                </div> --}}
-                                    @error('cover')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            {{-- ++++++++++++++++++ important_dates ++++++++++++++++ --}}
-                            <div class="row pt-4 pb-5 animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.9s">
-                                <div class="col-md-12">
-                                    <h3 class=" @if (app()->isLocale('ar')) text-end @endif">@lang('lang.important_dates')
-                                    </h3>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <table
-                                            class="table table-bordered  @if (app()->isLocale('ar')) dir-rtl @endif"
-                                            id="important_date_table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center" style="width: 20%;">@lang('lang.important_date')</th>
-                                                    <th class="text-center" style="width: 20%;">@lang('lang.date')</th>
-                                                    <th class="text-center" style="width: 20%;">@lang('lang.notify_before_days')</th>
-                                                    <th class="text-center" style="width: 10%;"><button type="button"
-                                                            class="add_date btn btn-success btn-xs"><i
-                                                                class="fa fa-plus"></i></button>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($customer->customer_important_dates as $important_date)
-                                                    @include('customers.important_date_row', [
-                                                        'index' => $loop->index,
-                                                        'important_date' => $important_date,
-                                                    ])
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="important_date_index" id="important_date_index"
-                                    value="{{ count($customer->customer_important_dates) }}">
-                            </div>
-                            {{-- ++++++++++++++++++ submit ++++++++++++++++ --}}
-                            <div class="row pb-5 animate__animated animate__bounceInLeft" style="animation-delay: 1.95s">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
-                                </div>
+                            <input type="hidden" name="important_date_index" id="important_date_index"
+                                value="{{ count($customer->customer_important_dates) }}">
+                        </div>
+                        {{-- ++++++++++++++++++ submit ++++++++++++++++ --}}
+                        <div class="row pb-5 animate__animated animate__bounceInLeft" style="animation-delay: 1.95s">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
                             </div>
                         </div>
-                        {!! Form::close() !!}
                     </div>
+                    {!! Form::close() !!}
                 </div>
             </div>
-        @endsection
-        @push('js')
-            <script src="{{ asset('js/product/customer.js') }}"></script>
-            {{-- +++++++++++++++++++++++++++++++ Add New Row in phone ++++++++++++++++++++++++ --}}
-            <script>
-                $('.phone_tbody').on('click', '.addRow', function() {
-                    console.log('new phone inputField was added');
-                    var tr = `<tr>
+        </div>
+    @endsection
+    @push('js')
+        <script src="{{ asset('js/product/customer.js') }}"></script>
+        {{-- +++++++++++++++++++++++++++++++ Add New Row in phone ++++++++++++++++++++++++ --}}
+        <script>
+            $('.phone_tbody').on('click', '.addRow', function() {
+                console.log('new phone inputField was added');
+                var tr = `<tr>
                     <td  class="col-md-12 p-0 mb-2">
                          <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
                             style="width: 100%">
@@ -474,15 +458,15 @@
                      </div>
                 </td>
             </tr>`;
-                    $('.phone_tbody').append(tr);
-                });
-                $('.phone_tbody').on('click', '.deleteRow', function() {
-                    $(this).parent().parent().remove();
-                });
-                // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
-                $('.email_tbody').on('click', '.addRow_email', function() {
-                    console.log('new Email inputField was added');
-                    var tr = `<tr>
+                $('.phone_tbody').append(tr);
+            });
+            $('.phone_tbody').on('click', '.deleteRow', function() {
+                $(this).parent().parent().remove();
+            });
+            // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
+            $('.email_tbody').on('click', '.addRow_email', function() {
+                console.log('new Email inputField was added');
+                var tr = `<tr>
                     <td class="col-md-12 p-0">
                          <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
                             style="width: 100%">
@@ -497,55 +481,55 @@
                 </div>
         </td>
     </tr>`;
-                    $('.email_tbody').append(tr);
-                });
-                $('.email_tbody').on('click', '.deleteRow_email', function() {
-                    $(this).parent().parent().remove();
-                });
-                // ++++++++++++++++++++++ Countries , State , Cities Selectbox +++++++++++++++++
-                // ================ countries selectbox ================
-                // $('#country-dd').on('click',function(event) {
-                //     var idCountry = this.value;
-                //     // console.log(idCountry);
-                //     $('#state-dd').html('');
-                //     $.ajax({
-                //         url: "/api/fetch-state",
-                //         type: 'POST',
-                //         dataType: 'json',
-                //         data: { country_id : idCountry , _token : "{{ csrf_token() }}" } ,
-                //         success:function(response)
-                //         {
-                //             $('#state-dd').html('<option value="">Select State</option>');
-                //             $.each(response.states,function(index, val)
-                //             {
-                //                 $('#state-dd').append('<option value="'+val.id+'"> '+val.name+' </option>')
-                //             });
-                //             $('#city-dd').html('<option value="">Select City</option>');
-                //         }
-                //     })
-                // });
+                $('.email_tbody').append(tr);
+            });
+            $('.email_tbody').on('click', '.deleteRow_email', function() {
+                $(this).parent().parent().remove();
+            });
+            // ++++++++++++++++++++++ Countries , State , Cities Selectbox +++++++++++++++++
+            // ================ countries selectbox ================
+            // $('#country-dd').on('click',function(event) {
+            //     var idCountry = this.value;
+            //     // console.log(idCountry);
+            //     $('#state-dd').html('');
+            //     $.ajax({
+            //         url: "/api/fetch-state",
+            //         type: 'POST',
+            //         dataType: 'json',
+            //         data: { country_id : idCountry , _token : "{{ csrf_token() }}" } ,
+            //         success:function(response)
+            //         {
+            //             $('#state-dd').html('<option value="">Select State</option>');
+            //             $.each(response.states,function(index, val)
+            //             {
+            //                 $('#state-dd').append('<option value="'+val.id+'"> '+val.name+' </option>')
+            //             });
+            //             $('#city-dd').html('<option value="">Select City</option>');
+            //         }
+            //     })
+            // });
 
-                // ================ state selectbox ================
-                $('#state-dd').change(function(event) {
-                    var idState = this.value;
-                    $('#city-dd').html('');
-                    $.ajax({
-                        url: "/api/fetch-cities",
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            state_id: idState,
-                            _token: "{{ csrf_token() }}"
-                        },
-                        success: function(response) {
-                            $('#city-dd').html('<option value="">Select State</option>');
-                            console.log(response);
-                            $.each(response.cities, function(index, val) {
-                                $('#city-dd').append('<option value="' + val.id + '">' + val.name +
-                                    '</option>')
-                            });
-                        }
-                    })
-                });
-            </script>
-        @endpush
+            // ================ state selectbox ================
+            $('#state-dd').change(function(event) {
+                var idState = this.value;
+                $('#city-dd').html('');
+                $.ajax({
+                    url: "/api/fetch-cities",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        state_id: idState,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        $('#city-dd').html('<option value="">Select State</option>');
+                        console.log(response);
+                        $.each(response.cities, function(index, val) {
+                            $('#city-dd').append('<option value="' + val.id + '">' + val.name +
+                                '</option>')
+                        });
+                    }
+                })
+            });
+        </script>
+    @endpush

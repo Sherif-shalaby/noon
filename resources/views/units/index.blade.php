@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', __('units.units'))
-@section('breadcrumbbar')
+
+@push('css')
     <style>
         .table-top-head {
             top: 32px;
@@ -20,40 +21,28 @@
             }
         }
     </style>
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('units.units')
-                    </h4>
-                    <div class="breadcrumb-list">
-                        <ol style=" list-style: none;"
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a>
-                            </li>
-                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
-                                aria-current="page">@lang('units.units')</li>
-                        </ol>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div
-                        class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create">
-                            <i class="fa fa-plus"></i> {{ __('Add') }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @include('units.create')
+@endpush
+
+@section('page_title')
+    @lang('units.units')
 @endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active" aria-current="page">
+        @lang('units.units')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create">
+            <i class="fa fa-plus"></i> {{ __('Add') }}
+        </button>
+    </div>
+@endsection
+
 @section('content')
+    @include('units.create')
     <div class="animate-in-page">
         <div class="contentbar">
             <div class="row">

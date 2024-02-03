@@ -25,5 +25,4 @@
 
 @section('content')
     @livewire('initial-balance.create')
-
 @endsection

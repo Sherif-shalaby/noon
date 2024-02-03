@@ -1,42 +1,37 @@
 @extends('layouts.app')
 @section('title', __('lang.daily_sale_report'))
-@section('breadcrumbbar')
+
+
+@push('css')
     <style>
         .rightbar {
             z-index: 2;
         }
     </style>
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.daily_sale_report')</h4>
-                    <div class="breadcrumb-list">
-                        <ul style=" list-style: none;"
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7"
-                                    href="{{ route('initial-balance.create') }}">/ @lang('lang.reports')</a>
-                            </li>
-                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.daily_sale_report')</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    {{--                <div class="widgetbar"> --}}
-                    {{--                    <a type="button" class="btn btn-primary" href="{{route('initial-balance.create')}}">@lang('lang.add_initial_balance')</a> --}}
-                    {{--                </div> --}}
-                </div>
-            </div>
-        </div>
+@endpush
+
+@section('page_title')
+    @lang('lang.daily_sale_report')
+@endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+            style="text-decoration: none;color: #596fd7" href="{{ route('initial-balance.create') }}">/ @lang('lang.reports')</a>
+    </li>
+    <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.daily_sale_report')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <a data-href="{{ route('general-tax.create') }}" data-container=".view_modal"
+            class="btn btn-modal btn-primary text-white" data-toggle="modal">
+            @lang('lang.add_general_tax')
+        </a>
     </div>
 @endsection
+
 @section('content')
     <div class="animate-in-page">
         <div class="col-md-12 mt-3 mb-0 no-print">

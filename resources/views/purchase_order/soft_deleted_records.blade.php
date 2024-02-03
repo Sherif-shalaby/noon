@@ -2,59 +2,45 @@
 @section('title', __('lang.show_recycle_bin'))
 @push('css')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
-@endpush
-<style>
-    .table-top-head {
-        top: 10px !important;
-    }
 
-    .table-scroll-wrapper {
-        width: fit-content;
-    }
-
-    @media(min-width:1900px) {
-        .table-scroll-wrapper {
-            width: 100%;
+    <style>
+        .table-top-head {
+            top: 10px !important;
         }
-    }
-</style>
 
-@section('breadcrumbbar')
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.show_recycle_bin')</h4>
-                    <div class="breadcrumb-list">
-                        <ul
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7"
-                                    href="{{ route('purchase_order.index') }}">/ @lang('lang.purchase_order')</a>
-                            </li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.show_recycle_bin')</li>
-                        </ul>
-                    </div>
-                    <br />
-                </div>
-                <div
-                    class="col-md-4 d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                    <div class="widgetbar">
-                        <a href="{{ route('purchase_order.create') }}" class="btn btn-primary">
-                            @lang('lang.create_purchase_order')
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
+            }
+        }
+    </style>
+@endpush
+
+@section('page_title')
+    @lang('lang.show_recycle_bin')
+@endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+            style="text-decoration: none;color: #596fd7" href="{{ route('purchase_order.index') }}">/ @lang('lang.purchase_order')</a>
+    </li>
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.show_recycle_bin')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <a href="{{ route('purchase_order.create') }}" class="btn btn-primary">
+            @lang('lang.create_purchase_order')
+        </a>
     </div>
 @endsection
+
 @section('content')
     <div class="container-fluid">
         <div class="row">

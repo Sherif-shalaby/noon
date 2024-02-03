@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', __('lang.products'))
 
-@section('breadcrumbbar')
+@push('css')
     <style>
         th {
             padding: 10px 25px !important;
@@ -57,50 +57,27 @@
             }
         }
     </style>
-    <div class="animate-in-page">
+@endpush
 
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h5 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.products')
-                    </h5>
-                    <div class="breadcrumb-list">
-                        <ul
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">
-                                    / @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.products')</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4 ">
-                    <div
-                        class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                        <a href="{{ route('products.create') }}" class="btn btn-primary">
-                            @lang('lang.add_products')
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+@section('page_title')
+    @lang('lang.products')
 @endsection
+
+@section('breadcrumbs')
+    @parent
+    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page">
+        @lang('lang.products')</li>
+@endsection
+
+@section('button')
+    <div class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+        <a href="{{ route('products.create') }}" class="btn btn-primary">
+            @lang('lang.add_products')
+        </a>
+    </div>
+@endsection
+
 @section('content')
-    {{-- <!-- Start row -->
-    <div class="row d-flex justify-content-center">
-        <!-- Start col -->
-        <div class="col-lg-12">
-            <div class="card m-b-30 p-2">
-
-
-            </div>
-        </div>
-    </div> --}}
     <!-- Start Contentbar -->
     <div class="animate-in-page">
 

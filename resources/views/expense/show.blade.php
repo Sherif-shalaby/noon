@@ -1,11 +1,14 @@
 @extends('layouts.app')
 @section('title', __('lang.expense'))
-<style>
-    label {
-        font-weight: bold;
-    }
 
-</style>
+@push('css')
+    <style>
+        label {
+            font-weight: bold;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="container-fluid">
         <div class="row">
@@ -46,14 +49,14 @@
                                         </div>
                                     </div>
                                     @if (isset($expense->transaction_payments->first()->method))
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            {!! Form::label('payment_method', __('lang.payment_method'), []) !!}:
-                                            {{ ucfirst($expense->transaction_payments->first()->method) }}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                {!! Form::label('payment_method', __('lang.payment_method'), []) !!}:
+                                                {{ ucfirst($expense->transaction_payments->first()->method) }}
+                                            </div>
                                         </div>
-                                    </div>
                                     @endif
-                                    
+
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="details">@lang('lang.details'):</label>
@@ -64,8 +67,7 @@
                                         <div class="form-group">
                                             <label for="files">@lang('lang.files'):</label> <a
                                                 data-href="{{ action('GeneralController@viewUploadedFiles', ['model_name' => 'Transaction', 'model_id' => $expense->id, 'collection_name' => 'expense']) }}"
-                                                data-container=".view_modal"
-                                                class="btn btn-modal">@lang('lang.view')</a>
+                                                data-container=".view_modal" class="btn btn-modal">@lang('lang.view')</a>
                                         </div>
                                     </div>
                                 </div>

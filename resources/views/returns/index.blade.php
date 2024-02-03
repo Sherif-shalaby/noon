@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', __('lang.sells_return'))
+
 @section('breadcrumbbar')
     <div class="animate-in-page">
 
