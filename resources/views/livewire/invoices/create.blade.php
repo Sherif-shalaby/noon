@@ -192,7 +192,7 @@
                 <span class="d-flex justify-content-center align-items-center"
                     style='width:100%;font-weight: 700;font-size: 12px'> @lang('lang.balance_in_dinar')</span>
                 <span class="d-flex justify-content-center align-items-center"
-                    style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->balance_in_dinar ?? 0 }}</span>
+                    style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->balance ?? 0 }}</span>
             </div>
 
             <div class="col-md-2 p-0 dollar-cell d-flex flex-column justify-content-center align-items-center ">
@@ -200,7 +200,7 @@
                     style='width:100%;font-weight: 700;font-size: 12px'> @lang('lang.balance_in_dollar')</span>
                 <span
                     class="d-flex justify-content-center align-items-center {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                    style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->balance_in_dollar ?? 0 }}</span>
+                    style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->dollar_balance ?? 0 }}</span>
             </div>
         </div>
         <button></button>
