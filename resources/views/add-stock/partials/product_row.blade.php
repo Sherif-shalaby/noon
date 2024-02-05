@@ -53,10 +53,21 @@
             </div>
             <div>
                 {{-- Iterate through units and display each unit name and value as a span --}}
+                @if($items[$index]['is_have_stock']=='0')
                 @if(isset($items[$index]['units']))
                 @foreach ($items[$index]['units'] as $unitName => $unitValue)
                     @if(!empty($unitName))
                         <span>{{ $unitName }}: {{ @number_format($unitValue,num_of_digital_numbers()) }}</span>
+                    @endif
+                @endforeach
+                @endif
+                @elseif($items[$index]['is_have_stock']==1)
+                
+                @foreach ($items[$index]['units'] as $unitName => $unitValue)
+                @if(!empty($unitName))
+                    <label>{{ $unitName }}:</label>
+                    <input type="text" wire:model="items.{{$index}}.units.{{$unitName}}" />
+                        {{-- <span>{{ $unitName }}: {{ @number_format($unitValue,num_of_digital_numbers()) }}</span> --}}
                     @endif
                 @endforeach
                 @endif
@@ -92,11 +103,11 @@
 
     <td title="{{__('lang.sub_total')}}">
         @if(!empty($product['quantity']) && (!empty($product['purchase_price']) || !empty($product['dollar_purchase_price'])))
-            <span class="sub_total_span" >
+            <span class="sub_total_span">
                 {{$this->sub_total($index)}}
             </span>
             <span class="sub_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}">
-                {{$this->dollar_sub_total($index)}}$  عععععع
+                {{$this->dollar_sub_total($index)}}$ 
             </span>
 
         @endif
