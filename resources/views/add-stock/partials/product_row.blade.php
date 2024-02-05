@@ -182,19 +182,35 @@
             class="accordion-collapse collapse @if ($product['show_unit_details']) show @endif">
             <div
                 class="accordion-body p-0 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                @if ($items[$index]['is_have_stock'] == '0')
+                    @if (isset($items[$index]['units']))
+                        @foreach ($items[$index]['units'] as $unitName => $unitValue)
+                            @if (!empty($unitName))
+                                <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
+                                    style="width: 80px;min-height: 60px">
+                                    {{-- Iterate through units and display each unit name and value as a span --}}
+                                    <label
+                                        class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                                        style='font-weight:500;font-size:10px;color:#888'>{{ @number_format($unitValue, num_of_digital_numbers()) }}</label>
 
-                @if (isset($items[$index]['units']))
+                                    <input type="text"
+                                        class="form-control quantity initial-balance-input width-full"
+                                        value="{{ $unitName }}" readonly>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
+                @elseif($items[$index]['is_have_stock'] == 1)
                     @foreach ($items[$index]['units'] as $unitName => $unitValue)
                         @if (!empty($unitName))
                             <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                                 style="width: 80px;min-height: 60px">
-                                {{-- Iterate through units and display each unit name and value as a span --}}
                                 <label
                                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
-                                    style='font-weight:500;font-size:10px;color:#888'>{{ @number_format($unitValue, num_of_digital_numbers()) }}</label>
-
+                                    style='font-weight:500;font-size:10px;color:#888'>{{ $unitName }} </label>
                                 <input type="text" class="form-control quantity initial-balance-input width-full"
-                                    value="{{ $unitName }}" readonly>
+                                    wire:model="items.{{ $index }}.units.{{ $unitName }}" />
+
                             </div>
                         @endif
                     @endforeach

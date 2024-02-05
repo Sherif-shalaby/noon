@@ -20,6 +20,10 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->decimal('equal',15,4)->nullable();
+            $table->unsignedBigInteger('stockline_id')->nullable();
+            $table->foreign('stockline_id')->references('id')->on('add_stock_lines')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }
