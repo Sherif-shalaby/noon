@@ -836,5 +836,7 @@ return array(
     'discount_type'=>'نوع الخصم',
     'piece_discount'=>'خصم القطعة',
     'total_discount'=>'خصم على الكلى',
+    'recieve_date' => 'تاريخ الاستلام',
+
  );
 
