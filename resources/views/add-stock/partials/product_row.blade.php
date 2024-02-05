@@ -191,11 +191,12 @@
                                     {{-- Iterate through units and display each unit name and value as a span --}}
                                     <label
                                         class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
-                                        style='font-weight:500;font-size:10px;color:#888'>{{ @number_format($unitValue, num_of_digital_numbers()) }}</label>
+                                        style='font-weight:500;font-size:10px;color:#888'>{{ $unitName }} </label>
 
-                                    <input type="text"
-                                        class="form-control quantity initial-balance-input width-full"
-                                        value="{{ $unitName }}" readonly>
+
+                                    <span
+                                        class="form-control quantity initial-balance-input width-full">{{ @number_format($unitValue, num_of_digital_numbers()) }}
+                                    </span>
                                 </div>
                             @endif
                         @endforeach
