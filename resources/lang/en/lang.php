@@ -756,6 +756,7 @@ return [
     'discount_type'=>'Discount Type',
     'piece_discount'=>'Piece Discount',
     'total_discount'=>'Total Discount',
+    'recieve_date'=>'Recieving Date',
 ];
 
 

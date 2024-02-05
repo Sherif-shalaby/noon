@@ -211,10 +211,10 @@
                                     <span> @lang('lang.max_amount_in_dinar') : {{ $customer_data->max_amount_in_dinar ?? 0 }}</span>
                                 </div>
                                 <div class="col-md-2">
-                                    <span> @lang('lang.balance_in_dinar') : {{ $customer_data->balance_in_dinar ?? 0 }}</span>
+                                    <span> @lang('lang.balance_in_dinar') : {{ $customer_data->balance ?? 0 }}</span>
                                 </div>
                                 <div class="col-md-2 {{$settings['toggle_dollar']=='1'?'d-none':''}}">
-                                    <span> @lang('lang.balance_in_dollar') : {{ $customer_data->balance_in_dollar ?? 0 }}</span>
+                                    <span> @lang('lang.balance_in_dollar') : {{ $customer_data->dollar_balance ?? 0 }}</span>
                                 </div>
                                 <div class="col-md-2">
                                     <span> @lang('lang.customer_type') : {{ $customer_data->customer_type->name ?? '' }}</span>
