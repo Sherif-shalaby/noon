@@ -308,6 +308,10 @@
         <!-- End Rightbar -->
 
         @include('layouts.partials.footer')
+        <button id="toTopBtn" onclick="scrollToTop()">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
     </div>
     <!-- End Containerbar -->
 

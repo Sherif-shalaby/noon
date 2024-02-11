@@ -285,34 +285,29 @@
             style="width: 150px;min-height: 60px">
             <div class="d-flex width-full">
                 <div class="width-full col-6 p-0">
-
-                    <label for="%"
-                        class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
-                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.amount') }}</label>
-                    <input type="text" class="form-control initial-balance-input width-full p-0 px-2"
-                        wire:model="items.{{ $index }}.purchase_discount"
-                        style='font-weight:500;font-size:10px;' wire:input="changePurchasePrice({{ $index }})"
-                        placeholder="@lang('lang.amount')">
-                </div>
-                <div class="width-full col-6 p-0">
-
-                    <label for="%"
-                        class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
+                    <label class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
                     <input type="text" class="form-control  initial-balance-input width-full p-0 px-2"
                         wire:model="items.{{ $index }}.purchase_discount_percent"
                         style='font-weight:500;font-size:10px;' wire:input="changePurchasePrice({{ $index }})"
                         placeholder="%">
                 </div>
+                <div class="width-full col-6 p-0">
+                    <label class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
+                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.amount') }}</label>
+                    <input type="text" class="form-control initial-balance-input width-full p-0 px-2"
+                        wire:model="items.{{ $index }}.purchase_discount"
+                        style='font-weight:500;font-size:10px;' wire:input="changePurchasePrice({{ $index }})"
+                        placeholder="@lang('lang.amount')">
+                </div>
             </div>
             <div class="d-flex width-full dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
-
-                <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0 ">
-                    {{ @number_format(num_uf($product['dollar_purchase_discount']), num_of_digital_numbers()) }}
-                    $</span>
                 <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0 ">
                     {{ @number_format(num_uf($product['dollar_purchase_discount_percent']), num_of_digital_numbers()) }}
                     $ </span>
+                <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0 ">
+                    {{ @number_format(num_uf($product['dollar_purchase_discount']), num_of_digital_numbers()) }}
+                    $</span>
             </div>
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input"

@@ -4,6 +4,27 @@
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> --}}
 {{-- <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script> --}}
 <script>
+    // Show the button when the user scrolls down 20px from the top
+    window.onscroll = function() {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+        var button = document.getElementById("toTopBtn");
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            button.style.display = "block";
+        } else {
+            button.style.display = "none";
+        }
+    }
+
+    // Scroll to the top when the button is clicked
+    function scrollToTop() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+    }
+</script>
+<script>
     function toggleAccordion(sectionId) {
         const section = document.getElementById(sectionId);
         let arrow = document.querySelector(`.${sectionId}`);

@@ -71,74 +71,79 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @php
-                                                @endphp
-                                                @foreach ($sell_lines as $index => $line)
-                                                    <tr>
-                                                        <td class="col1">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.date_and_time')">
 
-                                                                {{ $line->transaction_date ?? '' }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="col2">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.reference')">
-                                                                {{ $line->invoice_no ?? '' }}
-                                                                @if (!empty($line->return_parent_id))
-                                                                    <a data-href="{{ route('sell_return.show', $line->id) }}"
-                                                                        data-container=".view_modal"
-                                                                        class="btn btn-modal" data-toggle="modal"
-                                                                        style="color: #007bff;">R</a>
-                                                                @endif
-                                                                @if (!empty($line->payment_status == 'pending'))
-                                                                    <a data-href="{{ route('sell_return.show', $line->id) }}"
-                                                                        data-container=".view_modal"
-                                                                        class="btn btn-modal" data-toggle="modal"
-                                                                        style="color: #007bff;">P</a>
-                                                                @endif
-                                                            </span>
-                                                        </td>
-                                                        <td class="col3">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.store')">
-                                                                {{ $line->store->name ?? '' }}
-                                                            </span>
-                                                        </td>
-                                                        {{-- ++++++++ checkbox +++++++++ --}}
-                                                        <td class="col4">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.select_to_delete')">
-                                                                <input type="checkbox" name="invoice_selected_delete"
-                                                                    class="box1" value="{{ $line->id }}" />
-                                                            </span>
-                                                        </td>
-                                                        <td class="col5">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.customer')">
-                                                                {{ $line->customer->name ?? '' }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="col6">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.phone')">
-                                                                {{ $line->customer->phone ?? '' }}
-                                                            </span>
-                                                        </td>
-                                                        {{-- <td class="col7">
+                                                @foreach ($sell_lines as $index => $line)
+                                                    @if (isset($toggle_dollar == 1) &&
+                                                            $toggle_dollar == 1 &&
+                                                            ($line->dollar_final_total != 0 || $line->transaction_payments->sum('dollar_amount') != 0))
+                                                        @continue
+                                                    @else
+                                                        <tr>
+                                                            <td class="col1">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.date_and_time')">
+
+                                                                    {{ $line->transaction_date ?? '' }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col2">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.reference')">
+                                                                    {{ $line->invoice_no ?? '' }}
+                                                                    @if (!empty($line->return_parent_id))
+                                                                        <a data-href="{{ route('sell_return.show', $line->id) }}"
+                                                                            data-container=".view_modal"
+                                                                            class="btn btn-modal" data-toggle="modal"
+                                                                            style="color: #007bff;">R</a>
+                                                                    @endif
+                                                                    @if (!empty($line->payment_status == 'pending'))
+                                                                        <a data-href="{{ route('sell_return.show', $line->id) }}"
+                                                                            data-container=".view_modal"
+                                                                            class="btn btn-modal" data-toggle="modal"
+                                                                            style="color: #007bff;">P</a>
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td class="col3">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.store')">
+                                                                    {{ $line->store->name ?? '' }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- ++++++++ checkbox +++++++++ --}}
+                                                            <td class="col4">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.select_to_delete')">
+                                                                    <input type="checkbox"
+                                                                        name="invoice_selected_delete" class="box1"
+                                                                        value="{{ $line->id }}" />
+                                                                </span>
+                                                            </td>
+                                                            <td class="col5">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.customer')">
+                                                                    {{ $line->customer->name ?? '' }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col6">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.phone')">
+                                                                    {{ $line->customer->phone ?? '' }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- <td class="col7">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -146,36 +151,36 @@
                                                                 <span
                                                                     class="badge badge-success">{{ $line->status ?? '' }}</span>
                                                             </span>
-                                                        </td> --}}
-                                                        <td class="col8">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.payment_status')">
-                                                                {{ $line->payment_status }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="col9">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.payment_type')">
-                                                                @foreach ($line->transaction_payments as $payment)
-                                                                    {{ __('lang.' . $payment->method) }}<br>
-                                                                @endforeach
-                                                            </span>
-                                                        </td>
-                                                        <td class="col10">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.ref_number')">
-                                                                @foreach ($line->transaction_payments as $payment)
-                                                                    {{ $payment->ref_no ?? '' }}<br>
-                                                                @endforeach
-                                                            </span>
-                                                        </td>
-                                                        {{-- <td class="col11">
+                                                                </td> --}}
+                                                            <td class="col8">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.payment_status')">
+                                                                    {{ $line->payment_status }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col9">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.payment_type')">
+                                                                    @foreach ($line->transaction_payments as $payment)
+                                                                        {{ __('lang.' . $payment->method) }}<br>
+                                                                    @endforeach
+                                                                </span>
+                                                            </td>
+                                                            <td class="col10">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.ref_number')">
+                                                                    @foreach ($line->transaction_payments as $payment)
+                                                                        {{ $payment->ref_no ?? '' }}<br>
+                                                                    @endforeach
+                                                                </span>
+                                                            </td>
+                                                            {{-- <td class="col11">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -184,196 +189,198 @@
                                                                     {{ $payment->received_currency_relation->symbol ?? '' }}<br>
                                                                 @endforeach
                                                             </span>
-                                                        </td> --}}
-                                                        <td class="col12">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.grand_total') @lang('lang.dinar_c')">
-                                                                {{ number_format($line->final_total, num_of_digital_numbers()) }}
-                                                                د.ع
-                                                            </span>
-                                                        </td>
-                                                        <td class="col13">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.paid') @lang('lang.dinar_c')">
-                                                                {{ $line->transaction_payments->sum('amount') }} د.ع
-                                                            </span>
-                                                        </td>
-                                                        <td class="col14">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.due_sale_list') @lang('lang.dinar_c')">
-                                                                {{ $line->dinar_remaining }} د.ع
-                                                            </span>
-                                                        </td>
-                                                        <td class="col12 dollar-cell">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.grand_total') @lang('lang.dollar_c')">
-                                                                {{ number_format($line->dollar_final_total, num_of_digital_numbers()) }}
-                                                                $
-                                                            </span>
-                                                        </td>
-                                                        <td class="col13 dollar-cell">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.paid') @lang('lang.dollar_c')">
-                                                                {{ $line->transaction_payments->sum('dollar_amount') }}
-                                                                $
-                                                            </span>
-                                                        </td>
+                                                             </td> --}}
+                                                            <td class="col12">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.grand_total') @lang('lang.dinar_c')">
+                                                                    {{ number_format($line->final_total, num_of_digital_numbers()) }}
+                                                                    د.ع
+                                                                </span>
+                                                            </td>
+                                                            <td class="col13">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.paid') @lang('lang.dinar_c')">
+                                                                    {{ $line->transaction_payments->sum('amount') }}
+                                                                    د.ع
+                                                                </span>
+                                                            </td>
+                                                            <td class="col14">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.due_sale_list') @lang('lang.dinar_c')">
+                                                                    {{ $line->dinar_remaining }} د.ع
+                                                                </span>
+                                                            </td>
+                                                            <td class="col12 dollar-cell">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.grand_total') @lang('lang.dollar_c')">
+                                                                    {{ number_format($line->dollar_final_total, num_of_digital_numbers()) }}
+                                                                    $
+                                                                </span>
+                                                            </td>
+                                                            <td class="col13 dollar-cell">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.paid') @lang('lang.dollar_c')">
+                                                                    {{ $line->transaction_payments->sum('dollar_amount') }}
+                                                                    $
+                                                                </span>
+                                                            </td>
 
-                                                        <td class="col14 dollar-cell">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.due_sale_list') @lang('lang.dollar_c')">
-                                                                {{ $line->dollar_remaining }} $
-                                                            </span>
-                                                        </td>
-                                                        <td class="col15">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.due_date')">
-                                                                {{ $line->transaction_payments->last()->due_date ?? '' }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="col16">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.payment_date')">
-                                                                {{ $line->transaction_payments->last()->paid_on ?? '' }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="col17">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.cashier_man')">
-                                                                {{ $line->created_by_user->name }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="col18">
-                                                        </td>
-                                                        <td class="col19">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.products')">
+                                                            <td class="col14 dollar-cell">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.due_sale_list') @lang('lang.dollar_c')">
+                                                                    {{ $line->dollar_remaining }} $
+                                                                </span>
+                                                            </td>
+                                                            <td class="col15">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.due_date')">
+                                                                    {{ $line->transaction_payments->last()->due_date ?? '' }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col16">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.payment_date')">
+                                                                    {{ $line->transaction_payments->last()->paid_on ?? '' }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col17">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.cashier_man')">
+                                                                    {{ $line->created_by_user->name }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col18">
+                                                            </td>
+                                                            <td class="col19">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.products')">
 
-                                                                @foreach ($line->transaction_sell_lines as $sell_line)
-                                                                    @if (!empty($sell_line->product))
-                                                                        {{ $sell_line->product->name ?? ' ' }} -
-                                                                        {{ $sell_line->product->sku ?? ' ' }}<br>
+                                                                    @foreach ($line->transaction_sell_lines as $sell_line)
+                                                                        @if (!empty($sell_line->product))
+                                                                            {{ $sell_line->product->name ?? ' ' }} -
+                                                                            {{ $sell_line->product->sku ?? ' ' }}<br>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </span>
+                                                            </td>
+                                                            <td class="col20">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.sale_note')">
+                                                                    @foreach ($line->transaction_payments as $payment)
+                                                                        {{ $payment->received_currency_relation->payment_note ?? '' }}<br>
+                                                                    @endforeach
+                                                                </span>
+                                                            </td>
+                                                            <td class="col21">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.receipts')">
+
+                                                                    @if (count($line->receipts) > 0)
+                                                                        <a data-href=" {{ route('show_receipt', $line->id) }}"
+                                                                            data-container=".view_modal"
+                                                                            class="btn btn-default btn-modal">
+                                                                            {{ __('lang.view') }}
+                                                                        </a>
                                                                     @endif
-                                                                @endforeach
-                                                            </span>
-                                                        </td>
-                                                        <td class="col20">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.sale_note')">
-                                                                @foreach ($line->transaction_payments as $payment)
-                                                                    {{ $payment->received_currency_relation->payment_note ?? '' }}<br>
-                                                                @endforeach
-                                                            </span>
-                                                        </td>
-                                                        <td class="col21">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.receipts')">
+                                                                </span>
+                                                            </td>
+                                                            <td class="col22">
+                                                                <button type="button"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    class="btn btn-default btn-sm dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">
+                                                                    @lang('lang.action')
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                                    user="menu">
+                                                                    <li>
+                                                                        <a data-href="{{ route('print_invoice', $line->id) }}"
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif print-invoice"><i
+                                                                                class="dripicons-print"></i>
+                                                                            {{ __('lang.generate_invoice') }}</a>
+                                                                    </li>
 
-                                                                @if (count($line->receipts) > 0)
-                                                                    <a data-href=" {{ route('show_receipt', $line->id) }}"
-                                                                        data-container=".view_modal"
-                                                                        class="btn btn-default btn-modal">
-                                                                        {{ __('lang.view') }}
-                                                                    </a>
-                                                                @endif
-                                                            </span>
-                                                        </td>
-                                                        <td class="col22">
-                                                            <button type="button"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                class="btn btn-default btn-sm dropdown-toggle"
-                                                                data-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false">
-                                                                @lang('lang.action')
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                                user="menu">
-                                                                <li>
-                                                                    <a data-href="{{ route('print_invoice', $line->id) }}"
-                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif print-invoice"><i
-                                                                            class="dripicons-print"></i>
-                                                                        {{ __('lang.generate_invoice') }}</a>
-                                                                </li>
+                                                                    <li>
+                                                                        <a data-href=" {{ route('pos.show', $line->id) }}"
+                                                                            data-container=".view_modal"
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
+                                                                                class="fa fa-eye"></i>{{ __('lang.view') }}
+                                                                        </a>
+                                                                    </li>
 
-                                                                <li>
-                                                                    <a data-href=" {{ route('pos.show', $line->id) }}"
-                                                                        data-container=".view_modal"
-                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
-                                                                            class="fa fa-eye"></i>{{ __('lang.view') }}
-                                                                    </a>
-                                                                </li>
+                                                                    <li>
+                                                                        <a href="{{ route('sell.return', $line->id) }}"
+                                                                            target="_blank"
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                                class="fa fa-undo"></i>@lang('lang.return')
+                                                                        </a>
+                                                                    </li>
 
-                                                                <li>
-                                                                    <a href="{{ route('sell.return', $line->id) }}"
-                                                                        target="_blank"
-                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
-                                                                            class="fa fa-undo"></i>@lang('lang.return')
-                                                                    </a>
-                                                                </li>
+                                                                    <li>
+                                                                        <a data-href="{{ route('show_payment', $line->id) }}"
+                                                                            data-container=".view_modal"
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
+                                                                                class="fa fa-money"></i>
+                                                                            {{ __('lang.view_payments') }}
+                                                                        </a>
+                                                                    </li>
 
-                                                                <li>
-                                                                    <a data-href="{{ route('show_payment', $line->id) }}"
-                                                                        data-container=".view_modal"
-                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
-                                                                            class="fa fa-money"></i>
-                                                                        {{ __('lang.view_payments') }}
-                                                                    </a>
-                                                                </li>
+                                                                    {{-- +++++++++ edit button +++++++++++ --}}
+                                                                    <li>
+                                                                        <a href="{{ route('invoices.edit', $line->id) }}"
+                                                                            target="_blank"
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                                            <i class="dripicons-document-edit"></i>
+                                                                            {{ __('lang.edit') }}
+                                                                        </a>
+                                                                    </li>
 
-                                                                {{-- +++++++++ edit button +++++++++++ --}}
-                                                                <li>
-                                                                    <a href="{{ route('invoices.edit', $line->id) }}"
-                                                                        target="_blank"
-                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                                        <i class="dripicons-document-edit"></i>
-                                                                        {{ __('lang.edit') }}
-                                                                    </a>
-                                                                </li>
+                                                                    <li>
+                                                                        <a data-href=" {{ route('upload_receipt', $line->id) }}"
+                                                                            data-container=".view_modal"
+                                                                            data-dismiss="modal"
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
+                                                                                class="fa fa-plus"></i>{{ __('lang.upload_receipt') }}
+                                                                        </a>
+                                                                    </li>
 
-                                                                <li>
-                                                                    <a data-href=" {{ route('upload_receipt', $line->id) }}"
-                                                                        data-container=".view_modal"
-                                                                        data-dismiss="modal"
-                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
-                                                                            class="fa fa-plus"></i>{{ __('lang.upload_receipt') }}
-                                                                    </a>
-                                                                </li>
-
-                                                                <li>
-                                                                    <a data-href="{{ route('pos.destroy', $line->id) }}"
-                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
-                                                                            class="fa fa-trash"></i>
-                                                                        {{ __('lang.delete') }}
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
+                                                                    <li>
+                                                                        <a data-href="{{ route('pos.destroy', $line->id) }}"
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
+                                                                                class="fa fa-trash"></i>
+                                                                            {{ __('lang.delete') }}
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>

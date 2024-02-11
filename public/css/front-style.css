@@ -1023,3 +1023,22 @@ thead tr {
     z-index: 88888888;
     background-color: #0000008f;
 }
+
+#toTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 15px;
+    background-color: #596fd7;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.4s;
+}
+
+#toTopBtn:hover {
+    background-color: #7489e8;
+}
