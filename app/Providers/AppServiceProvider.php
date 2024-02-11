@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
             $currency_precision =3;
             return "number_format($expression,  $currency_precision, '.', ',')";
         });
-   
+
         //Blade directive to format date.
         Blade::directive('format_date', function ($date = null) {
             if (!empty($date)) {
@@ -73,6 +73,12 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
 
+        $toggle_dollar = System::getProperty('toggle_dollar');
+
+        // Bind the variable to the container
+        $this->app->singleton('toggle_dollar', function () use ($toggle_dollar) {
+            return $toggle_dollar;
+        });
 
 
 

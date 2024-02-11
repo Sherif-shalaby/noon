@@ -7,6 +7,7 @@ use App\Models\ProductStore;
 use App\Models\SellLine;
 use App\Models\StockTransaction;
 use App\Models\Store;
+use App\Models\System;
 use App\Models\TransactionSellLine;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -335,6 +336,7 @@ class ReportController extends Controller
         $stores = Store::getDropdown();
         $payment_types = $this->common_util->getPaymentTypeArrayForPos();
         $cashiers = Employee::getDropdownByJobType('Cashier', true, true);
+        $toggle_dollar = System::getProperty('toggle_dollar');
 
         return view('reports.daily_sell_report.index',compact(
             'total_discount', 'total_surplus', 'order_discount', 'total_tax',
