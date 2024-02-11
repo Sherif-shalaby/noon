@@ -247,159 +247,161 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @php
-                                @endphp
                                 @foreach($sell_lines as $index => $line)
-                                    <tr>
-                                        <td class="col1">
-                                            {{$line->transaction_date ?? ''}}
-                                        </td>
-                                        <td class="col2">
-                                            {{$line->invoice_no ?? '' }}
+                                    @if(isset($toggle_dollar == 1) && ($toggle_dollar == 1) && ($line->dollar_final_total != 0 || $line->transaction_payments->sum('dollar_amount') != 0))
+                                        @continue
+                                    @else
+                                        <tr>
+                                            <td class="col1">
+                                                {{$line->transaction_date ?? ''}}
+                                            </td>
+                                            <td class="col2">
+                                                {{$line->invoice_no ?? '' }}
 
-                                            @if (!empty($line->return_parent_id))
-                                              <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">R</a>
-                                            @endif
-                                            @if (!empty($line->payment_status == 'pending') )
-                                                <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">P</a>
-                                            @endif
-                                        </td>
-                                        <td class="col3">
-                                            {{$line->store->name ?? '' }}
-                                        </td>
-                                        {{-- ++++++++ checkbox +++++++++ --}}
-                                        <td class="col4">
-                                            <input type="checkbox" name="invoice_selected_delete" class="box1" value="{{ $line->id }}" />
-                                        </td>
-                                        <td class="col5">
-                                            {{$line->customer->name ?? '' }}
-                                        </td>
-                                        <td class="col6">
-                                            {{$line->customer->phone ?? '' }}
-                                        </td>
-                                        {{-- <td class="col7">
-                                            <span class="badge badge-success">{{$line->status ?? '' }}</span>
-                                        </td> --}}
-                                        <td class="col8">{{$line->payment_status}}</td>
-                                        <td class="col9">
-                                            @foreach($line->transaction_payments as $payment)
-                                                {{__('lang.'.$payment->method)}}<br>
-                                            @endforeach
-                                        </td>
-                                        <td class="col10">
-                                            @foreach($line->transaction_payments as $payment)
-                                                {{$payment->ref_no ?? ''}}<br>
-                                            @endforeach
-                                        </td>
-                                        {{-- <td class="col11">
-                                            @foreach($line->transaction_payments as $payment)
-                                                {{$payment->received_currency_relation->symbol ?? ''}}<br>
-                                            @endforeach
-                                        </td> --}}
-
-                                        <td class="col12">
-                                            {{number_format($line->final_total,num_of_digital_numbers())}} د.ع
-                                        </td>
-                                        <td class="col13">
-                                            {{$line->transaction_payments->sum('amount')}} د.ع
-                                        </td>
-                                        <td class="col14">
-                                            {{$line->dinar_remaining}} د.ع
-                                        </td>
-                                        <td class="col12">
-                                            {{number_format($line->dollar_final_total,num_of_digital_numbers())}} $
-                                        </td>
-                                        <td class="col13">
-                                            {{$line->transaction_payments->sum('dollar_amount')}} $
-                                        </td>
-
-                                        <td class="col14">
-                                            {{$line->dollar_remaining}}  $
-                                        </td>
-                                        <td class="col15">
-                                            {{$line->transaction_payments->last()->due_date ?? ''}}
-                                        </td>
-                                        <td class="col16">
-                                            {{$line->transaction_payments->last()->paid_on ?? ''}}
-                                        </td>
-                                        <td class="col17">
-                                            {{$line->created_by_user->name}}
-                                        </td>
-                                        <td class="col18">
-                                        </td>
-                                        <td class="col19">
-                                            @foreach($line->transaction_sell_lines as $sell_line)
-                                                @if(!empty($sell_line->product))
-                                                    {{$sell_line->product->name ?? ' ' }} -
-                                                    {{ $sell_line->product->sku ?? ' ' }}<br>
+                                                @if (!empty($line->return_parent_id))
+                                                    <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">R</a>
                                                 @endif
-                                            @endforeach
-                                        </td>
-                                        <td class="col20">
-                                            @foreach($line->transaction_payments as $payment)
-                                                {{$payment->received_currency_relation->payment_note ?? ''}}<br>
-                                            @endforeach
-                                        </td>
-                                        <td class="col21">
-                                            @if(count($line->receipts) > 0)
-                                                <a data-href=" {{route('show_receipt', $line->id)}}"
-                                                   data-container=".view_modal"
-                                                   class="btn btn-default btn-modal"> {{__('lang.view')}}
-                                                </a>
-                                            @endif
-                                        </td>
-                                        <td class="col22">
-                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                @lang('lang.action')
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
-                                                <li>
-                                                    <a data-href="{{route('print_invoice', $line->id)}}"
-                                                       class="btn print-invoice"><i class="dripicons-print"></i>
-                                                        {{ __('lang.generate_invoice') }}</a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                <li>
-                                                    <a data-href=" {{route('pos.show', $line->id)}}" data-container=".view_modal"
-                                                       class="btn btn-modal"><i class="fa fa-eye"></i>{{ __('lang.view') }}
+                                                @if (!empty($line->payment_status == 'pending') )
+                                                    <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">P</a>
+                                                @endif
+                                            </td>
+                                            <td class="col3">
+                                                {{$line->store->name ?? '' }}
+                                            </td>
+                                            {{-- ++++++++ checkbox +++++++++ --}}
+                                            <td class="col4">
+                                                <input type="checkbox" name="invoice_selected_delete" class="box1" value="{{ $line->id }}" />
+                                            </td>
+                                            <td class="col5">
+                                                {{$line->customer->name ?? '' }}
+                                            </td>
+                                            <td class="col6">
+                                                {{$line->customer->phone ?? '' }}
+                                            </td>
+                                            {{-- <td class="col7">
+                                                <span class="badge badge-success">{{$line->status ?? '' }}</span>
+                                            </td> --}}
+                                            <td class="col8">{{$line->payment_status}}</td>
+                                            <td class="col9">
+                                                @foreach($line->transaction_payments as $payment)
+                                                    {{__('lang.'.$payment->method)}}<br>
+                                                @endforeach
+                                            </td>
+                                            <td class="col10">
+                                                @foreach($line->transaction_payments as $payment)
+                                                    {{$payment->ref_no ?? ''}}<br>
+                                                @endforeach
+                                            </td>
+                                            {{-- <td class="col11">
+                                                @foreach($line->transaction_payments as $payment)
+                                                    {{$payment->received_currency_relation->symbol ?? ''}}<br>
+                                                @endforeach
+                                            </td> --}}
+
+                                            <td class="col12">
+                                                {{number_format($line->final_total,num_of_digital_numbers())}} د.ع
+                                            </td>
+                                            <td class="col13">
+                                                {{$line->transaction_payments->sum('amount')}} د.ع
+                                            </td>
+                                            <td class="col14">
+                                                {{$line->dinar_remaining}} د.ع
+                                            </td>
+                                            <td class="col12">
+                                                {{number_format($line->dollar_final_total,num_of_digital_numbers())}} $
+                                            </td>
+                                            <td class="col13">
+                                                {{$line->transaction_payments->sum('dollar_amount')}} $
+                                            </td>
+
+                                            <td class="col14">
+                                                {{$line->dollar_remaining}}  $
+                                            </td>
+                                            <td class="col15">
+                                                {{$line->transaction_payments->last()->due_date ?? ''}}
+                                            </td>
+                                            <td class="col16">
+                                                {{$line->transaction_payments->last()->paid_on ?? ''}}
+                                            </td>
+                                            <td class="col17">
+                                                {{$line->created_by_user->name}}
+                                            </td>
+                                            <td class="col18">
+                                            </td>
+                                            <td class="col19">
+                                                @foreach($line->transaction_sell_lines as $sell_line)
+                                                    @if(!empty($sell_line->product))
+                                                        {{$sell_line->product->name ?? ' ' }} -
+                                                        {{ $sell_line->product->sku ?? ' ' }}<br>
+                                                    @endif
+                                                @endforeach
+                                            </td>
+                                            <td class="col20">
+                                                @foreach($line->transaction_payments as $payment)
+                                                    {{$payment->received_currency_relation->payment_note ?? ''}}<br>
+                                                @endforeach
+                                            </td>
+                                            <td class="col21">
+                                                @if(count($line->receipts) > 0)
+                                                    <a data-href=" {{route('show_receipt', $line->id)}}"
+                                                       data-container=".view_modal"
+                                                       class="btn btn-default btn-modal"> {{__('lang.view')}}
                                                     </a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                <li>
-                                                    <a target="_blank" href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                <li>
-                                                    <a data-href="{{ route('show_payment', $line->id) }}"
-                                                       data-container=".view_modal" class="btn btn-modal"><i class="fa fa-money"></i>
-                                                        {{ __('lang.view_payments') }}
-                                                    </a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                {{-- +++++++++ edit button +++++++++++ --}}
-                                                <li>
-                                                    <a target="_blank" href="{{ route('invoices.edit', $line->id) }}" class="btn">
-                                                        <i class="dripicons-document-edit"></i> {{ __('lang.edit') }}
-                                                    </a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                <li>
-                                                    <a data-href=" {{route('upload_receipt', $line->id)}}" data-container=".view_modal" data-dismiss="modal"
-                                                       class="btn btn-modal"><i class="fa fa-plus"></i>{{ __('lang.upload_receipt') }}
-                                                    </a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                <li>
-                                                    <a data-href="{{ route('pos.destroy', $line->id) }}"
-                                                       class="btn text-red delete_item"><i class="fa fa-trash"></i>
-                                                        {{ __('lang.delete') }}
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
+                                                @endif
+                                            </td>
+                                            <td class="col22">
+                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                    @lang('lang.action')
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                                                    <li>
+                                                        <a data-href="{{route('print_invoice', $line->id)}}"
+                                                           class="btn print-invoice"><i class="dripicons-print"></i>
+                                                            {{ __('lang.generate_invoice') }}</a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a data-href=" {{route('pos.show', $line->id)}}" data-container=".view_modal"
+                                                           class="btn btn-modal"><i class="fa fa-eye"></i>{{ __('lang.view') }}
+                                                        </a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a target="_blank" href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a data-href="{{ route('show_payment', $line->id) }}"
+                                                           data-container=".view_modal" class="btn btn-modal"><i class="fa fa-money"></i>
+                                                            {{ __('lang.view_payments') }}
+                                                        </a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    {{-- +++++++++ edit button +++++++++++ --}}
+                                                    <li>
+                                                        <a target="_blank" href="{{ route('invoices.edit', $line->id) }}" class="btn">
+                                                            <i class="dripicons-document-edit"></i> {{ __('lang.edit') }}
+                                                        </a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a data-href=" {{route('upload_receipt', $line->id)}}" data-container=".view_modal" data-dismiss="modal"
+                                                           class="btn btn-modal"><i class="fa fa-plus"></i>{{ __('lang.upload_receipt') }}
+                                                        </a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a data-href="{{ route('pos.destroy', $line->id) }}"
+                                                           class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                            {{ __('lang.delete') }}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                                 </tbody>
                             </table>
