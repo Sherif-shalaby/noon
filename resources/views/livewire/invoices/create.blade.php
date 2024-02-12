@@ -422,38 +422,88 @@
                         <div class="body-card-app">
                             <div class="table-responsive box-table @if (app()->isLocale('ar')) dir-rtl @endif"
                                 style="height: 400px;overflow: scroll">
+                                {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
+                                <div class="col-md-3 col-lg-12">
+                                    <div class="multiselect col-md-12">
+                                        <!-- Checkbox for each column -->
+                                        <div id="checkboxes">
+                                            @foreach ($columnVisibility as $columnName => $visible)
+                                                <label for="{{ $columnName }}_id">
+                                                    <input type="checkbox" id="{{ $columnName }}_id"
+                                                        wire:click="toggleColumnVisibility('{{ $columnName }}')"
+                                                        class="checkbox_class" {{ $visible ? 'checked' : '' }}>
+                                                    @if ($columnName == 'dollar_price')
+                                                        <span>@lang('lang.price') $</span> &nbsp;
+                                                    @elseif($columnName == 'dollar_sub_total')
+                                                        <span>@lang('lang.sub_total') $</span> &nbsp;
+                                                    @else
+                                                        <span>@lang('lang.' . $columnName)</span> &nbsp;
+                                                    @endif
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="table">
                                     <tr>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%">
+                                        <th @if (!$columnVisibility['sku']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 5%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 5%">
                                             @lang('lang.sku')</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%">
+
+                                        <th @if (!$columnVisibility['product']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 5%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 5%">
                                             @lang('lang.product')</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 10%;">
+
+                                        <th @if (!$columnVisibility['quantity']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 10%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 10%;">
                                             @lang('lang.quantity')</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 4%">
+
+                                        <th @if (!$columnVisibility['extra']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 4%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 4%">
                                             @lang('lang.extra')</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
+
+                                        <th @if (!$columnVisibility['unit']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 5%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
                                             @lang('lang.unit')</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
+
+                                        <th @if (!$columnVisibility['c_type']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 5%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
                                             @lang('lang.c_type')</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
+
+                                        <th @if (!$columnVisibility['price']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 8%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                             @lang('lang.price')</th>
-                                        <th class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+
+                                        <th @if (!$columnVisibility['dollar_price']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 8%" @endif
+                                            class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                             style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                             @lang('lang.price') $ </th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
+
+                                        <th @if (!$columnVisibility['exchange_rate']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 8%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                             @lang('lang.exchange_rate')</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 9%">
+
+                                        <th @if (!$columnVisibility['discount']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 9%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 9%">
                                             @lang('lang.discount')</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
+
+                                        <th @if (!$columnVisibility['discount_category']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 5%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
                                             @lang('lang.discount_category')</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center">
+
+                                        <th @if (!$columnVisibility['sub_total']) style="display: none;font-weight: 700;font-size: 10px;text-align: center" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center">
                                             @lang('lang.sub_total')</th>
-                                        <th class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+
+                                        <th @if (!$columnVisibility['dollar_sub_total']) style="display: none;font-weight: 700;font-size: 10px;text-align: center" @endif
+                                            class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                             style="font-weight: 700;font-size: 10px;text-align: center">
                                             @lang('lang.sub_total') $</th>
-                                        <th style="font-weight: 700;font-size: 10px;text-align: center">
+
+                                        <th @if (!$columnVisibility['current_stock']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center">
                                             @lang('lang.current_stock')</th>
+
                                         <th style="font-weight: 700;font-size: 10px;text-align: center">
                                             @lang('lang.action')</th>
                                     </tr>
@@ -462,11 +512,15 @@
                                     @endphp
                                     @foreach ($items as $key => $item)
                                         <tr style="height: 50px">
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+
+                                            <td @if (!$columnVisibility['sku']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 {{ !empty($item['product']['product_symbol']) ? $item['product']['product_symbol'] : $item['product']['sku'] }}
                                             </td>
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+
+                                            <td @if (!$columnVisibility['product']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
@@ -474,9 +528,10 @@
                                                 </div>
                                             </td>
 
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                            <td @if (!$columnVisibility['quantity']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <div class="d-flex align-items-center gap-1 " style="width: 80px">
+                                                <div class="d-flex align-items-center gap-1 " style="width: 100px">
                                                     <div class="btn-success add-num control-num d-flex justify-content-center align-items-center"
                                                         style="width: 15px;height: 15px;border-radius: 50%;color: white;cursor:pointer;"
                                                         wire:click="increment({{ $key }})">
@@ -505,7 +560,8 @@
                                                 </div>
                                             </td>
 
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                            <td @if (!$columnVisibility['extra']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
@@ -513,7 +569,8 @@
                                                 </div>
                                             </td>
 
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                            <td @if (!$columnVisibility['unit']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <div class="input-wrapper width-full">
                                                     <select class="form-control select2"
@@ -521,7 +578,7 @@
                                                         wire:model="items.{{ $key }}.unit_id"
                                                         data-name="unit_id" data-index="{{ $key }}"
                                                         wire:change="changeUnit({{ $key }})">
-                                                        <option value="0.00">select</option>
+                                                        <option value="0.00">@lang('lang.select')</option>
                                                         @if (!empty($item['variation']))
                                                             @foreach ($item['variation'] as $i => $var)
                                                                 @if (!empty($var['unit_id']))
@@ -536,7 +593,8 @@
                                                 </div>
                                             </td>
 
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                            <td @if (!$columnVisibility['c_type']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <div class="input-wrapper width-full">
 
@@ -545,7 +603,7 @@
                                                         wire:model="items.{{ $key }}.customer_type_id"
                                                         data-name="customer_type_id" data-index="{{ $key }}"
                                                         wire:change="changeCustomerType({{ $key }})">
-                                                        <option value="0">select</option>
+                                                        <option value="0">@lang('lang.select')</option>
                                                         @if (!empty($item['customer_types']))
                                                             @foreach ($item['customer_types'] as $x => $var)
                                                                 @if (!empty($var) && !empty($var['id']))
@@ -560,7 +618,8 @@
                                                 </div>
                                             </td>
 
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                            <td @if (!$columnVisibility['price']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
@@ -572,7 +631,8 @@
                                                 </div>
                                             </td>
 
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                            <td @if (!$columnVisibility['dollar_price']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
@@ -584,7 +644,8 @@
                                                 </div>
                                             </td>
 
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                            <td @if (!$columnVisibility['exchange_rate']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
@@ -604,7 +665,8 @@
                                                 </div>
                                             </td>
 
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                            <td @if (!$columnVisibility['discount']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right">
                                                 <input class="form-control initial-balance-input p-1 text-center"
                                                     style="width:60px;border: 2px solid #cecece" type="text"
@@ -612,15 +674,16 @@
                                                     wire:model="items.{{ $key }}.discount_price">
                                             </td>
 
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                            <td @if (!$columnVisibility['discount_category']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <div class="input-wrapper" style="width: 50px">
+                                                <div class="input-wrapper" style="width: 100%">
                                                     <select class="form-control select2 discount_category "
                                                         style="width:100%;font-size:14px;"
                                                         wire:model="items.{{ $key }}.discount"
                                                         data-name="discount" data-index="{{ $key }}"
                                                         wire:change="subtotal({{ $key }},'discount')">
-                                                        <option selected value="0">select</option>
+                                                        <option selected value="0">@lang('lang.select')</option>
                                                         @if (!empty($item['discount_categories']))
                                                             @if (!empty($client_id))
                                                                 @foreach ($item['discount_categories'] as $discount)
@@ -644,21 +707,27 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+
+                                            <td @if (!$columnVisibility['sub_total']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                     {{ $item['sub_total'] ?? 0 }}
                                                 </div>
                                             </td>
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+
+                                            <td @if (!$columnVisibility['dollar_sub_total']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                     {{ $item['dollar_sub_total'] ?? 0 }}
                                                 </div>
                                             </td>
-                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+
+                                            <td @if (!$columnVisibility['current_stock']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <span
                                                     class="current_stock d-flex flex-wrap justify-content-center align-items-center text-center"
@@ -666,6 +735,7 @@
                                                     {{ $item['quantity_available'] }}
                                                 </span>
                                             </td>
+
                                             <td class="text-center px-1 border-right">
                                                 <div class="btn btn-sm btn-success py-0 px-1 my-1 {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                                     wire:click="changePrice({{ $key }})">
@@ -675,7 +745,6 @@
                                                     wire:click="delete_item({{ $key }})">
                                                     <i class="fas fa-trash-can"></i>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     @endforeach

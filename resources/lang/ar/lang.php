@@ -861,4 +861,5 @@ return array(
     'total_discount' => 'خصم على الكلى',
     'product_n' => 'اسم المنتج',
     'recieve_date' => 'تاريخ الاستلام',
+    'select' => 'اختر',
 );
