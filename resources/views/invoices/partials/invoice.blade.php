@@ -8,7 +8,7 @@
     <title>Print</title>
 </head>
 <style>
-   
+
     .print-only {
         display: none;
     }
@@ -79,7 +79,7 @@
         /* @livewireScripts {
             display: none !important;
         } */
-   
+
     section{
         max-width: 90%;
         margin: 0 auto
@@ -147,7 +147,7 @@
                         @lang('lang.invoice_title1') <br/>
                         @lang('lang.invoice_title2')
                     </h1>
-                   
+
                 </div>
             </div>
 
@@ -158,8 +158,8 @@
                     @endphp
                     <p class="text-left">
                         <b>@lang('lang.invoice_address_en') </b>
-                        
-                        
+
+
                     </p>
                 </div>
                 <div class="col-sm-6 pr-3">
@@ -223,8 +223,8 @@
                         <b> : @lang('lang.dear')  @lang('lang.respected') </b>
                     </p>
                 </div>
-                
-               
+
+
             </div>
         </div>
     </div>
@@ -255,7 +255,7 @@
                         <td style="text-align: center;">{{$line->extra_quantity??0}}</td>
                         <td style="text-align: center">{{number_format($line->quantity??0 + $line->extra_quantity??0,num_of_digital_numbers())}}</td>
                         <td style="text-align: center"> {{$line->product->name}}</td>
-                        <td></td>
+                        <td> {{ $line->notes ?? '' }} </td>
                     </tr>
                 @endforeach
             </tbody>
