@@ -133,9 +133,7 @@
 
     @php
         if (empty($invoice_lang)) {
-            $invoice_lang = request()
-                ->session()
-                ->get('language');
+            $invoice_lang = request()->session()->get('language');
         }
     @endphp
 
@@ -277,7 +275,7 @@
                                 {{ number_format($line->quantity ?? (0 + $line->extra_quantity ?? 0), num_of_digital_numbers()) }}
                             </td>
                             <td style="text-align: center"> {{ $line->product->name }}</td>
-                            <td></td>
+                            <td>{{ $line->notes ?? '' }}</td>
                         </tr>
                     @endforeach
                 </tbody>

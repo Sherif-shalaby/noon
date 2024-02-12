@@ -454,6 +454,10 @@
                                             style="font-weight: 700;font-size: 10px;text-align: center;width: 5%">
                                             @lang('lang.product')</th>
 
+                                        <th @if (!$columnVisibility['notes']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 5%" @endif
+                                            style="font-weight: 700;font-size: 10px;text-align: center;width: 5%">
+                                            @lang('lang.notes')</th>
+
                                         <th @if (!$columnVisibility['quantity']) style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 10%" @endif
                                             style="font-weight: 700;font-size: 10px;text-align: center;width: 10%;">
                                             @lang('lang.quantity')</th>
@@ -522,40 +526,54 @@
                                             <td @if (!$columnVisibility['product']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
                                                 style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <div style="height: 100%;max-width: 100%;"
+                                                <div style="height: 100%;width: 100px;line-break: anywhere"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                     {{ $item['product']['name'] }}
+                                                </div>
+                                            </td>
+                                            <td @if (!$columnVisibility['notes']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
+                                                style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                class="px-1 border-right ">
+                                                <div style="height: 100%;min-width: 180px;width: auto;"
+                                                    class="d-flex flex-wrap justify-content-center align-items-center text-center">
+                                                    <textarea class="form-control  initial-balance-input m-0 p-1"
+                                                        style="font-weight: 700;font-size: 10px;min-width: 180px;width: auto;box-sizing: border-box;border: 2px solid #cecece"
+                                                        wire:model="items.{{ $key }}.notes"></textarea>
                                                 </div>
                                             </td>
 
                                             <td @if (!$columnVisibility['quantity']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
                                                 style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <div class="d-flex align-items-center gap-1 " style="width: 100px">
-                                                    <div class="btn-success add-num control-num d-flex justify-content-center align-items-center"
-                                                        style="width: 15px;height: 15px;border-radius: 50%;color: white;cursor:pointer;"
-                                                        wire:click="increment({{ $key }})">
-                                                        <i style="font-size: 10px;width: 50px;font-weight: 600"
-                                                            class="fa-solid fa-plus"></i>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <input
-                                                            class="form-control p-1 text-center initial-balance-input mb-0"
-                                                            style="width: 60px;font-size: 12px;font-weight: 700;border:2px solid #cecece"
-                                                            type="text" min="1"
-                                                            wire:model="items.{{ $key }}.quantity"
-                                                            Wire:change="subtotal({{ $key }})">
+                                                <div class="d-flex flex-wrap justify-content-center align-items-center text-center"
+                                                    style="height: 100%;max-width: 100%;">
+                                                    <div class="d-flex align-items-center gap-1 "
+                                                        style="width: 100px">
+                                                        <div class="btn-success add-num control-num d-flex justify-content-center align-items-center"
+                                                            style="width: 15px;height: 15px;border-radius: 50%;color: white;cursor:pointer;"
+                                                            wire:click="increment({{ $key }})">
+                                                            <i style="font-size: 10px;width: 50px;font-weight: 600"
+                                                                class="fa-solid fa-plus"></i>
+                                                        </div>
+                                                        <div class="d-flex flex-column">
+                                                            <input
+                                                                class="form-control p-1 text-center initial-balance-input mb-0"
+                                                                style="width: 60px;font-size: 12px;font-weight: 700;border:2px solid #cecece"
+                                                                type="text" min="1"
+                                                                wire:model="items.{{ $key }}.quantity"
+                                                                Wire:change="subtotal({{ $key }})">
 
-                                                        @error("items.$key.quantity")
-                                                            <span
-                                                                class="text-danger validation-error">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                    <div class="btn-danger decrease-num control-num d-flex justify-content-center align-items-center"
-                                                        style="width: 15px;height: 15px;border-radius: 50%;color: white;cursor:pointer;"
-                                                        wire:click="decrement({{ $key }})">
-                                                        <i style="font-size: 10px;width: 50px;font-weight: 600"
-                                                            class="fa-solid fa-minus"></i>
+                                                            @error("items.$key.quantity")
+                                                                <span
+                                                                    class="text-danger validation-error">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="btn-danger decrease-num control-num d-flex justify-content-center align-items-center"
+                                                            style="width: 15px;height: 15px;border-radius: 50%;color: white;cursor:pointer;"
+                                                            wire:click="decrement({{ $key }})">
+                                                            <i style="font-size: 10px;width: 50px;font-weight: 600"
+                                                                class="fa-solid fa-minus"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -572,49 +590,56 @@
                                             <td @if (!$columnVisibility['unit']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
                                                 style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <div class="input-wrapper width-full">
-                                                    <select class="form-control select2"
-                                                        style="width:50px;font-size: 10px!important"
-                                                        wire:model="items.{{ $key }}.unit_id"
-                                                        data-name="unit_id" data-index="{{ $key }}"
-                                                        wire:change="changeUnit({{ $key }})">
-                                                        <option value="0.00">@lang('lang.select')</option>
-                                                        @if (!empty($item['variation']))
-                                                            @foreach ($item['variation'] as $i => $var)
-                                                                @if (!empty($var['unit_id']))
-                                                                    <option value="{{ $var['id'] }}"
-                                                                        {{ $i == 0 ? 'selected' : '' }}>
-                                                                        {{ $var['unit']['name'] ?? '' }}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
+                                                <div class="d-flex flex-wrap justify-content-center align-items-center text-center"
+                                                    style="height: 100%;max-width: 100%;">
+                                                    <div class="input-wrapper width-full">
+                                                        <select class="form-control select2"
+                                                            style="width:50px;font-size: 10px!important"
+                                                            wire:model="items.{{ $key }}.unit_id"
+                                                            data-name="unit_id" data-index="{{ $key }}"
+                                                            wire:change="changeUnit({{ $key }})">
+                                                            <option value="0.00">@lang('lang.select')</option>
+                                                            @if (!empty($item['variation']))
+                                                                @foreach ($item['variation'] as $i => $var)
+                                                                    @if (!empty($var['unit_id']))
+                                                                        <option value="{{ $var['id'] }}"
+                                                                            {{ $i == 0 ? 'selected' : '' }}>
+                                                                            {{ $var['unit']['name'] ?? '' }}
+                                                                        </option>
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </td>
 
                                             <td @if (!$columnVisibility['c_type']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
                                                 style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <div class="input-wrapper width-full">
+                                                <div class="d-flex flex-wrap justify-content-center align-items-center text-center"
+                                                    style="height: 100%;max-width: 100%;">
+                                                    <div class="input-wrapper width-full">
 
-                                                    <select class="form-control select2"
-                                                        style="height:30% !important;width:100px;font-size: 10px!important"
-                                                        wire:model="items.{{ $key }}.customer_type_id"
-                                                        data-name="customer_type_id" data-index="{{ $key }}"
-                                                        wire:change="changeCustomerType({{ $key }})">
-                                                        <option value="0">@lang('lang.select')</option>
-                                                        @if (!empty($item['customer_types']))
-                                                            @foreach ($item['customer_types'] as $x => $var)
-                                                                @if (!empty($var) && !empty($var['id']))
-                                                                    <option value="{{ $var['id'] }}"
-                                                                        {{ $x == 0 ? 'selected' : '' }}>
-                                                                        {{ $var['name'] ?? '' }}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
+                                                        <select class="form-control select2"
+                                                            style="height:30% !important;width:100px;font-size: 10px!important"
+                                                            wire:model="items.{{ $key }}.customer_type_id"
+                                                            data-name="customer_type_id"
+                                                            data-index="{{ $key }}"
+                                                            wire:change="changeCustomerType({{ $key }})">
+                                                            <option value="0">@lang('lang.select')</option>
+                                                            @if (!empty($item['customer_types']))
+                                                                @foreach ($item['customer_types'] as $x => $var)
+                                                                    @if (!empty($var) && !empty($var['id']))
+                                                                        <option value="{{ $var['id'] }}"
+                                                                            {{ $x == 0 ? 'selected' : '' }}>
+                                                                            {{ $var['name'] ?? '' }}
+                                                                        </option>
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </td>
 
@@ -623,7 +648,7 @@
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
-                                                    <input class="form-control initial-balance-input dinarPrice"
+                                                    <input class="form-control initial-balance-input dinarPrice m-0"
                                                         data-key="{{ $key }}" type="text"
                                                         wire:model="items.{{ $key }}.price"
                                                         style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece" />
@@ -636,7 +661,7 @@
                                                 class="px-1 border-right dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
-                                                    <input class="form-control initial-balance-input dollarPrice "
+                                                    <input class="form-control initial-balance-input dollarPrice m-0"
                                                         data-key="{{ $key }}" type="text"
                                                         wire:model="items.{{ $key }}.dollar_price"
                                                         style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece" />
@@ -651,7 +676,7 @@
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                     <input
                                                         style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece"
-                                                        class="form-control p-1 initial-balance-input text-center ex-rate-cell"
+                                                        class="form-control m-0 p-1 initial-balance-input text-center ex-rate-cell"
                                                         type="text" min="1"
                                                         wire:model="items.{{ $key }}.exchange_rate">
                                                     @php
@@ -668,44 +693,53 @@
                                             <td @if (!$columnVisibility['discount']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
                                                 style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right">
-                                                <input class="form-control initial-balance-input p-1 text-center"
-                                                    style="width:60px;border: 2px solid #cecece" type="text"
-                                                    min="1" readonly
-                                                    wire:model="items.{{ $key }}.discount_price">
+                                                <div style="height: 100%;max-width: 100%;"
+                                                    class="d-flex flex-wrap justify-content-center align-items-center text-center">
+                                                    <input
+                                                        class="form-control initial-balance-input m-0 p-1 text-center"
+                                                        style="width:60px;border: 2px solid #cecece" type="text"
+                                                        min="1" readonly
+                                                        wire:model="items.{{ $key }}.discount_price">
+                                                </div>
                                             </td>
 
                                             <td @if (!$columnVisibility['discount_category']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
                                                 style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <div class="input-wrapper" style="width: 100%">
-                                                    <select class="form-control select2 discount_category "
-                                                        style="width:100%;font-size:14px;"
-                                                        wire:model="items.{{ $key }}.discount"
-                                                        data-name="discount" data-index="{{ $key }}"
-                                                        wire:change="subtotal({{ $key }},'discount')">
-                                                        <option selected value="0">@lang('lang.select')</option>
-                                                        @if (!empty($item['discount_categories']))
-                                                            @if (!empty($client_id))
-                                                                @foreach ($item['discount_categories'] as $discount)
-                                                                    @if ($discount['price_category'] !== null)
-                                                                        {{--                                                                        @if (in_array($client_id, $discount['price_customer_types'])) --}}
+                                                <div class="d-flex flex-wrap justify-content-center align-items-center text-center"
+                                                    style="height: 100%;max-width: 100%;">
+
+                                                    <div class="input-wrapper" style="width: 100%">
+                                                        <select class="form-control select2 discount_category "
+                                                            style="width:100%;font-size:14px;"
+                                                            wire:model="items.{{ $key }}.discount"
+                                                            data-name="discount" data-index="{{ $key }}"
+                                                            wire:change="subtotal({{ $key }},'discount')">
+                                                            <option selected value="0">@lang('lang.select')</option>
+                                                            @if (!empty($item['discount_categories']))
+                                                                @if (!empty($client_id))
+                                                                    @foreach ($item['discount_categories'] as $discount)
+                                                                        @if ($discount['price_category'] !== null)
+                                                                            {{--                                                                        @if (in_array($client_id, $discount['price_customer_types'])) --}}
+                                                                            <option value="{{ $discount['id'] }}">
+                                                                                {{ $discount['price_category'] }}
+                                                                            </option>
+                                                                        @endif
+                                                                    @endforeach
+                                                                @else
+                                                                    @foreach ($item['discount_categories'] as $discount)
+                                                                        {{-- @if ($discount['price_category'] !== null) --}}
                                                                         <option value="{{ $discount['id'] }}">
-                                                                            {{ $discount['price_category'] }}
+                                                                            {{ $discount['price_category'] ?? '' }}
                                                                         </option>
-                                                                    @endif
-                                                                @endforeach
-                                                            @else
-                                                                @foreach ($item['discount_categories'] as $discount)
-                                                                    {{-- @if ($discount['price_category'] !== null) --}}
-                                                                    <option value="{{ $discount['id'] }}">
-                                                                        {{ $discount['price_category'] ?? '' }}
-                                                                    </option>
-                                                                    {{-- @endif --}}
-                                                                @endforeach
+                                                                        {{-- @endif --}}
+                                                                    @endforeach
+                                                                @endif
                                                             @endif
-                                                        @endif
-                                                    </select>
+                                                        </select>
+                                                    </div>
                                                 </div>
+
                                             </td>
 
                                             <td @if (!$columnVisibility['sub_total']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
