@@ -403,7 +403,7 @@ return array(
     'attendance_list' => 'قائمة الحضور',
     'add_row' => 'اضافة سطر',
     'customer' => 'عميل',
-    'add_payment' => 'إضافة دفع',
+    'add_payment' => 'إضافة دفعة',
     'color' => 'لون',
     'money_safe' => 'الخزيتة',
     'statement' => 'إفادة',
@@ -862,4 +862,9 @@ return array(
     'product_n' => 'اسم المنتج',
     'recieve_date' => 'تاريخ الاستلام',
     'select' => 'اختر',
+    'customer_balance_adjustment' => 'تعديل رصيد العميل',
+    'add_new_balance' => 'إضافة رصيد جديد',
+    'new_balance' => 'الرصيد الجديد',
+    'current_balance' => 'الرصيد الحالي',
+    'adjust_customer_balance' => 'ضبط رصيد العميل',
 );

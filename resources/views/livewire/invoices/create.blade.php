@@ -97,7 +97,7 @@
                         $invoice_status,
                         [
                             'class' => 'select2 form-control',
-                            'data-name' => 'store_pos_id',
+                            'data-name' => 'invoice_status',
                             'data-live-search' => 'true',
                             'required',
                             'placeholder' => __('lang.please_select'),

@@ -233,7 +233,7 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.balance_in_dinar')">
-                                                                {{ $customer->balance_in_dinar }}
+                                                                {{ $customer->balance }}
                                                             </span>
                                                         </td>
                                                         <td class="col12 dollar-cell">
@@ -241,7 +241,7 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.balance_in_dollar')">
-                                                                {{ $customer->balance_in_dollar }}
+                                                                {{ $customer->dollar_balance }}
                                                             </span>
                                                         </td>
                                                         <td class="col13">
