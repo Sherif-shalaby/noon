@@ -757,6 +757,13 @@ return [
     'piece_discount'=>'Piece Discount',
     'total_discount'=>'Total Discount',
     'recieve_date'=>'Recieving Date',
+    'customer_balance_adjustment' => 'Customer Balance Adjustment',
+    'add_new_balance' => 'Add New Balance',
+    'new_balance' => 'New Balance',
+    'current_balance' => 'Current Balance',
+    'adjust_customer_balance' => 'Adjust Customer Balance',
+
+
 ];
 
 

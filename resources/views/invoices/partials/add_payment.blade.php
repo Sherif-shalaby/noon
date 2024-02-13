@@ -3,7 +3,7 @@
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
 
-            {!! Form::open(['url' => route('pos-pay.store'), 'method' => 'post', 'id' => 'add_payment_form', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['url' => route('store_payment'), 'method' => 'post', 'id' => 'add_payment_form', 'enctype' => 'multipart/form-data']) !!}
 
             <div class="modal-header">
 
@@ -19,24 +19,11 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('amount', __('lang.amount') . ':*', []) !!} <br>
-                            {{-- @if ($balance > 0 && $balance < $transaction->final_total - $transaction->transaction_payments->sum('amount'))
-                        @if (isset($transaction->return_parent)) --}}
                             {!! Form::text('amount', @num_format($amount), [
                                 'id' => 'amount_pay',
                                 'class' => 'form-control',
                                 'placeholder' => __('lang.amount'),
                             ]) !!}
-                            {{-- @else 
-                        {!! Form::text('amount', @num_format($transaction->final_total - $transaction->transaction_payments->sum('amount')-$balance), ['class' => 'form-control', 'placeholder' => __('lang.amount')]) !!}
-                        @endif 
-                         @else 
-                        @if (isset($transaction->return_parent))
-                        
-                        {!! Form::text('amount', @num_format($transaction->final_total - $transaction->transaction_payments->sum('amount') - $transaction->return_parent->final_total), ['class' => 'form-control', 'placeholder' => __('lang.amount')]) !!}
-                        @else 
-                        {!! Form::text('amount', @num_format($transaction->final_total - $transaction->transaction_payments->sum('amount')), ['class' => 'form-control', 'placeholder' => __('lang.amount')]) !!}
-                        @endif 
-                        @endif --}}
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -47,7 +34,7 @@
                                 'class' => 'form-control',
                                 'placeholder' => __('lang.amount').'$',
                             ]) !!}
-                  
+
                         </div>
                     </div>
 
@@ -62,7 +49,18 @@
                             ]) !!}
                         </div>
                     </div>
-
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
+                            {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], null, ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),'wire:model'=> 'source_type']) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
+                            {!! Form::select('source_id', $users, null, ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'id' => 'source_id']) !!}
+                        </div>
+                    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('paid_on', __('lang.payment_date') . ':', []) !!} <br>
@@ -175,7 +173,7 @@
     $(document).ready(function() {
         // var pageTitle = window.location.pathname;
         // console.log(pageTitle);
-      
+
         // $('#submit_form_button').click(function() {
         //     $('#add_payment_form').submit();
         // });
@@ -186,7 +184,7 @@
         //     e.preventDefault();
 
         //     var formData = new FormData($(this)[0]);
-        //     let submitButton = $("#submit_form_button"); 
+        //     let submitButton = $("#submit_form_button");
         //     if (!updateadd_payment_formClicked) {
         //         console.log('dae')
         //         $.ajax({
@@ -198,7 +196,7 @@
         //             success: function(response) {
         //                 // Handle success response here
         //                 console.log(response);
-                    
+
         //                 $('#add_payment_form')[0].reset();
         //                 $('#close_modal_button').click();
         //                 $('#sales_table').DataTable().ajax.reload();
@@ -235,7 +233,7 @@
                 $('.change').text(change.toFixed(2));
                 $(document).on("click", ".add_to_customer_balance", function () {
                     $('.change').text(change.toFixed(2)); // Update the change value
-                    
+
                     // if ($('.payment_way').val() !== 'deposit') {
                         $('.add_to_customer_balance_in').val(change.toFixed(2));
                         console.log($('#add_to_customer_balance').val());
@@ -293,5 +291,5 @@
         }
     })
 
-     
+
 </script>

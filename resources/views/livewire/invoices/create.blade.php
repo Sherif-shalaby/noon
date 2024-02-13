@@ -157,7 +157,7 @@
                         <div class="form-group">
                             {!! Form::label('invoice_status', __('lang.invoice') . ':*', []) !!}
                             {!! Form::select('invoice_status', ['monetary' => __('lang.monetary') , 'deferred_time' => __('lang.deferred_time')], $invoice_status,
-                            ['class' => 'select2 form-control','data-name'=>'store_pos_id', 'data-live-search' => 'true', 'required',
+                            ['class' => 'select2 form-control','data-name'=>'invoice_status', 'data-live-search' => 'true', 'required',
                             'placeholder' => __('lang.please_select'), 'wire:model' => 'invoice_status']) !!}
                             @error('store_pos_id')
                             <span class="error text-danger">{{ $message }}</span>

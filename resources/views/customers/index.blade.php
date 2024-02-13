@@ -269,8 +269,8 @@
                                             <td class="col8">{{ $customer->max_amount_in_dinar }}</td>
                                             <td class="col9">{{ $customer->min_amount_in_dollar }}</td>
                                             <td class="col10">{{ $customer->max_amount_in_dollar }}</td>
-                                            <td class="col11">{{ $customer->balance_in_dinar }}</td>
-                                            <td class="col12">{{ $customer->balance_in_dollar }}</td>
+                                            <td class="col11">{{ $customer->balance }}</td>
+                                            <td class="col12">{{ $customer->dollar_balance }}</td>
                                             <td class="col13">{{$customer->added_balance}}</td>
                                             <td class="col14">{{$customer->added_balance}}</td>
                                             <td class="col15">{{$customer->added_balance}}</td>
@@ -320,6 +320,12 @@
                                                                 <a data-href="{{route('customers.destroy', $customer->id)}}"
                                                                     class="btn text-red delete_item"><i class="fa fa-trash"></i>
                                                                     @lang('lang.delete')</a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li>
+                                                            <a href="{{route('customer-balance-adjustment.create', ['customer_id' => $customer->id])}}" class="btn" target="_blank">
+                                                                <i class="fa fa-adjust"></i>
+                                                                @lang('lang.adjust_customer_balance')</a>
                                                         </li>
                                                     </ul>
                                                 </div>

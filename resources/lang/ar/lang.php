@@ -412,7 +412,7 @@ return array(
     'attendance_list' => 'قائمة الحضور',
     'add_row' => 'اضافة سطر' ,
     'customer' => 'عميل',
-    'add_payment' => 'إضافة دفع',
+    'add_payment' => 'إضافة دفعه',
     'color'=>'لون',
     'money_safe'=>'الخزيتة',
     'statement' => 'إفادة',
@@ -837,6 +837,10 @@ return array(
     'piece_discount'=>'خصم القطعة',
     'total_discount'=>'خصم على الكلى',
     'recieve_date' => 'تاريخ الاستلام',
-
- );
+    'customer_balance_adjustment' => 'تعديل رصيد العميل',
+    'add_new_balance' => 'إضافة رصيد جديد',
+    'new_balance' => 'الرصيد الجديد',
+    'current_balance' => 'الرصيد الحالي',
+    'adjust_customer_balance' => 'ضبط رصيد العميل',
+);
 
