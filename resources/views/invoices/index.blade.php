@@ -1,3 +1,42 @@
+@extends('layouts.app')
+@section('title', __('lang.initial_balance'))
+
+
+@push('css')
+    <style>
+        .table-top-head {
+            top: 280px !important;
+        }
+
+        .wrapper1 {
+            margin-top: 25px;
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 280px !important
+            }
+
+            .wrapper1 {
+                margin-top: 110px !important;
+            }
+        }
+    </style>
+@endpush
+
+@section('page_title')
+    @lang('lang.sells')
+@endsection
+
+@section('breadcrumbs')
+    @parent
+
+    <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active" aria-current="page"
+        style="text-decoration: none;color: #596fd7">/@lang('lang.sells')</li>
+@endsection
+
+@section('content')
+
     {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
     <div class="animate-in-page">
         <!-- Start Contentbar -->
@@ -122,9 +161,8 @@
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.select_to_delete')">
-                                                                    <input type="checkbox"
-                                                                        name="invoice_selected_delete" class="box1"
-                                                                        value="{{ $line->id }}" />
+                                                                    <input type="checkbox" name="invoice_selected_delete"
+                                                                        class="box1" value="{{ $line->id }}" />
                                                                 </span>
                                                             </td>
                                                             <td class="col5">
@@ -394,8 +432,8 @@
 
             {{-- ++++++++++++++++++++++++++++++++++ "delete_all" Modal Form ++++++++++++++++++++++++++++++++++ --}}
             <!-- حذف مجموعة صفوف -->
-            <div class="modal fade" id="delete_all" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="delete_all" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -426,85 +464,87 @@
             </div>
         </div>
     </div>
-    <!-- End Contentbar -->
-    <div class="view_modal no-print"></div>
-    <section class="invoice print_section print-only" id="receipt_section"> </section>
 
-    @push('javascripts')
-        <script>
-            document.addEventListener('livewire:load', function() {
-                Livewire.on('printInvoice', function(htmlContent) {
-                    // Set the generated HTML content
-                    $("#receipt_section").html(htmlContent);
-                    // Trigger the print action
-                    window.print("#receipt_section");
-                });
-            });
-            $(document).on("click", ".print-invoice", function() {
-                // $(".modal").modal("hide");
-                $.ajax({
-                    method: "get",
-                    url: $(this).data("href"),
-                    data: {},
-                    success: function(result) {
-                        if (result.success) {
-                            Livewire.emit('printInvoice', result.html_content);
-                        }
-                    },
-                });
-            });
-        </script>
-        <script>
-            // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
-            $(".checkbox_class2:not(:checked)").each(function() {
-                var column = "table ." + $(this).attr("name");
-                $(column).hide();
-            });
+@endsection
+<!-- End Contentbar -->
+<div class="view_modal no-print"></div>
+<section class="invoice print_section print-only" id="receipt_section"> </section>
 
-            $(".checkbox_class2").click(function() {
-                var column = "table ." + $(this).attr("name");
-                $(column).toggle();
+@push('javascripts')
+    <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('printInvoice', function(htmlContent) {
+                // Set the generated HTML content
+                $("#receipt_section").html(htmlContent);
+                // Trigger the print action
+                window.print("#receipt_section");
             });
-            // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
-            var expanded = false;
+        });
+        $(document).on("click", ".print-invoice", function() {
+            // $(".modal").modal("hide");
+            $.ajax({
+                method: "get",
+                url: $(this).data("href"),
+                data: {},
+                success: function(result) {
+                    if (result.success) {
+                        Livewire.emit('printInvoice', result.html_content);
+                    }
+                },
+            });
+        });
+    </script>
+    <script>
+        // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
+        $(".checkbox_class2:not(:checked)").each(function() {
+            var column = "table ." + $(this).attr("name");
+            $(column).hide();
+        });
 
-            function showCheckboxes() {
-                var checkboxes = document.getElementById("checkboxes");
-                if (!expanded) {
-                    checkboxes.style.display = "block";
-                    expanded = true;
-                } else {
-                    checkboxes.style.display = "none";
-                    expanded = false;
+        $(".checkbox_class2").click(function() {
+            var column = "table ." + $(this).attr("name");
+            $(column).toggle();
+        });
+        // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
+        var expanded = false;
+
+        function showCheckboxes() {
+            var checkboxes = document.getElementById("checkboxes");
+            if (!expanded) {
+                checkboxes.style.display = "block";
+                expanded = true;
+            } else {
+                checkboxes.style.display = "none";
+                expanded = false;
+            }
+        }
+    </script>
+    <script>
+        // +++++++++++++ select all "checkboxes" +++++++++++++++
+        function CheckAll(className, elem) {
+            var elements = document.getElementsByClassName(className);
+            var l = elements.length;
+            if (elem.checked) {
+                for (var i = 0; i < l; i++) {
+                    elements[i].checked = true;
+                }
+            } else {
+                for (var i = 0; i < l; i++) {
+                    elements[i].checked = false;
                 }
             }
-        </script>
-        <script>
-            // +++++++++++++ select all "checkboxes" +++++++++++++++
-            function CheckAll(className, elem) {
-                var elements = document.getElementsByClassName(className);
-                var l = elements.length;
-                if (elem.checked) {
-                    for (var i = 0; i < l; i++) {
-                        elements[i].checked = true;
-                    }
-                } else {
-                    for (var i = 0; i < l; i++) {
-                        elements[i].checked = false;
-                    }
-                }
-            }
-            // ++++++++++ When click on "delete_all selected" , get "all selected rows" and delete them ++++++++++++
-            $("#btn_delete_all").click(function() {
-                console.log("+++++++++++ Delete All Btn ++++++++++++++++++++++");
-                var selected = new Array();
-                $("#datatable-buttons input[type=checkbox]:checked").each(function() {
-                    selected.push(this.value);
-                });
-                if (selected.length > 0) {
-                    $('#delete_all').modal('show')
-                    $('input[id="delete_all_id"]').val(selected);
-                }
+        }
+        // ++++++++++ When click on "delete_all selected" , get "all selected rows" and delete them ++++++++++++
+        $("#btn_delete_all").click(function() {
+            console.log("+++++++++++ Delete All Btn ++++++++++++++++++++++");
+            var selected = new Array();
+            $("#datatable-buttons input[type=checkbox]:checked").each(function() {
+                selected.push(this.value);
             });
-        </script>
-    @endpush
+            if (selected.length > 0) {
+                $('#delete_all').modal('show')
+                $('input[id="delete_all_id"]').val(selected);
+            }
+        });
+    </script>
+@endpush
