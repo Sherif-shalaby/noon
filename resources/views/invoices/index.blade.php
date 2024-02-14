@@ -73,7 +73,7 @@
                                             <tbody>
 
                                                 @foreach ($sell_lines as $index => $line)
-                                                    @if (isset($toggle_dollar == 1) &&
+                                                    @if (isset($toggle_dollar) &&
                                                             $toggle_dollar == 1 &&
                                                             ($line->dollar_final_total != 0 || $line->transaction_payments->sum('dollar_amount') != 0))
                                                         @continue
@@ -458,7 +458,7 @@
                 });
             });
         </script>
-        {{-- <script>
+        <script>
             // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
             $(".checkbox_class2:not(:checked)").each(function() {
                 var column = "table ." + $(this).attr("name");
@@ -482,7 +482,7 @@
                     expanded = false;
                 }
             }
-        </script> --}}
+        </script>
         <script>
             // +++++++++++++ select all "checkboxes" +++++++++++++++
             function CheckAll(className, elem) {
