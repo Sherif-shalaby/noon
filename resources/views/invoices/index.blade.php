@@ -392,10 +392,6 @@
                 </div>
             </div>
 
-            <!-- End col -->
-
-            <!-- End row -->
-
             {{-- ++++++++++++++++++++++++++++++++++ "delete_all" Modal Form ++++++++++++++++++++++++++++++++++ --}}
             <!-- حذف مجموعة صفوف -->
             <div class="modal fade" id="delete_all" tabindex="-1" role="dialog"
