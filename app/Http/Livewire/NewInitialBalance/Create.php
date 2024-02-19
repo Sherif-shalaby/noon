@@ -1135,7 +1135,8 @@ class Create extends Component
             $this->rows[$index]['prices'][$key]['percent'] = $this->rows[$index - 1]['prices'][$key]['percent'];
             if ($this->rows[$index]['prices'][$key]['percent'] != null) {
                 $this->changePercent($index, $key);
-            } else if(!empty($this->rows[$index]['prices'][$key]['dinar_increase'])|| !empty($this->rows[$index]['prices'][$key]['dollar_increase'])) {
+            }
+            else if(!empty($this->rows[$index - 1]['prices'][$key]['dinar_increase'])|| !empty($this->rows[$index - 1]['prices'][$key]['dollar_increase'])) {
                 $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->rows[$index - 1]['prices'][$key]['dinar_increase']) / $this->num_uf($fill), num_of_digital_numbers());
                 $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->rows[$index - 1]['prices'][$key]['dollar_increase']) / $this->num_uf($fill), num_of_digital_numbers());
                 if ($this->transaction_currency != 2) {
@@ -1143,18 +1144,17 @@ class Create extends Component
                     $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($dinar_sell_price, num_of_digital_numbers());
                     $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($dinar_sell_price / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                 }else{
-
                     $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) + ($this->num_uf($this->rows[$index]['purchase_price'])*$this->num_uf($this->exchange_rate)), num_of_digital_numbers());
 //                    dd($this->rows[$index][]);
                     $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($this->rows[$index]['purchase_price']) + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), num_of_digital_numbers());
                 }
                 // $this->changeIncrease($index, $key);
-            }else{
-                $this->rows[$index]['prices'][$key]['dinar_increase']=$this->rows[$index-1]['prices'][$key]['dinar_increase'];
-                $this->rows[$index]['prices'][$key]['dollar_increase']=$this->rows[$index-1]['prices'][$key]['dollar_increase'];
+            }
+            else{
+                $this->rows[$index]['prices'][$key]['dinar_increase']=$this->rows[$index-1]['prices'][$key]['dinar_increase'] ?? 0;
+                $this->rows[$index]['prices'][$key]['dollar_increase']=$this->rows[$index-1]['prices'][$key]['dollar_increase'] ?? 0;
                 $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($this->num_uf($this->rows[$index - 1]['prices'][$key]['dinar_sell_price']) / $this->num_uf($fill), num_of_digital_numbers());
                 $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($this->rows[$index - 1]['prices'][$key]['dollar_sell_price']) / $this->num_uf($fill), num_of_digital_numbers());
-
             }
         }
     }
