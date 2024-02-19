@@ -374,7 +374,7 @@
                         <div class="row dimensions {{ $show_dimensions == 0 ? 'd-none' : '' }}">
                             <div class="col-md-2">
                                 {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                <input type="text" wire:model='item.0.weight' wire:change='changeSize()'
+                                <input type="text" wire:model='item.0.weight'
                                     class='form-control weight' />
                                 <br>
                                 @error('item.0.weight')
@@ -747,7 +747,7 @@
                         </div>
                     {{-- </div> --}}
                 </div>
-              
+
             </div>
         </div>
     </div>
