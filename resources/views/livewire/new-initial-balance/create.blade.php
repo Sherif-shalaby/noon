@@ -828,7 +828,7 @@
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         ]) !!}
                                         <input type="text" wire:model='item.0.weight'
-                                            placeholder="{{ __('lang.weight') }}" wire:change='changeSize()'
+                                            placeholder="{{ __('lang.weight') }}"
                                             class='form-control weight initial-balance-input m-0'
                                             style="border:2px solid #ccc;width: 75px;font-size:12px" />
 
