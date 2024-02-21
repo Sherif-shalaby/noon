@@ -282,6 +282,9 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div>
+                                <input type="file" wire:model="image" id="imageInput">
+                            </div>
                             {{-- ++++++++++++++++++++++++++++ customers Dropdown ++++++++++++++++++++++++++++ --}}
                             @if (!empty($toggle_customers_dropdown))
                                 <div class="col-md-3">
@@ -751,7 +754,6 @@
             </div>
         </div>
     </div>
-
 </section>
 {{-- <!-- This will be printed --> --}}
 <div class="view_modal no-print"></div>
