@@ -1042,3 +1042,11 @@ thead tr {
 #toTopBtn:hover {
     background-color: #7489e8;
 }
+
+.file-input__label:hover i {
+    animation: bounceUpDown 0.5s ease-in-out;
+}
+
+.file-input__label i {
+    transition: 0.4s;
+}

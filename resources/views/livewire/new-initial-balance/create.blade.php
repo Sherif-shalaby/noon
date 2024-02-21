@@ -319,6 +319,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="file" wire:model="image" id="imageInput" style="width: 205px" />
+                                    <label class="file-input__label animate__animated  animate__bounceInLeft mx-3"
+                                        for="imageInput"
+                                        style="width: 30px;height: 30px;margin-top: 16px;color:white !important">
+                                        <i class="fas fa-camera"></i>
+                                    </label>
+                                </div>
                             </div>
                         </div>
 

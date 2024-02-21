@@ -20,6 +20,7 @@ use App\Models\AddStockLine;
 use App\Models\CustomerType;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use App\Models\VariationPrice;
 use App\Models\ProductDimension;
@@ -31,6 +32,8 @@ use Illuminate\Support\Facades\Auth;
 class Create extends Component
 {
     use WithPagination;
+    use WithFileUploads;
+
     public $item = [
         [
             'id',
@@ -100,7 +103,8 @@ class Create extends Component
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $variationSums = [], $customer_types = [],
         $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $units = [],
         $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [];
-    public $rows = [], $toggle_customers_dropdown, $customer_id, $variationStoreSums, $variationFillStoreSums, $toggle_suppliers;
+    public $rows = [], $toggle_customers_dropdown, $customer_id, $variationStoreSums, $variationFillStoreSums, $toggle_suppliers,
+        $image, $croppedImage;
     public function messages()
     {
         return [
@@ -290,7 +294,6 @@ class Create extends Component
         );
     }
 
-
     public function setSubCategoryValue($value)
     {
 
@@ -419,14 +422,6 @@ class Create extends Component
     }
     public function store()
     {
-        // dd($this->stores);
-        //for variation valid sku
-        // if ($this->item[0]['isExist'] == 1) {
-        //     $product = Product::find($this->item[0]['id']);
-        //     $product->variations()->forceDelete();
-        // }
-        //////////
-        // $this->validate();
         $this->updatedInputs();
         try {
             if (empty($this->rows)) {
@@ -462,6 +457,12 @@ class Create extends Component
                     $product->method = !empty($this->item[0]['method']) ? $this->item[0]['method'] : null;
                     $product->product_symbol = $this->item[0]['product_symbol'];
                     $product->balance_return_request = !empty($this->item[0]['balance_return_request']) ? $this->num_uf($this->item[0]['balance_return_request']) : 0;
+                    if (isset($this->image) && !is_null($this->image)) {
+                        $name = time() . $this->image->getClientOriginalName();
+                        $path = $this->image->storeAs('products', $name, 'uploads');
+                        $imageName = pathinfo($path, PATHINFO_BASENAME);
+                        $product->image = $imageName;
+                    }
                     $product->save();
                     if (!empty($this->item[0]['product_tax_id'])) {
                         ProductTax::create([
@@ -521,7 +522,7 @@ class Create extends Component
             }
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
-            //             dd($e);
+            dd($e);
         }
     }
     public function saveTransaction($product_id, $variations = [])
@@ -1073,7 +1074,6 @@ class Create extends Component
             }
         }
     }
-
 
     public function stayShow()
     {
