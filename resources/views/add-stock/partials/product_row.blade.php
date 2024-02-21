@@ -10,7 +10,7 @@
                 'data-live-search' => 'true',
                 'required' => 'required',
                 'wire:model' => 'items.' . $index . '.used_currency',
-                'wire:input'=>"convertPurchasePrice($index)"
+                'wire:change'=>"convertPurchasePrice($index)"
 
             ]) !!}
             @error('items.'.$index.'.used_currency')
@@ -119,15 +119,15 @@
     </td>
     <td class="{{$items[$index]['discount_type']!="1"?'d-none':''}}">
         <div class="input-group-prepend">
-            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="%">
-            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="amount">
+            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:change="changePurchasePrice({{ $index }})" placeholder="%">
+            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount" style="width: 100px;" wire:change="changePurchasePrice({{ $index }})" placeholder="amount">
         </div>
         <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount_percent']),num_of_digital_numbers())  }} $ </span>
         <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount']),num_of_digital_numbers())  }} $</span>
         <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}" id="discount_on_bonus_quantity_{{ $index }}"
                    wire:model="items.{{ $index }}.discount_on_bonus_quantity"
-                   wire:input="changePurchasePrice({{ $index }})" style="font-size: 0.75rem" value="true">
+                   wire:change="changePurchasePrice({{ $index }})" style="font-size: 0.75rem" value="true">
             <label class="custom-control-label" for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_from_original_price')</label>
         </div>
     </td>

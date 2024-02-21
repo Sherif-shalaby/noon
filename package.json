@@ -17,6 +17,7 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
+        "cropperjs": "^1.6.1",
         "select2": "^4.1.0-rc.0"
     }
 }
