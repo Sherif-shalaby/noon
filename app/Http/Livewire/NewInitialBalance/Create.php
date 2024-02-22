@@ -1238,6 +1238,7 @@ class Create extends Component
     }
     public function changePrice($index, $via = 'price')
     {
+//        dd($index);
         $fill_id = $this->prices[$index]['fill_id'];
         $row_index = $this->getKey($fill_id) ?? null;
         $actual_price = 0;
@@ -1290,7 +1291,6 @@ class Create extends Component
                         $dollar_price = number_format($this->num_uf($this->prices[$index]['dinar_price']) / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                     }
                     $this->prices[$index]['price'] = $this->num_uf($dollar_price);
-                    // dd($sell_price);
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($this->num_uf($sell_price) - $this->num_uf($this->prices[$index]['dinar_price']), num_of_digital_numbers());
                     $this->prices[$index]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) - $this->num_uf($this->prices[$index]['price']), num_of_digital_numbers());
                 } else {

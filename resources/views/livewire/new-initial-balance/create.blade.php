@@ -560,7 +560,7 @@
                                             placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                             @if (empty($prices[$key]['price_type'])) readonly @endif>
                                         <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
-                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price'] ?? '' }}
+                                            {{ $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') . ' $' }} : {{ $this->prices[$key]['price'] ?? '' }}
                                         </p>
                                     </div>
                                     <div class="col-md-1">
@@ -571,7 +571,7 @@
                                             wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                             placeholder = "{{ __('lang.price') }}">
                                         <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
-                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price_after_desc'] ?? '' }}
+                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$key]['price_after_desc'] ?? '' }}
                                         </p>
                                     </div>
                                     <div class="col-md-1">
