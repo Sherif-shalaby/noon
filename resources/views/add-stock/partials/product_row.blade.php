@@ -314,8 +314,8 @@
                     name="discount_on_bonus_quantity{{ $index }}"
                     id="discount_on_bonus_quantity_{{ $index }}"
                     wire:model="items.{{ $index }}.discount_on_bonus_quantity"
-                    wire:change="changePurchasePrice({{ $index }})" style="font-size: 0.75rem"
-                    value="true">
+                    wire:change="changePurchasePrice({{ $index }},null,null,'discount')"
+                    style="font-size: 0.75rem" value="true">
                 <label class="custom-control-label"
                     for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_from_original_price')</label>
             </div>

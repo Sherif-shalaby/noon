@@ -140,6 +140,10 @@
                                     wire:model="items.{{ $index }}.prices.{{ $key }}.price"
                                     wire:input="changePrice({{ $index }}, {{ $key }})"
                                     placeholder = "{{ !empty($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}">
+                                <p class="{{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                    {{ $price['price_type'] == 'fixed' ? __('lang.amount') . ' $' : __('lang.percent') . ' $' }}
+                                    : {{ $this->items[$index]['prices'][$key]['dollar_price'] ?? '' }}
+                                </p>
                             </div>
 
                             <div style="width: 80px;padding:0;margin:0;font-size: 12px;"
@@ -149,6 +153,9 @@
                                     class="form-control initial-balance-input width-full mt-0 price"
                                     wire:model="items.{{ $index }}.prices.{{ $key }}.price_after_desc"
                                     placeholder = "{{ __('lang.price') }}">
+                                <p class="{{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                    {{ __('lang.price') . '$' }}:{{ $this->items[$index]['prices'][$key]['dollar_price_after_desc'] ?? '' }}
+                                </p>
                             </div>
 
                             <div style="width: 80px;padding:0;margin:0;font-size: 12px;"
@@ -189,7 +196,9 @@
                                     class="form-control initial-balance-input width-full mt-0 total_price"
                                     wire:model="items.{{ $index }}.prices.{{ $key }}.total_price"
                                     placeholder = "{{ __('lang.total_price') }}">
-
+                                <p class="{{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                    {{ __('lang.total_price') . '$' }}:{{ $this->items[$index]['prices'][$key]['dollar_total_price'] ?? '' }}
+                                </p>
                             </div>
 
                             <div style="width: 80px;padding:0;margin:0;font-size: 12px;"
@@ -202,6 +211,9 @@
                                     class="form-control initial-balance-input width-full mt-0 piece_price"
                                     wire:model="items.{{ $index }}.prices.{{ $key }}.piece_price"
                                     placeholder = "{{ __('lang.total_price') }}">
+                                <p class="{{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                    {{ __('lang.piece_price') . '$' }}:{{ $this->items[$index]['prices'][$key]['dollar_piece_price'] ?? '' }}
+                                </p>
 
                             </div>
 

@@ -1055,11 +1055,11 @@
                                                 <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                                     style="font-weight:500;font-size:10px;">
                                                     <span>
-                                                        {{ __('lang.price') . ' $' }}
+                                                        {{ $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') . ' $' }}
                                                     </span>
                                                     :
                                                     <span>
-                                                        {{ $this->prices[$index]['price'] ?? '' }}
+                                                        {{ $this->prices[$key]['price'] ?? '' }}
                                                     </span>
                                                 </p>
                                             </div>
@@ -1082,7 +1082,7 @@
                                                     </span>
                                                     :
                                                     <span>
-                                                        {{ $this->prices[$index]['price_after_desc'] ?? '' }}
+                                                        {{ $this->prices[$key]['price_after_desc'] ?? '' }}
                                                     </span>
                                                 </p>
                                             </div>
