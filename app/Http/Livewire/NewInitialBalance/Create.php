@@ -1238,7 +1238,6 @@ class Create extends Component
     }
     public function changePrice($index, $via = 'price')
     {
-//        dd($index);
         $fill_id = $this->prices[$index]['fill_id'];
         $row_index = $this->getKey($fill_id) ?? null;
         $actual_price = 0;

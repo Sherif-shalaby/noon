@@ -1282,7 +1282,8 @@ class Create extends Component
             if (!empty($customers_price)) {
                 foreach ($customers_price  as $type) {
                     if ($type['customer_type_id'] == $customer_type) {
-                        $sell_price = ($this->items[$index]['used_currency'] == 2) ? $type['dollar_sell_price'] : $type['dinar_sell_price'];
+                        $sell_price =  $type['dinar_sell_price'];
+                        $dollar_sell_price = $type['dollar_sell_price'] ;
                     }
                 }
                 if (!empty($sell_price)) {
@@ -1291,21 +1292,38 @@ class Create extends Component
                         if (empty($discount_from_original_price) && !empty($this->items[$index]['prices'][$key]['discount_quantity'])) {
                             $total_sell_price = $sell_price * $this->items[$index]['prices'][$key]['discount_quantity'];
                             $sell_price = $total_sell_price / $total_quantity;
+                            $dollar_total_sell_price = $dollar_sell_price * $this->items[$index]['prices'][$key]['discount_quantity'];
+                            $dollar_sell_price = $dollar_total_sell_price / $total_quantity;
                         }
                         if ($this->items[$index]['prices'][$key]['price_type'] == 'fixed') {
+                            if ($this->items[$index]['used_currency'] == 2){
+                                $actual_price = $this->num_uf($this->items[$index]['prices'][$key]['price']);
+                                $this->items[$index]['prices'][$key]['price'] = $actual_price * $this->num_uf($this->exchange_rate);
+                                $this->items[$index]['prices'][$key]['dollar_price'] = $actual_price;
+                            }
+                            else{
+                                $this->items[$index]['prices'][$key]['dollar_price'] =  $this->items[$index]['prices'][$key]['price'] / $this->num_uf($this->exchange_rate);
+                            }
                             $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)$sell_price -  (float)$this->items[$index]['prices'][$key]['price'], 3);
+                            $this->items[$index]['prices'][$key]['dollar_price_after_desc'] = number_format((float)$dollar_sell_price -  (float)$this->items[$index]['prices'][$key]['dollar_price'], 3);
                         } elseif ($this->items[$index]['prices'][$key]['price_type'] == 'percentage') {
                             $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
+                            $this->items[$index]['prices'][$key]['dollar_price'] = $this->items[$index]['prices'][$key]['price'];
                             $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($sell_price - $percent), num_of_digital_numbers());
+                            $this->items[$index]['prices'][$key]['dollar_price_after_desc'] = number_format((float)($dollar_sell_price - $percent), num_of_digital_numbers());
                         }
                     }
                     $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
                     if (empty($discount_from_original_price)) {
                         $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->items[$index]['prices'][$key]['discount_quantity'] : 1), num_of_digital_numbers());
                         $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $total_quantity : 1), num_of_digital_numbers());
+                        $this->items[$index]['prices'][$key]['dollar_total_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price']) / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
+                        $this->items[$index]['prices'][$key]['dollar_piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['piece_price']) / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                     } else {
                         $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1), num_of_digital_numbers());
                         $this->items[$index]['prices'][$key]['piece_price'] = number_format((float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1), num_of_digital_numbers());
+                        $this->items[$index]['prices'][$key]['dollar_total_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price']) / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
+                        $this->items[$index]['prices'][$key]['dollar_piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['piece_price']) / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                     }
                 }
             }
@@ -1899,11 +1917,8 @@ class Create extends Component
             }
         }
         else {
-//            if($by == null){
 //                $this->items[$index]['dollar_purchase_discount'] = null;
 //                $this->items[$index]['dollar_purchase_discount_percent'] = null;
-//            }
-//            dd( $this->items[$index]['dollar_purchase_discount'],$this->items[$index]['dollar_purchase_discount_percent']);
             if (!empty($this->items[$index]['purchase_discount']) || !empty($this->items[$index]['purchase_discount_percent'])) {
                 // discount_on_bonus_quantity => true (خصم من السعر الأصلي)
                 if ($this->items[$index]['discount_on_bonus_quantity']) {
@@ -1916,9 +1931,14 @@ class Create extends Component
                 }
                 if (isset($this->items[$index]['purchase_discount']) && $this->items[$index]['purchase_discount'] != null) {
                     if ($this->items[$index]['used_currency'] == 2) {
-                        $actual_price = $this->items[$index]['purchase_discount'];
-                        $this->items[$index]['dollar_purchase_discount'] = $actual_price;
-                        $this->items[$index]['purchase_discount'] = $this->num_uf($actual_price) * $this->num_uf($this->exchange_rate);
+                        if(!empty($this->items[$index]['purchase_discount']) && $by == 'discount'){
+//                            $this->items[$index]['dollar_purchase_discount']
+                        }
+                        else{
+                            $actual_price = $this->items[$index]['purchase_discount'];
+                            $this->items[$index]['dollar_purchase_discount'] = $actual_price;
+                            $this->items[$index]['purchase_discount'] = $this->num_uf($actual_price) * $this->num_uf($this->exchange_rate);
+                        }
                     } else {
                         $this->items[$index]['dollar_purchase_discount'] =  $this->num_uf($this->items[$index]['purchase_discount']) / $this->num_uf($this->exchange_rate);
                     }
