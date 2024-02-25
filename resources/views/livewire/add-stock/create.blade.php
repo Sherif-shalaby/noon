@@ -112,7 +112,7 @@
                                                 'placeholder' => __('lang.please_select'),
                                                 'data-name' => 'supplier',
                                                 'wire:model' => 'supplier',
-                                            
+
                                                 'wire:change' => 'changeExchangeRate()',
                                             ]) !!}
 
@@ -949,8 +949,8 @@
                                 wire:click.prevent = "store()">@lang('lang.save')</button>
 
                         </div>
-                        {{-- {!! Form::close() !!} --}}
                     </div>
+                    {{-- {!! Form::close() !!} --}}
                 </div>
             </div>
         </div>
