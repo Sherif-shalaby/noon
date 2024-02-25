@@ -42,7 +42,7 @@ use App\Models\ProcessInvoice;
 class Create extends Component
 {
     public $products = [], $variations = [], $department_id1 = null, $department_id2 = null, $department_id3 = null, $department_id4 = null,
-        $items = [], $price, $total, $client_phone, $client_id, $client, $cash = 0, $rest, $invoice, $invoice_status ='monetary', $date, $payment_status,
+        $items = [], $price, $total, $client_phone, $client_id, $client, $cash = 0, $rest, $invoice, $invoice_status, $date, $payment_status,
         $data = [], $payments = [], $invoice_lang, $transaction_currency, $store_id, $store_pos_id, $showColumn = false, $sale_note,
         $payment_note, $staff_note, $payment_types, $discount = 0.00, $total_dollar, $add_customer = [], $customers = [], $discount_dollar,
         $store_pos, $allproducts = [], $brand_id = 0, $brands = [], $deliveryman_id = null, $delivery_cost, $dollar_remaining = 0,
@@ -61,6 +61,24 @@ class Create extends Component
         'store_pos_id' => 'required',
         'payment_status' => 'required',
         'invoice_lang' => 'required',
+    ];
+    public $columnVisibility = [
+        'sku' => true,
+        'product' => true,
+        'quantity' => true,
+        'extra' => true,
+        'unit' => true,
+        'c_type' => true,
+        'price' => true,
+        'dollar_price' => true,
+        'exchange_rate' => true,
+        'discount' => true,
+        'discount_category' => true,
+        'sub_total' => true,
+        'dollar_sub_total' => true,
+        'current_stock' => true,
+        'notes' => true,
+        // ... add more columns as needed
     ];
 
 
@@ -197,6 +215,7 @@ class Create extends Component
         $this->client_id = 1;
         $this->getCustomerData($this->client_id);
         $this->payment_status = 'paid';
+        $this->invoice_status = 'monetary';
         $this->dispatchBrowserEvent('initialize-select2');
     }
     public function countOpenedRegister()
@@ -227,6 +246,11 @@ class Create extends Component
         } else if ($propertyName === 'dollar_lowest_price') {
             $this->updatedDepartmentId($this->dollar_lowest_price, 'dollar_lowest_price');
         }
+    }
+
+    public function toggleColumnVisibility($columnName)
+    {
+        $this->columnVisibility[$columnName] = !$this->columnVisibility[$columnName];
     }
 
     public function render()
@@ -415,6 +439,7 @@ class Create extends Component
                 $sell_line->sub_total = $this->num_uf($item['sub_total']);
                 $sell_line->dollar_sub_total = $this->toggle_dollar=="0"?$this->num_uf($item['dollar_sub_total']):0;
                 $sell_line->stock_line_id  = !empty($item['current_stock']['id']) ? $item['current_stock']['id'] : null;
+                $sell_line->notes  = !empty($item['notes']) ? $item['notes'] : null;
                 $sell_line->save();
 
                 $stock_id = $item['current_stock']['id'];
@@ -489,7 +514,7 @@ class Create extends Component
                     //     $supplier->save();
                     // }
                 }
-                
+
 
                 $payment_types = $this->getPaymentTypeArrayForPos();
                 $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
@@ -847,6 +872,7 @@ class Create extends Component
                     'client_id' => $product->customer?->id,
                     'exchange_rate' => $exchange_rate,
                     'quantity_available' => $quantity_available,
+                    'quantity_available_default' => $quantity_available,
                     // 'stock_units' => $stock_units,
                     'sub_total' =>  (float) 1 * $this->num_uf($price),
                     'dollar_sub_total' => (float) 1 * $this->num_uf($dollar_price),
@@ -1149,6 +1175,7 @@ class Create extends Component
             $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
                 ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
         }
+        $this->items[$key]['quantity_available'] = $this->items[$key]['quantity_available_default'] - $this->items[$key]['quantity'] ;
         $this->computeForAll();
     }
 
@@ -1976,7 +2003,7 @@ class Create extends Component
     public function getPreviousTransaction(){
         $latest_transaction=TransactionSellLine::latest()->first()?->id;
         return redirect('/invoices/edit/'.$latest_transaction);
-        
+
     }
     public function toggle_suppliers_dropdown(){
         if($this->toggle_suppliers){

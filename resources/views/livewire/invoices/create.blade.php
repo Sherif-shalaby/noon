@@ -1,4 +1,3 @@
-
 <section class="app my-3 no-print" style="margin-top: 35px!important;">
     <div class="" >
         {!! Form::open(['route' => 'pos.store','method'=>'post' ]) !!}
@@ -158,7 +157,7 @@
                         <div class="form-group">
                             {!! Form::label('invoice_status', __('lang.invoice') . ':*', []) !!}
                             {!! Form::select('invoice_status', ['monetary' => __('lang.monetary') , 'deferred_time' => __('lang.deferred_time')], $invoice_status,
-                            ['class' => 'select2 form-control','data-name'=>'store_pos_id', 'data-live-search' => 'true', 'required',
+                            ['class' => 'select2 form-control','data-name'=>'invoice_status', 'data-live-search' => 'true', 'required',
                             'placeholder' => __('lang.please_select'), 'wire:model' => 'invoice_status']) !!}
                             @error('store_pos_id')
                             <span class="error text-danger">{{ $message }}</span>
@@ -276,34 +275,59 @@
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="body-card-app">
                                 <div class="table-responsive box-table ">
+                                    {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
+                                    <div class="col-md-3 col-lg-12">
+                                        <div class="multiselect col-md-12">
+                                            <!-- Checkbox for each column -->
+                                            <div id="checkboxes">
+                                                @foreach($columnVisibility as $columnName => $visible)
+                                                    <label for="{{ $columnName }}_id">
+                                                        <input type="checkbox" id="{{ $columnName }}_id" wire:click="toggleColumnVisibility('{{ $columnName }}')" class="checkbox_class" {{ $visible ? 'checked' : '' }}>
+                                                       @if($columnName == 'dollar_price')
+                                                            <span>@lang('lang.price') $</span> &nbsp;
+                                                       @elseif($columnName == 'dollar_sub_total')
+                                                            <span>@lang('lang.sub_total') $</span> &nbsp;
+                                                       @else
+                                                            <span>@lang('lang.' . $columnName)</span> &nbsp;
+                                                        @endif
+                                                    </label>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
                                     <table class="table">
                                         <tr>
-                                            <th >@lang('lang.sku')</th>
-                                            <th >@lang('lang.product')</th>
-                                            <th >@lang('lang.quantity')</th>
-                                            <th >@lang('lang.extra')</th>
-                                            <th >@lang('lang.unit')</th>
-                                            <th >@lang('lang.c_type')</th>
-                                            <th >@lang('lang.price')</th>
-                                            <th class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.price') $ </th>
-                                            <th> @lang('lang.exchange_rate')</th>
-                                            <th >@lang('lang.discount')</th>
-                                            <th >@lang('lang.discount_category')</th>
-                                            <th >@lang('lang.sub_total')</th>
-                                            <th class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.sub_total') $</th>
-                                            <th >@lang('lang.current_stock')</th>
-                                            <th >@lang('lang.action')</th>
+                                            <th @if(!$columnVisibility['sku']) style="display: none;" @endif>@lang('lang.sku')</th>
+                                            <th @if(!$columnVisibility['product']) style="display: none;" @endif>@lang('lang.product')</th>
+                                            <th @if(!$columnVisibility['notes']) style="display: none;" @endif>@lang('lang.notes')</th>
+                                            <th @if(!$columnVisibility['quantity']) style="display: none;" @endif>@lang('lang.quantity')</th>
+                                            <th @if(!$columnVisibility['extra']) style="display: none;" @endif>@lang('lang.extra')</th>
+                                            <th @if(!$columnVisibility['unit']) style="display: none;" @endif>@lang('lang.unit')</th>
+                                            <th @if(!$columnVisibility['c_type']) style="display: none;" @endif>@lang('lang.c_type')</th>
+                                            <th @if(!$columnVisibility['price']) style="display: none;" @endif>@lang('lang.price')</th>
+                                            <th @if(!$columnVisibility['dollar_price']) style="display: none;" @endif class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.price') $ </th>
+                                            <th @if(!$columnVisibility['exchange_rate']) style="display: none;" @endif> @lang('lang.exchange_rate')</th>
+                                            <th @if(!$columnVisibility['discount']) style="display: none;" @endif>@lang('lang.discount')</th>
+                                            <th @if(!$columnVisibility['discount_category']) style="display: none;" @endif>@lang('lang.discount_category')</th>
+                                            <th @if(!$columnVisibility['sub_total']) style="display: none;" @endif>@lang('lang.sub_total')</th>
+                                            <th @if(!$columnVisibility['dollar_sub_total']) style="display: none;" @endif class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.sub_total') $</th>
+                                            <th @if(!$columnVisibility['current_stock']) style="display: none;" @endif>@lang('lang.current_stock')</th>
+                                            <th>@lang('lang.action')</th>
                                         </tr>
                                         @php
                                           $total = 0;
                                         @endphp
                                         @foreach ($items as $key => $item)
                                             <tr>
-                                                <td>{{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}</td>
-                                                <td >
+                                                <td @if(!$columnVisibility['sku']) style="display: none;" @endif>{{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}</td>
+                                                <td @if(!$columnVisibility['product']) style="display: none;" @endif>
                                                     {{$item['product']['name']}}
                                                 </td>
-                                                <td >
+                                                <td @if(!$columnVisibility['notes']) style="display: none;" @endif>
+                                                    <input class="form-control p-1 text-center" style="width: 50px" type="text" min="1"
+                                                           wire:model="items.{{ $key }}.notes">
+                                                </td>
+                                                <td @if(!$columnVisibility['quantity']) style="display: none;" @endif >
                                                     <div class="d-flex align-items-center gap-1 " style="width: 80px">
                                                         <div class=" add-num control-num"
                                                             wire:click="increment({{$key}})">
@@ -320,8 +344,8 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{{$item['extra_quantity']}}</td>
-                                                <td>
+                                                <td @if(!$columnVisibility['extra']) style="display: none;" @endif>{{$item['extra_quantity']}}</td>
+                                                <td @if(!$columnVisibility['unit']) style="display: none;" @endif>
                                                     <select class="form-control select2" data-name="unit_id" data-index="{{$key}}" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
                                                         <option value="0.00">select</option>
                                                          @if(!empty($item['variation']))
@@ -335,7 +359,7 @@
                                                         @endif
                                                     </select>
                                                 </td>
-                                                <td>
+                                                <td @if(!$columnVisibility['c_type']) style="display: none;" @endif>
                                                     <select class="form-control select2" style="height:30% !important;width:100px;" data-name="customer_type_id" data-index="{{$key}}"
                                                             wire:model="items.{{ $key }}.customer_type_id"  wire:change="changeCustomerType({{$key}})">
                                                         <option value="0">select</option>
@@ -351,25 +375,24 @@
                                                         @endif
                                                     </select>
                                                 </td>
-                                                <td >
+                                                <td @if(!$columnVisibility['price']) style="display: none;" @endif>
                                                     <input class="form-control dinarPrice" data-key="{{ $key }}" type="text" wire:model="items.{{ $key }}.price" style="width: 65px"/>
                                                     {{-- {{$item['price']??''}} --}}
                                                 </td>
-                                                    <td class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
-                                                    <input class="form-control dollarPrice" data-key="{{ $key }}" type="text" wire:model="items.{{ $key }}.dollar_price" style="width: 65px"/>
+                                                <td @if(!$columnVisibility['dollar_price']) style="display: none;" @endif class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                                                <input class="form-control dollarPrice" data-key="{{ $key }}" type="text" wire:model="items.{{ $key }}.dollar_price" style="width: 65px"/>
 
-                                                        {{-- {{ number_format($item['dollar_price']??0 , 2)}} --}}
-                                                    </td>
-                                                    <td>
-                                                        <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1"
-                                                               wire:model="items.{{ $key }}.exchange_rate">
-                                                    </td>
-
-                                                <td >
+                                                    {{-- {{ number_format($item['dollar_price']??0 , 2)}} --}}
+                                                </td>
+                                                <td @if(!$columnVisibility['exchange_rate']) style="display: none;" @endif>
+                                                    <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1"
+                                                           wire:model="items.{{ $key }}.exchange_rate">
+                                                </td>
+                                                <td @if(!$columnVisibility['discount']) style="display: none;" @endif>
                                                     <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1" readonly
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
-                                                <td>
+                                                <td @if(!$columnVisibility['discount_category']) style="display: none;" @endif>
                                                     <select class="form-control discount_category select2" style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount" data-name="discount" data-index="{{$key}}" wire:change="subtotal({{$key}},'discount')">
                                                         <option selected value="0">select</option>
                                                         @if(!empty($item['discount_categories']))
@@ -387,13 +410,13 @@
                                                         @endif
                                                     </select>
                                                 </td>
-                                                <td>
+                                                <td @if(!$columnVisibility['sub_total']) style="display: none;" @endif>
                                                     {{ $item['sub_total']??0 }}
                                                 </td>
-                                                <td class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                                                <td @if(!$columnVisibility['dollar_sub_total']) style="display: none;" @endif class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                                     {{$item['dollar_sub_total']??0}}
                                                 </td>
-                                                <td>
+                                                <td @if(!$columnVisibility['current_stock']) style="display: none;" @endif>
                                                     <span class="current_stock">
                                                        {{$item['quantity_available']}}
                                                     </span>

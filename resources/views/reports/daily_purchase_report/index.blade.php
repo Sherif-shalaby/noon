@@ -94,7 +94,10 @@
                                                     <strong>@lang("lang.grand_total")</strong><br><span>{{@num_format($grand_total[$i])}}</span><br><br>
                                                 @endif
                                                 @if(!empty($dollar_grand_total[$i]))
-                                                    <strong>@lang("lang.grand_total") $</strong><br><span>{{@num_format($dollar_grand_total[$i])}}</span><br><br>
+                                                    @if(isset($toggle_dollar) && $toggle_dollar == 1)
+                                                    @else
+                                                        <strong>@lang("lang.grand_total") $</strong><br><span>{{@num_format($dollar_grand_total[$i])}}</span><br><br>
+                                                    @endif
                                                 @endif
 
                                             </td>

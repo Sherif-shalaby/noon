@@ -133,22 +133,30 @@ class TransactionUtil extends Util
     }
     public function updateTransactionPaymentStatus($transaction_id)
     {
-        $transaction_payments =PaymentTransactionSellLine::where('transaction_id', $transaction_id)->get();
+        $transaction_payments = PaymentTransactionSellLine::where('transaction_id', $transaction_id)->get();
 
         $total_paid = $transaction_payments->sum('amount');
+        $dollar_total_paid = $transaction_payments->sum('dollar_amount');
 
         $transaction = TransactionSellLine::find($transaction_id);
-        $returned_transaction = TransactionSellLine::where('return_parent_id',$transaction_id)->sum('final_total');
-        if($returned_transaction){
-            $final_amount = $transaction->final_total - $transaction->used_deposit_balance -  $returned_transaction;
-        }else{
-            $final_amount = $transaction->final_total - $transaction->used_deposit_balance;
-        }
-        
+        //        $returned_transaction = TransactionSellLine::where('return_parent_id',$transaction_id)->sum('final_total');
+        //        if($returned_transaction){
+        //            $final_amount = $transaction->final_total - $transaction->used_deposit_balance -  $returned_transaction;
+        //        }else{
+        //  final_amount : 'النهائي بالدينار'
+        $final_amount = $transaction->final_total;
+        //  dollar_final_amount : 'النهائي بالدولار'
+        $dollar_final_amount = $transaction->dollar_final_total;
+        // dinar_remaining : الباقي دينار
+        $dinar_remaining = ($total_paid - $final_amount);
+        //  dollar_remaining : 'الباقي بالدولار'
+        $dollar_remaining = ($dollar_total_paid - $dollar_final_amount);
+        //        }
+
         $payment_status = 'pending';
-        if ($final_amount <= $total_paid) {
+        if ($final_amount <= $total_paid && $dollar_final_amount <= $dollar_total_paid) {
             $payment_status = 'paid';
-        } elseif ($total_paid > 0 && $final_amount > $total_paid) {
+        } elseif (($total_paid > 0 && $final_amount > $total_paid) || ($dollar_total_paid > 0 && $dollar_final_amount > $dollar_total_paid)) {
             $payment_status = 'partial';
         }
         $transaction->payment_status = $payment_status;
@@ -189,7 +197,7 @@ class TransactionUtil extends Util
                 $payment_data['created_by'] = Auth::user()->id;
                 $payment_data['payment_for'] = !empty($payment_data['payment_for']) ? $payment_data['payment_for'] : $transaction->customer_id;
                 $payment_data['exchange_rate'] = !empty($payment_data['exchange_rate']) ? $payment_data['exchange_rate'] : System::getProperty('dollar_exchange');
-                
+
                 $transaction_payment = PaymentTransactionSellLine::create($payment_data);
                 //     if($transaction->type == 'sell'){
                 //         if($payment_data['method'] != 'deposit'){

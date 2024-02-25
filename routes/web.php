@@ -55,6 +55,7 @@ use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\TransactionPaymentController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Controllers\RepresentativeSalaryReportController;
+use App\Http\Controllers\CustomerBalanceAdjustmentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,7 +115,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     Route::get('toggle-dollar', [SettingController::class, 'toggleDollar'])->name('toggleDollar');
-    
+
     // Get "مصدر الاموال" depending on "طريقة الدفع"
     Route::get('/wage/get-source-by-type-dropdown/{type}', [WageController::class,'getSourceByTypeDropdown']);
     // +++++++++++ Get "طريقة الحساب " depending on "الموظف" +++++++++++
@@ -302,6 +303,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::get('transaction-payment/add-payment/{id}', [TransactionPaymentController::class,'addPayment'])->name('transaction-payment.add-payment');
     Route::resource('pos-pay',TransactionPaymentController::class);
     Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
+    Route::post('transaction-payment/store-payment', [SellPosController::class, 'storePayment'])->name('store_payment');
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
     Route::get('show/payment/{id}',[SellPosController::class, 'show_payment'])->name('show_payment');
     Route::get('add/receipt/{trans_id}',[SellPosController::class, 'upload_receipt'])->name('upload_receipt');
@@ -417,6 +419,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('cash-register', CashRegisterController::class);
     Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class,'getSourceByTypeDropdown']);
     Route::get('get_currency', [SettingController::class,'get_currency']);
+
+    // Customer Balance Adjustment
+    Route::resource('customer-balance-adjustment', CustomerBalanceAdjustmentsController::class);
+
 
 });
 

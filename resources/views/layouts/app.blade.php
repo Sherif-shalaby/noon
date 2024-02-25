@@ -262,6 +262,14 @@
     <x-livewire-alert::scripts /> --}}
     @stack('js')
     <script>
+        function __read_number(inputElement) {
+            return parseFloat(inputElement.val()) || 0;
+        }
+
+        // Define the __write_number function to write a number to an input field
+        function __write_number(outputElement, value) {
+            outputElement.val(value);
+        }
         $(document).ready(function() {
             if ($('.toggle_dollar').val() == "1") {
                 $('#toggleDollar').click();

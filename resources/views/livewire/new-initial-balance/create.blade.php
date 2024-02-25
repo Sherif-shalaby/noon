@@ -282,6 +282,9 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div>
+                                <input type="file" wire:model="image" id="imageInput">
+                            </div>
                             {{-- ++++++++++++++++++++++++++++ customers Dropdown ++++++++++++++++++++++++++++ --}}
                             @if (!empty($toggle_customers_dropdown))
                                 <div class="col-md-3">
@@ -374,7 +377,7 @@
                         <div class="row dimensions {{ $show_dimensions == 0 ? 'd-none' : '' }}">
                             <div class="col-md-2">
                                 {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                <input type="text" wire:model='item.0.weight' wire:change='changeSize()'
+                                <input type="text" wire:model='item.0.weight'
                                     class='form-control weight' />
                                 <br>
                                 @error('item.0.weight')
@@ -557,7 +560,7 @@
                                             placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                             @if (empty($prices[$key]['price_type'])) readonly @endif>
                                         <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
-                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price'] ?? '' }}
+                                            {{ $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') . ' $' }} : {{ $this->prices[$key]['price'] ?? '' }}
                                         </p>
                                     </div>
                                     <div class="col-md-1">
@@ -568,7 +571,7 @@
                                             wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                             placeholder = "{{ __('lang.price') }}">
                                         <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
-                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price_after_desc'] ?? '' }}
+                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$key]['price_after_desc'] ?? '' }}
                                         </p>
                                     </div>
                                     <div class="col-md-1">
@@ -747,11 +750,10 @@
                         </div>
                     {{-- </div> --}}
                 </div>
-              
+
             </div>
         </div>
     </div>
-
 </section>
 {{-- <!-- This will be printed --> --}}
 <div class="view_modal no-print"></div>

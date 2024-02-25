@@ -10,7 +10,7 @@
                 'data-live-search' => 'true',
                 'required' => 'required',
                 'wire:model' => 'items.' . $index . '.used_currency',
-                'wire:input'=>"convertPurchasePrice($index)"
+                'wire:change'=>"convertPurchasePrice($index)"
 
             ]) !!}
             @error('items.'.$index.'.used_currency')
@@ -31,7 +31,7 @@
                         data-target="#createStoreModal">
                         <i class="fas fa-plus"></i>
                 </button>
-                 {!! Form::select('store_id', $stores, $store_id, ['class' => ' form-control store_id'.$index, 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 
+                 {!! Form::select('store_id', $stores, $store_id, ['class' => ' form-control store_id'.$index, 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),
                   'wire:model' => 'items.' . $index . '.store_id']) !!}
                  {{-- @error('items.'.$index.'.store_id')
                  <span class="error text-danger">{{ $message }}</span>
@@ -62,7 +62,7 @@
                 @endforeach
                 @endif
                 @elseif($items[$index]['is_have_stock']==1)
-                
+
                 @foreach ($items[$index]['units'] as $unitName => $unitValue)
                 @if(!empty($unitName))
                     <label>{{ $unitName }}:</label>
@@ -107,7 +107,7 @@
                 {{$this->sub_total($index)}}
             </span>
             <span class="sub_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}">
-                {{$this->dollar_sub_total($index)}}$ 
+                {{$this->dollar_sub_total($index)}}$
             </span>
 
         @endif
@@ -119,15 +119,15 @@
     </td>
     <td class="{{$items[$index]['discount_type']!="1"?'d-none':''}}">
         <div class="input-group-prepend">
-            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="amount">
-            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{ $index }})" placeholder="%">
+            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:change="changePurchasePrice({{ $index }})" placeholder="%">
+            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount" style="width: 100px;" wire:change="changePurchasePrice({{ $index }})" placeholder="amount">
         </div>
-        <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount']),num_of_digital_numbers())  }} $</span>
         <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount_percent']),num_of_digital_numbers())  }} $ </span>
+        <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount']),num_of_digital_numbers())  }} $</span>
         <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}" id="discount_on_bonus_quantity_{{ $index }}"
                    wire:model="items.{{ $index }}.discount_on_bonus_quantity"
-                   wire:input="changePurchasePrice({{ $index }})" style="font-size: 0.75rem" value="true">
+                   wire:change="changePurchasePrice({{ $index }},null,null,'discount')" style="font-size: 0.75rem" value="true">
             <label class="custom-control-label" for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_from_original_price')</label>
         </div>
     </td>
@@ -188,7 +188,7 @@
                 {{@number_format($this->final_purchase_for_piece($index),num_of_digital_numbers())}}
             </span>
             <span class="final_total_span {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="{{__('lang.final purchase for piece')}}">
-                {{@number_format($this->dollar_final_purchase_for_piece($index),num_of_digital_numbers())}} $ 
+                {{@number_format($this->dollar_final_purchase_for_piece($index),num_of_digital_numbers())}} $
             </span>
         @endif
     </td>
@@ -196,7 +196,7 @@
         @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
         {{$this->cost($index)}}
             <span class="cost" aria-placeholder="dollar cost">
-                {{ $product['cost'] }} 
+                {{ $product['cost'] }}
             </span>
             <span class="dollar_cost {{$settings['toggle_dollar']=='1'?'d-none':''}}" aria-placeholder="dollar cost">
                 {{ $product['dollar_cost'] }} $
@@ -572,6 +572,9 @@
         <td>
             {!! Form::label('price' ,!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
             <input type="text" name="price" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" wire:input="changePrice({{ $index }}, {{ $key }})" placeholder = "{{!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')}}" >
+            <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                {{ $price['price_type'] == 'fixed' ? __('lang.amount'). ' $'  : __('lang.percent') . ' $' }} : {{$this->items[$index]['prices'][$key]['dollar_price'] ?? '' }}
+            </p>
 {{--            <p>--}}
 {{--                {{!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount'): __('lang.percent')}}:{{$this->items[$index]['prices'][$key]['dinar_price']??''}}--}}
 {{--            </p>--}}
@@ -579,24 +582,23 @@
         <td colspan="2">
             {!! Form::label('' ,__('lang.price')) !!}
             <input type="text" name="" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price_after_desc" placeholder = "{{__('lang.price')}}" >
-{{--            <p>--}}
-
-{{--                {{__('lang.price')}}:{{$this->items[$index]['prices'][$key]['dinar_price_after_desc']??''}}--}}
-{{--            </p>--}}
+            <p  class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                {{__('lang.price') .'$'}}:{{$this->items[$index]['prices'][$key]['dollar_price_after_desc']??''}}
+            </p>
         </td>
         <td colspan="2">
             {!! Form::label('total_price' , __('lang.total_price')) !!}
             <input type="text" name="total_price" class="form-control total_price" wire:model="items.{{$index}}.prices.{{$key}}.total_price" placeholder = "{{__('lang.total_price')}}" >
-{{--            <p>--}}
-{{--                {{__('lang.total_price')}}:{{$this->items[$index]['prices'][$key]['dinar_total_price']??''}}--}}
-{{--            </p>--}}
+            <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                {{__('lang.total_price') .'$'}}:{{$this->items[$index]['prices'][$key]['dollar_total_price']??''}}
+            </p>
         </td>
         <td colspan="2">
             {!! Form::label('piece_price' , __('lang.piece_price')) !!}
             <input type="text" name="piece_price" class="form-control piece_price" wire:model="items.{{$index}}.prices.{{$key}}.piece_price" placeholder = "{{__('lang.total_price')}}" >
-{{--            <p>--}}
-{{--                {{ __('lang.piece_price')}}:{{$this->items[$index]['prices'][$key]['dinar_piece_price']??''}}--}}
-{{--            </p>--}}
+            <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                {{ __('lang.piece_price') .'$'}}:{{$this->items[$index]['prices'][$key]['dollar_piece_price']??''}}
+            </p>
         </td>
          <td>
             <button type="button" class="btn btn-sm btn-primary" wire:click="addPriceRow({{ $index }})">
