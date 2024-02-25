@@ -395,7 +395,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
     Route::resource('expense', ExpenseController::class);
 
-                                // Reports
+    // Reports
     // Product Report
     Route::get('reports/product/',[ReportController::class,'getProductReport'])->name('reports.products');
     Route::get('reports/product/{id}',[ReportController::class,'viewProductDetails'])->name('reports.product_details');
