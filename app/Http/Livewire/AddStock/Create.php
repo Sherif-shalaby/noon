@@ -444,6 +444,7 @@ class Create extends Component
         $this->total_amount = $this->num_uf($this->total_amount) + ($this->num_uf($this->dollar_remaining) * $this->num_uf($this->exchange_rate));
     }
 
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -2574,48 +2575,50 @@ class Create extends Component
         return $purchase_price;
     }
 
-    public function convertPurchasePrice($index, $var = null, $i = null)
+    public function convertPurchasePrice($index, $var = null, $i = null, $via = null)
     {
         if ($var == 'stores') {
-            $actual_purchase_price = $this->num_uf($this->items[$index]['stores'][$i]['purchase_price']);
-            // dd($actual_purchase_price);
-            if (!empty($this->items[$index]['used_currency'])) {
-                $currency = $this->num_uf($this->items[$index]['used_currency']);
-                if ($currency == 2) {
-                    $this->items[$index]['stores'][$i]['dollar_purchase_price'] = $this->num_uf($actual_purchase_price);
-                    $this->items[$index]['stores'][$i]['purchase_price'] = $this->num_uf($actual_purchase_price) * $this->num_uf($this->exchange_rate) ?? 0;
-                    // dd($actual_purchase_price);
+            if ($via != 'change_price') {
+                $actual_purchase_price = $this->num_uf($this->items[$index]['stores'][$i]['purchase_price']);
+                // dd($actual_purchase_price);
+                if (!empty($this->items[$index]['used_currency'])) {
+                    $currency = $this->num_uf($this->items[$index]['used_currency']);
 
-                } else {
-                    $this->items[$index]['stores'][$i]['dollar_purchase_price'] = $this->num_uf($actual_purchase_price) /  $this->num_uf($this->exchange_rate);
-                    $this->items[$index]['stores'][$i]['purchase_price'] = $this->num_uf($actual_purchase_price) ?? 0;
+                    if ($currency == 2) {
+                        $this->items[$index]['stores'][$i]['dollar_purchase_price'] = $this->num_uf($actual_purchase_price);
+                        $this->items[$index]['stores'][$i]['purchase_price'] = $this->num_uf($actual_purchase_price) * $this->num_uf($this->exchange_rate) ?? 0;
+                    } else {
+                        $this->items[$index]['stores'][$i]['dollar_purchase_price'] = $this->num_uf($actual_purchase_price) /  $this->num_uf($this->exchange_rate);
+                        $this->items[$index]['stores'][$i]['purchase_price'] = $this->num_uf($actual_purchase_price) ?? 0;
+                    }
                 }
-            }
-
-            $this->purchase_final($index, $var, $i);
-            if ($this->purchase_final($index, $var, $i) > 0) {
-                $this->final_purchase_for_piece($index, $var, $i);
+                $this->purchase_final($index, $var, $i);
+                if ($this->purchase_final($index, $var, $i) > 0) {
+                    $this->final_purchase_for_piece($index, $var, $i);
+                }
             }
         } else {
-            $actual_purchase_price = $this->num_uf($this->items[$index]['purchase_price']);
-            if (!empty($this->items[$index]['used_currency'])) {
-                // dd($this->items[$index]['purchase_price']);
-                $currency = $this->items[$index]['used_currency'];
-                if ($currency == 2) {
-                    $this->items[$index]['dollar_purchase_price'] = $this->num_uf($actual_purchase_price);
-                    $this->items[$index]['purchase_price'] = $this->num_uf($actual_purchase_price) * $this->num_uf($this->exchange_rate) ?? 0;
-                } else {
-                    $this->items[$index]['dollar_purchase_price'] = $this->num_uf($actual_purchase_price) /  $this->num_uf($this->exchange_rate);
-                    $this->items[$index]['purchase_price'] = $this->num_uf($actual_purchase_price) ?? 0;
+            if ($via != 'change_price') {
+                $actual_purchase_price = $this->num_uf($this->items[$index]['purchase_price']);
+                if (!empty($this->items[$index]['used_currency'])) {
+                    $currency = $this->items[$index]['used_currency'];
+
+                    if ($currency == 2) {
+                        $this->items[$index]['dollar_purchase_price'] = $this->num_uf($actual_purchase_price);
+                        $this->items[$index]['purchase_price'] = $this->num_uf($actual_purchase_price) * $this->num_uf($this->exchange_rate) ?? 0;
+                    } else {
+                        $this->items[$index]['dollar_purchase_price'] = $this->num_uf($actual_purchase_price) /  $this->num_uf($this->exchange_rate);
+                        $this->items[$index]['purchase_price'] = $this->num_uf($actual_purchase_price) ?? 0;
+                    }
                 }
-            }
-            $this->purchase_final($index);
-            if ($this->purchase_final($index) > 0) {
-                $this->final_purchase_for_piece($index);
+                $this->purchase_final($index);
+                if ($this->purchase_final($index) > 0) {
+                    $this->final_purchase_for_piece($index);
+                }
+                $this->changeTotalAmount();
+                $this->changePurchasePrice($index, $var, $i);
             }
         }
-        $this->changeTotalAmount();
-        $this->changePurchasePrice($index, $var, $i);
     }
     public function changeExchangeRate()
     {
@@ -2650,7 +2653,6 @@ class Create extends Component
 
     public function updateProductQuantityStore($product_id, $variation_id, $store_id, $new_quantity)
     {
-        //        dd($store_id);
         $product_store = ProductStore::where('product_id', $product_id)
             ->where('store_id', $store_id)
             ->first();

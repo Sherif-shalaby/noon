@@ -43,7 +43,7 @@
                     'data-live-search' => 'true',
                     'required' => 'required',
                     'wire:model' => 'items.' . $index . '.used_currency',
-                    'wire:change' => "convertPurchasePrice($index)",
+                    'wire:change' => "convertPurchasePrice($index,'','','change_price')",
                 ]) !!}
             </div>
             @error('items.' . $index . '.used_currency')
