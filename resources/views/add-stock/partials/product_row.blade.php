@@ -11,7 +11,6 @@
                 'required' => 'required',
                 'wire:model' => 'items.' . $index . '.used_currency',
                 'wire:change'=>"convertPurchasePrice($index,'','','change_price')"
-
             ]) !!}
             @error('items.'.$index.'.used_currency')
                 <span class="error text-danger">{{ $message }}</span>
