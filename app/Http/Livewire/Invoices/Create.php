@@ -52,7 +52,7 @@ class Create extends Component
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
         $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0,$representative_id, $loading_cost,
-        $dollar_loading_cost,$toggle_suppliers,$delivery_date,$toggle_dollar=0;
+        $dollar_loading_cost,$toggle_suppliers,$delivery_date,$toggle_dollar=0 , $cust_name, $cust_phone, $invoice_number;
 
 
     protected $rules =[

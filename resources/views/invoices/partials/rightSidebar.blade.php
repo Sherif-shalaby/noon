@@ -304,17 +304,60 @@
                         </div>
                     </div>
                 @endif
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('customer_name', __('lang.customer_name'), ['class' => 'text-primary']) !!}
+                        {!! Form::text('customer_name', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'cust_name',
+                            'placeholder' => __('lang.customer_name'),
+                        ]) !!}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('customer_phone', __('lang.customer_phone'), ['class' => 'text-primary']) !!}
+                        {!! Form::text('customer_phone', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'cust_phone',
+                            'placeholder' => __('lang.customer_phone'),
+                        ]) !!}
+                    </div>
+                </div>
                 <div class="row hide-print mt-3">
                     <div class="column-5">
                         {{-- <a data-href="{{route('customers.pay_due_view', ['id' => $due->id])}}"   data-container=".view_modal" class="btn btn-modal"  style="background-color: #ffc107;" type="button" class="btn btn-custom"
                             id="recent-transaction-btn"><i class="dripicons-clock"></i>
                             @lang('lang.recent_transactions')</a> --}}
                         {{-- +++++++++++++++++++++++ recent_transaction ++++++++++++++++++++ --}}
-                        <a href="{{ route('recent_transactions') }}" target="_blank" style="background-color: #ffc107;" type="button"
-                            class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
+                        <a href="{{ route('recent_transactions', ['phone_number' => $cust_phone, 'customer_name' => $cust_name]) }}" target="_blank" style="background-color: #ffc107;" type="button"
+                           class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
                             @lang('lang.recent_transactions')</a>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('invoice_number', __('lang.reference'), ['class' => 'text-primary']) !!}
+                        {!! Form::text('invoice_number', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'invoice_number',
+                            'placeholder' => __('lang.reference'),
+                        ]) !!}
+                    </div>
+                </div>
+                @php
+                $invoice = \App\Models\TransactionSellLine::where('invoice_no',$invoice_number)->first();
+                @endphp
+                @if(!empty($invoice))
+                    <div class="row hide-print mt-3">
+                        <div class="column-5">
+                            <a href="{{ route('invoices.edit', $invoice->id) }}" target="_blank"  type="button"
+                               class="btn btn-custom btn-primary" ><i class="dripicons-clock"></i>
+                                @lang('lang.edit')</a>
+                        </div>
+                    </div>
+                @endif
+
             </div>
 
         </div>

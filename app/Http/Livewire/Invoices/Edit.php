@@ -71,7 +71,7 @@ class Edit extends Component
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
         $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by,
         $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0,$back_to_dollar, $add_to_balance = 0 ,$representative_id,
-        $loading_cost, $dollar_loading_cost;
+        $loading_cost, $dollar_loading_cost,$cust_phone,$cust_name, $invoice_number;
 
     protected $rules =
     [
@@ -276,6 +276,7 @@ class Edit extends Component
         // }
         //        dd($this->final_total);
         $sell_lines = $sell_lines->paginate(10);
+       $toggle_dollar=System::getProperty('toggle_dollar');
         return view('livewire.invoices.edit', compact(
             'departments',
             'languages',
@@ -285,7 +286,8 @@ class Edit extends Component
             'deliverymen',
             // 'customers_rt',
             'sell_lines',
-            'representatives'
+            'representatives',
+            'toggle_dollar'
         ));
     }
     public function set_data()
@@ -1831,7 +1833,7 @@ class Edit extends Component
         ->first();
             if(!empty($latest_transaction)){
             return redirect('/invoices/edit/'.$latest_transaction?->id);
-        }   
+        }
     }
     public function getNextTransaction(){
         $latest_transaction = TransactionSellLine::where('id', '>', $this->transaction_sell_line->id)
