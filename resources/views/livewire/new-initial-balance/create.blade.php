@@ -539,7 +539,7 @@
                                                 id="discount_from_original_price{{ $key }}"
                                                 style="font-size: 0.75rem"
                                                 wire:model='prices.{{ $key }}.discount_from_original_price'
-                                                wire:change="changePrice({{ $key }})">
+                                                wire:change="changePrice({{ $key }},'change_price')">
                                             <label class="custom-control-label"
                                                 for="discount_from_original_price{{ $key }}">@lang('lang.discount_from_original_price')</label>
                                         </div>

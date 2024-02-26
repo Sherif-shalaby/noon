@@ -1,6 +1,6 @@
 <tr>
     <td>
-        {{(float)$index+1}}
+        {{(int)$index+1}}
     </td>
     <td>
         <div class="col-md-2">
@@ -10,7 +10,7 @@
                 'data-live-search' => 'true',
                 'required' => 'required',
                 'wire:model' => 'items.' . $index . '.used_currency',
-                'wire:change'=>"convertPurchasePrice($index)"
+                'wire:change'=>"convertPurchasePrice($index,'','','change_price')"
 
             ]) !!}
             @error('items.'.$index.'.used_currency')
