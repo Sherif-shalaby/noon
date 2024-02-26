@@ -3,7 +3,7 @@
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
     style="display: none;" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
-    
+
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="edit">@lang('lang.edit')</h5>
@@ -17,25 +17,25 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="job_title">@lang('lang.due')</label>
-                            <input type="text" class="form-control dueAmount" name="dueAmount" value="{{@num_uf($dueAmount)}}" readonly>
+                            <input type="text" class="form-control dueAmount" name="dueAmount" value="{{ @num_format($dueAmount) }}" readonly>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="job_title">@lang('lang.due')</label>
-                            <input type="text" class="form-control dueDollarAmount"  name="dueDollarAmount" value="{{@num_uf($dueDollarAmount)}}" readonly>
+                            <input type="text" class="form-control dueDollarAmount"  name="dueDollarAmount" value="{{ @num_format($dueDollarAmount) }}" readonly>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="job_title">@lang('lang.pay')</label>
-                            <input type="text" class="form-control" name="due"  id="due" value="{{@num_uf($dueAmount)}}">
+                            <input type="text" class="form-control" name="due"  id="due" value="{{ @num_format($dueAmount) }}">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="job_title">@lang('lang.pay_dollar')</label>
-                            <input type="text" class="form-control" name="due_dollar" id="due_dollar"  value="{{@num_uf($dueDollarAmount)}}">
+                            <input type="text" class="form-control" name="due_dollar" id="due_dollar"  value="{{ @num_uf($dueDollarAmount) }}">
                         </div>
                     </div>
                     <div class="col-md-6" id="dueDate" hidden>
@@ -47,17 +47,17 @@
                         <span class="change_dinar" class="ml-2">0.00</span>
                         <input type="hidden" name="amount_change_dinar" id="change_dinar" class="change_dinar">
                         <input type="hidden" name="amount_pending_dinar" id="pending_dinar" class="pending_dinar">
-                        
+
                     </div>
                     <div class="col-md-6 mt-1 change_dollar_div" hidden>
                         <label class="change_text">@lang('lang.change_dollar'): </label>
                         <span class="change_dollar" class="ml-2">0.00</span>
                         <input type="hidden" name="amount_change_dollar" id="change_dollar" class="change_dollar">
                         <input type="hidden" name="amount_pending_dollar" id="pending_dollar" class="pending_dollar">
-                        
+
                     </div>
                     <div class="col-md-6 add_to_customer_balance" hidden>
-                        <button type="button" 
+                        <button type="button"
                             class="ml-1 btn btn-danger add_to_customer_balance">@lang('lang.add_to_customer_balance')</button>
                         <input type="hidden" name="add_to_customer_balance_dinar" id="add_to_customer_balance_dinnar" class="add_to_customer_balance_in">
                         <input type="hidden" name="add_to_customer_balance_dollar" id="add_to_customer_balance_dollar" class="add_to_customer_balance_in">
@@ -95,7 +95,7 @@ $(document).ready(function () {
     //                 $(".change_dinar_div").removeAttr("hidden");
     //                 $('.change_dinar').text(change.toFixed(2));
     //                 $('.change_dinar').val(change.toFixed(2)); // Update the change value
-                    
+
     //     }
     // });
     var inputduedollarValue = $('#due_dollar').val();
@@ -122,10 +122,10 @@ $(document).ready(function () {
         //             $(".change_dollar_div").removeAttr("hidden");
         //             $('.change_dollar').text(change_dollar.toFixed(2));
         //             $('.change_dollar').val(change_dollar.toFixed(2)); // Update the change value
-                    
+
         // }else if (!isNaN(newDollarAmount) && newDollarAmount < inputduedollarValue){
         //     $('.change_text').text("Pending Amount :");
-            
+
             // $this->dollar_amount = $('#due_dollar').val()
             // $this->amount = $('#due').val()
             // $this->final_total =$('.dueAmount').val()
@@ -172,7 +172,7 @@ $(document).ready(function () {
                 $(".add_to_customer_balance").removeAttr("hidden");
             }
                 // $('.change_dollar').text(change_dollar.toFixed(2));
-           
+
             $(".change_dollar_div").removeAttr("hidden");
             $('.change_dinar').text(parseFloat($('.change_dinar').val()).toFixed(2));
             $('.change_dollar').text(parseFloat($('.change_dollar').val()).toFixed(2));
@@ -225,7 +225,7 @@ $(document).ready(function () {
                 if($('.change_dinar').val() < 0){
                     $(".add_to_customer_balance").removeAttr("hidden");
                 }
-                    
+
                     $(".change_dinar_div").removeAttr("hidden");
                     $('.change_dinar').text(parseFloat($('.change_dinar').val()).toFixed(2));
                     $('.change_dollar').text(parseFloat($('.change_dollar').val()).toFixed(2));
@@ -238,7 +238,7 @@ $(document).ready(function () {
         }
 
     });
-   
+
 
     $(document).on("click", ".close , #close_modal_button", function () {
                         $('.add_to_customer_balance').addClass('hide');
@@ -258,7 +258,7 @@ $(document).on("click", ".add_to_customer_balance", function () {
         // // Assuming you have a 'received_amount' variable
         // var newReceivedAmount = newDinnarAmount + parseFloat($('.change_dinar').val());
         // var newDollarReceivedAmount = newDollarAmount + parseFloat($('.change_dollar').val());
-        
+
         // console.log('newDinnarAmount' + newDinnarAmount);
         // console.log('newDollarAmount' + newDollarAmount);
         // console.log('newReceivedAmount' + newReceivedAmount);

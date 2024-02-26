@@ -2,10 +2,7 @@
 
 namespace App\Http\Livewire\Invoices;
 
-use App\Utils\pos;
 use Carbon\Carbon;
-use App\Utils\Util;
-use App\Models\User;
 use App\Models\Brand;
 use App\Models\Store;
 use App\Models\System;

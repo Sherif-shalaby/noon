@@ -425,7 +425,7 @@ class CustomerController extends Controller
         $due = TransactionSellLine::where('id',$id)->first();
         $customer = Customer::where('id',$due->customer_id)->first();
 
-            if(number_format($request->dueAmount <= $request->due ) && number_format($request->dueDollarAmount <= $request->due_dollar)){
+            if(number_format($this->Util->num_uf($request->dueAmount) <= $this->Util->num_uf($request->due) ) && number_format($this->Util->num_uf($request->dueDollarAmount) <= $this->Util->num_uf($request->due_dollar))){
                 // return '1';
                 if($request->add_to_customer_balance_dinar < 0){
                     $customer->balance_in_dinar = $customer->balance_in_dinar + abs($request->add_to_customer_balance_dinar);
@@ -435,8 +435,8 @@ class CustomerController extends Controller
                 }
                 $payment_data = [
                     'transaction_id' => $due->id,
-                    'amount' => $request->due,
-                    'dollar_amount' => $request->due_dollar,
+                    'amount' => $this->Util->num_uf($request->due),
+                    'dollar_amount' => $this->Util->num_uf($request->due_dollar),
                     'method' => 'cash',
                     'paid_on' => Carbon::now(),
                     'exchange_rate' => System::getProperty('dollar_exchange'),
@@ -451,17 +451,17 @@ class CustomerController extends Controller
                 $payment_data['created_by'] = Auth::user()->id;
                 $payment_data['payment_for'] =  $due->customer_id;
                 $transaction_payment = PaymentTransactionSellLine::create($payment_data);
-                $due->dollar_remaining = $due->dollar_remaining - $request->due_dollar;
-                $due->dinar_remaining = $due->dinar_remaining - $request->due;
+                $due->dollar_remaining = $due->dollar_remaining - $this->Util->num_uf($request->due_dollar);
+                $due->dinar_remaining = $due->dinar_remaining - $this->Util->num_uf($request->due);
                 $due->payment_status = 'paid';
                 $due->due_date = null;
 
-            }else if($request->dueAmount > $request->due || $request->dueDollarAmount > $request->due_dollar){
+            }else if($this->Util->num_uf($request->dueAmount) > $this->Util->num_uf($request->due) || $this->Util->num_uf($request->dueDollarAmount) > $this->Util->num_uf($request->due_dollar)){
                 // return '2';
                 $payment_data = [
                     'transaction_id' => $due->id,
-                    'amount' => $request->due,
-                    'dollar_amount' => $request->due_dollar,
+                    'amount' => $this->Util->num_uf($request->due),
+                    'dollar_amount' => $this->Util->num_uf($request->due_dollar),
                     'method' => 'cash',
                     'paid_on' => Carbon::now(),
                     'exchange_rate' => System::getProperty('dollar_exchange'),
