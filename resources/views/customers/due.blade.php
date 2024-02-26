@@ -215,20 +215,21 @@
                                         <td class="col7"> {{@num_format($due->final_total - $due->transaction_payments->sum('amount'))}}</td>
                                         <td class="col8 col18">
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات                                            <span class="caret"></span>
-                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                <button type="button" class="btn btn-default btn-sm" aria-haspopup="true" aria-expanded="false">
+                                                    <a data-href="{{route('customers.pay_due_view', ['id' => $due->id])}}"   data-container=".view_modal" class="btn btn-modal" ><i class="dripicons-document-edit"></i> @lang('lang.pay_due')</a>
+                                                    <span class="caret"></span>
                                                 </button>
-                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                    <li>
-                                                        <a data-href="{{route('customers.pay_due_view', ['id' => $due->id])}}"   data-container=".view_modal" class="btn btn-modal" ><i class="dripicons-document-edit"></i> @lang('lang.pay_due')</a>
-                                                    </li>
-                                                    {{-- <li class="divider"></li>
-                                                        <li>
-                                                            <a data-href="{{route('customers.destroy', $customer->id)}}"
-                                                                class="btn text-red delete_item"><i class="fa fa-trash"></i>
-                                                                @lang('lang.delete')</a>
-                                                    </li> --}}
-                                                </ul>
+{{--                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">--}}
+{{--                                                    <li>--}}
+{{--                                                        <a data-href="{{route('customers.pay_due_view', ['id' => $due->id])}}"   data-container=".view_modal" class="btn btn-modal" ><i class="dripicons-document-edit"></i> @lang('lang.pay_due')</a>--}}
+{{--                                                    </li>--}}
+{{--                                                    --}}{{-- <li class="divider"></li>--}}
+{{--                                                        <li>--}}
+{{--                                                            <a data-href="{{route('customers.destroy', $customer->id)}}"--}}
+{{--                                                                class="btn text-red delete_item"><i class="fa fa-trash"></i>--}}
+{{--                                                                @lang('lang.delete')</a>--}}
+{{--                                                    </li> --}}
+{{--                                                </ul>--}}
                                             </div>
                                         </td>
                                     </tr>
