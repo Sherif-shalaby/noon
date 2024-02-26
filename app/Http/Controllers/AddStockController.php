@@ -253,13 +253,13 @@ class AddStockController extends Controller
         if(!empty($transaction->add_stock_lines)){
             $seasonal_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('seasonal_discount_amount');
             $annual_discount = $transaction->add_stock_lines->where('used_currency', '!=', 2)->sum('annual_discount_amount');
-    
+
             $sum_received_seasonal = $received_discounts->where('discount_type', 'seasonal_discount')->sum('received_amount');
             $seasonal_discount -= $sum_received_seasonal;
 
             $sum_received_annual = $received_discounts->where('discount_type', 'annual_discount')->sum('received_amount');
             $annual_discount -= $sum_received_annual;
-    
+
             $seasonal_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('seasonal_discount_amount') - $received_discounts->sum('received_amount_dollar');
             $annual_discount_dollar = $transaction->add_stock_lines->where('used_currency', 2)->sum('annual_discount_amount') - $received_discounts->sum('received_amount_dollar');
         } else {
@@ -306,7 +306,7 @@ class AddStockController extends Controller
                     'created_by' => Auth::user()->id,
                 ];
             }
-           
+
             ReceiveDiscount::create($discount_data);
 
 
@@ -450,7 +450,6 @@ class AddStockController extends Controller
     // +++++++++++++++++++ recentTransactions() +++++++++++++++++++
     public function recentTransactions(Request $request)
     {
-        // dd($request);
         $sell_lines = TransactionSellLine::query();
         // Check if the user is a superadmin or admin
         if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
@@ -474,6 +473,13 @@ class AddStockController extends Controller
             $sell_lines->whereHas('customer', function ($query) {
                 // $query->where('phone', request()->phone_number);
                 $query->where('phone', 'like', '%' . request()->phone_number . '%');
+            });
+        }
+        if (!empty(request()->customer_name))
+        {
+            $sell_lines->whereHas('customer', function ($query) {
+                // $query->where('phone', request()->phone_number);
+                $query->where('name', 'like', '%' . request()->customer_name . '%');
             });
         }
         $toggle_dollar=System::getProperty('toggle_dollar');
