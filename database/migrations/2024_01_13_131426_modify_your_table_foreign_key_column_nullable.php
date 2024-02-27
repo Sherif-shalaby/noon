@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('cash_register_transactions', function (Blueprint $table) {
-//            $table->unsignedBigInteger('transaction_id')->nullable()->change();
-            $table->unsignedBigInteger('transaction_id')->nullable();
+            $table->unsignedBigInteger('transaction_id')->nullable()->change();
+//            $table->unsignedBigInteger('transaction_id')->nullable();
         });
     }
 
