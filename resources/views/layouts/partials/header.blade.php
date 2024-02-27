@@ -432,6 +432,12 @@
                     </ul>
                 </li>
                 {{-- @endif --}}
+                  <li>
+                      <a target="_blank" href="{{route('store_transfer.create')}}">
+                          <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
+                          <span>{{__('lang.store_transfer')}}</span>
+                      </a>
+                  </li>
               </ul>
             </div>
         </nav>
