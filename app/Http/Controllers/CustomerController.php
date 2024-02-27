@@ -398,10 +398,8 @@ class CustomerController extends Controller
         if ($request->date) {
             $dues->where('due_date', '=', $request->date);
         }
-
         // Add the get() method to execute the query and retrieve the results
         $dues = $dues->get();
-
         // Now you can use $dues to access the results
         return view('customers.due', compact('dues','cities'));
     }

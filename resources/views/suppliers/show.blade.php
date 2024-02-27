@@ -231,6 +231,9 @@
                             </div>
                         </div>
                         {{-- ++++++++++++ Tab 3 Content : statement_of_account : كشف حساب +++++++++++ --}}
+                        @php
+                         $total_due=0;   
+                        @endphp
                         <div role="tabpanel" class="tab-pane fade @if (request()->show == 'statement_of_account') show active @endif"
                             id="statement-of-account">
                             <div class="table-responsive">
@@ -242,6 +245,7 @@
                                             <th class="sum">@lang('lang.grand_total')</th>
                                             <th class="sum">@lang('lang.paid')</th>
                                             <th class="sum">@lang('lang.due')</th>
+                                            <th class="sum">@lang('lang.total_due')</th>
                                             <th>@lang('lang.status')</th>
                                             <th>@lang('lang.due_date')</th>
                                             {{-- <th>@lang('lang.action')</th> --}}
@@ -268,7 +272,14 @@
                                                     @else{{ @num_format($add_stock->transaction_payments->sum('amount')) }}
                                                     @endif
                                                 </td>
-                                                <td>{{ @num_format($add_stock->final_total - $add_stock->transaction_payments->sum('amount')) }}</td>
+                                                <td>{{ @num_format($add_stock->final_total - $add_stock->transaction_payments->sum('amount')) }}
+                                                @php
+                                                    $total_due+=$add_stock->final_total - $add_stock->transaction_payments->sum('amount');
+                                                @endphp
+                                                </td>
+                                                <td>
+                                                    {{ @num_format($total_due) }}
+                                                </td>
                                                 <td>{{ ucfirst($add_stock->status) }}</td>
                                                 <td>
                                                     @if ($add_stock->payment_status != 'paid')
@@ -417,9 +428,10 @@
                                             <th class="sum">@lang('lang.grand_total')</th>
                                             <th class="sum">@lang('lang.paid')</th>
                                             <th class="sum">@lang('lang.due')</th>
+                                            <th class="sum">@lang('lang.total_due')</th>
                                             <th class="sum">@lang('lang.grand_total') $</th>
                                             <th class="sum">@lang('lang.paid') $</th>
-                                            <th class="sum">@lang('lang.due') $</th>
+                                            <th class="sum">@lang('lang.total_due') $</th>
                                             <th>@lang('lang.status')</th>
                                             <th>@lang('lang.due_date')</th>
                                             {{-- <th>@lang('lang.action')</th> --}}
@@ -430,6 +442,8 @@
                                         @php
                                             $total_sell_payments = 0;
                                             $total_sell_due = 0;
+                                            $dianr_total_due = 0;
+                                            $dollar_total_due = 0;
                                         @endphp
                                         @foreach ($sell_lines as $line)
                                             <tr>
@@ -447,7 +461,13 @@
                                                     @endif
                                                 </td>
                                                 <td>{{ @num_format($line->final_total - $line->transaction_payments->sum('amount')) }}</td>
-
+                                                @php
+                                                    $dinar_total_due=($line->final_total - $line->transaction_payments->sum('amount'));   
+                                                @endphp
+                                            </td>
+                                            <td>
+                                                {{ @num_format($dinar_total_due)}}
+                                            </td>
                                                 <td>
                                                     @if ($line->type == 'sell_return')
                                                         {{ @num_format(-$line->dollar_final_total) }}@else{{ @num_format($line->dollar_final_total) }}
@@ -460,7 +480,14 @@
                                                     @else{{ @num_format($line->transaction_payments->sum('dollar_amount')) }}
                                                     @endif
                                                 </td>
-                                                <td>{{ @num_format($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount')) }}</td>
+                                                <td>{{ @num_format($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount')) }}
+                                                @php
+                                                    $dollar_total_due=($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount'));   
+                                                @endphp
+                                                </td>
+                                                <td>
+                                                    {{ @num_format($dollar_total_due)}}
+                                                </td>
                                                 <td>{{ ucfirst($line->status) }}</td>
                                                 <td>
                                                     @if ($line->payment_status != 'paid')

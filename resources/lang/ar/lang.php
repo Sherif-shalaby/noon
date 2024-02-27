@@ -842,5 +842,7 @@ return array(
     'new_balance' => 'الرصيد الجديد',
     'current_balance' => 'الرصيد الحالي',
     'adjust_customer_balance' => 'ضبط رصيد العميل',
+    'total_dues_for_this_customer'=>'اجمالى المتأخرات لهذا العميل',
+    'total_due'=>'اجمالى المتأخرات',
 );
 
