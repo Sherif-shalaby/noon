@@ -764,6 +764,8 @@ return [
     'adjust_customer_balance' => 'Adjust Customer Balance',
     'total_dues_for_this_customer'=>'Total Dues For This Customer',
     'total_due'=>'Total Due',
+    'store_transfer' => 'Store Transfer',
+    'all_transfers' => 'All Transfers'
 ];
 
 

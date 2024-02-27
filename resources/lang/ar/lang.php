@@ -844,5 +844,8 @@ return array(
     'adjust_customer_balance' => 'ضبط رصيد العميل',
     'total_dues_for_this_customer'=>'اجمالى المتأخرات لهذا العميل',
     'total_due'=>'اجمالى المتأخرات',
+    'store_transfer' => 'تحويل المخازن',
+    'all_transfers' => 'كل التحويلات',
+    'value_of_transaction' => 'قيمه التحويل',
 );
 

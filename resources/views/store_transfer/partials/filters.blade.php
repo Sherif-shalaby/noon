@@ -41,5 +41,11 @@
                 {!! Form::text('end_time', request()->end_time, ['class' => 'form-control time_picker sale_filter']) !!}
             </div>
         </div>
+        <div class="col-2">
+            <div class="form-group">
+                <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
+                    <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>
+            </div>
+        </div>
     </div>
 </form>
