@@ -195,6 +195,7 @@
                                         <th class="col5">@lang('lang.amount')</th>
                                         <th class="col6">@lang('lang.paid')</th>
                                         <th class="col7">@lang('lang.duePaid')</th>
+                                        <th class="col7">@lang('lang.total_dues_for_this_customer')</th>
                                         <th class="col8">@lang('lang.action')</th>
                                     </tr>
                                 </thead>
@@ -203,6 +204,7 @@
                                         $i = 1 ;
                                         $total_paid = 0;
                                         $total_due = 0;
+                                        $total_dues=0;
                                     @endphp
                                     @foreach ($dues as $due)
                                     <tr>
@@ -212,7 +214,12 @@
                                         <td class="col4"> {{$due->customer->name ?? ''}}</td>
                                         <td class="col5"> {{@num_format($due->final_total)}}</td>
                                         <td class="col6"> {{@num_format($due->transaction_payments->sum('amount'))}}</td>
-                                        <td class="col7"> {{@num_format($due->final_total - $due->transaction_payments->sum('amount'))}}</td>
+                                        <td class="col7"> {{@num_format($due->final_total - $due->transaction_payments->sum('amount'))}}
+                                        @php
+                                            $total_dues+= ($due->final_total - $due->transaction_payments->sum('amount'));
+                                        @endphp
+                                        </td>
+                                        <td class="col7">{{$total_dues}}</td>
                                         <td class="col8 col18">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default btn-sm" aria-haspopup="true" aria-expanded="false">
@@ -226,7 +233,7 @@
 {{--                                                    --}}{{-- <li class="divider"></li>--}}
 {{--                                                        <li>--}}
 {{--                                                            <a data-href="{{route('customers.destroy', $customer->id)}}"--}}
-{{--                                                                class="btn text-red delete_item"><i class="fa fa-trash"></i>--}}
+{{--                                                                class="btn text-red delete_item"><i class="fa fatrash"></i>--}}
 {{--                                                                @lang('lang.delete')</a>--}}
 {{--                                                    </li> --}}
 {{--                                                </ul>--}}

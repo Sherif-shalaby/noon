@@ -42,12 +42,11 @@
                 top: 10%;
                 left: 0%;
                 opacity: 0.2;
-            }
-
-            #watermark img {
-                width: 100%;
-                height: 100%;
-            }
+        }
+        #watermark img {
+            width: 100%;
+            height: 100%;
+        }
         @page {
             margin: 0;
         }
@@ -236,7 +235,7 @@
                 <th style="width:10%;text-align: center">@lang('lang.price_of_piece')</th>
                 <th style="width:10%;text-align: center">@lang('lang.quantity')</th>
                 <th style="width:10%;text-align: center">@lang('lang.extra_quantity')</th>
-                <th style="width:10%;text-align: center">@lang('lang.carton')</th>
+                <th style="width:10%;text-align: center">@lang('lang.unit')</th>
                 <th style="width:40%;text-align: center">@lang('lang.description')</th>
                 <th style="width:10%;text-align: center">@lang('lang.notes')</th>
             </thead>
@@ -251,10 +250,10 @@
                                 {{$line->sell_price}}
                             @endif
                         </td>
-                        <td style="text-align: center;">{{$line->quantity??0}}</td>
-                        <td style="text-align: center;">{{$line->extra_quantity??0}}</td>
-                        <td style="text-align: center">{{number_format($line->quantity??0 + $line->extra_quantity??0,num_of_digital_numbers())}}</td>
-                        <td style="text-align: center"> {{$line->product->name}}</td>
+                        <td style="text-align: center;"> {{$line->quantity??0}}</td>
+                        <td style="text-align: center;"> {{$line->extra_quantity??0}}</td>
+                        <td style="text-align: center">  {{$line?->variation?->unit?->name??''}}  {{number_format($line->quantity??0 + $line->extra_quantity??0,num_of_digital_numbers())}}</td>
+                        <td style="text-align: center">  {{$line->product->name}}</td>
                         <td> {{ $line->notes ?? '' }} </td>
                     </tr>
                 @endforeach
