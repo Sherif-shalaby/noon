@@ -967,11 +967,11 @@ class Create extends Component
                         $quantity=$this->num_uf($item['quantity']);
                         $basic_unit=Variation::whereNull('basic_unit_id')
                         ->where('product_id',$item['product']['id'])->first();
-                        if($item_variation->basic_unit_id==$basic_unit->unit_id){
-                            if($item['quantity'] > $item_variation->equal){
-                                $quantity=$this->num_uf($item['quantity'])+1;
-                            }
-                        }
+                        // if($item_variation->basic_unit_id==$basic_unit->unit_id){
+                        //     if($item['quantity'] > $item_variation->equal){
+                                $quantity=1;
+                            // }
+                        // }
                         if(System::getProperty('loading_cost_currency') == 2){
                             $this->dollar_loading_cost = $basic_unit->unit->loading_cost * $quantity;
                         }
