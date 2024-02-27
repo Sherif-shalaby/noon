@@ -128,6 +128,16 @@
                                                     <div class="col-6 col-sm-2 p-1 mb-4 d-flex  animate__animated animate__bounceInLeft flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                         style="animation-delay: 1.15s">
                                                         <label class="mb-0 text-end d-block mx-2"
+                                                            for="from">{{ __('lang.customer_name') }}</label>
+                                                        {!! Form::text('customer_name', request()->customer_name, [
+                                                            'class' => 'form-control initial-balance-input width-full mx-0',
+                                                            'placeholder' => __('lang.customer_name'),
+                                                            'wire:model' => 'customer_name',
+                                                        ]) !!}
+                                                    </div>
+                                                    <div class="col-6 col-sm-2 p-1 mb-4 d-flex  animate__animated animate__bounceInLeft flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                        style="animation-delay: 1.15s">
+                                                        <label class="mb-0 text-end d-block mx-2"
                                                             for="from">{{ __('site.From') }}</label>
                                                         <div class="input-wrapper width-full">
                                                             {!! Form::date('from', null, [

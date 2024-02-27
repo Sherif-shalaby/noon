@@ -2,10 +2,7 @@
 
 namespace App\Http\Livewire\Invoices;
 
-use App\Utils\pos;
 use Carbon\Carbon;
-use App\Utils\Util;
-use App\Models\User;
 use App\Models\Brand;
 use App\Models\Store;
 use App\Models\System;
@@ -52,7 +49,8 @@ class Create extends Component
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
         $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0, $representative_id, $loading_cost,
-        $dollar_loading_cost, $toggle_suppliers, $delivery_date, $toggle_dollar = 0;
+        $dollar_loading_cost, $toggle_suppliers, $delivery_date, $toggle_dollar =
+        0, $cust_name, $cust_phone, $invoice_number;
 
 
     protected $rules = [
@@ -954,10 +952,26 @@ class Create extends Component
                 //  calculate loading cost
                 if (!empty($item['unit_id'])) {
                     $item_variation = Variation::find($item['unit_id']);
-                    if (System::getProperty('loading_cost_currency') == 2) {
-                        $this->dollar_loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
-                    } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
-                        $this->loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                    if (empty($item_variation->basic_unit_id)) {
+                        if (System::getProperty('loading_cost_currency') == 2) {
+                            $this->dollar_loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                        } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
+                            $this->loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                        }
+                    } else {
+                        $quantity = $this->num_uf($item['quantity']);
+                        $basic_unit = Variation::whereNull('basic_unit_id')
+                            ->where('product_id', $item['product']['id'])->first();
+                        // if ($item_variation->basic_unit_id == $basic_unit->unit_id) {
+                        //     if ($item['quantity'] > $item_variation->equal) {
+                        $quantity = 1;
+                        //     }
+                        // }
+                        if (System::getProperty('loading_cost_currency') == 2) {
+                            $this->dollar_loading_cost = $basic_unit->unit->loading_cost * $quantity;
+                        } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
+                            $this->loading_cost = $basic_unit->unit->loading_cost * $quantity;
+                        }
                     }
                 }
             }

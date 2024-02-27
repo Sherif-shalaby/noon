@@ -379,16 +379,7 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.current_cash')">
-                                                                {{ @num_format(
-                                                                    $cash_register->dinar_total_cash_sales -
-                                                                        $cash_register->dinar_total_refund_cash +
-                                                                        $cash_register->dinar_total_cash_in -
-                                                                        $cash_register->dinar_total_cash_out -
-                                                                        $cash_register->dinar_total_purchases -
-                                                                        $cash_register->dinar_total_expenses -
-                                                                        $cash_register->dinar_total_wages_and_compensation -
-                                                                        $cash_register->dinar_total_sell_return,
-                                                                ) }}
+                                                                {{ @num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash + $cash_register->dinar_total_cash_in - $cash_register->dinar_total_cash_out - $cash_register->dinar_total_purchases - $cash_register->dinar_total_expenses - $cash_register->dinar_total_wages_and_compensation - $cash_register->dinar_total_sell_return) }}
                                                             </span>
                                                         </td>
                                                         <td>

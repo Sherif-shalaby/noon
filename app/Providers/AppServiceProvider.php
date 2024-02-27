@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //Blade directive to format number into required format.
         Blade::directive('num_format', function ($expression) {
-            $currency_precision =3;
+            $currency_precision = num_of_digital_numbers();
             return "number_format($expression,  $currency_precision, '.', ',')";
         });
 

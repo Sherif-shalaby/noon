@@ -1,7 +1,7 @@
 <div class="p-0">
     <div class="card-app">
         <div class=" d-flex flex-row-reverse justify-content-between body-card-app pt-2" style="background-color: #eee">
-            <div class="col-md-2"
+            <div class="col-md-1 p-0"
                 style="display: flex;
                         justify-content: center;
                         align-items: center;
@@ -9,76 +9,111 @@
                         font-weight: 500;">
                 الاجماليات
             </div>
-            <div class="d-flex justify-content-between align-items-center flex-wrap col-md-10">
-                @if ($this->checkRepresentativeUser() && $reprsenative_sell_car)
-                    <div class="col-md-1 p-0">
-                        <button data-method="cash" style="width: 100%" type="button" class="btn btn-success payment-btn"
-                            wire:click="submit" id="cash-btn"><i class="fa-solid fa-money-bill"></i>
-                            @lang('lang.pay')</button>
-                        {{--                            @include('invoices.partials.payment') --}}
+            <div class="d-flex justify-content-between align-items-center flex-column flex-wrap col-md-11 p-0">
+
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    @if ($this->checkRepresentativeUser() && $reprsenative_sell_car)
+                        <div class="col-md-2 p-0">
+                            <button data-method="cash" style="width: 100%" type="button"
+                                class="btn btn-success payment-btn" wire:click="submit" id="cash-btn"><i
+                                    class="fa-solid fa-money-bill"></i>
+                                @lang('lang.pay')</button>
+                            {{--                            @include('invoices.partials.payment') --}}
+                        </div>
+                    @endif
+                    @if (!$this->checkRepresentativeUser())
+                        <div class=" col-md-2 p-0 ">
+                            <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600"
+                                type="button" class="btn btn-success payment-btn px-0" wire:click="submit"
+                                id="cash-btn"><i class="fa-solid fa-money-bill"></i>
+                                @lang('lang.pay')</button>
+                            {{--                            @include('invoices.partials.payment') --}}
+                        </div>
+                    @endif
+
+                    <div class=" col-md-2 p-0 ">
+                        <button style="width: 100%;font-size: 12px;font-weight: 600" type="button"
+                            class="btn btn-primary payment-btn px-0" data-toggle="modal" data-target="#draftTransaction"
+                            {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i class="fa-solid fa-flag"></i>
+                            @lang('lang.view_draft')</button>
+                        {{-- @include('invoices.partials.draft_transaction') --}}
+
                     </div>
-                @endif
-                @if (!$this->checkRepresentativeUser())
-                    <div class=" col-md-1 p-0 ">
+                    <div class=" col-md-2 p-0">
                         <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
-                            class="btn btn-success payment-btn px-0" wire:click="submit" id="cash-btn"><i
-                                class="fa-solid fa-money-bill"></i>
-                            @lang('lang.pay')</button>
-                        {{--                            @include('invoices.partials.payment') --}}
+                            class="btn btn-warning payment-btn " wire:click="changeStatus" id="cash-btn"><i
+                                class="fa-solid fa-flag"></i>
+                            @lang('lang.draft')</button>
                     </div>
-                @endif
+                    @if (!$this->checkRepresentativeUser())
+                        <div class=" col-md-2 p-0">
+                            <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f"
+                                type="button" class="btn btn-primary payment-btn " onclick="openDueDateModal()"
+                                id="pay-later-btn"><i class="fa fa-hourglass-start"></i>
+                                @lang('lang.pay_later')</button>
+                        </div>
+                    @endif
 
-                <div class=" col-md-1 p-0 ">
-                    <button style="width: 100%;font-size: 12px;font-weight: 600" type="button"
-                        class="btn btn-primary payment-btn px-0" data-toggle="modal" data-target="#draftTransaction"
-                        {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i class="fa-solid fa-flag"></i>
-                        @lang('lang.view_draft')</button>
-                    {{-- @include('invoices.partials.draft_transaction') --}}
-
-                </div>
-                <div class=" col-md-1 p-0">
-                    <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
-                        class="btn btn-warning payment-btn " wire:click="changeStatus" id="cash-btn"><i
-                            class="fa-solid fa-flag"></i>
-                        @lang('lang.draft')</button>
-                </div>
-
-                @if (!$this->checkRepresentativeUser())
-                    <div class=" col-md-1 p-0">
-                        <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
-                            class="btn btn-primary payment-btn " onclick="openDueDateModal()" id="pay-later-btn"><i
-                                class="fa fa-hourglass-start"></i>
-                            @lang('lang.pay_later')</button>
+                    <div class="col-md-2 p-0">
+                        <a href="{{ route('recent_transactions') }}"
+                            target="_blank"style="width: 100%;font-size: 12px;font-weight: 600;background-color: #ffc107;"
+                            type="button" class="btn btn-custom" id="recent-transactionbtn"><i
+                                class="dripicons-clock"></i>
+                            @lang('lang.recent_transactions')</a>
                     </div>
-                @endif
-
-                <div class="col-md-2 p-0">
-                    <a href="{{ route('recent_transactions') }}"
-                        target="_blank"style="width: 100%;font-size: 12px;font-weight: 600;background-color: #ffc107;"
-                        type="button" class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
-                        @lang('lang.recent_transactions')</a>
                 </div>
-
-                <div
-                    class="col-md-1 p-0 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) ||
-                    ($back_to_dollar == 2 && $toggle_dollar == '0')
-                        ? ''
-                        : 'd-none' }}">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                        <label class="custom-control-label mb-0" for="customSwitch1" wire:click="ChangeBillToDinar()"
-                            {{ $back_to_dollar == 1 ? 'checked' : '' }}>{{ __('lang.change_bill_to') }}
-                            {{ $back_to_dollar == 0 ? __('lang.dinar_c') : __('lang.dollar_c') }}</label>
-                    </div>
-                    {{-- <button type="button" class="btn btn-success"
+                <div class="d-flex justify-content-end align-items-center w-100">
+                    <div
+                        class="col-md-3 p-0 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) ||
+                        ($back_to_dollar == 2 && $toggle_dollar == '0')
+                            ? ''
+                            : 'd-none' }}">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                            <label class="custom-control-label mb-0" for="customSwitch1"
+                                wire:click="ChangeBillToDinar()"
+                                {{ $back_to_dollar == 1 ? 'checked' : '' }}>{{ __('lang.change_bill_to') }}
+                                {{ $back_to_dollar == 0 ? __('lang.dinar_c') : __('lang.dollar_c') }}</label>
+                        </div>
+                        {{-- <button type="button" class="btn btn-success"
                         wire:click="ChangeBillToDinar()">{{ __('lang.change_bill_to_dinar') }}</button> --}}
+                    </div>
+
+                    <div class="col-md-3 ">
+                        <button class="btn btn-danger {{ $add_to_balance == '0' ? 'd-none' : '' }}"
+                            style="width: 100%;font-size: 12px;font-weight: 600;"
+                            wire:click="addToBalance()">{{ __('lang.add_to_balance') }}</button>
+                    </div>
+                    <div class="col-md-2 p-0">
+                        {!! Form::label('customer_name', __('lang.customer_name'), [
+                            'class' => app()->isLocale('ar') ? 'text-end text-primary mb-0' : 'text-start text-primary mb-0',
+                            'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                        ]) !!}
+                        {!! Form::text('customer_name', null, [
+                            'class' => 'form-control initial-balance-input width-full mx-0',
+                            'wire:model' => 'cust_name',
+                            'placeholder' => __('lang.customer_name'),
+                        ]) !!}
+                    </div>
+                    <div class="col-md-2 p-0">
+                        {!! Form::label('customer_phone', __('lang.customer_phone'), [
+                            'class' => app()->isLocale('ar') ? 'text-end text-primary mb-0' : 'text-start text-primary mb-0',
+                            'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                        ]) !!}
+                        {!! Form::text('customer_phone', null, [
+                            'class' => 'form-control initial-balance-input width-full mx-0',
+                            'wire:model' => 'cust_phone',
+                            'placeholder' => __('lang.customer_phone'),
+                        ]) !!}
+                    </div>
+
                 </div>
 
-                <div class="col-md-2 ">
-                    <button class="btn btn-danger {{ $add_to_balance == '0' ? 'd-none' : '' }}"
-                        style="width: 100%;font-size: 12px;font-weight: 600;"
-                        wire:click="addToBalance()">{{ __('lang.add_to_balance') }}</button>
-                </div>
+
+
+
+
+
             </div>
         </div>
 
@@ -318,7 +353,7 @@
                         {!! Form::number('discount', null, [
                             'class' => 'form-control p-1',
                             'style' => 'height:30px',
-                        
+
                             'wire:model' => 'discount',
                             'wire:change' => 'changeTotal',
                         ]) !!}

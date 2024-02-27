@@ -209,12 +209,15 @@
                                                                 <button type="button"
                                                                     class="btn btn-default btn-sm dropdown-toggle"
                                                                     style="font-size: 12px;font-weight: 600"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false">خيارات <span
-                                                                        class="caret"></span>
-                                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                                    aria-haspopup="true" aria-expanded="false">
+                                                                    <a data-href="{{ route('customers.pay_due_view', ['id' => $due->id]) }}"
+                                                                        data-container=".view_modal"
+                                                                        class="btn btn-modal"><i
+                                                                            class="dripicons-document-edit"></i>
+                                                                        @lang('lang.pay_due')</a>
+                                                                    <span class="caret"></span>
                                                                 </button>
-                                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                                {{-- <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
                                                                     user="menu" x-placement="bottom-end"
                                                                     style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                                     <li>
@@ -223,14 +226,14 @@
                                                                             class="btn btn-modal"><i
                                                                                 class="dripicons-document-edit"></i>
                                                                             @lang('lang.pay_due')</a>
-                                                                    </li>
-                                                                    {{-- <li class="divider"></li>
-                                                        <li>
-                                                            <a data-href="{{route('customers.destroy', $customer->id)}}"
-                                                                class="btn text-red delete_item"><i class="fa fa-trash"></i>
-                                                                @lang('lang.delete')</a>
-                                                    </li> --}}
-                                                                </ul>
+                                                                    </li> --}}
+                                                                {{-- <li class="divider"></li>
+                                                                        <li>
+                                                                            <a data-href="{{route('customers.destroy', $customer->id)}}"
+                                                                                class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                                                @lang('lang.delete')</a>
+                                                                    </li> --}}
+                                                                {{-- </ul> --}}
                                                             </div>
                                                         </td>
                                                     </tr>
