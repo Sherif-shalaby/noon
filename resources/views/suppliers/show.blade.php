@@ -232,6 +232,9 @@
                             </div>
                         </div>
                         {{-- ++++++++++++ Tab 3 Content : statement_of_account : كشف حساب +++++++++++ --}}
+                        @php
+                            $total_due = 0;
+                        @endphp
                         <div role="tabpanel" class="tab-pane fade @if (request()->show == 'statement_of_account') show active @endif"
                             id="statement-of-account">
                             <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif"
@@ -250,6 +253,7 @@
                                                     <th class="sum">@lang('lang.grand_total')</th>
                                                     <th class="sum">@lang('lang.paid')</th>
                                                     <th class="sum">@lang('lang.due')</th>
+                                                    <th class="sum">@lang('lang.total_due')</th>
                                                     <th>@lang('lang.status')</th>
                                                     <th>@lang('lang.due_date')</th>
                                                     {{-- <th>@lang('lang.action')</th> --}}
@@ -307,6 +311,17 @@
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.due')">
                                                                 {{ @num_format($add_stock->final_total - $add_stock->transaction_payments->sum('amount')) }}
+                                                            </span>
+                                                            @php
+                                                                $total_due += $add_stock->final_total - $add_stock->transaction_payments->sum('amount');
+                                                            @endphp
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.total_due')">
+                                                                {{ @num_format($total_due) }}
                                                             </span>
                                                         </td>
                                                         <td>
@@ -479,9 +494,10 @@
                                                     <th class="sum">@lang('lang.grand_total')</th>
                                                     <th class="sum">@lang('lang.paid')</th>
                                                     <th class="sum">@lang('lang.due')</th>
+                                                    <th class="sum">@lang('lang.total_due')</th>
                                                     <th class="sum dollar-cell">@lang('lang.grand_total') $</th>
                                                     <th class="sum dollar-cell">@lang('lang.paid') $</th>
-                                                    <th class="sum dollar-cell">@lang('lang.due') $</th>
+                                                    <th class="sum dollar-cell">@lang('lang.total_due') $</th>
                                                     <th>@lang('lang.status')</th>
                                                     <th>@lang('lang.due_date')</th>
                                                     {{-- <th>@lang('lang.action')</th> --}}
@@ -492,6 +508,8 @@
                                                 @php
                                                     $total_sell_payments = 0;
                                                     $total_sell_due = 0;
+                                                    $dianr_total_due = 0;
+                                                    $dollar_total_due = 0;
                                                 @endphp
                                                 @foreach ($sell_lines as $line)
                                                     <tr>
@@ -540,7 +558,18 @@
                                                                 {{ @num_format($line->final_total - $line->transaction_payments->sum('amount')) }}
                                                             </span>
                                                         </td>
+                                                        @php
+                                                            $dinar_total_due = $line->final_total - $line->transaction_payments->sum('amount');
+                                                        @endphp
 
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.total_due')">
+                                                                {{ @num_format($dinar_total_due) }}
+                                                            </span>
+                                                        </td>
                                                         <td>
                                                             <span
                                                                 class="custom-tooltip dollar-cell d-flex justify-content-center align-items-center"
@@ -569,8 +598,20 @@
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.due')">
                                                                 {{ @num_format($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount')) }}
+                                                                @php
+                                                                    $dollar_total_due = $line->dollar_final_total - $line->transaction_payments->sum('dollar_amount');
+                                                                @endphp
                                                             </span>
                                                         </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.total_due')">
+                                                                {{ @num_format($dollar_total_due) }}
+                                                            </span>
+                                                        </td>
+
                                                         <td>
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"

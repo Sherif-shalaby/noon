@@ -127,6 +127,7 @@
                                                     <th>@lang('lang.amount')</th>
                                                     <th>@lang('lang.paid')</th>
                                                     <th>@lang('lang.duePaid')</th>
+                                                    <th>@lang('lang.total_dues_for_this_customer')</th>
                                                     <th>@lang('lang.action')</th>
                                                 </tr>
                                             </thead>
@@ -135,6 +136,7 @@
                                                     $i = 1;
                                                     $total_paid = 0;
                                                     $total_due = 0;
+                                                    $total_dues = 0;
                                                 @endphp
                                                 @foreach ($dues as $due)
                                                     <tr>
@@ -200,8 +202,19 @@
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.duePaid')">
+                                                                data-tooltip=">@lang('lang.duePaid')">
                                                                 {{ @num_format($due->final_total - $due->transaction_payments->sum('amount')) }}
+                                                            </span>
+                                                            @php
+                                                                $total_dues += $due->final_total - $due->transaction_payments->sum('amount');
+                                                            @endphp
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip=">@lang('lang.total_dues_for_this_customer')">
+                                                                {{ $total_dues }}
                                                             </span>
                                                         </td>
                                                         <td class="col18">

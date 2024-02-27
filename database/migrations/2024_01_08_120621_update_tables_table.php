@@ -15,14 +15,11 @@ return new class extends Migration
     {
         Schema::table('cash_register_transactions', function (Blueprint $table) {
             $table->dropColumn('transaction_type');
-            $table->dropColumn('transaction_id');
         });
         Schema::table('cash_register_transactions', function (Blueprint $table) {
             $table->decimal('dollar_amount', 15, 4)->nullable();
-            $table->enum('transaction_type', [
-                'initial', 'sell', 'transfer', 'refund', 'add_stock', 'cash_in', 'cash_out', 'expense',
-                'returns', 'closing_cash', 'wages_and_compensation', 'pay_off'
-            ])->nullable();
+            $table->enum('transaction_type', ['initial', 'sell', 'transfer', 'refund', 'add_stock', 'cash_in', 'cash_out', 'expense',
+                'returns', 'closing_cash', 'wages_and_compensation','pay_off'])->nullable();
         });
         Schema::table('cash_registers', function (Blueprint $table) {
             $table->decimal('closing_dollar_amount', 15, 4)->nullable();
