@@ -46,11 +46,12 @@
                                 <th>@lang('lang.date')</th>
                                 <th>@lang('lang.reference')</th>
                                 <th>@lang('lang.created_by')</th>
-                                <th>@lang('lang.approved_at')</th>
-                                <th>@lang('lang.received_at')</th>
+{{--                                <th>@lang('lang.approved_at')</th>--}}
+{{--                                <th>@lang('lang.received_at')</th>--}}
                                 <th>@lang('lang.sender_store')</th>
                                 <th>@lang('lang.receiver_store')</th>
                                 <th class="sum">@lang('lang.value_of_transaction')</th>
+                                <th class="sum">@lang('lang.value_of_transaction') $</th>
                                 <th>@lang('lang.status')</th>
                                 <th>@lang('lang.notes')</th>
 {{--                                <th class="notexport">@lang('lang.action')</th>--}}
@@ -62,11 +63,12 @@
                                     <td>{{@format_date($transfer->transaction_date)}}</td>
                                     <td>{{$transfer->invoice_no}}</td>
                                     <td>{{ucfirst($transfer->created_by_user->name ?? '')}}</td>
-                                    <td>@if(!empty($transfer->approved_at)) {{@format_date($transfer->approved_at)}} @endif</td>
-                                    <td>@if(!empty($transfer->received_at)) {{@format_date($transfer->received_at)}} @endif</td>
+{{--                                    <td>@if(!empty($transfer->approved_at)) {{@format_date($transfer->approved_at)}} @endif</td>--}}
+{{--                                    <td>@if(!empty($transfer->received_at)) {{@format_date($transfer->received_at)}} @endif</td>--}}
                                     <td>{{ucfirst($transfer->sender_store->name ?? '')}}</td>
                                     <td>{{ucfirst($transfer->receiver_store->name ?? '')}}</td>
                                     <td>{{@num_format($transfer->final_total)}}</td>
+                                    <td>{{@num_format($transfer->dollar_final_total)}}</td>
                                     <td>@if($transfer->status == 'received'){{__('lang.received')}}@else{{ucfirst($transfer->status)}}@endif
                                     </td>
                                     <td>{{$transfer->notes}}</td>
