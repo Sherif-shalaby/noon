@@ -56,6 +56,7 @@ use App\Http\Controllers\TransactionPaymentController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\CustomerBalanceAdjustmentsController;
+use App\Http\Controllers\StoreTransferController;
 
 /*
 |--------------------------------------------------------------------------
@@ -422,6 +423,12 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Customer Balance Adjustment
     Route::resource('customer-balance-adjustment', CustomerBalanceAdjustmentsController::class);
+
+    // Store Transfer
+    Route::view('store_transfer/create','store_transfer.create')->name('store_transfer.create');
+    Route::get('store_transfer', [StoreTransferController::class,'index'])->name('store_transfer.index');
+
+
 
 
 });
