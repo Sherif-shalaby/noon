@@ -1,5 +1,4 @@
 <div class="animate-in-page">
-
     <section class="forms">
         {{-- <div class="container-fluid"> --}}
         <div>
