@@ -165,6 +165,7 @@
                             'class' => 'form-control initial-balance-input width-full m-0',
                             'wire:model' => 'dollar_loading_cost',
                             'placeholder' => __('lang.loading_cost') . ' $',
+                            'readonly',
                         ]) !!}
                         <div class="{{ $dollar_loading_cost > 0 ? '' : 'd-none' }}"
                             title="{{ __('lang.change_remaining_to_dinar') }}">
@@ -321,6 +322,7 @@
                             'class' => 'form-control initial-balance-input width-full m-0',
                             'wire:model' => 'loading_cost',
                             'placeholder' => __('lang.loading_cost'),
+                            'readonly',
                         ]) !!}
                     </div>
                 </div>

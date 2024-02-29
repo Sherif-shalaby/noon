@@ -977,8 +977,8 @@ class Create extends Component
             }
         }
         if ($this->invoice_status == 'monetary') {
-            $this->dollar_amount = $this->total_dollar;
-            $this->amount = round_250($this->total);
+            $this->dollar_amount = $this->total_dollar + $this->dollar_loading_cost;
+            $this->amount = round_250($this->total + $this->loading_cost);
             $this->changeReceivedDinar();
             $this->changeReceivedDollar();
             $this->add_to_balance = '0';
@@ -986,11 +986,15 @@ class Create extends Component
         $this->payments[0]['method'] = 'cash';
         $this->rest  = 0;
         // النهائي دينار
-        $this->final_total = $this->total > 0 ? round_250($this->num_uf($this->total)) : 0;
+        $this->final_total = $this->total > 0 ? round_250($this->num_uf($this->total) + $this->loading_cost) : 0;
         // النهائي دولار
-        $this->dollar_final_total = $this->num_uf($this->total_dollar);
+        $this->dollar_final_total = $this->num_uf($this->total_dollar) + $this->dollar_loading_cost;
         // dd($this->dollar_final_total,round($this->dollar_final_total / 10) * 10);
         // $this->net_dollar_remaining = ($this->dollar_final_total - round($this->dollar_final_total, -1));
+
+        $this->total += round_250($this->loading_cost);
+        // dollar_sub_total
+        $this->total_dollar += $this->dollar_loading_cost;
         // task : الباقي دينار
         $dinar_remaining = $this->num_uf($this->final_total) - $this->num_uf($this->amount);
         $this->dinar_remaining = $dinar_remaining > 0 ? round_250($dinar_remaining) : 0;

@@ -229,7 +229,7 @@
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.purchase_price') }}</label>
             <input type="text" class="form-control initial-balance-input width-full"
                 wire:model="items.{{ $index }}.purchase_price"
-                wire:input="convertPurchasePrice({{ $index }})" required>
+                wire:change="convertPurchasePrice({{ $index }})" required>
             <span
                 class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} text-center d-flex justify-content-center py-1 align-items-center initial-balance-input width-full m-0"
                 style='font-weight:700;font-size:14px;color:#333;'>{{ @number_format($product['dollar_purchase_price'], num_of_digital_numbers()) ?? 0 }}$</span>
