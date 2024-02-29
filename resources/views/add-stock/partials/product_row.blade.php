@@ -93,7 +93,7 @@
         @enderror
     </td>
     <td title="{{__('lang.purchase_price')}}">
-        <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_price" wire:input="convertPurchasePrice({{$index}})" style="width: 61px;"  required>
+        <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_price" wire:change="convertPurchasePrice({{$index}})" style="width: 61px;"  required>
         <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{@number_format($product['dollar_purchase_price'],num_of_digital_numbers()) ?? 0 }}$</span>
         @error('items.'.$index.'.purchase_price')
         <span class="error text-danger">{{ $message }}</span>
