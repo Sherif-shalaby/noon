@@ -1024,7 +1024,8 @@ class Create extends Component
         } else {
             $this->items[] = $new_item;
         }
-        $this->getVariationData(count($this->items)-1);
+        $last_index = count($this->items) - 1;
+        $this->getVariationData($last_index);
     }
 
     public function add_by_po()

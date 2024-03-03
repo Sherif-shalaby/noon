@@ -287,7 +287,7 @@ return array(
     'add_supplier   '=>'اضافة مورد',
     'vat_number' =>'ضريبة الشراء',
     'exchange_rate' =>'سعر الصرف',
-    'city'=>'المدينة',
+    'city'=>'المنطقه',
     'country'=>'الدولة',
     'postal_code'=>'الرمز البريدي',
     'add_supplier' =>'اضافة مورد',

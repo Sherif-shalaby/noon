@@ -169,7 +169,7 @@
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     {!! Form::label('transaction_date', __('lang.date_and_time'), []) !!}
                                     <br><b class="pt-5">{{$this->getTransactionDate()}}</b>
@@ -190,7 +190,7 @@
                                 @endif
                                 <div class="col-md-3">
                                     {!! Form::label('transaction_date', __('lang.print_date'), []) !!}<br>
-                                    
+
                                     <input type="datetime-local" wire:model="transaction_date"
                                         value="{{ date('Y-m-d\TH:i') }}" class="form-control">
                                 </div>
@@ -383,6 +383,7 @@
 
                                                     <th style="width: 10%">@lang('lang.action')</th>
                                                     <th></th>
+                                                    <th style="width: 10%"></th>
                                                     <th style="width: 10%"></th>
                                                     <th style="width: 10%"></th>
                                                     <th style="width: 10%">@lang('lang.cost')</th>
