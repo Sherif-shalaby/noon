@@ -226,19 +226,16 @@ class ProductController extends Controller
                             }
                         }
                     }
-                    if (
-                        $re_product['height'] == ('' || 0) && $re_product['length'] == ('' || 0) && $re_product['width'] == ('' || 0)
-                        || $re_product['size'] == ('' || 0) && $re_product['weight'] == ('' || 0)
-                    ) {
+                    if ($re_product['size'] == ('' || 0) && $re_product['weight'] == ('' || 0)) {
                     } else {
                         $product_dimensions = [
                             'product_id' => $product->id ?? null,
                             'variation_id' => Variation::where('product_id', $product->id)->where('unit_id', $re_product['variation_id'])->first()->id ?? null,
-                            'height' => $re_product['height'],
-                            'length' => $re_product['length'],
-                            'width' => $re_product['width'],
-                            'size' => $re_product['size'],
-                            'weight' => $re_product['weight']
+                            'height' => $re_product['height'] ?? null,
+                            'length' => $re_product['length'] ?? null,
+                            'width' => $re_product['width'] ?? null,
+                            'size' => $re_product['size'] ?? null,
+                            'weight' => $re_product['weight'] ?? null,
                         ];
                         ProductDimension::create($product_dimensions);
                     }
@@ -522,10 +519,7 @@ class ProductController extends Controller
                 }
             }
 
-            if (
-                $request->height == ('' || 0) && $request->length == ('' || 0) && $request->width == ('' || 0)
-                || $request->size == ('' || 0) && $request->weight == ('' || 0)
-            ) {
+            if ($request->size == ('' || 0) && $request->weight == ('' || 0)) {
                 ProductDimension::where('product_id', $product->id)->delete();
             } else {
                 $product_dimensions = [
@@ -537,7 +531,13 @@ class ProductController extends Controller
                     'size' => $request->size,
                     'weight' => $request->weight
                 ];
-                ProductDimension::where('product_id', $product->id)->update($product_dimensions);
+                $product_dimension = ProductDimension::where('product_id', $product->id)->first();
+                if(!empty($product_dimension)){
+                    $product_dimension->update($product_dimensions);
+                }
+                else{
+                    ProductDimension::create($product_dimensions);
+                }
             }
             if (isset($request->add_stock_val) && $request->add_stock_val == "1") {
                 return redirect()->to('/add-stock/create?product_ids=' . implode(',', $productIds));
