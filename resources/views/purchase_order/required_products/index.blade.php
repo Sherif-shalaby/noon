@@ -213,7 +213,7 @@
                                                         {{-- +++++++++++++++++ supplier_id +++++++++++++++++ --}}
                                                         <td class="col8" title="@lang('lang.supplier_name')">
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][supplier_id]" id="supplier_id" value="{{ $requiredProduct->supplier_id }}">
-                                                            {{!empty($requiredProduct->supplier_id)?$requiredProduct->supplier->name:''}}
+                                                            {{ !empty($requiredProduct->supplier_id) ? optional($requiredProduct->supplier)->name : '' }}
                                                         </td>
                                                         {{-- +++++++++++++++++ branch_id +++++++++++++++++ --}}
                                                         <td class="col9" title="@lang('lang.branch_name')">
