@@ -680,7 +680,11 @@
                                                         type="text" min="1"
                                                         wire:model="items.{{ $key }}.exchange_rate">
                                                     @php
-                                                        $dollar_exchange = App\Models\System::where('key', '=', 'dollar_exchange')->get('value');
+                                                        $dollar_exchange = App\Models\System::where(
+                                                            'key',
+                                                            '=',
+                                                            'dollar_exchange',
+                                                        )->get('value');
                                                     @endphp
                                                     <input
                                                         style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece"
@@ -813,8 +817,9 @@
 
 {{-- <!-- This will be printed --> --}}
 <section class="invoice print_section print-only" id="receipt_section_print"> </section>
-@push('javascripts')
 
+
+@push('javascripts')
     @if (empty($store_pos) || empty($stores))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -837,15 +842,9 @@
         </script>
     @endif
     <script>
-        $(document).on("click", "#recent-transaction-btn", function() {
-            $("#recentTransaction").modal("show");
-        });
-        $(document).on("click", "#closeRecentTransactionModal", function() {
-            $("#recentTransaction").modal("hide");
-        });
         document.addEventListener('livewire:load', function() {
-            $('.depart').select().on('change', function(e) {
-                @this.set('department_id', $(this).val());
+            $('.depart1').select().on('change', function(e) {
+                @this.set('department_id1', $(this).val());
             });
         });
         document.addEventListener('livewire:load', function() {
@@ -948,7 +947,6 @@
             });
 
         });
-
         $(document).on('change', 'select', function(e) {
             var name = $(this).data('name');
             console.log(name)
@@ -965,4 +963,5 @@
             }
         });
     </script>
+
 @endpush

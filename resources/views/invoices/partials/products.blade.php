@@ -8,7 +8,7 @@
                     style="padding: 2px">
                     {{-- الاقسام --}}
                     <div class="col-md-4  d-flex flex-column" style="padding: 2px">
-
+                        {{--  --}}
                         <select class="form-control depart1 select2" wire:model="department_id1"
                             data-name="department_id1">
                             <option value="0 " readonly selected>اختر </option>
