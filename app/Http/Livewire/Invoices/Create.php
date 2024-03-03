@@ -947,13 +947,14 @@ class Create extends Component
                 // dinar_sub_total
                 $this->total += round_250($this->num_uf($item['sub_total']));
                 // dollar_sub_total
-                $this->total_dollar += $this->num_uf($item['dollar_sub_total']);
+                $this->total_dollar += $this->num_uf($item['dollar_sub_total'] );
                 $this->discount += $this->num_uf($item['discount_price']);
                 $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
                 //  calculate loading cost
                 if(!empty($item['unit_id'])){
                     $item_variation = Variation::find($item['unit_id']);
                     if(empty($item_variation->basic_unit_id)){
+                        // dd( $item_variation->unit);
                         if(System::getProperty('loading_cost_currency') == 2){
                             $this->dollar_loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
                         }
@@ -980,8 +981,8 @@ class Create extends Component
             }
         }
         if($this->invoice_status == 'monetary'){
-            $this->dollar_amount = $this->total_dollar;
-            $this->amount = round_250($this->total);
+            $this->dollar_amount = $this->total_dollar + $this->dollar_loading_cost;
+            $this->amount = round_250($this->total + $this->loading_cost);
             $this->changeReceivedDinar();
             $this->changeReceivedDollar();
             $this->add_to_balance = '0';
@@ -989,11 +990,15 @@ class Create extends Component
         $this->payments[0]['method'] = 'cash';
         $this->rest  = 0;
         // النهائي دينار
-        $this->final_total = $this->total > 0 ? round_250($this->num_uf($this->total)) : 0;
+        $this->final_total = $this->total > 0 ? round_250($this->num_uf($this->total) + $this->loading_cost) : 0;
         // النهائي دولار
-        $this->dollar_final_total = $this->num_uf($this->total_dollar);
+        $this->dollar_final_total = $this->num_uf($this->total_dollar )+ $this->dollar_loading_cost;
         // dd($this->dollar_final_total,round($this->dollar_final_total / 10) * 10);
         // $this->net_dollar_remaining = ($this->dollar_final_total - round($this->dollar_final_total, -1));
+        
+        $this->total += round_250( $this->loading_cost);
+        // dollar_sub_total
+        $this->total_dollar += $this->dollar_loading_cost;
         // task : الباقي دينار
         $dinar_remaining = $this->num_uf($this->final_total) - $this->num_uf($this->amount);
         $this->dinar_remaining = $dinar_remaining > 0 ? round_250($dinar_remaining) : 0;
@@ -1695,7 +1700,7 @@ class Create extends Component
                 'transaction',
                 'payment_types',
                 'invoice_lang',
-                //                'total_due',
+                //'total_due',
                 'print_gift_invoice'
             ))->render();
         }
