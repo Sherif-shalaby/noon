@@ -185,7 +185,7 @@
                                                                                 name="products[{{ $index }}][supplier_id]"
                                                                                 id="supplier_id"
                                                                                 value="{{ $requiredProduct->supplier_id }}">
-                                                                            {{ !empty($requiredProduct->supplier_id) ? $requiredProduct->supplier->name : '' }}
+                                                                            {{ !empty($requiredProduct->supplier_id) ? optional($requiredProduct->supplier)->name : '' }}
                                                                         </span>
                                                                     </td>
                                                                     {{-- +++++++++++++++++ branch_id +++++++++++++++++ --}}

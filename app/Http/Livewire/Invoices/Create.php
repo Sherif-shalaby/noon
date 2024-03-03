@@ -695,24 +695,18 @@ class Create extends Component
     // ++++++++++++++++++++++++++ updatedDepartmentId() ++++++++++++++++++++++++++
     public function updatedDepartmentId($value, $name)
     {
-        $this->allproducts = Product::when($name == 'department_id1', function ($query) {
+        $this->allproducts = Product::when(isset($this->department_id1) && $this->department_id1 != '0 ', function ($query) {
             $query->where('category_id', $this->department_id1);
-            // $query->where(function ($query) {
-            //     $query->where('category_id', $this->department_id1)
-            //         ->Where('subcategory_id1', $this->department_id2)
-            //         ->Where('subcategory_id2', $this->department_id3)
-            //         ->Where('subcategory_id3', $this->department_id4);
-            // });
-        })->when($name == 'department_id2', function ($query) {
+        })->when(isset($this->department_id2) && $this->department_id2 != '0 ', function ($query) {
             $query->where('subcategory_id1', $this->department_id2);
         })
-            ->when($name == 'department_id3', function ($query) {
+            ->when(isset($this->department_id3) && $this->department_id3 != '0 ', function ($query) {
                 $query->where('subcategory_id2', $this->department_id3);
             })
-            ->when($name == 'department_id4', function ($query) {
+            ->when(isset($this->department_id4) && $this->department_id4 != '0 ', function ($query) {
                 $query->where('subcategory_id3', $this->department_id4);
                 // ++++++++++++++++ brand_id filter ++++++++++++++++
-            })->when($name == 'brand_id', function ($query) use ($value) {
+            })->when($this->brand_id != 0, function ($query) use ($value) {
                 $query->where('brand_id', $this->brand_id);
                 // ========================== price_order filter ==========================
                 // ++++++++++++++++ if price_order == lowest_price ++++++++++++++++
