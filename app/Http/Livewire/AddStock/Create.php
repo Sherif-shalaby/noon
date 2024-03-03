@@ -1024,6 +1024,8 @@ class Create extends Component
         } else {
             $this->items[] = $new_item;
         }
+        $last_index = count($this->items) - 1;
+        $this->getVariationData($last_index);
     }
 
     public function add_by_po()
@@ -1381,7 +1383,7 @@ class Create extends Component
                                     if ($product_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
                                         $qtyByUnit *= $product_variation->equal;
                                     }
-                                    if ($product_variation->basic_unit_id == $product_data->product_dimensions->variation_id || $product_variation->unit_id == $variation_id) {
+                                    if ($product_variation->basic_unit_id == $product_data->product_dimensions->variation_id || $product_variation->unit_id == $product_data->product_dimensions->variation_id) {
                                         $qty_difference = 1 / $qtyByUnit;
                                         break;
                                     }
