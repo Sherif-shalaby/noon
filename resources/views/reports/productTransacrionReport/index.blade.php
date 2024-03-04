@@ -57,8 +57,8 @@
 
                             {{-- @include('products.filters')  --}}
                             <div class="col" id="type">
-                                <p class="mg-b-10"> ابحث عن طريق اسم المخزن</p><select
-                                    class="form-control select2 js-example-basic-single" name="store" >
+                                <p class="mg-b-10"> ابحث عن طريق اسم المخزن</p>
+                                <select class="form-control select2 js-example-basic-single" name="store"  required>
                                     <option value="" >
                                         {{ $type ?? 'اختر اسم المخزن' }}
                                     </option>
@@ -76,8 +76,8 @@
 
 
                             <div class="col" id="type">
-                                <p class="mg-b-10"> ابحث عن طريق المنتج</p><select
-                                    class="form-control select2 js-example-basic-single" name="product" required>
+                                <p class="mg-b-10"> ابحث عن طريق المنتج</p>
+                                <select class="form-control select2 js-example-basic-single" name="product" required>
                                     <option value="" >
                                         {{ $type ?? 'اختر اسم المنتج' }}
                                     </option>
@@ -103,7 +103,7 @@
                                             <i class="fas fa-calendar-alt"></i>
                                         </div>
                                     </div><input class="form-control fc-datepicker" value="{{ $start_at ?? '' }}"
-                                        name="start_at" placeholder="YYYY-MM-DD" type="date">
+                                        name="start_at" placeholder="YYYY-MM-DD" type="date" required>
                                 </div>
                             </div>
 
@@ -118,7 +118,7 @@
                                             <i class="fas fa-calendar-alt"></i>
                                         </div>
                                     </div><input class="form-control fc-datepicker" name="end_at"
-                                        value="{{ $end_at ?? '' }}" placeholder="YYYY-MM-DD" type="date">
+                                        value="{{ $end_at ?? '' }}" placeholder="YYYY-MM-DD" type="date" required>
                                 </div><!-- input-group -->
                             </div>
 
@@ -155,14 +155,14 @@
 
 
 
-                        {{-- @if (session()->has('report')) --}}
-                        {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                        <br>
-                        <div class="table-responsive">
+                    {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
+                    <br>
+                    @if (isset($results))
+                    <div class="table-responsive">
                             <table id="datatable-buttons" class="table table-bordered">
                                 <thead>
                                     <tr>
-                                       
+                                        
                                         <th>تاريخ العمليه </th>
                                         <th>اسم المنتج</th>
                                         <th>اسم المخزن</th>
@@ -170,14 +170,16 @@
                                         <th>الكمية </th>
                                         <th>الرصيد </th>
                                         {{-- <th>العميل </th>
-                                        <th>المورد </th>
-                                        <th>رقم الهاتف </th> --}}
-
-                                        {{-- <th>@lang('lang.action')</th>  --}}
-                                    </tr>
-                                </thead>
-
-                                <tbody>
+                                            <th>المورد </th>
+                                            <th>رقم الهاتف </th> --}}
+                                            
+                                            {{-- <th>@lang('lang.action')</th>  --}}
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        
+                                    
                                     @foreach($results as $result)
                                     <tr @if ($result->type == 'بيع') class="table-danger" @else class="table-success" @endif>
                                         <td>{{ $result->created_at }}</td>
@@ -188,10 +190,11 @@
                                         <td>{{ $result->Final_balance }}</td>
                                     </tr>
                                     @endforeach
+                                 
 
                                 </tbody>
                             </table>
-                            {{-- @endif --}}
+                            @endif
                             <div class="view_modal no-print">
 
                             </div>
