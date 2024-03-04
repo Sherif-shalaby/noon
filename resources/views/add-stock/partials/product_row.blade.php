@@ -150,7 +150,7 @@
     <td>
         <div class="d-flex justify-content-between">
             <div class="input-group-prepend">
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.cash_discount" style="width: 100px;" wire:input="purchase_final({{ $index }})" placeholder="cash discount">
+                <input type="text" class="form-control" wire:model="items.{{ $index }}.cash_discount" style="width: 100px;" wire:input="cost({{ $index }})" placeholder="cash discount">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" name="discount_dependency{{ $index }}" id="discount_dependency_{{ $index }}"
                            wire:model="items.{{ $index }}.discount_dependency"
@@ -160,11 +160,11 @@
             </div>
 
             <div class="input-group-prepend">
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.seasonal_discount" wire:input="purchase_final({{ $index }})" style="width: 100px;" placeholder="seasonal discount">
+                <input type="text" class="form-control" wire:model="items.{{ $index }}.seasonal_discount" wire:input="cost({{ $index }})" style="width: 100px;" placeholder="seasonal discount">
             </div>
 
             <div class="input-group-prepend">
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.annual_discount" wire:input="purchase_final({{ $index }})" style="width: 100px;" placeholder="Annual discount">
+                <input type="text" class="form-control" wire:model="items.{{ $index }}.annual_discount" wire:input="cost({{ $index }})" style="width: 100px;" placeholder="Annual discount">
             </div>
         </div>
     </td>
@@ -192,8 +192,8 @@
         @endif
     </td>
     <td title="{{__('lang.cost')}}">
-        @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
-        {{$this->cost($index)}}
+{{--        {{$this->cost($index)}}--}}
+    @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
             <span class="cost" aria-placeholder="dollar cost">
                 {{ $product['cost'] }}
             </span>
