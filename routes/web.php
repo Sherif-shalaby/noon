@@ -283,6 +283,7 @@ Route::group(['middleware' => ['auth']], function () {
         
         
         Route::resource('ProductReport', productTransacrionReport::class);
+        Route::get('getProductReport', [productTransacrionReport::class, 'getProductReport'])->name('getProductReport');
         
         
         // ########### product transaction Report ###########
