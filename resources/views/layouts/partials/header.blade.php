@@ -1523,6 +1523,15 @@
                                                     class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
                                             </a>
                                         </li>
+                                        {{-- +++++++++++ productTransacrionReport Report +++++++++++ --}}
+                                        <li class="navbar_item">
+                                            <a class="product_transaction-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                target="_blank" href="{{ route('ProductReport.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
+                                                <i class="mdi mdi-circle"></i> تقرير حركة صنف
+                                            </a>
+                                        </li>
+                                        {{-- +++++++++++ productTransacrionReport Report +++++++++++ --}}
                                         {{-- +++++++++++ monthly sales & purchase report +++++++++++ --}}
                                         <li class="navbar_item">
                                             <a class="monthly_sale_and_purchase_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
@@ -2046,6 +2055,13 @@
     $('.profit_report-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('profit_report') }}"
+        document.body.classList.add('animated-element');
+        // window.location.href = url;
+        window.open(url, "_blank")
+    })
+    $('.product_transaction-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('ProductReport.index') }}"
         document.body.classList.add('animated-element');
         // window.location.href = url;
         window.open(url, "_blank")

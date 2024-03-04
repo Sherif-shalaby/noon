@@ -419,7 +419,7 @@
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.annual_discount')</label>
                     <input type="text" class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.annual_discount"
-                        wire:input="purchase_final({{ $index }})" placeholder="@lang('lang.annual_discount')">
+                        wire:input="cost({{ $index }})" placeholder="@lang('lang.annual_discount')">
                 </div>
 
 
@@ -430,7 +430,7 @@
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.seasonal_discount')</label>
                     <input type="text" class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.seasonal_discount"
-                        wire:input="purchase_final({{ $index }})" placeholder="@lang('lang.seasonal_discount')">
+                        wire:input="cost({{ $index }})" placeholder="@lang('lang.seasonal_discount')">
                 </div>
 
                 <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
@@ -439,8 +439,8 @@
                         class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.cash_discount')</label>
                     <input type="text" class="form-control initial-balance-input width-full mx-0"
-                        wire:model="items.{{ $index }}.cash_discount"
-                        wire:input="purchase_final({{ $index }})" placeholder="@lang('lang.cash_discount')">
+                        wire:model="items.{{ $index }}.cash_discount" wire:input="cost({{ $index }})"
+                        placeholder="@lang('lang.cash_discount')">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input"
                             name="discount_dependency{{ $index }}"
@@ -478,6 +478,7 @@
             </div>
         @endif --}}
 
+        {{-- {{ $this->cost($index) }} --}}
 
         @if (!empty($product['quantity']) && !empty($product['purchase_price']))
             <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
@@ -485,7 +486,6 @@
                 <label for="cost"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.cost') }}</label>
-                {{ $this->cost($index) }}
                 <b style="font-weight: 700;color: #333"
                     class="cost d-flex justify-content-center align-items-center initial-balance-input width-full m-0"
                     aria-placeholder="dollar cost">
