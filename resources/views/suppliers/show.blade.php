@@ -313,7 +313,9 @@
                                                                 {{ @num_format($add_stock->final_total - $add_stock->transaction_payments->sum('amount')) }}
                                                             </span>
                                                             @php
-                                                                $total_due += $add_stock->final_total - $add_stock->transaction_payments->sum('amount');
+                                                                $total_due +=
+                                                                    $add_stock->final_total -
+                                                                    $add_stock->transaction_payments->sum('amount');
                                                             @endphp
                                                         </td>
                                                         <td>
@@ -455,8 +457,12 @@
                                                 </td> --}}
                                                     </tr>
                                                     @php
-                                                        $total_purchase_payments += $add_stock->transaction_payments->sum('amount');
-                                                        $total_purchase_due += $add_stock->final_total - $add_stock->transaction_payments->sum('amount');
+                                                        $total_purchase_payments += $add_stock->transaction_payments->sum(
+                                                            'amount',
+                                                        );
+                                                        $total_purchase_due +=
+                                                            $add_stock->final_total -
+                                                            $add_stock->transaction_payments->sum('amount');
                                                     @endphp
                                                 @endforeach
                                             </tbody>
@@ -559,7 +565,9 @@
                                                             </span>
                                                         </td>
                                                         @php
-                                                            $dinar_total_due = $line->final_total - $line->transaction_payments->sum('amount');
+                                                            $dinar_total_due =
+                                                                $line->final_total -
+                                                                $line->transaction_payments->sum('amount');
                                                         @endphp
 
                                                         <td>
@@ -599,7 +607,11 @@
                                                                 data-tooltip="@lang('lang.due')">
                                                                 {{ @num_format($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount')) }}
                                                                 @php
-                                                                    $dollar_total_due = $line->dollar_final_total - $line->transaction_payments->sum('dollar_amount');
+                                                                    $dollar_total_due =
+                                                                        $line->dollar_final_total -
+                                                                        $line->transaction_payments->sum(
+                                                                            'dollar_amount',
+                                                                        );
                                                                 @endphp
                                                             </span>
                                                         </td>
@@ -635,8 +647,12 @@
                                                         </td>
                                                     </tr>
                                                     @php
-                                                        $total_sell_payments += $line->transaction_payments->sum('amount');
-                                                        $total_sell_due += $line->final_total - $line->transaction_payments->sum('amount');
+                                                        $total_sell_payments += $line->transaction_payments->sum(
+                                                            'amount',
+                                                        );
+                                                        $total_sell_due +=
+                                                            $line->final_total -
+                                                            $line->transaction_payments->sum('amount');
                                                     @endphp
                                                 @endforeach
                                             </tbody>
@@ -661,7 +677,7 @@
     </div>
 @endsection
 
-@section('javascript')
+@push('javascripts')
     <script>
         $(document).ready(function() {
             supplier_service_table = $('#supplier_service_table').DataTable({
@@ -822,4 +838,4 @@
             supplier_service_table.ajax.reload();
         })
     </script>
-@endsection
+@endpush

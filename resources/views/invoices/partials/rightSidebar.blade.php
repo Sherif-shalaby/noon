@@ -64,7 +64,7 @@
                 </div>
                 <div class="d-flex justify-content-end align-items-center w-100">
                     <div
-                        class="col-md-3 p-0 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) ||
+                        class="col-md-2 p-0 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) ||
                         ($back_to_dollar == 2 && $toggle_dollar == '0')
                             ? ''
                             : 'd-none' }}">
@@ -79,7 +79,7 @@
                         wire:click="ChangeBillToDinar()">{{ __('lang.change_bill_to_dinar') }}</button> --}}
                     </div>
 
-                    <div class="col-md-3 ">
+                    <div class="col-md-2 ">
                         <button class="btn btn-danger {{ $add_to_balance == '0' ? 'd-none' : '' }}"
                             style="width: 100%;font-size: 12px;font-weight: 600;"
                             wire:click="addToBalance()">{{ __('lang.add_to_balance') }}</button>
@@ -106,6 +106,43 @@
                             'placeholder' => __('lang.customer_phone'),
                         ]) !!}
                     </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            {!! Form::label('invoice_number', __('lang.reference'), [
+                                'class' => app()->isLocale('ar') ? 'text-end text-primary mb-0' : 'text-start text-primary mb-0',
+                                'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                            ]) !!}
+                            {!! Form::text('invoice_number', null, [
+                                'class' => 'form-control initial-balance-input width-full mx-0',
+                                'wire:model' => 'invoice_number',
+                                'placeholder' => __('lang.reference'),
+                            ]) !!}
+                        </div>
+                    </div>
+                    @php
+                        $invoice = \App\Models\TransactionSellLine::where('invoice_no', $invoice_number)->first();
+                    @endphp
+
+                    @if (!empty($invoice))
+                        <div class="row hide-print col-md-1">
+                            <div class="column-5">
+                                <a href="{{ route('invoices.edit', $invoice->id) }}" target="_blank" type="button"
+                                    class="btn btn-custom btn-primary"><i class="dripicons-clock"></i>
+                                    @lang('lang.edit')</a>
+                            </div>
+                        </div>
+                    @endif
+                    @if (!empty($variationSums))
+                        @foreach ($variationSums as $unit_name => $variant)
+                            {{ $unit_name == '' ? __('lang.no_units') : $unit_name }}:
+                            <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant }}
+                            </span>
+                        @endforeach
+                    @endif
+                    @if (!empty($items))
+                        <span class="items_quantity_span" style="margin-right: 15px;"> @lang('lang.product_quantity')
+                            {{ count($items) }} </span>
+                    @endif
 
                 </div>
 

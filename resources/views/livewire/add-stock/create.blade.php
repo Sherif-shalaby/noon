@@ -588,21 +588,16 @@
                                     @endif
                                 </h4>
                                 <h4 class="mx-5"> @lang('lang.total') :
-                                    {{-- @if ($paying_currency == 2) --}}
-                                    {{-- {{ $this->sum_dollar_total_cost() ?? 0.0 }} --}}
-                                    {{-- @else --}}
-                                    {{ @number_format($this->sum_total_cost(), num_of_digital_numbers()) ?? 0.0 }}
-                                    {{-- @endif --}}
+                                    {{ @number_format($total, num_of_digital_numbers()) ?? 0.0 }}
+
                                     <span class="final_total_span"></span>
                                 </h4>
 
                                 <h4 class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
                                     @lang('lang.total')$ :
-                                    {{-- @if ($paying_currency == 2) --}}
-                                    {{ @number_format(@num_uf($this->sum_dollar_total_cost()), num_of_digital_numbers()) ?? 0.0 }}
-                                    {{-- @else --}}
-                                    {{-- {{$this->sum_total_cost() ?? 0.00}} --}}
-                                    {{-- @endif --}}
+
+                                    {{ @number_format($total_dollar, num_of_digital_numbers()) ?? 0.0 }}
+
                                     <span class="final_total_span"></span>
                                 </h4>
                             </div>
