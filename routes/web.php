@@ -57,6 +57,7 @@ use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\CustomerBalanceAdjustmentsController;
 use App\Http\Controllers\StoreTransferController;
+use App\Http\Controllers\productTransacrionReport;
 
 /*
 |--------------------------------------------------------------------------
@@ -275,6 +276,25 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('get-due-report', GetDueReportController::class);
     // ########### Supplier Report ###########
     Route::resource('get-supplier-report', SupplierReportController::class);
+    
+
+
+        // ########### product transaction Report ###########
+        
+        
+        Route::resource('ProductReport', productTransacrionReport::class);
+        Route::get('getProductReport', [productTransacrionReport::class, 'getProductReport'])->name('getProductReport');
+        
+        
+        // ########### product transaction Report ###########
+    
+    
+    
+    
+    
+    
+    
+    
     // ########### Customers Report ###########
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
