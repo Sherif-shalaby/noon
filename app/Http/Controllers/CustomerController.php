@@ -372,12 +372,12 @@ class CustomerController extends Controller
     }
 
     public function get_due(Request $request){
-        $today = Carbon::today()->toDateString();
+//        $today = Carbon::today()->toDateString();
 
         if (!$request->date) {
              $dues = TransactionSellLine::where('payment_status', '!=', 'paid')
                 ->where('status', 'final')
-                ->where('due_date', '=', $today)
+//                ->where('due_date', '=', $today)
                 ->get();
         } else {
             $dues = TransactionSellLine::where('payment_status', '!=', 'paid')

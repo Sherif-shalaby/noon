@@ -357,9 +357,16 @@
                         </div>
                     </div>
                 @endif
-
+                @if (!empty($variationSums))
+                    @foreach ($variationSums as $unit_name => $variant)
+                        {{ $unit_name == "" ? __('lang.no_units') : $unit_name }}:
+                        <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant }} </span><br>
+                    @endforeach
+                @endif
+                @if(!empty($items))
+                    <span class="items_quantity_span" style="margin-right: 15px;"> @lang('lang.product_quantity')  {{ count($items) }} </span><br>
+                @endif
             </div>
-
         </div>
     </div>
 </div>

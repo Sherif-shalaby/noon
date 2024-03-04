@@ -538,11 +538,7 @@
                         <div class="col-md-12">
                             <div class="col-md-3 offset-md-8 text-right">
                                 <h3> @lang('lang.total') :
-                                    {{-- @if ($paying_currency == 2) --}}
-                                    {{-- {{$this->sum_dollar_total_cost() ?? 0.00}} --}}
-                                    {{-- @else --}}
-                                    {{ @number_format($this->sum_total_cost(),num_of_digital_numbers()) ?? 0.0 }}
-                                    {{-- @endif --}}
+                                    {{ @number_format($total,num_of_digital_numbers()) ?? 0.0 }}
                                     <span class="final_total_span"></span>
                                 </h3>
                             </div>
@@ -551,11 +547,7 @@
                         <div class="col-md-12">
                             <div class="col-md-3 offset-md-8 text-right">
                                 <h3 class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> @lang('lang.total')$ :
-                                    {{-- @if ($paying_currency == 2) --}}
-                                    {{ @number_format(@num_uf($this->sum_dollar_total_cost()),num_of_digital_numbers()) ?? 0.0 }}
-                                    {{-- @else --}}
-                                    {{-- {{$this->sum_total_cost() ?? 0.00}} --}}
-                                    {{-- @endif --}}
+                                    {{ @number_format($total_dollar,num_of_digital_numbers()) ?? 0.0 }}
                                     <span class="final_total_span"></span>
                                 </h3>
                             </div>

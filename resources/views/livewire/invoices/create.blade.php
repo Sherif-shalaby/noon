@@ -435,9 +435,7 @@
                                             </tr>
                                         @endforeach
                                         <tr>
-                                            {{--                                            <div class="col-md-7">--}}
                                             @include('invoices.partials.search')
-                                            {{--                                            </div>--}}
                                         </tr>
                                     </table>
                                 </div>
