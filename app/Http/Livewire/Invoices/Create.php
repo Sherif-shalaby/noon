@@ -49,7 +49,7 @@ class Create extends Component
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
         $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0,$representative_id, $loading_cost,
-        $dollar_loading_cost,$toggle_suppliers,$delivery_date,$toggle_dollar=0 , $cust_name, $cust_phone, $invoice_number;
+        $dollar_loading_cost,$toggle_suppliers,$delivery_date,$toggle_dollar=0 , $cust_name, $cust_phone, $invoice_number, $variationSums = [];
 
 
     protected $rules =[
@@ -850,6 +850,8 @@ class Create extends Component
                     $price = $this->num_uf($dollar_price) * $this->num_uf($exchange_rate);
                     $dollar_price = 0;
                 }
+                $variant = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first();
+//                dd($variant->variations->unit->name);
 //                dd($current_stock->prices);
                 $new_item = [
                     'variation' => $product->variations,
@@ -876,12 +878,12 @@ class Create extends Component
                     'discount_type' =>  null,
                     'discount_category' =>  null,
                     'dollar_price' => $this->num_uf($dollar_price),
-                    'unit_name' => !empty($product->unit) ? $product->unit->name : '',
+                    'unit_name' => !empty($variant) ? $variant->variations->unit->name : '',
                     'base_unit_multiplier' => !empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
                     'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
                     'stores' => $product_stores,
-                    'unit_id' => ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first()->variation_id ?? '',
-                ];
+                    'unit_id' => $variant->variation_id ?? '',
+                    ];
                 $this->items[] = $new_item;
             }
         }
@@ -1001,7 +1003,23 @@ class Create extends Component
         $dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
         $this->dollar_remaining = $dollar_remaining > 0 ? round_250($dollar_remaining) : 0;
         $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at', 'desc')->get();
+        $this->count_total_by_variations();
 
+    }
+    public function count_total_by_variations()
+    {
+        // dd($this->items);
+        $this->variationSums = [];
+        foreach ($this->items as $item) {
+            $variation_name = $item['unit_name'];
+            if (isset($this->variationSums[$variation_name])) {
+                // If the variation_id already exists in the sums array, add the quantity
+                $this->variationSums[$variation_name] += (float)$item['quantity'];
+            } else {
+                // If the variation_id doesn't exist, create a new entry
+                $this->variationSums[$variation_name] = (float)$item['quantity'];
+            }
+        }
     }
     public function changeRemaining()
     {
@@ -1805,6 +1823,8 @@ class Create extends Component
                 $this->items[$key]['quantity_available'] = $qty;
             }
         }
+        $this->items[$key]['unit_name'] = Variation::find($variation_id)->unit->name;
+//        dd($this->items[$key]['unit_name'] );
         $this->subtotal($key, $via = 'quantity');
         $this->changeCustomerType($key);
     }

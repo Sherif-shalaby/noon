@@ -181,7 +181,7 @@
         @endif
     </td>
 
-    <td title="{{__('lang.final_total')}}">
+    <td title="{{__('lang.final_total')}} $">
         @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
             <span class="final_total_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
                 {{@number_format($this->final_purchase_for_piece($index),num_of_digital_numbers())}}
