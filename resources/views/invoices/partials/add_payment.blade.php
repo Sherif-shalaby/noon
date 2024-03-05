@@ -85,7 +85,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('upload_documents', __('lang.upload_documents') . ':', []) !!} <br>
-                            <input type="file" name="upload_documents[]" id="upload_documents" multiple>
+                            <input type="file" name="upload_document" id="upload_document">
                         </div>
                     </div>
                     <div class="col-md-4 not_cash_fields card_field hide">
