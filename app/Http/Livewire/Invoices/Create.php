@@ -534,22 +534,24 @@ class Create extends Component
                 }
             }
             // dd($transaction->payment_status);
-            if(!$this->toggle_suppliers){
-            if ($transaction->payment_status== 'partial' || $transaction->payment_status== 'pending') {
-                $balance = $this->payCustomerDue($transaction->customer_id);
-                $new_dinar_balance = $balance[0];
-                $new_dollar_balance = $balance[1];
-                if (($new_dinar_balance < $this->new_added_dinar_balance) || ($new_dollar_balance < $this->new_added_dollar_balance)) {
-                    $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
-                    $this->createCashRegisterTransaction($register, $this->num_uf($this->new_added_dinar_balance) - $new_dinar_balance,$this->num_uf($this->new_added_dollar_balance) - $new_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
+//            dd($this->toggle_suppliers);
+            if(!empty($this->toggle_suppliers) && !$this->toggle_suppliers){
+                if ($transaction->payment_status== 'partial' || $transaction->payment_status== 'pending') {
+                    $balance = $this->payCustomerDue($transaction->customer_id);
+                    $new_dinar_balance = $balance[0];
+                    $new_dollar_balance = $balance[1];
+                    if (($new_dinar_balance < $this->new_added_dinar_balance) || ($new_dollar_balance < $this->new_added_dollar_balance)) {
+                        dd(1);
+                        $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
+                        $this->createCashRegisterTransaction($register, $this->num_uf($this->new_added_dinar_balance) - $new_dinar_balance,$this->num_uf($this->new_added_dollar_balance) - $new_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
+                    }
+                } else {
+                    if ($this->new_added_dinar_balance > 0 || $this->new_added_dollar_balance > 0) {
+                        dd(2);
+                        $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
+                        $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance,$this->new_added_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
+                    }
                 }
-            } else {
-                if ($this->new_added_dinar_balance > 0 || $this->new_added_dollar_balance > 0) {
-                    $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
-                    $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance,$this->new_added_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
-                }
-            }
-
             }
 
             DB::commit();

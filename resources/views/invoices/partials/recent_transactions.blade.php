@@ -197,6 +197,7 @@
                                                     <th class="sum dollar-cell">@lang('lang.due_sale_list') $</th>
                                                     <th>@lang('lang.payment_date')</th>
                                                     <th>@lang('lang.cashier_man')</th>
+                                                    <th>@lang('lang.representative')</th>
                                                     <th>@lang('lang.products')</th>
                                                     <th class="notexport">@lang('lang.action')</th>
                                                 </tr>
@@ -361,6 +362,14 @@
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.representative')">
+                                                                {{ $line->representative->employee_name ?? '' }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 10px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.products')">
                                                                 @foreach ($line->transaction_sell_lines as $sell_line)
                                                                     @if (!empty($sell_line->product))
@@ -399,7 +408,8 @@
                                                                         {{-- if (auth()->user()->can('sale.pay.create_and_edit')) { --}}
                                                                         @php
                                                                             $final_total = $line->final_total;
-                                                                            $dollar_final_total = $line->dollar_final_total;
+                                                                            $dollar_final_total =
+                                                                                $line->dollar_final_total;
                                                                             if (!empty($line->return_parent)) {
                                                                                 $final_total = @num_uf($line->final_total - $line->return_parent->final_total);
                                                                                 $dollar_final_total = @num_uf($line->dollar_final_total - $line->return_parent->dollar_final_total);

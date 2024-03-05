@@ -102,6 +102,7 @@
                                                     <th class="col15">@lang('lang.due_date')</th>
                                                     <th class="col16">@lang('lang.payment_date')</th>
                                                     <th class="col17">@lang('lang.cashier_man')</th>
+                                                    <th class="col17">@lang('lang.representative')</th>
                                                     <th class="col18">@lang('lang.commission')</th>
                                                     <th class="col19">@lang('lang.products')</th>
                                                     <th class="col20">@lang('lang.sale_note')</th>
@@ -181,15 +182,7 @@
                                                                     {{ $line->customer->phone ?? '' }}
                                                                 </span>
                                                             </td>
-                                                            {{-- <td class="col7">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.sale_status')">
-                                                                <span
-                                                                    class="badge badge-success">{{ $line->status ?? '' }}</span>
-                                                            </span>
-                                                                </td> --}}
+
                                                             <td class="col8">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
@@ -218,16 +211,7 @@
                                                                     @endforeach
                                                                 </span>
                                                             </td>
-                                                            {{-- <td class="col11">
-                                                            <span
-                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.received_currency')">
-                                                                @foreach ($line->transaction_payments as $payment)
-                                                                    {{ $payment->received_currency_relation->symbol ?? '' }}<br>
-                                                                @endforeach
-                                                            </span>
-                                                             </td> --}}
+
                                                             <td class="col12">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
@@ -302,9 +286,11 @@
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.cashier_man')">
-                                                                    {{ $line->created_by_user->name }}
+                                                                    {{ $line->store_pos->name }}
                                                                 </span>
                                                             </td>
+                                                            <td class="col23">
+                                                                {{ $line->representative->employee_name ?? '' }} </td>
                                                             <td class="col18">
                                                             </td>
                                                             <td class="col19">

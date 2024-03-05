@@ -38,6 +38,17 @@
                             </h6>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <h6> <span class="mx-1">@lang('lang.cashier_man') </span>:
+                            <span class="mx-1"> {{ $sell_line->store_pos->name ?? '' }}</span>
+                        </h6>
+                    </div>
+                    <div class="col-md-12">
+                        <h6>
+                            <span class="mx-1">@lang('lang.representative') </span> :
+                            <span class="mx-1"> {{ $sell_line->representative->employee_name ?? '' }}</span>
+                        </h6>
+                    </div>
 
                     <div class="col-md-6 d-flex flex-wrap">
                         <div class="col-md-6 d-flex flex-row-reverse">

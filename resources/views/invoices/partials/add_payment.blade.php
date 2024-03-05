@@ -3,7 +3,12 @@
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
 
-            {!! Form::open(['url' => route('store_payment'), 'method' => 'post', 'id' => 'add_payment_form', 'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open([
+                'url' => route('store_payment'),
+                'method' => 'post',
+                'id' => 'add_payment_form',
+                'enctype' => 'multipart/form-data',
+            ]) !!}
 
             <div class="modal-header">
 
@@ -32,7 +37,7 @@
                             {!! Form::text('dollar_amount', @num_format($dollar_amount), [
                                 'id' => 'dollar_amount_pay',
                                 'class' => 'form-control',
-                                'placeholder' => __('lang.amount').'$',
+                                'placeholder' => __('lang.amount') . '$',
                             ]) !!}
 
                         </div>
@@ -52,13 +57,28 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                            {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], null, ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),'wire:model'=> 'source_type']) !!}
+                            {!! Form::select(
+                                'source_type',
+                                ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')],
+                                null,
+                                [
+                                    'class' => 'select form-control',
+                                    'data-live-search' => 'true',
+                                    'placeholder' => __('lang.please_select'),
+                                    'wire:model' => 'source_type',
+                                ],
+                            ) !!}
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
-                            {!! Form::select('source_id', $users, null, ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'id' => 'source_id']) !!}
+                            {!! Form::select('source_id', $users, null, [
+                                'class' => 'select form-control',
+                                'data-live-search' => 'true',
+                                'placeholder' => __('lang.please_select'),
+                                'id' => 'source_id',
+                            ]) !!}
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -85,7 +105,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('upload_documents', __('lang.upload_documents') . ':', []) !!} <br>
-                            <input type="file" name="upload_documents[]" id="upload_documents" multiple>
+                            <input type="file" name="upload_document" id="upload_document">
                         </div>
                     </div>
                     <div class="col-md-4 not_cash_fields card_field hide">
@@ -224,27 +244,27 @@
         // Store the initial amount value
         // var initialAmount = parseFloat($('#amount_pay').val().replace(',', '')); // Assuming 'num_format' formats the number as a string with commas
 
-        $('#amount_pay').on('change', function () {
+        $('#amount_pay').on('change', function() {
             var newAmount = parseFloat($(this).val().replace(',', ''));
 
             if (!isNaN(newAmount) && newAmount > initialAmount) {
                 var change = Math.abs(newAmount - initialAmount);
                 $(".add_to_customer_balance").removeClass("hide");
                 $('.change').text(change.toFixed(2));
-                $(document).on("click", ".add_to_customer_balance", function () {
+                $(document).on("click", ".add_to_customer_balance", function() {
                     $('.change').text(change.toFixed(2)); // Update the change value
 
                     // if ($('.payment_way').val() !== 'deposit') {
-                        $('.add_to_customer_balance_in').val(change.toFixed(2));
-                        console.log($('#add_to_customer_balance').val());
-                        // $('.change_amount').val(0);
-                        // $(this).attr('disabled', true);
+                    $('.add_to_customer_balance_in').val(change.toFixed(2));
+                    console.log($('#add_to_customer_balance').val());
+                    // $('.change_amount').val(0);
+                    // $(this).attr('disabled', true);
 
-                        // Assuming you have a 'received_amount' variable
-                        var newReceivedAmount = newAmount - change;
-                        $('#amount_pay').val(newReceivedAmount.toFixed(2));
+                    // Assuming you have a 'received_amount' variable
+                    var newReceivedAmount = newAmount - change;
+                    $('#amount_pay').val(newReceivedAmount.toFixed(2));
                 });
-                $(document).on("click", ".close , #close_modal_button", function () {
+                $(document).on("click", ".close , #close_modal_button", function() {
                     $('.add_to_customer_balance').addClass('hide');
                     $('.add_to_customer_balance_in').val('0');
                     console.log($('#add_to_customer_balance').val());
@@ -290,6 +310,4 @@
             $('.not_cash').attr('required', false);
         }
     })
-
-
 </script>
