@@ -191,6 +191,11 @@
                                                 <input type="checkbox" id="col17_id" name="col17" class="checkbox_class2"  checked="checked" />
                                                 <span>@lang('lang.cashier_man')</span>
                                             </label>
+                                            {{-- +++++++++++++++++ checkbox17 : representative +++++++++++++++++ --}}
+                                            <label for="col23_id">
+                                                <input type="checkbox" id="col23_id" name="col23" class="checkbox_class2"  checked="checked" />
+                                                <span>@lang('lang.representative')</span>
+                                            </label>
                                             {{-- +++++++++++++++++ checkbox18 : commission +++++++++++++++++ --}}
                                             <label for="col18_id">
                                                 <input type="checkbox" id="col18_id" name="col18" class="checkbox_class2"  checked="checked" />
@@ -257,6 +262,7 @@
                                     <th class="col15">@lang('lang.due_date')</th>
                                     <th class="col16">@lang('lang.payment_date')</th>
                                     <th class="col17">@lang('lang.cashier_man')</th>
+                                    <th class="col17">@lang('lang.representative')</th>
                                     <th class="col18">@lang('lang.commission')</th>
                                     <th class="col19">@lang('lang.products')</th>
                                     <th class="col20">@lang('lang.sale_note')</th>
@@ -296,9 +302,6 @@
                                             <td class="col6">
                                                 {{$line->customer->phone ?? '' }}
                                             </td>
-                                            {{-- <td class="col7">
-                                                <span class="badge badge-success">{{$line->status ?? '' }}</span>
-                                            </td> --}}
                                             <td class="col8">{{$line->payment_status}}</td>
                                             <td class="col9">
                                                 @foreach($line->transaction_payments as $payment)
@@ -310,12 +313,6 @@
                                                     {{$payment->ref_no ?? ''}}<br>
                                                 @endforeach
                                             </td>
-                                            {{-- <td class="col11">
-                                                @foreach($line->transaction_payments as $payment)
-                                                    {{$payment->received_currency_relation->symbol ?? ''}}<br>
-                                                @endforeach
-                                            </td> --}}
-
                                             <td class="col12">
                                                 {{number_format($line->final_total,num_of_digital_numbers())}} د.ع
                                             </td>
@@ -342,8 +339,9 @@
                                                 {{$line->transaction_payments->last()->paid_on ?? ''}}
                                             </td>
                                             <td class="col17">
-                                                {{$line->created_by_user->name}}
+                                                {{$line->store_pos->name}}
                                             </td>
+                                            <td class="col23"> {{$line->representative->employee_name ?? ''}} </td>
                                             <td class="col18">
                                             </td>
                                             <td class="col19">

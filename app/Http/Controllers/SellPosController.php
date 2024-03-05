@@ -280,7 +280,6 @@ class SellPosController extends Controller
     {
         $sell_line = TransactionSellLine::find($id);
         $payment_type_array = $this->commonUtil->getPaymentTypeArrayForPos();
-
         return view('invoices.show')->with(compact(
             'sell_line',
             'payment_type_array',
@@ -500,6 +499,11 @@ class SellPosController extends Controller
             DB::beginTransaction();
             $transaction = TransactionSellLine::find($request->transaction_id);
             $transaction_payment = $this->transactionUtil->createOrUpdateTransactionPayment($transaction, $payment_data);
+            if ($request->upload_document) {
+                $transaction_payment->photo =  store_file($request->upload_document,'paymentSellLine');
+                $transaction_payment->save();
+//                dd($transaction_payment);
+            }
             $user_id = null;
             if (!empty($request->source_id)) {
                 if ($request->source_type == 'pos') {
@@ -518,8 +522,8 @@ class SellPosController extends Controller
                     $this->moneysafeUtil->updatePayment($transaction, $payment_data, 'debit', $transaction_payment->id, null, $money_safe);
                 }
             }
-            $transaction->dollar_remaining -= $request->dollar_amount;
-            $transaction->dinar_remaining -= $request->amount;
+            $transaction->dollar_remaining -= $this->commonUtil->num_uf($request->dollar_amount);
+            $transaction->dinar_remaining -= $this->commonUtil->num_uf($request->amount);
             $transaction->save();
             $this->transactionUtil->updateTransactionPaymentStatus($transaction->id);
             if ($transaction->type == 'sell') {

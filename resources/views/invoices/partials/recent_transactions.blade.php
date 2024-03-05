@@ -122,6 +122,7 @@
                         <th class="sum">@lang('lang.due_sale_list') $</th>
                         <th>@lang('lang.payment_date')</th>
                         <th>@lang('lang.cashier_man')</th>
+                        <th>@lang('lang.representative')</th>
                         <th>@lang('lang.products')</th>
                         <th class="notexport">@lang('lang.action')</th>
                     </tr>
@@ -180,17 +181,16 @@
                             <td>
                                 {{ $line->final_total - $line->transaction_payments->sum('amount') }}
                             </td>
-
                             <td>
                                 {{ $line->dollar_final_total - $line->transaction_payments->sum('dollar_amount') }}
                             </td>
-
                             <td>
                                 {{ $line->transaction_payments->last()->paid_on ?? '' }}
                             </td>
                             <td>
                                 {{ $line->created_by_user->name }}
                             </td>
+                            <td> {{ $line->representative->employee_name ?? '' }} </td>
                             <td>
                                 @foreach ($line->transaction_sell_lines as $sell_line)
                                     @if (!empty($sell_line->product))

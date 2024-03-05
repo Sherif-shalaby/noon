@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
     style="display: none;" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
@@ -23,6 +24,12 @@
                         </div>
                         <div class="col-md-12">
                             <h5>@lang('lang.store'): {{ $sell_line->store->name ?? '' }}</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <h5>@lang('lang.cashier_man'): {{ $sell_line->store_pos->name ?? '' }}</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <h5>@lang('lang.representative'): {{ $sell_line->representative->employee_name ?? '' }}</h5>
                         </div>
                     </div>
                     <br>
