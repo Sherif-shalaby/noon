@@ -1375,7 +1375,9 @@ class Create extends Component
                         $variants= Variation::where('id', '<=', $variant->id)
                                 ->where('id', '>', $dimension_variation->id)->get();
                         foreach($variants as $i=>$var){
-                            $qtyByUnit += $var->variation_equals()->latest()->first()->equal;
+                            if(!empty($var->variation_equals()->latest()->first()->equal)){
+                                $qtyByUnit += $var->variation_equals()->latest()->first()->equal;
+                            }
                         }
                         $qty_difference += 1/($qtyByUnit * 1);
                     }else{
