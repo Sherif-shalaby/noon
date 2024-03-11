@@ -17,6 +17,10 @@
             }
         }
 
+        .rightbar {
+            z-index: 2;
+        }
+
         @media(max-width:991px) {
             .table-top-head {
                 top: 35px !important
