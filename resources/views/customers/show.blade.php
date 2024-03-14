@@ -227,55 +227,62 @@
                                                                 {{-- <img style="width: 200px; height: 200px;" class="img-fluid"
                                                                     src="@if (!empty($supplier->getFirstMediaUrl('supplier_photo'))) {{ $supplier->getFirstMediaUrl('supplier_photo') }} @endif"
                                                                     alt="Supplier photo"> --}}
+                                                                </div>
+                                                                
                                                             </div>
-                
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div> 
+                                            </div> 
+                                            <button id="confirmSelected" class="btn btn-primary">تأكيد المطابقة</button>
           
                                          {{-- ++++++++++++ Tab 4 Content : statement_of_account :  البيع كشف حساب +++++++++++ --}}
                                          <div role="tabpanel" class="tab-pane fade show active "
                                             id="statement-of-sell-account">
                                             <div class="table-responsive">
+
                                                 <table class="table dataTable">
                                                     <thead>
                                                         <tr>
                                                             <th>@lang('lang.date')</th>
                                                             <th>رقم الفاتوره</th>
-                                                            <th>قيمة الفاتور بالدينار </th>
-                                                            <th>قيمة  الفاتور بالدولار</th>
+                                                            <th>قيمة الفاتور بالدينار</th>
+                                                            <th>قيمة الفاتور بالدولار</th>
                                                             <th>المدفوع بالدينار</th>
                                                             <th>المدفوع بالدولار</th>
                                                             <th>رصيد العميل بالدولار</th>
                                                             <th>رصيد العميل بالدينار</th>
-
-
+                                                            <th>
+                                                                <input type="checkbox" id="select-all-checkbox"> المطابقه                                                            </th>
                                                         </tr>
                                                     </thead>
-                
                                                     <tbody>
-                                                     
                                                         @foreach ($sell_lines as $line)
                                                         <tr>
-                                                         <td>{{$line->transaction_date}}</td>
-                                                         <td>{{$line->invoice_no}}</td>
-                                                         <td>{{$line->transaction_value_dinar}}</td>
-                                                         <td>{{$line->transaction_value_dollar}}</td>  
-                                                         <td>{{$line->payment_dinar_value}}</td>  
-                                                         <td>{{$line->Payment_dollar_value}}</td>  
-                                                        <td>{{$line->DOLLAR_Balance}}</td>  
-                                                        <td>{{$line->DINAR_Balance}}</td>  
-                                                       
+                                                            <td>{{$line->transaction_date}}</td>
+                                                            <td>{{$line->invoice_no}}</td>
+                                                            <td>{{$line->transaction_value_dinar}}</td>
+                                                            <td>{{$line->transaction_value_dollar}}</td>
+                                                            <td>{{$line->payment_dinar_value}}</td>
+                                                            <td>{{$line->Payment_dollar_value}}</td>
+                                                            <td>{{$line->DOLLAR_Balance}}</td>
+                                                            <td>{{$line->DINAR_Balance}}</td>
+                                                            <td>
+                                                                @if ($line->IS_CONFIRMED == 0)
+                                                                <input type="checkbox" name="confirm_checkbox[]" value="{{$line->payment_id}}">
+                                                            @elseif ($line->IS_CONFIRMED == 1)
+                                                                <i class="fas fa-check-circle fa-2x" style="color: green;"></i>
+                                                            @endif
+                                                            
+                                                            </td>
                                                         </tr>
-                                                             
-                                                            @endforeach
-                                                        </tbody>
+                                                        @endforeach
+                                                    </tbody>
                                                     <tfoot>
                                                         <tr>
                                                             <th></th>
-                                                            {{-- <th style="text-align: right">@lang('lang.total')</th> --}}
+                                                            <th></th>
+                                                            <th></th>
                                                             <th></th>
                                                             <th></th>
                                                             <th></th>
@@ -285,6 +292,7 @@
                                                         </tr>
                                                     </tfoot>
                                                 </table>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -298,4 +306,42 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#select-all-checkbox').click(function () {
+                $('input[name="confirm_checkbox[]"]').prop('checked', $(this).prop('checked'));
+            });
+    
+            $('#confirmSelected').click(function () {
+                var selectedIds = [];
+                $('input[name="confirm_checkbox[]"]:checked').each(function () {
+                    selectedIds.push($(this).val());
+                });
+    
+                if (selectedIds.length > 0) {
+                    $.ajax({
+                        url: '/updateConfirmStatus', // Replace with your route
+                        method: 'POST',
+                        data: {
+                            ids: selectedIds
+                        },
+                        success: function (response) {
+                            // Display success message
+                            alert(response.message);
+                            
+                            // Reload the window
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            console.error(error);
+                        }
+                    });
+                } else {
+                    alert('Please select at least one item.');
+                }
+            });
+        });
+    </script>
 @endsection

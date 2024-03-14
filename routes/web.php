@@ -184,11 +184,24 @@ Route::group(['middleware' => ['auth']], function () {
     // fetch "sub_categories3" of selected "sub_categories2" selectbox
     Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_sub_categories3']);
     Route::get('product/add_product_raw', [ProductController::class,'addProductRow']);
-
+    
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
     Route::resource('customers', CustomerController::class);
+    
+    
+    
+    
+    
+    ###################عمل مطابقة فواتير العملاء ######################################
+    
+    // Route::post('update-confirm-status', 'CustomerController@updateConfirmStatus');
+    Route::post('/updateConfirmStatus',[CustomerController::class,'updateConfirmStatus']);
+
+    ###################عمل مطابقة فواتير العملاء ######################################
+
+
     // general_setting : fetch "state" of selected "country" selectbox
     Route::post('api/customers/fetch-state',[CustomerController::class,'fetchState']);
     // general_setting : fetch "city" of selected "state" selectbox

@@ -309,7 +309,10 @@ class CustomerController extends Controller
                                                 'transaction_sell_lines.dollar_remaining',
                                                 'transaction_sell_lines.dinar_remaining',
                                                 'payment_transaction_sell_lines.amount as payment_dinar_value',
-                                                'payment_transaction_sell_lines.dollar_amount as Payment_dollar_value'
+                                                'payment_transaction_sell_lines.dollar_amount as Payment_dollar_value',
+                                                'payment_transaction_sell_lines.is_confirmed AS IS_CONFIRMED',
+                                                'payment_transaction_sell_lines.id AS payment_id'
+
                                             ])
                                             ->join('customers', 'customers.id', '=', 'transaction_sell_lines.customer_id')
                                             ->join('payment_transaction_sell_lines', 'payment_transaction_sell_lines.transaction_id', '=', 'transaction_sell_lines.id')
@@ -327,6 +330,18 @@ class CustomerController extends Controller
         // dd($customer );
         return view('customers.show',compact('customer' , 'sell_lines'));
     }
+
+
+    public function updateConfirmStatus(Request $request)
+{
+    $selectedIds = $request->input('ids');
+   
+    // Update IS_CONFIRMED to 1 for the selected IDs
+    PaymentTransactionSellLine::whereIn('id', $selectedIds)->update(['IS_CONFIRMED' => 1]);
+
+    return response()->json(['message' => 'تم تحديث حالة المطابقه.']);
+
+}
 
     /**
      * Show the form for editing the specified resource.
