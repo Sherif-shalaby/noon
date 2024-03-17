@@ -283,16 +283,16 @@
 
         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 {{ $items[$index]['discount_type'] != '1' ? 'd-none' : '' }}"
             style="width: 150px;min-height: 60px">
-            <div class="d-flex width-full">
-                <div class="width-full col-6 p-0">
+            <div class="d-flex justify-content-center width-full">
+                {{-- <div class="width-full col-6 p-0">
                     <label class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
                     <input type="text" class="form-control  initial-balance-input width-full p-0 px-2"
                         wire:model="items.{{ $index }}.purchase_discount_percent"
                         style='font-weight:500;font-size:10px;'
                         wire:change="changePurchasePrice({{ $index }})" placeholder="%">
-                </div>
-                <div class="width-full col-6 p-0">
+                </div> --}}
+                <div class="width-full col-9 p-0">
                     <label class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.amount') }}</label>
                     <input type="text" class="form-control initial-balance-input width-full p-0 px-2"
@@ -302,9 +302,9 @@
                 </div>
             </div>
             <div class="d-flex width-full dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
-                <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0 ">
+                {{-- <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0 ">
                     {{ @number_format(num_uf($product['dollar_purchase_discount_percent']), num_of_digital_numbers()) }}
-                    $ </span>
+                    $ </span> --}}
                 <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0 ">
                     {{ @number_format(num_uf($product['dollar_purchase_discount']), num_of_digital_numbers()) }}
                     $</span>
@@ -417,9 +417,11 @@
                     <label for="Annual discount"
                         class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.annual_discount')</label>
-                    <input type="text" class="form-control initial-balance-input width-full mx-0"
+                    <input type="text" name="items.{{ $index }}.annual_discount"
+                        id="items.{{ $index }}.annual_discount"
+                        class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.annual_discount"
-                        wire:input="cost({{ $index }})" placeholder="@lang('lang.annual_discount')">
+                        wire:change="cost({{ $index }})" placeholder="@lang('lang.annual_discount')">
                 </div>
 
 
@@ -428,9 +430,11 @@
                     <label for="seasonal discount"
                         class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.seasonal_discount')</label>
-                    <input type="text" class="form-control initial-balance-input width-full mx-0"
+                    <input type="text" name="items.{{ $index }}.seasonal_discount"
+                        id="items.{{ $index }}.seasonal_discount"
+                        class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.seasonal_discount"
-                        wire:input="cost({{ $index }})" placeholder="@lang('lang.seasonal_discount')">
+                        wire:change="cost({{ $index }})" placeholder="@lang('lang.seasonal_discount')">
                 </div>
 
                 <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
@@ -438,9 +442,25 @@
                     <label for="purchase_price"
                         class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>@lang('lang.cash_discount')</label>
-                    <input type="text" class="form-control initial-balance-input width-full mx-0"
+                    {{-- <input type="text" class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.cash_discount" wire:input="cost({{ $index }})"
-                        placeholder="@lang('lang.cash_discount')">
+                        placeholder="@lang('lang.cash_discount')"> --}}
+
+
+
+                    <input type="text" name="items.{{ $index }}.invoice_discount"
+                        id="items.{{ $index }}.invoice_discount"
+                        class="form-control initial-balance-input width-full mx-0"
+                        wire:model="items.{{ $index }}.invoice_discount"
+                        wire:change="cost({{ $index }})" style="width: 100px;"
+                        placeholder="invoice discount">
+
+                    <input type="text" name="items.{{ $index }}.cash_discount"
+                        id="items.{{ $index }}.cash_discount"class="form-control initial-balance-input width-full mx-0"
+                        wire:model="items.{{ $index }}.cash_discount" style="width: 100px;"
+                        wire:change="cost({{ $index }})" placeholder="cash discount">
+
+
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input"
                             name="discount_dependency{{ $index }}"
@@ -805,20 +825,20 @@
                         style='font-weight:500;font-size:10px;'
                         wire:input="changePurchasePrice({{ $index }},'stores',{{ $i }})"
                         placeholder="@lang('lang.amount')">
-                    <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
+                    {{-- <input type="text" class="form-control initial-balance-input width-full col-6 p-0 px-2"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent"
                         style='font-weight:500;font-size:10px;'
                         wire:input="changePurchasePrice({{ $index }},'stores',{{ $i }})"
-                        placeholder="%">
+                        placeholder="%"> --}}
 
                 </div>
                 <div class="d-flex width-full dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
                     <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0 ">
                         {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount'], num_of_digital_numbers()) }}
                         $</span>
-                    <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0 ">
+                    {{-- <span style='font-weight:500;font-size:10px;color:#888' class=" width-full col-6 p-0 ">
                         {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount_percent'], num_of_digital_numbers()) }}
-                        $ </span>
+                        $ </span> --}}
                 </div>
 
                 <div class="custom-control custom-switch">

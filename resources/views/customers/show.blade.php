@@ -207,6 +207,148 @@
 
                         </div>
                     </div>
+
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs ml-4 mt-3" role="tablist">
+                                {{-- ++++++++++++ tab 1 : info +++++++++++ --}}
+                                {{-- <li class="nav-item">
+                                            <a class="nav-link @if (empty(request()->show)) active @endif" href="#info-sale" role="tab"
+                                                data-toggle="tab">@lang('lang.info')</a>
+                                        </li> --}}
+                                {{-- ++++++++++++ tab 2 : pending_orders +++++++++++ --}}
+
+                                {{-- ++++++++++++ tab 3 : statement_of_account +++++++++++ --}}
+
+                                {{-- ++++++++++++ tab 4 : statement_of_account +++++++++++ --}}
+                                <li class="nav-item">
+                                    <a class="nav-link  show active" href="#statement-of-sell-account" role="tab"
+                                        data-toggle="tab">@lang('lang.statement_of_account') @lang('lang.sell')</a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+                                {{-- ++++++++++++ Tab 1 Content : info : معلومات +++++++++++ --}}
+                                <div role="tabpanel" class="tab-pane fade @if (empty(request()->show))  @endif"
+                                    id="info-sale">
+                                    <br>
+                                    <br>
+                                    <div class="col-md-12 text-muted">
+                                        <div class="row">
+                                            {{-- <input type="hidden" name="supplier_id" id="supplier_id" value="{{ $supplier->id }}"> --}}
+                                            <div class="col-md-6">
+                                                <div class="col-md-12 ">
+                                                    <b>@lang('lang.name'):</b>
+                                                    {{-- <span class="customer_name_span">{{ $supplier->name }}</span> --}}
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <b>@lang('lang.company_name'):</b>
+                                                    {{-- <span class="customer_company_name_span">{{ $supplier->company_name }}</span> --}}
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <b>@lang('lang.vat_number'):</b>
+                                                    {{-- <span class="customer_vat_number_span">{{ $supplier->vat_number }}</span> --}}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <b>@lang('lang.email'):</b>
+                                                    {{-- <span class="customer_email_span">{{ $supplier->email }}</span> --}}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <b>@lang('lang.mobile'):</b>
+                                                    {{-- <span class="customer_mobile_span">{{ $supplier->mobile }}</span> --}}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <b>@lang('lang.address'):</b>
+                                                    {{-- <span class="customer_address_span">{{ $supplier->address }}</span> --}}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <b>@lang('lang.city'):</b>
+                                                    {{-- <span class="customer_city_span">{{ $supplier->city }}</span> --}}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <b>@lang('lang.state'):</b>
+                                                    {{-- <span class="customer_state_span">{{ $supplier->state }}</span> --}}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <b>@lang('lang.postal_code'):</b>
+                                                    {{-- <span class="customer_postal_code_span">{{ $supplier->postal_code }}</span> --}}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <b>@lang('lang.country'):</b>
+                                                    {{-- <span class="customer_country_span">{{ $supplier->country }}</span> --}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="col-md-12">
+                                                    <div class="thumbnail">
+                                                        {{-- <img style="width: 200px; height: 200px;" class="img-fluid"
+                                                                    src="@if (!empty($supplier->getFirstMediaUrl('supplier_photo'))) {{ $supplier->getFirstMediaUrl('supplier_photo') }} @endif"
+                                                                    alt="Supplier photo"> --}}
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- ++++++++++++ Tab 4 Content : statement_of_account :  البيع كشف حساب +++++++++++ --}}
+                                <div role="tabpanel" class="tab-pane fade show active " id="statement-of-sell-account">
+                                    <div class="table-responsive">
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>@lang('lang.date')</th>
+                                                    <th>رقم الفاتوره</th>
+                                                    <th>قيمة الفاتور بالدينار </th>
+                                                    <th>قيمة الفاتور بالدولار</th>
+                                                    <th>المدفوع بالدينار</th>
+                                                    <th>المدفوع بالدولار</th>
+                                                    <th>رصيد العميل بالدولار</th>
+                                                    <th>رصيد العميل بالدينار</th>
+
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                @foreach ($sell_lines as $line)
+                                                    <tr>
+                                                        <td>{{ $line->transaction_date }}</td>
+                                                        <td>{{ $line->invoice_no }}</td>
+                                                        <td>{{ $line->transaction_value_dinar }}</td>
+                                                        <td>{{ $line->transaction_value_dollar }}</td>
+                                                        <td>{{ $line->payment_dinar_value }}</td>
+                                                        <td>{{ $line->Payment_dollar_value }}</td>
+                                                        <td>{{ $line->DOLLAR_Balance }}</td>
+                                                        <td>{{ $line->DINAR_Balance }}</td>
+
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    {{-- <th style="text-align: right">@lang('lang.total')</th> --}}
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{--  --}}
+                    {{--  --}}
                 </div>
             </div>
         </div>

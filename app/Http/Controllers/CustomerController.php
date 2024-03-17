@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\TransactionSellLine;
 use Illuminate\Contracts\View\View;
+use App\Models\StockTransaction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CustomerImportantDate;
@@ -253,7 +254,78 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::find($id);
-        return view('customers.show',compact('customer'));
+
+        // $add_stocks = StockTransaction::whereIn('type', ['add_stock', 'initial_balance'])
+        //                 ->whereIn('status', ['received', 'final'])
+        //                 ->where('customer_id',$id)
+        //                 ->get();
+
+        // $add_stocks = StockTransaction::selectRaw('*, SUM(CASE WHEN dollar_remaining IS NOT NULL THEN dollar_remaining ELSE 0 END) AS dollar_balance,
+        //                                               SUM(CASE WHEN dinar_remaining IS NOT NULL THEN dinar_remaining ELSE 0 END) AS dinar_balance')
+        //                     ->whereIn('type', ['add_stock', 'initial_balance'])
+        //                     ->whereIn('status', ['received', 'final'])
+        //                     ->where('customer_id', $id)
+        //                // Assuming 'id' is the primary key column
+        //                     ->get();
+
+
+
+
+                //    // tab 1 : Stock Transactions : كشف حساب البيع
+                //    $sell_lines = DB::table('transaction_sell_lines')
+                //    ->where('type', 'sell')
+                //    ->where('status', 'final')
+                //    ->where('customer_id', $id)
+                //    ->get();
+           
+                // $sell_lines = DB::table('transaction_sell_lines')
+                // ->selectRaw('*, 
+                //     SUM(dinar_remaining) OVER (ORDER BY transaction_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS dinar_Balance,
+                //     SUM(dollar_remaining) OVER (ORDER BY transaction_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS dollar_Balance')
+                // ->where('type', 'sell')
+                // ->where('status', 'final')
+                // ->where('customer_id', $id)
+                // ->orderBy('transaction_date', 'DESC')
+                // ->get();
+
+
+            
+
+               
+                
+               //كشف حساب البيع 
+           
+
+            $sell_lines = DB::table('transaction_sell_lines')
+                                            ->select([
+                                                'transaction_sell_lines.invoice_no',
+                                                'customers.name',
+                                                'transaction_sell_lines.customer_id',
+                                                'transaction_sell_lines.transaction_date',
+                                                'transaction_sell_lines.final_total as transaction_value_dinar',
+                                                'transaction_sell_lines.dollar_final_total as transaction_value_dollar',
+                                                DB::raw('SUM(IFNULL(transaction_sell_lines.dollar_final_total, 0) - IFNULL(payment_transaction_sell_lines.dollar_amount, 0)) OVER (ORDER BY payment_transaction_sell_lines.created_at ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS DOLLAR_Balance'),
+                                                DB::raw('SUM(IFNULL(transaction_sell_lines.final_total, 0) - IFNULL(payment_transaction_sell_lines.amount, 0)) OVER (ORDER BY payment_transaction_sell_lines.created_at ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS DINAR_Balance'),
+                                                'transaction_sell_lines.dollar_remaining',
+                                                'transaction_sell_lines.dinar_remaining',
+                                                'payment_transaction_sell_lines.amount as payment_dinar_value',
+                                                'payment_transaction_sell_lines.dollar_amount as Payment_dollar_value'
+                                            ])
+                                            ->join('customers', 'customers.id', '=', 'transaction_sell_lines.customer_id')
+                                            ->join('payment_transaction_sell_lines', 'payment_transaction_sell_lines.transaction_id', '=', 'transaction_sell_lines.id')
+                                            ->where('transaction_sell_lines.customer_id', $id)
+                                            ->get();
+
+          
+           
+           
+           
+
+
+        // dd($sell_lines);
+
+        // dd($customer );
+        return view('customers.show',compact('customer' , 'sell_lines'));
     }
 
     /**
