@@ -1572,8 +1572,8 @@ class Create extends Component
             }
         } else {
             $total_quantity = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']);
-            $purchase_price = $this->purchase_final($index) / $total_quantity;
-            $dollar_purchase_price = $this->purchase_final_dollar($index) / $total_quantity;
+            $purchase_price = $this->purchase_final($index) / $this->num_uf($this->items[$index]['quantity']);
+            $dollar_purchase_price = $this->purchase_final_dollar($index) / $this->num_uf($this->items[$index]['quantity']);
              if (!empty($this->divide_costs) ) {
                  if ($this->divide_costs == 'size') {
                      if ($this->sum_size() >= 0) {
@@ -1880,8 +1880,15 @@ class Create extends Component
             ) {
                 // discount_on_bonus_quantity => true (خصم من السعر الأصلي)
                 if ($this->items[$index]['discount_on_bonus_quantity']) {
-                    $purchase_price = $this->items[$index]['purchase_price'];
-                    $dollar_purchase_price = $this->items[$index]['dollar_purchase_price'];
+                    if(!empty($this->items[$index]['bonus_quantity'])){
+                        $total_quantity = $this->num_uf($this->items[$index]['quantity']) + ($this->num_uf($this->items[$index]['bonus_quantity']) ?? 0);
+                        $purchase_price = ($this->num_uf($this->items[$index]['purchase_price']) *  $this->num_uf($this->items[$index]['quantity'])) /  ($this->num_uf($total_quantity) > 0 ? $this->num_uf($total_quantity) : 1);
+                        $dollar_purchase_price = ($this->num_uf($this->items[$index]['dollar_purchase_price']) * $this->num_uf($this->items[$index]['quantity'])) / ($this->num_uf($total_quantity) > 0 ? $this->num_uf($total_quantity) : 1);
+                    }
+                    else{
+                        $purchase_price = $this->items[$index]['purchase_price'];
+                        $dollar_purchase_price = $this->items[$index]['dollar_purchase_price'];
+                    }
                 } else {
                     $total_quantity = $this->num_uf($this->items[$index]['quantity']) + ($this->num_uf($this->items[$index]['bonus_quantity']) ?? 0);
                     $purchase_price = ($this->num_uf($this->items[$index]['purchase_price']) *  $this->num_uf($this->items[$index]['quantity'])) /  ($this->num_uf($total_quantity) > 0 ? $this->num_uf($total_quantity) : 1);
@@ -2658,7 +2665,8 @@ class Create extends Component
         if ($via == 'stores') {
             $product_variations = Variation::where('product_id', $this->items[$index]['stores'][$i]['product']['id'])->get();
             $variation = Variation::find($this->items[$index]['stores'][$i]['variation_id']);
-        } else {
+        }
+        else {
             $product_variations = Variation::where('product_id', $this->items[$index]['product']['id'])->get();
             $variation = Variation::find($this->items[$index]['variation_id']);
         }
