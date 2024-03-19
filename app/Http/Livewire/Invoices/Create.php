@@ -951,29 +951,27 @@ class Create extends Component
                 $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
                 //  calculate loading cost
                 if(!empty($item['unit_id'])){
+                    $first_variation = Product::find($item['product']['id'])->variations->first();
                     $item_variation = Variation::find($item['unit_id']);
-                    if(empty($item_variation->basic_unit_id)){
-                        // dd( $item_variation->unit);
+//                    dd($first_variation,$item['unit_id']);
+                    if($first_variation->id == $item['unit_id']){
+//                         dd( 'test');
                         if(System::getProperty('loading_cost_currency') == 2){
                             $this->dollar_loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
                         }
                         elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
                             $this->loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
                         }
-                    }else{
-                        $quantity=$this->num_uf($item['quantity']);
-                        $basic_unit=Variation::whereNull('basic_unit_id')
-                        ->where('product_id',$item['product']['id'])->first();
-                        // if($item_variation->basic_unit_id==$basic_unit->unit_id){
-                        //     if($item['quantity'] > $item_variation->equal){
-                                $quantity=1;
-                            // }
-                        // }
-                        if(System::getProperty('loading_cost_currency') == 2){
-                            $this->dollar_loading_cost = $basic_unit->unit->loading_cost * $quantity;
-                        }
-                        elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
-                            $this->loading_cost = $basic_unit->unit->loading_cost * $quantity;
+                    }
+                    else{
+                        $product_variations = Variation::where('product_id', $item['product']['id'])->get();
+                        $variation = Variation::find($item['unit_id']);
+                        $qty_difference = 0;
+                        if(!empty($product_variations)) {
+                            foreach ($product_variations as $key => $product_variation) {
+                                
+                            }
+                            dd($qty_difference);
                         }
                     }
                 }
