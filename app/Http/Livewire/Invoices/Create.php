@@ -953,9 +953,7 @@ class Create extends Component
                 if(!empty($item['unit_id'])){
                     $first_variation = Product::find($item['product']['id'])->variations->first();
                     $item_variation = Variation::find($item['unit_id']);
-//                    dd($first_variation,$item['unit_id']);
                     if($first_variation->id == $item['unit_id']){
-//                         dd( 'test');
                         if(System::getProperty('loading_cost_currency') == 2){
                             $this->dollar_loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
                         }
@@ -965,13 +963,42 @@ class Create extends Component
                     }
                     else{
                         $product_variations = Variation::where('product_id', $item['product']['id'])->get();
-                        $variation = Variation::find($item['unit_id']);
-                        $qty_difference = 0;
-                        if(!empty($product_variations)) {
+                        $qtyByUnit = 1;
+                       if (isset($item_variation->unit_id) && $first_variation->basic_unit_id == $item_variation->unit_id) {
+                            $qtyByUnit = $first_variation->equal;
+                       }
+                       else {
                             foreach ($product_variations as $key => $product_variation) {
-                                
+                                if (!empty($product_variations[$key + 1])) {
+                                    if ($first_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                                        if ($product_variations[$key + 1]->basic_unit_id == $item_variation->unit_id) {
+                                            $qtyByUnit = $first_variation->equal * $product_variations[$key + 1]->equal;
+                                            break;
+                                        } else {
+                                            $qtyByUnit = $product_variation->equal;
+                                        }
+                                    } else {
+                                        if ($product_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                                            $qtyByUnit *= $product_variation->equal;
+                                        }
+                                        if ($product_variation->basic_unit_id == $item['unit_id'] || $product_variation->unit_id == $item['unit_id']) {
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    if ($product_variation->basic_unit_id == $item['unit_id']) {
+                                        $qtyByUnit *= $product_variation->equal;
+                                        break;
+                                    }
+                                }
                             }
-                            dd($qty_difference);
+                        }
+                        $qty_difference = 1 / $qtyByUnit;
+                        if(System::getProperty('loading_cost_currency') == 2){
+                            $this->dollar_loading_cost = $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
+                        }
+                        elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
+                            $this->loading_cost = $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
                         }
                     }
                 }
@@ -1765,7 +1792,7 @@ class Create extends Component
     }
     public function changeUnit($key)
     {
-        //    dd($this->items[$key]['unit_id']);
+        //    dd($this->items[$key]['unift_id']);
         if (!empty($this->items[$key]['unit_id'])) {
             $variation_id = $this->items[$key]['unit_id'];
             $stock_line = AddStockLine::where('variation_id', $variation_id)->first();
@@ -1774,7 +1801,10 @@ class Create extends Component
             } else {
                 $variation_price = VariationPrice::where('variation_id', $variation_id)->first();
             }
-            $stock_variation = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
+//            dd($variation_price);
+            if(!empty($variation_price)){
+                $stock_variation = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
+            }
 
             if (empty($stock_variation->sell_price) && empty($stock_variation->dollar_sell_price)) {
                 //            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
