@@ -33,13 +33,7 @@
                 alt="logo">
             <span class="box"></span>
         </div>
-        {{-- <div style="width: 55%;overflow: hidden;position: absolute;top: 0;left: 0;">
-            <img class="arrow-down" src="{{ asset('images/arrow-down-1.png') }}" alt="logo">
-            <img style="width: 100%;z-index: 10;position: absolute;" src="{{ asset('images/arrow-up-1.png') }}"
-                alt="logo">
-            <img style="width: 100%;z-index: 10;position: relative;" src="{{ asset('images/word1.png') }}"
-                alt="logo">
-        </div> --}}
+
     </div>
 
 
@@ -211,7 +205,8 @@
                 ->where('status', 'open')
                 ->first();
             $toggle_dollar = App\Models\System::getProperty('toggle_dollar');
-            $keyboord_letter_to_toggle_dollar = App\Models\System::getProperty('keyboord_letter_to_toggle_dollar') ?? '';
+            $keyboord_letter_to_toggle_dollar =
+                App\Models\System::getProperty('keyboord_letter_to_toggle_dollar') ?? '';
         @endphp
         <input type="hidden" class="keyboord_letter_to_toggle_dollar"
             value="{{ $keyboord_letter_to_toggle_dollar }}" />
