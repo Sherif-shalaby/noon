@@ -1034,6 +1034,9 @@ class Create extends Component
         $last_index = count($this->items) - 1;
         $this->getVariationData($last_index);
     }
+
+
+
     public function stayShowDiscount($index)
     {
         $this->items[$index]['show_discount'] =
