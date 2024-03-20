@@ -142,7 +142,7 @@
         <div class="d-flex justify-content-between">
             <div class="input-group-prepend">
                 {{$items[$index]['discount_type']!="2"?'d-none':''}}
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.discount_percent" style="width: 100px;"  placeholder="%">
+{{--                <input type="text" class="form-control" wire:model="items.{{ $index }}.discount_percent" style="width: 100px;"  placeholder="%">--}}
             </div>
             <input type="text" class="form-control" wire:model="items.{{ $index }}.discount" style="width: 100px;" placeholder="discount amount">
         </div>
