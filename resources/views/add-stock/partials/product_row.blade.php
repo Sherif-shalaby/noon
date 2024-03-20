@@ -344,10 +344,10 @@
                 class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>@lang('lang.discount_amount')</label>
             <div class="d-flex  width-full">
-                <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
+                {{-- <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
                     wire:model="items.{{ $index }}.discount_percent" style='font-weight:500;font-size:10px;'
-                    placeholder="%">
-                <input type="text" class="form-control  initial-balance-input width-full col-6 p-0 px-2"
+                    placeholder="%"> --}}
+                <input type="text" class="form-control  initial-balance-input width-full col-12 p-0 px-2"
                     wire:model="items.{{ $index }}.discount" style='font-weight:500;font-size:10px;'
                     placeholder="@lang('lang.discount_amount')">
             </div>
