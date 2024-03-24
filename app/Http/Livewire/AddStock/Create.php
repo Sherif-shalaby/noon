@@ -1034,9 +1034,6 @@ class Create extends Component
         $last_index = count($this->items) - 1;
         $this->getVariationData($last_index);
     }
-
-
-
     public function stayShowDiscount($index)
     {
         $this->items[$index]['show_discount'] =
@@ -2255,8 +2252,12 @@ class Create extends Component
                 }
             } else {
                 $original = $this->num_uf($this->items[$index]['dollar_purchase_after_discount']);
-
-                $original =  $original * ($this->num_uf($this->items[$index]['quantity']));
+                if ($this->items[$index]['discount_on_bonus_quantity']) {
+                    $original =  $original * ($this->num_uf($this->items[$index]['quantity']));
+                } else {
+                    $total_quantity = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']);
+                    $original =  $original * $this->num_uf($total_quantity);
+                }
                 $discount_percent = 0;
                 $annual_discount = 0;
                 $discount = 0;
