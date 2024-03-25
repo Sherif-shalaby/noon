@@ -2711,20 +2711,23 @@ class Create extends Component
                     } else if (!empty($product_variation->basic_unit_id) && $variation->basic_unit_id == $product_variation['unit_id']) {
                         $unitName =   $product_variation['basic_unit']['name'] ?? '';
                         if ($product_variation->basic_unit_id != $variation->unit_id) {
-                            $units[$unitName] =  @number_format($product_variation->variation_equals()->latest()->first()->equal * $variation->variation_equals()->latest()->first()->equal, num_of_digital_numbers());
-                            $qtyByUnit = $product_variation->variation_equals()->latest()->first()?->equal * $variation->variation_equals()->latest()->first()?->equal;
+                            if(count($product_variation->variation_equals) > 0){
+                                $units[$unitName] =  number_format($product_variation->variation_equals()->latest()->first()->equal * $variation->variation_equals()->latest()->first()->equal, num_of_digital_numbers());
+                                $qtyByUnit = $product_variation->variation_equals()->latest()->first()?->equal * $variation->variation_equals()->latest()->first()?->equal;
+                            }
                         }
                     } else if (isset($product_variations[$key + 1]) && $product_variation->basic_unit_id  == $product_variations[$key + 1]['unit_id']) {
                         $unitName =   $product_variation->basic_unit->name  ?? '';
                         if ($product_variation->basic_unit_id != $variation->unit_id) {
-                            $units[$unitName] = @number_format($product_variation->variation_equals()->latest()->first()?->equal * $qtyByUnit, num_of_digital_numbers());
+                            if(count($product_variation->variation_equals) > 0){
+                                $units[$unitName] = number_format($product_variation->variation_equals()->latest()->first()?->equal * $qtyByUnit, num_of_digital_numbers());
+                            }
                         }
                     }
                     if (!empty($product_variations[$key - 1])) {
                         if ($variation->unit_id == $product_variations[$key - 1]->basic_unit_id) {
-                            // dd($product_variations[$key - 1]->variation_equals());
                             $qty = 1 / (!empty($product_variations[$key - 1]->variation_equals()->latest()->first()->equal) ? $product_variations[$key - 1]->variation_equals()->latest()->first()->equal : 1);
-                            $units[$product_variations[$key - 1]->unit->name] = @number_format($qty, num_of_digital_numbers());
+                            $units[$product_variations[$key - 1]->unit->name] = number_format($qty, num_of_digital_numbers());
                         }
                         if (!empty($product_variations[$key - 2])) {
                             $i = $key - 2;
