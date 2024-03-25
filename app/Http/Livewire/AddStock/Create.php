@@ -1396,8 +1396,10 @@ class Create extends Component
                     if (isset($variant->unit_id) && $dimension_variation->unit_id == $variant->unit_id) {
                         $qty_difference = 1;
                     } elseif (isset($variant->unit_id) && $dimension_variation->basic_unit_id == $variant->unit_id) {
-                        $qtyByUnit = 1 / $dimension_variation->variation_equals()->latest()->first()->equal;
-                        $qty_difference = $qtyByUnit * 1;
+                        if (count($dimension_variation->variation_equals) > 0) {
+                            $qtyByUnit = 1 / $dimension_variation->variation_equals()->latest()->first()->equal;
+                            $qty_difference = $qtyByUnit * 1;
+                        }
                     } else {
                         if ($variant->id > $dimension_variation->id) {
                             $variants = Variation::where('id', '<=', $variant->id)
@@ -2731,7 +2733,7 @@ class Create extends Component
                     }
                     if (!empty($product_variations[$key - 1])) {
                         if ($variation->unit_id == $product_variations[$key - 1]->basic_unit_id) {
-                            $qty = 1 / (!empty($product_variations[$key - 1]->variation_equals()->latest()->first()->equal) ? $product_variations[$key - 1]->variation_equals()->latest()->first()->equal : 1);
+                            $qty = 1 / (!empty($product_variations[$key - 1]->variation_equals()->latest()->first()->equal) ? (!empty($product_variations[$key - 1]->variation_equals) ? $product_variations[$key - 1]->variation_equals()->latest()->first()->equal : 1) : 1);
                             $units[$product_variations[$key - 1]->unit->name] = number_format($qty, num_of_digital_numbers());
                         }
                         if (!empty($product_variations[$key - 2])) {
