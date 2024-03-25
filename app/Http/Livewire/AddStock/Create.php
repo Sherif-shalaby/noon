@@ -1368,8 +1368,10 @@ class Create extends Component
                     if (isset($variant->unit_id) && $dimension_variation->unit_id == $variant->unit_id) {
                         $qty_difference = 1;
                     } elseif (isset($variant->unit_id) && $dimension_variation->basic_unit_id == $variant->unit_id) {
-                        $qtyByUnit = 1 / $dimension_variation->variation_equals()->latest()->first()->equal;
-                        $qty_difference = $qtyByUnit * 1;
+                        if(count($dimension_variation->variation_equals) > 0 ){
+                            $qtyByUnit = 1 / $dimension_variation->variation_equals()->latest()->first()->equal;
+                            $qty_difference = $qtyByUnit * 1;
+                        }
                     } else {
                     if($variant->id > $dimension_variation->id){
                         $variants= Variation::where('id', '<=', $variant->id)
