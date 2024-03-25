@@ -2726,7 +2726,7 @@ class Create extends Component
                     }
                     if (!empty($product_variations[$key - 1])) {
                         if ($variation->unit_id == $product_variations[$key - 1]->basic_unit_id) {
-                            $qty = 1 / (!empty($product_variations[$key - 1]->variation_equals()->latest()->first()->equal) ? $product_variations[$key - 1]->variation_equals()->latest()->first()->equal : 1);
+                            $qty = 1 / (!empty($product_variations[$key - 1]->variation_equals()->latest()->first()->equal) ? (!empty($product_variations[$key - 1]->variation_equals) ? $product_variations[$key - 1]->variation_equals()->latest()->first()->equal : 1) : 1);
                             $units[$product_variations[$key - 1]->unit->name] = number_format($qty, num_of_digital_numbers());
                         }
                         if (!empty($product_variations[$key - 2])) {
