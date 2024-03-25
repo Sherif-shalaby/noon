@@ -1495,13 +1495,25 @@ class Create extends Component
 
     public function total_size($index)
     {
-        $this->items[$index]['total_size'] =  (int)$this->items[$index]['quantity'] * (float)$this->items[$index]['size'];
+        if(!empty($this->items[$index]['bonus_quantity'])){
+            $total_quantity = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']);
+        }
+        else{
+            $total_quantity = $this->num_uf($this->items[$index]['quantity']);
+        }
+        $this->items[$index]['total_size'] =  $this->num_uf($total_quantity) * (float)$this->items[$index]['size'];
         return  $this->items[$index]['total_size'];
     }
 
     public function total_weight($index)
     {
-        $this->items[$index]['total_weight'] = (int)$this->items[$index]['quantity'] * (float)$this->items[$index]['weight'];
+        if(!empty($this->items[$index]['bonus_quantity'])){
+            $total_quantity = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']);
+        }
+        else{
+            $total_quantity = $this->num_uf($this->items[$index]['quantity']);
+        }
+        $this->items[$index]['total_weight'] = $this->num_uf($total_quantity) * (float)$this->items[$index]['weight'];
         return $this->items[$index]['total_weight'];
     }
 
@@ -1922,8 +1934,13 @@ class Create extends Component
     {
         if ($var == 'stores') {
             $final_purchase = $this->num_uf($this->items[$index]['stores'][$i]['purchase_after_discount']);
-
-            $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
+            if( !($this->items[$index]['stores'][$i]['discount_on_bonus_quantity']) && !empty($this->items[$index]['stores'][$i]['purchase_discount'])){
+                $total_quantity = $this->num_uf($this->items[$index]['stores'][$i]['quantity']) + $this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity']) ;
+                $final_purchase =  $final_purchase * $total_quantity;
+            }
+            else{
+                $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
+            }
 
             if (isset($this->items[$index]['stores'][$i]['discount_dependency']) && $this->items[$index]['stores'][$i]['discount_dependency'] == true) {
 
@@ -1957,7 +1974,14 @@ class Create extends Component
                 }
             } else {
                 $original = $this->num_uf($this->items[$index]['stores'][$i]['purchase_after_discount']);
-                $original =  $original * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
+                if( !($this->items[$index]['stores'][$i]['discount_on_bonus_quantity']) && !empty($this->items[$index]['stores'][$i]['purchase_discount'])){
+                    $total_quantity = $this->num_uf($this->items[$index]['stores'][$i]['quantity']) + $this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity']) ;
+                    $original =  $original * $this->num_uf($total_quantity) ;
+                }
+                else{
+                    $original =  $original * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
+                }
+//                $original =  $original * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
                 $discount_percent = 0;
                 $annual_discount = 0;
                 $discount = 0;
@@ -2000,7 +2024,13 @@ class Create extends Component
         }
         else {
             $final_purchase = $this->num_uf($this->items[$index]['purchase_after_discount']);
-            $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']));
+            if( !($this->items[$index]['discount_on_bonus_quantity']) && !empty($this->items[$index]['purchase_discount'])){
+                $total_quantity = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']) ;
+                $final_purchase =  $final_purchase * $total_quantity;
+            }
+            else{
+                $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']));
+            }
             if (isset($this->items[$index]['discount_dependency']) && $this->items[$index]['discount_dependency'] == true) {
 
 //                if (isset($this->items[$index]['discount_percent'])) {
@@ -2037,7 +2067,13 @@ class Create extends Component
                 }
             } else {
                 $original = $this->num_uf($this->items[$index]['purchase_after_discount']);
-                $original =  $original * ($this->num_uf($this->items[$index]['quantity']));
+                if( !($this->items[$index]['discount_on_bonus_quantity']) && !empty($this->items[$index]['purchase_discount'])){
+                    $total_quantity = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']) ;
+                    $original =  $original * $this->num_uf($total_quantity) ;
+                }
+                else{
+                    $original =  $original * ($this->num_uf($this->items[$index]['quantity']));
+                }
                 $discount_percent = 0;
                 $annual_discount = 0;
                 $discount = 0;
@@ -2093,10 +2129,13 @@ class Create extends Component
         if ($var == 'stores') {
             $final_purchase = $this->num_uf($this->items[$index]['stores'][$i]['dollar_purchase_after_discount']);
             // dd($this->items[$index]['stores'][$i]['bonus_quantity']);
-
-            $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
-            // if($this->items[$index]['used_currency'] == 2){
-            // dd('test');
+            if( !($this->items[$index]['stores'][$i]['discount_on_bonus_quantity']) && !empty($this->items[$index]['stores'][$i]['purchase_discount'])){
+                $total_quantity = $this->num_uf($this->items[$index]['stores'][$i]['quantity']) + $this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity']) ;
+                $final_purchase =  $final_purchase * $total_quantity;
+            }
+            else{
+                $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
+            }
             if (isset($this->items[$index]['stores'][$i]['discount_dependency']) && $this->items[$index]['stores'][$i]['discount_dependency'] == true) {
 
                 if (isset($this->items[$index]['stores'][$i]['discount_percent'])) {
@@ -2135,8 +2174,13 @@ class Create extends Component
             } else {
                 $original = $this->num_uf($this->items[$index]['stores'][$i]['dollar_purchase_after_discount']);
                 // dd( $original);
-
-                $original =  $original * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
+                if( !($this->items[$index]['stores'][$i]['discount_on_bonus_quantity']) && !empty($this->items[$index]['stores'][$i]['purchase_discount'])){
+                    $total_quantity = $this->num_uf($this->items[$index]['stores'][$i]['quantity']) + $this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity']) ;
+                    $original =  $original * $this->num_uf($total_quantity) ;
+                }
+                else{
+                    $original =  $original * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']));
+                }
                 $discount_percent = 0;
                 $annual_discount = 0;
                 $discount = 0;
@@ -2154,7 +2198,6 @@ class Create extends Component
                     } else {
                         $discount = $this->num_uf($discount) / $this->num_uf($this->exchange_rate);
                     }
-                    // $discount =$this->num_uf( $this->items[$index]['stores'][$i]['discount']);
                 }
 
                 if (isset($this->items[$index]['stores'][$i]['cash_discount'])) {
@@ -2193,8 +2236,14 @@ class Create extends Component
             // }
         } else {
             $final_purchase = $this->num_uf($this->items[$index]['dollar_purchase_after_discount']);
-
-            $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']));
+            if( !($this->items[$index]['discount_on_bonus_quantity']) && !empty($this->items[$index]['purchase_discount'])){
+                $total_quantity = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']) ;
+                $final_purchase =  $final_purchase * $total_quantity;
+            }
+            else{
+                $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']));
+            }
+//            $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']));
 
             if (isset($this->items[$index]['discount_dependency']) && $this->items[$index]['discount_dependency'] == true) {
 
@@ -2235,12 +2284,12 @@ class Create extends Component
                 }
             } else {
                 $original = $this->num_uf($this->items[$index]['dollar_purchase_after_discount']);
-                if($this->items[$index]['discount_on_bonus_quantity']){
-                    $original =  $original * ($this->num_uf($this->items[$index]['quantity']));
-                }
-                else{
+                if( !($this->items[$index]['discount_on_bonus_quantity']) && !empty($this->items[$index]['purchase_discount'])){
                     $total_quantity = $this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']) ;
                     $original =  $original * $this->num_uf($total_quantity) ;
+                }
+                else{
+                    $original =  $original * ($this->num_uf($this->items[$index]['quantity']));
                 }
                 $discount_percent = 0;
                 $annual_discount = 0;
