@@ -172,12 +172,14 @@
                 </div>
 
                 <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                    style="overflow-x: auto;">
+                    style="overflow-x: auto;overflow-y: hidden">
                     <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                         <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1"
                             style="width: 160px !important">
-                            {{-- {!! Form::label('brand', __('lang.brand'), ['class' => 'h5 pt-3']) !!} --}}
+                            {!! Form::label('brand', __('lang.brand'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                            ]) !!}
                             <div class="d-flex justify-content-center align-items-center"
                                 style="background-color: #dedede;
                                             border: none;
@@ -201,7 +203,9 @@
 
                         <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1"
                             style="width: 370px">
-                            {{-- {!! Form::label('name', __('lang.product_name'), ['class' => 'h5 pt-3']) !!} --}}
+                            {!! Form::label('name', __('lang.product_name'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                            ]) !!}
                             <div class="d-flex justify-content-center align-items-center"
                                 style="background-color: #dedede; border: none;
                                         border-radius: 16px;
@@ -211,7 +215,7 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                 {!! Form::text('name', $product->name, [
-                                    'class' => 'form-control  initial-balance-input required',
+                                    'class' => 'form-control width-full initial-balance-input required',
                                     'placeholder' => __('lang.product_name'),
                                 ]) !!}
                                 <button class="add-button d-flex justify-content-center align-items-center" type="button"
@@ -233,7 +237,9 @@
 
                         <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1"
                             style="width: 75px">
-                            {{-- {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5 pt-3']) !!} --}}
+                            {!! Form::label('product_symbol', __('lang.product_symbol'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                            ]) !!}
                             {!! Form::text('product_symbol', isset($product->product_symbol) ? $product->product_symbol : null, [
                                 'class' => 'form-control  initial-balance-input',
                                 'style' => 'width:75px;margin:0 !important;border:2px solid #ccc',
@@ -247,7 +253,9 @@
 
                         <div
                             class="px-1 animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1">
-                            {{-- {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!} --}}
+                            {!! Form::label('sku', __('lang.product_code'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                            ]) !!}
                             {!! Form::text('product_sku', $product->sku, [
                                 'class' => 'form-control  initial-balance-input',
                                 'style' => 'width:75px;margin:0 !important;border:2px solid #ccc',
@@ -258,7 +266,9 @@
                         {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
                         <div
                             class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1">
-                            {{-- {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!} --}}
+                            {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                            ]) !!}
                             {!! Form::text(
                                 'balance_return_request',
                                 isset($product->balance_return_request) ? $product->balance_return_request : null,
@@ -302,7 +312,9 @@
                                                     @if ($index == 0)
                                                         <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                             style="width: 75px">
-                                                            {{-- {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!} --}}
+                                                            {!! Form::label('sku', __('lang.product_code'), [
+                                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                            ]) !!}
                                                             {!! Form::text('products[0][variations][0][sku]', $variation->sku ?? null, [
                                                                 'class' => 'form-control initial-balance-input',
                                                                 'style' => 'width:100%;margin:0 !important;border:2px solid #ccc',
@@ -316,7 +328,9 @@
 
                                                         <div
                                                             class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-                                                            {{-- {!! Form::label('unit', __('lang.large_filling'), ['class' => 'h5 pt-3']) !!} --}}
+                                                            {!! Form::label('unit', __('lang.large_filling'), [
+                                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                            ]) !!}
                                                             <div class="d-flex justify-content-center align-items-center"
                                                                 style="background-color: #dedede; border: none;
                                                             border-radius: 16px;
