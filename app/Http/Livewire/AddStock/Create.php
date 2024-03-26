@@ -2707,41 +2707,39 @@ class Create extends Component
         if(!empty($product_variations)){
             foreach ($product_variations as $key => $product_variation) {
                 if (!empty($product_variation['unit_id'])) {
-                    if (isset($variation->id) && isset($product_variation->id) && ($variation->id == $product_variation->id)) {
+                    if( $variation->id == $product_variation->id  ){
                         $unitName =  $variation->basic_unit->name ?? '';
-                        $units[$unitName] =  $product_variation->variation_equals()->latest()->first()->equal ?? 0;
-                    } else if (!empty($product_variation->basic_unit_id) && $variation->basic_unit_id == $product_variation['unit_id']) {
+                        $units[$unitName] =  $product_variation['equal'];
+                    }
+                    else if(!empty($product_variation->basic_unit_id) && $variation->basic_unit_id == $product_variation['unit_id'] ){
                         $unitName =   $product_variation['basic_unit']['name'] ?? '';
-                        if ($product_variation->basic_unit_id != $variation->unit_id) {
-                            if(count($product_variation->variation_equals) > 0){
-                                $units[$unitName] =  number_format($product_variation->variation_equals()->latest()->first()->equal * $variation->variation_equals()->latest()->first()->equal, num_of_digital_numbers());
-                                $qtyByUnit = $product_variation->variation_equals()->latest()->first()?->equal * $variation->variation_equals()->latest()->first()?->equal;
-                            }
-                        }
-                    } else if (isset($product_variations[$key + 1]) && $product_variation->basic_unit_id  == $product_variations[$key + 1]['unit_id']) {
-                        $unitName =   $product_variation->basic_unit->name  ?? '';
-                        if ($product_variation->basic_unit_id != $variation->unit_id) {
-                            if(count($product_variation->variation_equals) > 0){
-                                $units[$unitName] = number_format($product_variation->variation_equals()->latest()->first()?->equal * $qtyByUnit, num_of_digital_numbers());
-                            }
+                        if($product_variation->basic_unit_id != $variation->unit_id ){
+                            $units[$unitName] =  $product_variation['equal'] * $variation->equal;
+                            $qtyByUnit = $product_variation['equal'] * $variation->equal;
                         }
                     }
-                    if (!empty($product_variations[$key - 1])) {
-                        if ($variation->unit_id == $product_variations[$key - 1]->basic_unit_id) {
-                            $qty = 1 / (!empty($product_variations[$key - 1]->variation_equals()->latest()->first()->equal) ? (!empty($product_variations[$key - 1]->variation_equals) ? $product_variations[$key - 1]->variation_equals()->latest()->first()->equal : 1) : 1);
-                            $units[$product_variations[$key - 1]->unit->name] = number_format($qty, num_of_digital_numbers());
+                    else if (isset($product_variations[$key + 1]) && $product_variation->basic_unit_id  == $product_variations[$key + 1]['unit_id'] ){
+                        $unitName =   $product_variation->basic_unit->name  ?? '';
+                        if($product_variation->basic_unit_id != $variation->unit_id ) {
+                            $units[$unitName] = $product_variation['equal'] * $qtyByUnit;
                         }
-                        if (!empty($product_variations[$key - 2])) {
-                            $i = $key - 2;
-                            do {
-                                if ($product_variations[$i]->basic_unit_id == $product_variations[$i + 1]->unit_id) {
-                                    if ($variation->unit_id != $product_variations[$i]->unit_id && !isset($units[$product_variations[$i]->unit->name])) {
-                                        $qty *= 1 / (!empty($product_variations[$key - 1]->variation_equals()->latest()->first()->equal) ? $product_variations[$i]->variation_equals()->latest()->first()->equal : 1);
-                                        $units[$product_variations[$i]->unit->name] = @number_format($qty, num_of_digital_numbers());
+                    }
+                    if (!empty($product_variations[$key-1])){
+                        if($variation->unit_id == $product_variations[$key-1]->basic_unit_id){
+                            $qty = 1 / $product_variations[$key-1]->equal;
+                            $units[$product_variations[$key-1]->unit->name] = $qty;
+                        }
+                        if(!empty($product_variations[$key-2])){
+                            $i = $key-2;
+                            do{
+                                if($product_variations[$i]->basic_unit_id == $product_variations[$i+1]->unit_id){
+                                    if($variation->unit_id != $product_variations[$i]->unit_id && !isset($units[$product_variations[$i]->unit->name])){
+                                        $qty *= 1/$product_variations[$i]->equal;
+                                        $units[$product_variations[$i]->unit->name] = $qty ;
                                     }
                                 }
                                 $i--;
-                            } while ($i >= 0);
+                            }while ($i >= 0);
                         }
                     }
                 }
