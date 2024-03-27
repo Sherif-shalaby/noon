@@ -421,7 +421,7 @@
                                         data-select_category="3"><i class="fas fa-plus"></i></button> --}}
                                             <a data-href="{{ route('categories.sub_category_modal') }}"
                                                 data-container=".view_modal"
-                                                class="btnadd-button text-white d-flex justify-content-center align-items-center openCategoryModal"
+                                                class="btn add-button text-white d-flex justify-content-center align-items-center openCategoryModal"
                                                 data-toggle="modal" data-select_category="3"><i
                                                     class="fas fa-plus"></i></a>
                                         </div>

@@ -227,7 +227,7 @@ class Edit extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'stock_line_id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => ''
+            'id' => '', 'stock_line_id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => '', 'show_prices' => false,
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -246,7 +246,23 @@ class Edit extends Component
             ];
             array_unshift($this->rows[$index]['prices'], $new_price);
         }
+
+        // Set 'show_prices' to false for all existing rows
+        if ($this->rows[0]['show_prices'] == true) {
+            foreach ($this->rows as &$row) {
+                $row['show_prices'] = true;
+            }
+        }
     }
+
+    public function stayShow()
+    {
+        foreach ($this->rows as &$row) {
+            $row['show_prices'] =
+                !$row['show_prices'];
+        }
+    }
+
     public function addPriceRow()
     {
         $new_price = [
@@ -381,7 +397,7 @@ class Edit extends Component
                             'unit_id' => $stock->variation->unit_id,
                             'fill_currency' => 'dinar',
                             'prices' => [],
-                            'fill' => $stock->variation->equal ?? 0,
+                            'fill' => $stock->variation->equal ?? 0, 'show_prices' => false,
                         ];
 
                         // $this->rows[] = $newRow;
@@ -1233,6 +1249,7 @@ class Edit extends Component
                 'basic_unit_id' => $variation->basic_unit_id,
                 'change_price_stock' => '',
                 'equal' => $variation->equal,
+                'show_prices' => false,
                 'prices' => [
                     [
                         'price_type' => null,
