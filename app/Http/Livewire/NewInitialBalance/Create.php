@@ -1176,8 +1176,11 @@ class Create extends Component
     }
     public function changeUnitPurchasePrice($index)
     {
+        $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
         foreach ($this->rows[$index]['prices'] as $key => $price) {
-            $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
+            if ($key > 0 && !empty($this->rows[$key]['fill'])) {
+                $this->rows[$key]['purchase_price'] = $this->num_uf($this->rows[$key - 1]['purchase_price']) / $this->num_uf($this->rows[$key]['fill']);
+            }
             $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
             $amount = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']);
             if ($this->transaction_currency != 2) {

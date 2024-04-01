@@ -24,7 +24,7 @@
                     <label for="name">@lang('lang.name')</label>
                     <div class="select_body input-wrapper" style="width: 100%">
                         <input type="text" required
-                            class="form-control  @if (app()->isLocale('ar')) text-end @else text-start @endif initial-balance-input width-full mx-0"
+                            class="form-control @if (app()->isLocale('ar')) text-end @else text-start @endif initial-balance-input width-full mx-0"
                             placeholder="@lang('lang.name')" name="name" id="cityNameId" value="{{ old('name') }}">
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
@@ -47,7 +47,7 @@
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
             <div
-                class="modal-header d-flex justify-content-between py-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                class="modal-header  d-flex justify-content-between py-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <h5 class="modal-title" id="exampleStandardModalLabel">{{ __('lang.add_quarter') }}</h5>
                 <button type="button" class="close mx-0" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -65,7 +65,7 @@
                     {{-- store "city_id" in "hidden inputField" to send it to "storeQuarter() method" in CustomerController --}}
                     <input type="hidden" name="city_id" id="cityId" />
                     <label for="name">@lang('lang.name')</label>
-                    <div class="select_body input-wrapper" style="width: 100%">
+                    <div class="select_body  input-wrapper" style="width: 100%">
                         <input type="text" required
                             class="form-control @if (app()->isLocale('ar')) text-end @else text-start @endif initial-balance-input width-full mx-0"
                             placeholder="@lang('lang.name')" name="name" value="{{ old('name') }}">
