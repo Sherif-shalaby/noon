@@ -222,6 +222,7 @@
                                                             $countryId,
                                                         )->get(['id', 'name']);
                                                     @endphp
+                                                    <option value=""> @lang('lang.please_select')</option>
                                                     @foreach ($states as $state)
                                                         <option value="{{ $state->id }}">
                                                             {{ $state->name }}

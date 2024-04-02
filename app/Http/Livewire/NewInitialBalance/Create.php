@@ -1193,8 +1193,6 @@ class Create extends Component
                 if ((($percent != 0 || $percent != null) || ($amount != 0 || $amount != null))) {
                     $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']), num_of_digital_numbers());
                     $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'] ?? 0), num_of_digital_numbers());
-                    // $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']));
-                    // $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) * $this->num_uf($this->exchange_rate));
                 }
             }
         }
@@ -1331,16 +1329,23 @@ class Create extends Component
             $price = !empty($this->prices[$index]['dinar_price_after_desc']) ? $this->num_uf($this->prices[$index]['dinar_price_after_desc']) : $this->num_uf($sell_price);
             $dollar_price = !empty($this->prices[$index]['price_after_desc']) ? $this->num_uf($this->prices[$index]['price_after_desc']) : $this->num_uf($dollar_sell_price);
 
-            if (!$this->prices[$index]['discount_from_original_price']) {
-                $this->prices[$index]['total_price'] = number_format($this->num_uf($dollar_price) * ($total_quantity == 0 ? 1 : $total_quantity), num_of_digital_numbers());
-                $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($price) * ($total_quantity == 0 ? 1 : $total_quantity), num_of_digital_numbers());
-                $this->prices[$index]['dinar_piece_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']), num_of_digital_numbers());
-                $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['price_after_desc']), num_of_digital_numbers());
-            } else {
+            if (empty($this->prices[$index]['dinar_price'])) {
                 $this->prices[$index]['total_price'] = number_format($this->num_uf($dollar_price) * $this->num_uf($this->prices[$index]['discount_quantity']), num_of_digital_numbers());
                 $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($price) * $this->num_uf($this->prices[$index]['discount_quantity']), num_of_digital_numbers());
                 $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) /  $total_quantity, num_of_digital_numbers()) : 0;
                 $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['total_price']) / ($total_quantity == 0 ? 1 : $total_quantity), num_of_digital_numbers());
+            } else {
+                if (!$this->prices[$index]['discount_from_original_price']) {
+                    $this->prices[$index]['total_price'] = number_format($this->num_uf($dollar_price) * ($total_quantity == 0 ? 1 : $total_quantity), num_of_digital_numbers());
+                    $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($price) * ($total_quantity == 0 ? 1 : $total_quantity), num_of_digital_numbers());
+                    $this->prices[$index]['dinar_piece_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']), num_of_digital_numbers());
+                    $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['price_after_desc']), num_of_digital_numbers());
+                } else {
+                    $this->prices[$index]['total_price'] = number_format($this->num_uf($dollar_price) * $this->num_uf($this->prices[$index]['discount_quantity']), num_of_digital_numbers());
+                    $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($price) * $this->num_uf($this->prices[$index]['discount_quantity']), num_of_digital_numbers());
+                    $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) /  $total_quantity, num_of_digital_numbers()) : 0;
+                    $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['total_price']) / ($total_quantity == 0 ? 1 : $total_quantity), num_of_digital_numbers());
+                }
             }
         }
     }
