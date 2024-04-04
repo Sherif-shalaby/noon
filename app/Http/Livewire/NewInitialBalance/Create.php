@@ -429,7 +429,6 @@ class Create extends Component
             } else {
                 // dd(77);
                 DB::beginTransaction();
-                // Add stock transaction
                 //Add Product
                 $product = [];
                 $this->toggle_dollar=System::getProperty('toggle_dollar');
@@ -475,10 +474,10 @@ class Create extends Component
                 foreach ($this->rows as $index => $row) {
                     // if($this->rows[$index]['skuExist']!==1){
                     $Variation = new Variation();
-                    $Variation->sku = !empty($this->rows[$index]['sku']) ? $this->rows[$index]['sku'] : $this->generateSku($product->name);
-                    $Variation->equal = !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
+                    $Variation->sku = !empty($this->rows[$index]['sku']) ? $this->rows[$index]['sku'] : $this->num_uf($this->generateSku($product->name)) + $index;
+//                    $Variation->equal = !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
                     $Variation->product_id = $product->id;
-                    $Variation->equal = $this->num_uf($this->rows[$index]['fill']);
+                    $Variation->equal = !empty($this->rows[$index + 1]) ? $this->num_uf($this->rows [$index + 1]['fill']) : null;
                     $Variation->unit_id = $this->rows[$index]['unit_id'] !== "" ? $this->rows[$index]['unit_id'] : null;
                     $Variation->basic_unit_id = isset($this->rows[$index-1]) && !empty($this->rows[$index-1]['unit_id'])?$this->rows[$index-1]['unit_id']:null;
                     $Variation->product_symbol = $this->item[0]['product_symbol'] . ($index + 1);
@@ -497,7 +496,6 @@ class Create extends Component
                         }
                     }
 
-                    ////////////////
                 }
 
                 if (
@@ -1162,8 +1160,8 @@ class Create extends Component
     public function changeUnitPurchasePrice($index){
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
         foreach($this->rows[$index]['prices'] as $key=>$price){
-            if($key > 0 && !empty($this->rows[$key]['fill'])){
-                $this->rows[$key]['purchase_price'] = $this->num_uf($this->rows[$key-1]['purchase_price']) / $this->num_uf($this->rows[$key]['fill']);
+            if( $index == 0 && $key > 0 && !empty($this->rows[$key]['fill'])){
+                $this->rows[$key]['purchase_price'] = number_format($this->num_uf($this->rows[$key-1]['purchase_price']) / $this->num_uf($this->rows[$key]['fill']),num_of_digital_numbers());
             }
             $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
             $amount = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']);
