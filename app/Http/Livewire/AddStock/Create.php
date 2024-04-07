@@ -169,8 +169,8 @@ class Create extends Component
             $dinar_debit += StockTransaction::where('supplier_id', $s_data->id)->where('type', 'add_stock')->where('payment_status', 'pending')->sum('final_total');
             // dd($s_data);
             $this->supplier_data = [
-                'dollar_debit' => $dollar_debit ?? 0,
-                'dinar_debit' => $dinar_debit ?? 0,
+                'dollar_debit' => $s_data->owner_debt_in_dollar ?? 0,
+                'dinar_debit' => $s_data->owner_debt_in_dinar ?? 0,
                 'email' => json_decode($s_data->email, true),
                 'mobile' => json_decode($s_data->mobile_number, true),
                 'state' => State::find($s_data->state_id ?? 0)?->name ?? "",
@@ -178,7 +178,6 @@ class Create extends Component
                 'address' => $s_data->address ?? '',
                 'notes' => $s_data->notes ?? '',
             ];
-            // dd($this->supplier_data );
         }
     }
     protected $listeners = ['listenerReferenceHere', 'changeExchangerateForSupplier'];
