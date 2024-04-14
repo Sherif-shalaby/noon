@@ -1044,9 +1044,9 @@ class Create extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => '', 'show_prices' => false,
+            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
+            '', 'show_prices' => false,
         ];
-
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
         // array_unshift($this->rows, $newRow);
@@ -1177,6 +1177,7 @@ class Create extends Component
         foreach ($this->rows[$index]['prices'] as $key => $price) {
             if ($index == 0 && $key > 0 && !empty($this->rows[$key]['fill'])) {
                 $this->rows[$key]['purchase_price'] = number_format($this->num_uf($this->rows[$key - 1]['purchase_price']) / $this->num_uf($this->rows[$key]['fill']), num_of_digital_numbers());
+                $this->changeUnitPurchasePrice($key);
             }
             $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
             $amount = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']);

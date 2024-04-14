@@ -955,10 +955,10 @@ class Create extends Component
                     $item_variation = Variation::find($item['unit_id']);
                     if($first_variation->id == $item['unit_id']){
                         if(System::getProperty('loading_cost_currency') == 2){
-                            $this->dollar_loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                            $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
                         }
                         elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
-                            $this->loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                            $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
                         }
                     }
                     else{
@@ -995,10 +995,10 @@ class Create extends Component
                         }
                         $qty_difference = 1 / $qtyByUnit;
                         if(System::getProperty('loading_cost_currency') == 2){
-                            $this->dollar_loading_cost = $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
+                            $this->dollar_loading_cost += $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
                         }
                         elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
-                            $this->loading_cost = $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
+                            $this->loading_cost += $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
                         }
                     }
                 }
