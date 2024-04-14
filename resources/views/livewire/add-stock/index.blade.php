@@ -5,11 +5,13 @@
             <div class="card-header d-flex align-items-center">
                 <h3 class="print-title">@lang('lang.stock')</h3>
             </div>
+            {{-- ++++++++++++++++++++++++++++++ Filters +++++++++++++++++++++++ --}}
             <div class="row">
                 <div class="col-lg-12">
                     <div class="container-fluid">
                         @include('add-stock.partials.filters')
                     </div>
+
                 </div>
             </div>
             <div class="card-body">
@@ -49,9 +51,9 @@
                                 </td>
                                 <td>{{$stock->created_by_relationship->first()->name}}</td>
                                 @if($stock->transaction_currency == 2)
-                                    <td>{{number_format($stock->dollar_final_total,2)}}</td>
+                                    <td>{{number_format($stock->dollar_final_total,num_of_digital_numbers())}}</td>
                                 @else
-                                    <td>{{number_format($stock->final_total,2)}}</td>
+                                    <td>{{number_format($stock->final_total,num_of_digital_numbers())}}</td>
                                 @endif
                                 <td>
                                     {{$this->calculatePaidAmount($stock->id)}}

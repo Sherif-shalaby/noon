@@ -13,20 +13,20 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
 <!-- Datatable js -->
-<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/dataTables.buttons.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
-{{--<script src="{{asset('plugins/datatables/jszip.min.js')}}"></script>--}}
-<script src="{{asset('plugins/datatables/pdfmake.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/vfs_fonts.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.html5.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.print.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.colVis.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/dataTables.responsive.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/1.13.6/api/sum().js')}}"></script>
-<script src="{{asset('js/custom/custom-table-datatable.js')}}"></script>
+<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
+{{-- <script src="{{asset('plugins/datatables/jszip.min.js')}}"></script> --}}
+<script src="{{ asset('plugins/datatables/pdfmake.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/vfs_fonts.js') }}"></script>
+<script src="{{ asset('plugins/datatables/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/buttons.print.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/1.13.6/api/sum().js') }}"></script>
+<script src="{{ asset('js/custom/custom-table-datatable.js') }}"></script>
 
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
 
@@ -47,7 +47,7 @@
 <script src="{{ asset('js/custom/custom-pnotify.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- Switchery js -->
-<script src="{{asset('plugins/switchery/switchery.min.js')}}"></script>
+<script src="{{ asset('plugins/switchery/switchery.min.js') }}"></script>
 <!-- Core js -->
 {{-- <script src="{{asset('js/core.js')}}"></script> --}}
 <script>
@@ -105,10 +105,10 @@
     });
     $(document).on('click', '.delete_item', function(e) {
         e.preventDefault();
-        var deletetype=$(this).data('deletetype');
-        var title=LANG.are_you_sure;
-        if(deletetype==1){
-            title=LANG.it_will_delete_the_product_and_all_its_operations
+        var deletetype = $(this).data('deletetype');
+        var title = LANG.are_you_sure;
+        if (deletetype == 1) {
+            title = LANG.it_will_delete_the_product_and_all_its_operations
         }
         Swal.fire({
             title: title,
@@ -207,20 +207,20 @@
         });
     });
     //open edit modal for modules
-        // $(document).on('click', '.btn-modal', function(e) {
-        //     e.preventDefault();
-        //     var container = $(this).data('container');
-        //     $.ajax({
-        //         url: $(this).data('href'),
-        //         dataType: 'html',
-        //         success: function(result) {
-        //             $(container).html(result);
-        //             $('#dueModal').modal('show');
-        //             // $('.select2').select2();
-        //             // $('.datepicker').datepicker();
-        //         },
-        //     });
-        // });
+    // $(document).on('click', '.btn-modal', function(e) {
+    //     e.preventDefault();
+    //     var container = $(this).data('container');
+    //     $.ajax({
+    //         url: $(this).data('href'),
+    //         dataType: 'html',
+    //         success: function(result) {
+    //             $(container).html(result);
+    //             $('#dueModal').modal('show');
+    //             // $('.select2').select2();
+    //             // $('.datepicker').datepicker();
+    //         },
+    //     });
+    // });
     //make translation open if there is translation when edit
     $(document).ready(function() {
         $('table.editTogle')
@@ -248,5 +248,8 @@
     // );
     $('.select2').select2();
     $('.datepicker').datepicker();
+
+
+ 
 </script>
 @stack('javascripts')

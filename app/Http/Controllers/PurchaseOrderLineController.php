@@ -125,15 +125,22 @@ class PurchaseOrderLineController extends Controller
             })
 
             ->orderBy("created_at", "asc")->get();
-
+            // +++++++++++ sum of "final_total" column ++++++++++++++
+            $final_total_sum = $purchaseOrders->sum('final_total');
+            // Get the total number of rows
+            $totalRows = count($purchaseOrders);
             return $purchaseOrders;
         }
         else
         {
             $purchaseOrders = $purchaseOrders->orderBy("created_at", "asc")->get();
         }
+        // +++++++++++ sum of "final_total" column ++++++++++++++
+        $final_total_sum = $purchaseOrders->sum('final_total');
 
-        return view('purchase_order.index', compact('purchaseOrders', 'stores', 'categories', 'subcategories1','subcategories2','subcategories3', 'products'));
+        return view('purchase_order.index',
+                    compact('purchaseOrders', 'stores', 'categories',
+                         'subcategories1','subcategories2','subcategories3', 'products', 'final_total_sum'));
     }
 
     /* +++++++++++++++ create() +++++++++++++++ */

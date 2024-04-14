@@ -220,9 +220,9 @@
                         <div class="form-group">
                             {!! Form::label('discrepancy', __('lang.discrepancy') . '$ :*') !!}
                             {!! Form::text('dollar_discrepancy', 0, [
-                                'class' => 'form-control',
+                                'class' => 'form-control ',
                                 'placeholder' => __('lang.discrepancy').' $',
-                                'required',
+                                'required','id'=>'dollar_discrepancy',
                             ]) !!}
                         </div>
                     </div>
@@ -238,6 +238,7 @@
         </div>
 
         <div class="modal-footer">
+            <input type="text" name="submitValue" class="submitValue" value="save"/>
             <button type="submit" name="submit" class="btn btn-primary hide" value="adjustment"
                     id="adjust-btn">@lang('lang.adjustment')</button>
             <button type="submit" name="submit" class="btn btn-primary" value="save"
@@ -254,14 +255,26 @@
 <script>
     $('.selectpicker').selectpicker('render');
     $(document).on('change', '#closing_amount', function() {
-        let amount = __read_number($(this));
-        let current_cash = __read_number($('#closing_current_cash'));
-
+        let amount = parseFloat($(this).val());
+        let current_cash = parseFloat($('#closing_current_cash').val());
         let discrepancy = amount - current_cash;
-
         $('#discrepancy').val(discrepancy);
-
         if (discrepancy !== 0) {
+            $('#adjust-btn').removeClass('hide');
+        } else {
+            $('#adjust-btn').addClass('hide');
+        }
+
+    });
+    $(document).on('change', '#closing_dollar_amount', function() {
+        let dollar_amount = parseFloat($(this).val());
+        let dollar_current_cash = parseFloat($('#closing_current_cash').val());
+
+        let dollar_discrepancy = dollar_amount - dollar_current_cash;
+
+        $('#dollar_discrepancy').val(dollar_discrepancy);
+
+        if (dollar_discrepancy !== 0) {
             $('#adjust-btn').removeClass('hide');
         } else {
             $('#adjust-btn').addClass('hide');
@@ -293,8 +306,13 @@
             });
         }
     });
+    // $(document).on('click', '#closing-save-btn', function(e) {
+    //     e.preventDefault();
+    //     $('.submitValue').val('save');
+    // });
     $(document).on('click', '#adjust-btn', function(e) {
         e.preventDefault();
+        $('.submitValue').val('adjustment');
         var title = "{!! __('lang.are_you_sure') !!}";
         Swal.fire({
             title: title,

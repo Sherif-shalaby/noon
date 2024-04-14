@@ -32,19 +32,19 @@
                 <div class="row">
 
                     <div class="col-md-3">
-                        {!! Form::label('site_title', __('lang.site_title'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('site_title', __('lang.site_title'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('site_title', !empty($settings['site_title']) ? $settings['site_title'] : null, [
                             'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3 hide">
-                        {!! Form::label('developed_by', __('lang.developed_by'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('developed_by', __('lang.developed_by'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('developed_by', !empty($settings['developed_by']) ? $settings['developed_by'] : null, [
                             'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('time_format', __('lang.time_format'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('time_format', __('lang.time_format'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::select(
                             'time_format',
                             ['12' => '12 hours', '24' => '24 hours'],
@@ -53,49 +53,55 @@
                         ) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('language', __('lang.language'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('language', __('lang.language'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::select('language', $languages, !empty($settings['language']) ? $settings['language'] : null, [
                             'class' => 'form-control select2',
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('currency', __('lang.currency'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency']: null, [
-                            'class' => 'form-control select2','placholder'=>__('lang.please_select')
+                        {!! Form::label('currency', __('lang.currency'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency'] : null, [
+                            'class' => 'form-control select2 currency',
+                            'placeholder' => __('lang.please_select'),
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('dollar_exchange', !empty($settings['dollar_exchange']) ? $settings['dollar_exchange'] : null, [
                             'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('start_date', __('lang.start_date'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('start_date', __('lang.start_date'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::date('start_date', !empty($settings['start_date']) ? $settings['start_date'] : date('Y-m-d'), [
                             'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('end_date', __('lang.end_date'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('end_date', __('lang.end_date'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::date('end_date', !empty($settings['end_date']) ? $settings['end_date'] : null, [
                             'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('default_payment_type', __('lang.default_payment_type'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select('default_payment_type',['cash'=>__('lang.cash'),'later'=>__('lang.later')], !empty($settings['default_payment_type']) ? $settings['default_payment_type'] : null, [
-                            'class' => 'form-control select2',
-                        ]) !!}
+                        {!! Form::label('default_payment_type', __('lang.default_payment_type'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::select(
+                            'default_payment_type',
+                            ['cash' => __('lang.cash'), 'later' => __('lang.later')],
+                            !empty($settings['default_payment_type']) ? $settings['default_payment_type'] : null,
+                            [
+                                'class' => 'form-control select2',
+                            ],
+                        ) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('tax', __('lang.tax'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('tax', __('lang.tax'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('tax', !empty($settings['tax']) ? $settings['tax'] : null, [
                             'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('invoice_lang', __('lang.invoice_lang'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('invoice_lang', __('lang.invoice_lang'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::select(
                             'invoice_lang',
                             $languages + ['ar_and_en' => 'Arabic and English'],
@@ -104,28 +110,83 @@
                         ) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('Watsapp Numbers', __('lang.watsapp_numbers'),['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('Watsapp Numbers', __('lang.watsapp_numbers'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('watsapp_numbers', !empty($settings['watsapp_numbers']) ? $settings['watsapp_numbers'] : null, [
-                            'class' => 'form-control'
+                            'class' => 'form-control',
                         ]) !!}
                     </div>
                     {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
                     <div class="col-md-3">
-                        {!! Form::label('country_id', __('lang.country'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select(
-                            'country_id',
-                            $countries,
-                            !empty($settings['country_id']) ? $settings['country_id'] : null,
-                            ['class' => 'form-control select2'],
-                        ) !!}
+                        {!! Form::label('country_id', __('lang.country'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::select('country_id', $countries, !empty($settings['country_id']) ? $settings['country_id'] : null, [
+                            'class' => 'form-control select2',
+                        ]) !!}
                     </div>
-                                {{--       product sku is start with              --}}
+                    {{--       product sku is start with              --}}
                     <div class="col-md-3">
-                        {!! Form::label('product_sku_start', __('lang.product_sku_start'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::label('product_sku_start', __('lang.product_sku_start'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text(
-                            'product_sku_start',!empty($settings['product_sku_start']) ? $settings['product_sku_start'] : null,
+                            'product_sku_start',
+                            !empty($settings['product_sku_start']) ? $settings['product_sku_start'] : null,
                             ['class' => 'form-control'],
                         ) !!}
+                    </div>
+                    @php
+                        $currency = \App\Models\Currency::find($settings['currency']);
+                        $info = $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ') ' . $currency->symbol;
+                    @endphp
+                    <div class="col-md-3">
+                        {!! Form::label('loading_cost_currency', __('lang.loading_cost_currency'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::select(
+                            'loading_cost_currency',
+                            ['2' => 'America - Dollars(USD) $', $currency->id => $info],
+                            !empty($settings['loading_cost_currency']) ? $settings['loading_cost_currency'] : null,
+                            ['class' => 'form-control select2 loading_cost_currency', 'placeholder' => __('lang.please_select')],
+                        ) !!}
+                    </div>
+                    <div class="col-md-3 pt-5">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input"
+                                {{ isset($settings['activate_processing']) && $settings['activate_processing'] == '1' ? 'checked' : '' }}
+                                id="activate_processing" name="activate_processing">
+                            <label class="custom-control-label"
+                                for="activate_processing">{{ __('lang.activate_processing') }}</label>
+                        </div>
+                    </div>
+                    {{-- <div class="col-md-3 pt-5 update_processing">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input"
+                                {{ isset($settings['update_processing']) && $settings['update_processing'] == '1' ? 'checked' : '' }}
+                                id="update_processing" name="update_processing">
+                            <label class="custom-control-label"
+                                for="update_processing">{{ __('lang.update_processing') }}</label>
+                        </div>
+                    </div> --}}
+                    <div class="col-md-3 pt-5 update_processing" style="visibility:{{isset($settings['activate_processing']) && $settings['activate_processing']=="1"?'visible':'hidden'}}">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="update_processing" name="update_processing" {{isset($settings['update_processing']) && $settings['update_processing']==1 ? 'checked' :''}}>
+                            <label class="custom-control-label"  for="update_processing" >{{__('lang.update_processing')}}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        {!! Form::label('num_of_digital_numbers', __('lang.num_of_digital_numbers'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::text(
+                            'num_of_digital_numbers',
+                            !empty($settings['num_of_digital_numbers']) ? $settings['num_of_digital_numbers'] : null,
+                            ['class' => 'form-control'],
+                        ) !!}
+                    </div>
+                    <div class="col-md-3">
+                        {!! Form::label('keyboord_letter_to_toggle_dollar', __('lang.keyboord_letter_to_toggle_dollar'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::text(
+                            'keyboord_letter_to_toggle_dollar',
+                            !empty($settings['keyboord_letter_to_toggle_dollar']) ? $settings['keyboord_letter_to_toggle_dollar'] : null,
+                            ['class' => 'form-control'],
+                        ) !!}
+                    </div>
+
+                    <div class="col-md-6 pt-5">
+                        @include('general-settings.partials.add_loading_cost')
                     </div>
                     <br>
                     <hr>
@@ -137,7 +198,8 @@
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
                                             <div class="col-12">
-                                                <label for="projectinput2" class="h5 p3 justify-content-center d-flex"> {{ __('lang.letter_header') }}</label>
+                                                <label for="projectinput2" class="h5 p3 justify-content-center d-flex">
+                                                    {{ __('lang.letter_header') }}</label>
                                             </div>
                                             <div class="col-5">
                                                 <div class="mt-3">
@@ -189,7 +251,8 @@
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
                                             <div class="col-12 p3 justify-content-center d-flex">
-                                            <label for="projectinput2" class='h5'> {{ __('lang.letter_footer') }}</label>
+                                                <label for="projectinput2" class='h5'>
+                                                    {{ __('lang.letter_footer') }}</label>
 
                                             </div>
                                             <div class="col-5">
@@ -292,9 +355,9 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-1"></div>
-                                <div class="col-md-10">
+                            <div class="col-md-10">
                                 <div class="form-group">
-                                    {!! Form::label('help_page_content', __('lang.help_page_content'), ['class'=>'h5 pt-5']) !!}
+                                    {!! Form::label('help_page_content', __('lang.help_page_content'), ['class' => 'h5 pt-5']) !!}
                                     {!! Form::textarea(
                                         'help_page_content',
                                         !empty($settings['help_page_content']) ? $settings['help_page_content'] : null,
@@ -383,5 +446,55 @@
                 });
             }
         @endif
+
+        $(document).ready(function() {
+            $('#currency').on('change', function(e) {
+                // Get the selected value from the first dropdown
+                var selectedValue = $(this).val();
+                console.log(selectedValue);
+
+                // Perform an AJAX request to fetch updated options for the second dropdown based on the selected value
+                // Update the 'url' and 'data' parameters with your actual route and data structure
+                $.ajax({
+                    url: '/get_currency', // Replace with your actual API endpoint
+                    method: 'GET',
+                    data: {
+                        selectedValue: selectedValue
+                    },
+                    success: function(data) {
+                        // Update options for the second dropdown
+                        $('#loading_cost_currency').empty();
+                        $.each(data, function(key, value) {
+                            if (key == '') {
+                                $('#loading_cost_currency').append($(
+                                    '<option selected>', {
+                                        value: key,
+                                        text: LANG.please_select
+                                    }));
+                            } else {
+                                $('#loading_cost_currency').append($('<option>', {
+                                    value: key,
+                                    text: value
+                                }));
+                            }
+
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            });
+        });
+        $(document).ready(function() {
+            $(document).on('change', '#activate_processing', function() {
+                if ($(this).prop('checked')) {
+                    $('.update_processing').css('visibility', 'visible');
+                } else {
+                    $('.update_processing').css('visibility', 'hidden');
+                    $('#update_processing').prop('checked', false);
+                }
+            });
+        });
     </script>
 @endpush

@@ -1,7 +1,7 @@
 <tr>
     <td>
         {{-- <input type="hidden" name="selectedProductData" value="{{ json_encode($selectedProductData) }}"> --}}
-        {{$index+1}}
+        {{$index+1}} 
     </td>
 
     <td>

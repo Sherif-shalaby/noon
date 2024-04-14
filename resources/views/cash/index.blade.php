@@ -126,8 +126,8 @@
                                         <td>{{ ucfirst($cash_register->store_pos->name ?? '') }}</td>
                                         <td>{{ ucfirst($cash_register->notes) }}</td>
                                         <td>{{ ucfirst($cash_register->status) }}</td>
-                                        <td>{{@num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash - $cash_register->dinar_total_sell_return)}}
-                                        <td>{{@num_format($cash_register->dollar_total_cash_sales - $cash_register->dollar_total_refund_cash - $cash_register->dollar_total_sell_return)}}
+                                        <td>{{ @num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash - $cash_register->dinar_total_sell_return) }}
+                                        <td>{{ @num_format($cash_register->dollar_total_cash_sales - $cash_register->dollar_total_refund_cash - $cash_register->dollar_total_sell_return) }}
                                         <td>{{ @num_format($cash_register->dinar_total_latest_payments) }} </td>
                                         <td>{{ @num_format($cash_register->dollar_total_latest_payments) }} </td>
                                         <td>{{ @num_format($cash_register->dinar_total_cash_in) }}</td>
@@ -140,9 +140,7 @@
                                         <td>{{ @num_format($cash_register->dollar_total_expenses) }}</td>
                                         <td>{{ @num_format($cash_register->dinar_total_wages_and_compensation) }}</td>
                                         <td>{{ @num_format($cash_register->dollar_total_wages_and_compensation) }}</td>
-                                        <td>{{@num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash +
-                                            $cash_register->dinar_total_cash_in - $cash_register->dinar_total_cash_out -
-                                            $cash_register->dinar_total_purchases - $cash_register->dinar_total_expenses - $cash_register->dinar_total_wages_and_compensation - $cash_register->dinar_total_sell_return)}}
+                                        <td>{{ @num_format($cash_register->dinar_total_cash_sales - $cash_register->dinar_total_refund_cash +$cash_register->dinar_total_cash_in - $cash_register->dinar_total_cash_out - $cash_register->dinar_total_purchases - $cash_register->dinar_total_expenses - $cash_register->dinar_total_wages_and_compensation - $cash_register->dinar_total_sell_return) }}
                                         </td>
                                         <td>{{@num_format($cash_register->dollar_total_cash_sales - $cash_register->dollar_total_refund_cash +
                                             $cash_register->dollar_total_cash_in - $cash_register->dollar_total_cash_out -

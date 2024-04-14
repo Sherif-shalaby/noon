@@ -63,6 +63,7 @@
         {{-- ++++++++++++++++ product categories ++++++++++++++++ --}}
         <div class="col-md-12">
             <div class="row">
+                {{-- +++++++++++++++++ category +++++++++++++++++ --}}
                 <div class="col-md-3" data-key="{{ $key }}">
                     {!! Form::label('category', __('lang.category'). ' 1', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
@@ -72,10 +73,8 @@
                                 'id' => 'categoryId'.$key,
 
                             ]) !!}
-                        {{-- <a data-href="{{route('categories.sub_category_modal')}}"  data-key="{{ $key }}" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                           data-select_category="0" data-target="#translation_table_product"><i class="fas fa-plus"></i></a> --}}
 
-                           <a   data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
+                             <a  data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
                                 class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                 data-select_category="0"><i class="fas fa-plus"></i>
                             </a>
@@ -84,6 +83,7 @@
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
+                {{-- +++++++++++++++++ sub_category1 +++++++++++++++++ --}}
                 <div class="col-md-3">
                     {!! Form::label('subcategory', __('lang.category') . ' 2', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
@@ -99,7 +99,7 @@
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
-
+                {{-- +++++++++++++++++ sub_category2 +++++++++++++++++ --}}
                 <div class="col-md-3">
                     {!! Form::label('subcategory', __('lang.category') . ' 3', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
@@ -115,7 +115,7 @@
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
-
+                {{-- +++++++++++++++++ sub_category3 +++++++++++++++++ --}}
                 <div class="col-md-3">
                     {!! Form::label('subcategory', __('lang.category') . ' 4', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">

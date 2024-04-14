@@ -34,7 +34,7 @@
                 wire:model="rows.{{ $index }}.fill" placeholder = "{{ __('lang.fill') }}" wire:change="changeFill({{$index}})">
 
                 <input type="text" class="form-control purchase_price" style="width:120px !important; "
-                    wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.purchase_price') }}">
+                    wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.purchase_price') }}" wire:change="changeUnitPurchasePrice({{$index}})">
                 @error('rows.' . $index . '.purchase_price')
                     <br>
                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -43,7 +43,7 @@
         </div>
     </td>
     <td>
-        <input type="text" class="form-control quantity" name="quantity"
+        <input type="text" class="form-control quantity" name="quantity" wire:change="count_total_by_variation_stores()"
             wire:model="rows.{{ $index }}.quantity" maxlength="6"
             placeholder="{{ __('lang.quantity') }}">
     </td>
@@ -67,7 +67,7 @@
             <input type="text" class="form-control dinar_sell_price"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
                 placeholder = "{{ $rows[$index]['prices'][$key]['customer_name']??'' }}" wire:change="changeIncrease({{$index}},{{$key}})">
-            <span>{{$rows[$index]['prices'][$key]['dollar_increase']??0}} $</span>
+            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{$rows[$index]['prices'][$key]['dollar_increase']??0}} $</span>
             @error('rows.' . $index.'prices'. $key . '.dinar_increase')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>
@@ -75,10 +75,10 @@
         </td>
 
         <td>
-            <input type="text" class="form-control dinar_sell_price"
+            <input type="text" class="form-control dinar_sell_price" wire:change="changeSellPrice({{$index}},{{$key}})"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                 placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}">
-            <span>{{$rows[$index]['prices'][$key]['dollar_sell_price']}} $</span>
+            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{$rows[$index]['prices'][$key]['dollar_sell_price']}} $</span>
             @error('rows.' . $index.'prices'. $key . '.dinar_sell_price')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>

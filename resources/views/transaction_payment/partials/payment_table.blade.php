@@ -12,6 +12,7 @@
                 <th>@lang('lang.amount')</th>
                 <th>@lang('lang.payment_date')</th>
                 <th>@lang('lang.payment_type')</th>
+                <th>@lang('lang.image')</th>
 {{--                @if(!empty($show_action))--}}
 {{--                    <th>@lang('lang.action')</th>--}}
 {{--                @endif--}}
@@ -24,6 +25,7 @@
                     <td>{{($payment->amount)}}</td>
                     <td>{{@format_date($payment->paid_on)}}</td>
                     <td>{{$payment_type_array[$payment->method]}}</td>
+                    <td><img src="{{asset('uploads/'.$payment->photo)}}" alt="image" width="100"></td>
 {{--                    @if(!empty($show_action))--}}
 {{--                        <td>--}}
 {{--                            <div class="btn-group">--}}

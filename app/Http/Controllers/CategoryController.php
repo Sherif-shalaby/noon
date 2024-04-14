@@ -49,13 +49,10 @@ class CategoryController extends Controller
         $cats = Category::get(['id', 'name']);
         return view('categories.create', compact('cats'));
     }
-
+    // +++++++++++++++++++++ store() +++++++++++++++++++++
+    // public function store(CategoryRequest $request)
     public function store(CategoryRequest $request)
     {
-         return($request);
-        // return $request->all();
-
-//        dd(!empty($request->parent_id));
         $data =  $request->data;
         $input['name']        = $request->name;
         $input['status']      = $request->status ?? $data['status'];
@@ -87,6 +84,7 @@ class CategoryController extends Controller
 
         return redirect()->back()->with('status', $output);
         // return response()->json(['status' => __('categories.addsuccess')]);
+
 
     }
 
@@ -204,7 +202,8 @@ class CategoryController extends Controller
         $units_dp = $this->Util->createDropdownHtml($units, __('lang.please_select'));
         return $units_dp;
     }
-    public Function getSubCategoryModal(){
+    public Function getSubCategoryModal()
+    {
         $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
         $quick_add=1;
         return view('categories.create_sub_cat_modal', compact('subcategories','quick_add'));

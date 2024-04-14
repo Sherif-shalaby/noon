@@ -35,13 +35,13 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>
-                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown']) !!}
+                                    {!! Form::checkbox('toggle_customers_dropdown', 1, false, ['wire:model' => 'toggle_customers_dropdown','wire:change' => 'toggle_suppliers_dropdown']) !!}
                                     @lang('lang.toggle_customers_dropdown')
                                 </label>
                             </div>
                         </div>
                     </div>
-                    {!! Form::open(['id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!}
+                    {{-- {!! Form::open(['id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!} --}}
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
@@ -54,23 +54,25 @@
                                 </div> --}}
                                 {{-- +++++++++++++++ supplier dropdown ++++++++++ --}}
                                 <div class="col-md-3">
-                                    {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
-                                    <div class="d-flex justify-content-center">
-                                        {!! Form::select('supplier_id', $suppliers, $supplier, [
-                                            'class' => 'form-control select2',
-                                            'data-live-search' => 'true',
-                                            'id' => 'supplier_id',
-                                            'placeholder' => __('lang.please_select'),
-                                            'data-name' => 'supplier',
-                                            'wire:model' => 'supplier',
-                                            'wire:change' => 'changeExchangeRate()',
-                                        ]) !!}
-                                        <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                            data-target=".add-supplier"><i class="fas fa-plus"></i></button>
-                                    </div>
-                                    @error('supplier')
-                                        <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
+                                    @if (empty($toggle_customers_dropdown))
+                                        {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
+                                        <div class="d-flex justify-content-center">
+                                            {!! Form::select('supplier_id', $suppliers, $supplier, [
+                                                'class' => 'form-control select2',
+                                                'data-live-search' => 'true',
+                                                'id' => 'supplier_id',
+                                                'placeholder' => __('lang.please_select'),
+                                                'data-name' => 'supplier',
+                                                'wire:model' => 'supplier',
+                                                'wire:change' => 'changeExchangeRate()',
+                                            ]) !!}
+                                            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
+                                                data-target=".add-supplier"><i class="fas fa-plus"></i></button>
+                                        </div>
+                                        @error('supplier')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
+                                    @endif
                                 </div>
 
                                 {{-- <div class="col-md-2">
@@ -111,7 +113,7 @@
                                 </div>
                                 <div class="col-md-12 pt-2 pb-2 {{ $supplier != null ? '' : 'd-none' }}">
                                     <div class="row">
-                                        <div class="col-md-2">@lang('lang.debit') {{ $supplier_data['dollar_debit'] }} $
+                                        <div class="col-md-2 {{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.debit') {{ $supplier_data['dollar_debit'] }} $
                                         </div>
                                         <div class="col-md-2">@lang('lang.debit') {{ $supplier_data['dinar_debit'] }} د.ع
                                         </div>
@@ -124,8 +126,8 @@
                                     </div>
                                 </div>
                                 {{-- +++++++++++++++++ customers Dropdown +++++++++++++++++ --}}
+                                <div class="col-md-3">
                                 @if (!empty($toggle_customers_dropdown))
-                                    <div class="col-md-3">
                                         {!! Form::label('customer_id', __('lang.customers') . ':*', []) !!}
                                         <div class="d-flex justify-content-center">
                                             {!! Form::select('customer_id', $customers, $customer_id, [
@@ -141,8 +143,8 @@
                                         @error('customer_id')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
-                                    </div>
                                 @endif
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 mt-2">
@@ -167,10 +169,12 @@
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+
                                 <div class="col-md-3">
-                                    {!! Form::label('transaction_date', __('lang.print_date'), []) !!}
-                                    <input type="datetime-local" wire:model="transaction_date"
-                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control">
+                                    {!! Form::label('transaction_date', __('lang.date_and_time'), []) !!}
+                                    <br><b class="pt-5">{{$this->getTransactionDate()}}</b>
+                                    {{-- <input type="datetime-local" readonly
+                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control"> --}}
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
@@ -184,7 +188,12 @@
                                             wire:model="end_date">
                                     </div>
                                 @endif
+                                <div class="col-md-3">
+                                    {!! Form::label('transaction_date', __('lang.print_date'), []) !!}<br>
 
+                                    <input type="datetime-local" wire:model="transaction_date"
+                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control">
+                                </div>
                             </div>
                             <div class="row">
                                 {{-- <div class="col-md-2">
@@ -234,8 +243,8 @@
                                 </div>
                                 <div class="col-md-2 pt-3">
                                     {{$this->getTotalExpenses()}}
-                                    <h3 class="{{$dollar_expenses>0?'':'d-none'}}">@lang('lang.total_expenses') {{$dollar_expenses}} $</h3>
-                                    <h3 class="{{$dinar_expenses>0?'':'d-none'}}">@lang('lang.total_expenses') {{$dinar_expenses}} </h3>
+                                    <h3 class="{{$dollar_expenses>0?'':'d-none'}} {{$settings['toggle_dollar']=='1'?'d-none':''}}">@lang('lang.total_expenses') {{@number_format($dollar_expenses, num_of_digital_numbers()) }} $</h3>
+                                    <h3 class="{{$dinar_expenses>0?'':'d-none'}}">@lang('lang.total_expenses') {{@number_format($dinar_expenses, num_of_digital_numbers())}} </h3>
                                     {{$this->total_expenses}}
                                 </div>
                                 {{-- <div class="col-md-3">
@@ -252,82 +261,84 @@
 
                         <div class="row">
                             <div class="col-md-2 border border-1 mr-3 p-0">
-                                <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
-                                    الأقسام الرئيسيه
-                                    <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
-                                        <div class="row">
-                                            {{-- الاقسام --}}
-                                            <select class="form-control depart1 select2" wire:model="department_id1"
-                                                data-name="department_id1">
-                                                <option value="0 " readonly selected>اختر </option>
-                                                @foreach ($departments as $depart)
-                                                    @if ($depart->parent_id === 1)
-                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                        </option>
-                                                        {{-- @if ($depart->subCategories->count() > 0) --}}
-                                                        {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
-                                                        {{-- @endif --}}
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                            <select class="form-control depart select2" wire:model="department_id2"
-                                                data-name="department_id2">
-                                                <option value="0 " readonly selected>اختر </option>
-                                                @foreach ($departments as $depart)
-                                                    @if ($depart->parent_id === 2)
-                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                        </option>
-                                                        {{-- @if ($depart->subCategories->count() > 0) --}}
-                                                        {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
-                                                        {{-- @endif --}}
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                            <select class="form-control depart select2" wire:model="department_id3"
-                                                data-name="department_id3">
-                                                <option value="0 " readonly selected>اختر </option>
-                                                @foreach ($departments as $depart)
-                                                    @if ($depart->parent_id === 3)
-                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                        </option>
-                                                        {{-- @if ($depart->subCategories->count() > 0) --}}
-                                                        {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
-                                                        {{-- @endif --}}
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                            <select class="form-control depart select2" wire:model="department_id4"
-                                                data-name="department_id4">
-                                                <option value="0 " readonly selected>اختر </option>
-                                                @foreach ($departments as $depart)
-                                                    @if ($depart->parent_id === 4)
-                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                        </option>
-                                                        {{-- @if ($depart->subCategories->count() > 0) --}}
-                                                        {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
-                                                        {{-- @endif --}}
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                @if($add_specific_product==0)
+                                    <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
+                                        الأقسام الرئيسيه
+                                        <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                                            <div class="row">
+                                                {{-- الاقسام --}}
+                                                <select class="form-control depart1 select2" wire:model="department_id1"
+                                                    data-name="department_id1">
+                                                    <option value="0 " readonly selected>اختر </option>
+                                                    @foreach ($departments as $depart)
+                                                        @if ($depart->parent_id === 1)
+                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                            </option>
+                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                            {{-- @endif --}}
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <select class="form-control depart select2" wire:model="department_id2"
+                                                    data-name="department_id2">
+                                                    <option value="0 " readonly selected>اختر </option>
+                                                    @foreach ($departments as $depart)
+                                                        @if ($depart->parent_id === 2)
+                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                            </option>
+                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                            {{-- @endif --}}
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <select class="form-control depart select2" wire:model="department_id3"
+                                                    data-name="department_id3">
+                                                    <option value="0 " readonly selected>اختر </option>
+                                                    @foreach ($departments as $depart)
+                                                        @if ($depart->parent_id === 3)
+                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                            </option>
+                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                            {{-- @endif --}}
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <select class="form-control depart select2" wire:model="department_id4"
+                                                    data-name="department_id4">
+                                                    <option value="0 " readonly selected>اختر </option>
+                                                    @foreach ($departments as $depart)
+                                                        @if ($depart->parent_id === 4)
+                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                            </option>
+                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                            {{-- @endif --}}
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="p-2">
-                                    @if ($allproducts and $allproducts != null)
-                                        @forelse ($allproducts as $product)
-                                            <div class="order-btn" wire:click='add_product({{ $product->id }})'
-                                                style="cursor: pointer">
-                                                <span>{{ $product->name }}</span>
-                                                <span>{{ $product->sku }} </span>
-                                            </div>
-                                            <hr />
-                                        @empty
-                                            <div class="col-md-12">
-                                                <span>عفوا لايوجد منتجات فى هذا القسم</span>
-                                            </div>
-                                        @endforelse
-                                    @endif
-                                </div>
+                                    <div class="p-2">
+                                        @if ($allproducts and $allproducts != null)
+                                            @forelse ($allproducts as $product)
+                                                <div class="order-btn" wire:click='add_product({{ $product->id }})'
+                                                    style="cursor: pointer">
+                                                    <span>{{ $product->name }}</span>
+                                                    <span>{{ $product->sku }} </span>
+                                                </div>
+                                                <hr />
+                                            @empty
+                                                <div class="col-md-12">
+                                                    <span>عفوا لايوجد منتجات فى هذا القسم</span>
+                                                </div>
+                                            @endforelse
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
                             <div class="col-md-9">
                                 <div class="row">
@@ -358,6 +369,7 @@
                                                     <th style="width: 10%">@lang('lang.purchase_price') </th>
                                                     {{-- <th style="width: 10%">@lang('lang.selling_price') </th> --}}
                                                     <th style="width: 10%">@lang('lang.sub_total')</th>
+                                                    <th style="width: 10%">@lang('lang.discount_type')</th>
 
                                                     {{--                                        @if ($showColumn) --}}
                                                     {{-- <th style="width: 10%">@lang('lang.cost')$</th>
@@ -371,6 +383,9 @@
 
                                                     <th style="width: 10%">@lang('lang.action')</th>
                                                     <th></th>
+                                                    <th style="width: 10%"></th>
+                                                    <th style="width: 10%"></th>
+                                                    <th style="width: 10%"></th>
                                                     <th style="width: 10%">@lang('lang.cost')</th>
                                                     <th style="width: 10%">@lang('lang.size')</th>
                                                     <th style="width: 10%">@lang('lang.total_size')</th>
@@ -418,6 +433,7 @@
                                         </table>
                                     </div>
                                     <br>
+                                    @if($add_specific_product==0)
                                     <div class="col-md-12">
                                         <div class="row">
                                             {{-- ++++++ "البحث "برمز المنتج ++++++ --}}
@@ -496,6 +512,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
                                 </div>
                                 <br>
                             </div>
@@ -521,11 +538,7 @@
                         <div class="col-md-12">
                             <div class="col-md-3 offset-md-8 text-right">
                                 <h3> @lang('lang.total') :
-                                    {{-- @if ($paying_currency == 2) --}}
-                                    {{-- {{$this->sum_dollar_total_cost() ?? 0.00}} --}}
-                                    {{-- @else --}}
-                                    {{ $this->sum_total_cost() ?? 0.0 }}
-                                    {{-- @endif --}}
+                                    {{ @number_format($total,num_of_digital_numbers()) ?? 0.0 }}
                                     <span class="final_total_span"></span>
                                 </h3>
                             </div>
@@ -533,12 +546,8 @@
                         <br>
                         <div class="col-md-12">
                             <div class="col-md-3 offset-md-8 text-right">
-                                <h3> @lang('lang.total')$ :
-                                    {{-- @if ($paying_currency == 2) --}}
-                                    {{ $this->sum_dollar_total_cost() ?? 0.0 }}
-                                    {{-- @else --}}
-                                    {{-- {{$this->sum_total_cost() ?? 0.00}} --}}
-                                    {{-- @endif --}}
+                                <h3 class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> @lang('lang.total')$ :
+                                    {{ @number_format($total_dollar,num_of_digital_numbers()) ?? 0.0 }}
                                     <span class="final_total_span"></span>
                                 </h3>
                             </div>
@@ -574,9 +583,8 @@
                                     ]) !!}
                                 </div>
                             </div>
-
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div class="form-group {{ $payment_status == 'pending' ? 'd-none':'' }}">
                                     {!! Form::label('source_type', __('lang.source_type') . ':*', []) !!} <br>
                                     {!! Form::select('source_type', ['pos' => __('lang.pos'), 'safe' => __('lang.safe')], $source_type, [
                                         'class' => 'form-control select2',
@@ -591,7 +599,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div class="form-group {{ $payment_status == 'pending' ? 'd-none':'' }}">
                                     {!! Form::label(null, null, []) !!} <br>
                                     {!! Form::select('source_id', $users, $source_id, [
                                         'class' => 'form-control select2',
@@ -624,7 +632,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-3 payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}">
+                            <div class="col-md-3 payment_fields {{$payment_status!='pending'?'':'d-none'}}">
                                 <div class="form-group">
                                     {!! Form::label('method', __('lang.payment_type'), []) !!}
                                     {!! Form::select('method', $payment_type_array, $method, [
@@ -648,9 +656,9 @@
                                         <label for="due_amount" style="margin-top: 25px;">@lang('lang.duePaid'):
                                             <span class="due_amount_span">
                                                 @if ($paying_currency == 2)
-                                                    {{ $this->sum_dollar_total_cost() - $amount ?? '' }}
+                                                    <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{ @number_format(@num_uf($this->sum_dollar_total_cost()) - $amount,num_of_digital_numbers()) ?? '' }}</span>
                                                 @else
-                                                    {{ @num_uf($this->sum_total_cost()) - $amount ?? '' }}
+                                                    {{ @number_format(@num_uf($this->sum_total_cost()) - $amount,num_of_digital_numbers()) ?? '' }}
                                                 @endif
                                             </span>
                                         </label>
@@ -715,7 +723,7 @@
                             wire:click.prevent = "store()">@lang('lang.save')</button>
 
                     </div>
-                    {!! Form::close() !!}
+                    {{-- {!! Form::close() !!} --}}
                 </div>
             </div>
         </div>

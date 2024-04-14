@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Invoice;
 use App\Models\JobType;
 use App\Models\Product;
+use App\Models\System;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Customer;
@@ -188,13 +189,14 @@ class Index extends Component
         $delivery_type_ids = JobType::where('title', 'Deliveryman')->pluck('id')->toArray();
         $delivery_men = Employee::whereIn('job_type_id', $delivery_type_ids)->pluck('employee_name', 'id')->toArray();
         $store_pos = StorePos::orderBy('name', 'asc')->pluck('name', 'id');
+        $toggle_dollar = System::getProperty('toggle_dollar');
 
         return view('livewire.invoices.index',
                     compact('sell_lines','categories1','categories2',
                                 'categories3','categories4','store_pos',
                                 'customers','customer_types',
                                 'payment_status_array','brands',
-                                'products','sale_status','delivery_men')
+                                'products','sale_status','delivery_men', 'toggle_dollar')
                     );
     }
 }

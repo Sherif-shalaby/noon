@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\System;
 use Illuminate\Support\Facades\Storage;
 
 function store_file($file,$path)
@@ -34,4 +35,10 @@ function round_250($input_number){
     return  $number;
 
 }
+function num_of_digital_numbers(){
+    $num_of_digits=(System::getProperty('num_of_digital_numbers'))??3;
+    return (int)$num_of_digits;
+
+}
+
 

@@ -17,6 +17,10 @@ class Variation extends Model
     {
         return $this->belongsTo('App\Models\Product', 'product_id');
     }
+    public function variation_equals()
+    {
+        return $this->hasMany('App\Models\VariationEquals');
+    }
     public function unit()
     {
         return $this->belongsTo('App\Models\Unit', 'unit_id');
