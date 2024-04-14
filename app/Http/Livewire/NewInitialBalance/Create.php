@@ -1162,6 +1162,7 @@ class Create extends Component
         foreach($this->rows[$index]['prices'] as $key=>$price){
             if( $index == 0 && $key > 0 && !empty($this->rows[$key]['fill'])){
                 $this->rows[$key]['purchase_price'] = number_format($this->num_uf($this->rows[$key-1]['purchase_price']) / $this->num_uf($this->rows[$key]['fill']),num_of_digital_numbers());
+                $this->changeUnitPurchasePrice($key);  
             }
             $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
             $amount = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']);
@@ -1172,12 +1173,14 @@ class Create extends Component
                     $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'] ?? 0 ), num_of_digital_numbers());
                 }
             } else {
-                if ((($percent != 0 || $percent != null) || ($amount != 0 || $amount != null))){
+              if ((($percent != 0 || $percent != null) || ($amount != 0 || $amount != null))){
                     $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']), num_of_digital_numbers());
                     $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'] ?? 0), num_of_digital_numbers());
                }
             }
+            
         }
+        
     }
     public function showDiscount()
     {
