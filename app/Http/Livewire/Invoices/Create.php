@@ -400,11 +400,11 @@ class Create extends Component
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
-            if ($this->checkRepresentativeUser()) {
+            // if ($this->checkRepresentativeUser()) {
                 $transaction->deliveryman_id = isset($this->deliveryman_id) ? $this->deliveryman_id : null;
                 $transaction->delivery_cost = isset($this->delivery_cost) ? $this->num_uf($this->delivery_cost) : 0;
                 $transaction->save();
-            }
+            // }
             // Add Sell line
             foreach ($this->items as $key => $item) {
                 if ($item['discount_type'] == 0) {
