@@ -161,6 +161,17 @@
 
             <div class="col-md-8 p-0 d-flex justify-content-end">
                 <div class="col-sm-2">
+                    {!! Form::label('delivery_dollar_cost', __('lang.delivery_cost') . '$', [
+                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                        'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                    ]) !!}
+                    {!! Form::number('delivery_dollar_cost', null, [
+                        'class' => 'form-control initial-balance-input width-full py-1',
+                        'wire:model' => 'delivery_dollar_cost',
+                        'placeholder' => __('lang.delivery_cost') . '$',
+                    ]) !!}
+                </div>
+                <div class="col-sm-2">
                     {!! Form::label('delivery_date', __('lang.delivery_date'), [
                         'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',
@@ -202,7 +213,6 @@
                             'class' => 'form-control initial-balance-input width-full m-0',
                             'wire:model' => 'dollar_loading_cost',
                             'placeholder' => __('lang.loading_cost') . ' $',
-                            'readonly',
                         ]) !!}
                         <div class="{{ $dollar_loading_cost > 0 ? '' : 'd-none' }}"
                             title="{{ __('lang.change_remaining_to_dinar') }}">
@@ -359,7 +369,6 @@
                             'class' => 'form-control initial-balance-input width-full m-0',
                             'wire:model' => 'loading_cost',
                             'placeholder' => __('lang.loading_cost'),
-                            'readonly',
                         ]) !!}
                     </div>
                 </div>
@@ -392,7 +401,7 @@
                         {!! Form::number('discount', null, [
                             'class' => 'form-control p-1',
                             'style' => 'height:30px',
-
+                        
                             'wire:model' => 'discount',
                             'wire:change' => 'changeTotal',
                         ]) !!}
