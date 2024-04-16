@@ -692,6 +692,9 @@ class Create extends Component
     public function getCustomerData($id)
     {
         $this->customer_data = Customer::find($id);
+        $this->cust_name= $this->customer_data->name;
+        $this->cust_phone= $this->customer_data->phone;
+
         //        dd($this->customer_data);
     }
     // ++++++++++++++++++++++++ updatedDepartmentId() ++++++++++++++++++++++++
