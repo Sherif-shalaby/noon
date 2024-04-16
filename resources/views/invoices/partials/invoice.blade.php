@@ -311,6 +311,7 @@
                 </tr>
             </table>
         @endif
+        @if($settings['toggle_dollar']!='1')
         @if(!empty($transaction->delivery) || ($transaction->delivery_dollar_cost!=0) )
             <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
                 <tr style="text-align: center;">
@@ -323,6 +324,7 @@
 
                 </tr>
             </table>
+        @endif
         @endif
         @if ($transaction->loading_cost != 0)
             <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
@@ -346,12 +348,14 @@
                 <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.store') </td>
             </tr>
         </table>
+        @if($settings['toggle_dollar']!='1')
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
             <tr style="text-align: center;">
                 <td style="text-align: center;"> {{$transaction->transaction_payments->sum('dollar_amount') + $transaction->delivery_dollar_cost + $transaction->dollar_loading_cost }}</td>
                 <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.dollar') </td>
             </tr>
         </table>
+        @endif
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
             <tr style="text-align: center;">
                 <td style="text-align: center;"> {{$transaction->transaction_payments->sum('amount') + $transaction->delivery_cost +  $transaction->loading_cost }}</td>
