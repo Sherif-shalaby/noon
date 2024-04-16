@@ -49,7 +49,7 @@ class Create extends Component
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
         $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0,$representative_id, $loading_cost,
-        $dollar_loading_cost,$toggle_suppliers,$delivery_date,$toggle_dollar=0 , $cust_name, $cust_phone, $invoice_number, $variationSums = [];
+        $dollar_loading_cost,$toggle_suppliers,$delivery_date,$toggle_dollar=0 , $cust_name, $cust_phone, $invoice_number, $variationSums = [] ,$delivery_dollar_cost;
 
 
     protected $rules =[
@@ -403,6 +403,7 @@ class Create extends Component
             // if ($this->checkRepresentativeUser()) {
                 $transaction->deliveryman_id = isset($this->deliveryman_id) ? $this->deliveryman_id : null;
                 $transaction->delivery_cost = isset($this->delivery_cost) ? $this->num_uf($this->delivery_cost) : 0;
+                $transaction->delivery_dollar_cost = isset($this->delivery_dollar_cost) ? $this->num_uf($this->delivery_dollar_cost) : 0;
                 $transaction->save();
             // }
             // Add Sell line
@@ -564,6 +565,9 @@ class Create extends Component
             $this->added_to_balance = 0;
             $this->new_added_dinar_balance = 0;
             $this->new_added_dollar_balance = 0;
+            $this->delivery = '';
+            $this->delivery_cost = '';
+            $this->delivery_dollar_cost = '';
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
             // return $this->redirect('/invoices/create');
         } catch (\Exception $e) {
