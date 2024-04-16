@@ -323,13 +323,13 @@
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
             <tr style="text-align: center;">
-                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,2)->sum('amount') + $transaction->delivery_cost}}</td>
+                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,2)->sum('amount') + $transaction->delivery_dollar_cost}}</td>
                 <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.dollar') </td>
             </tr>
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
             <tr style="text-align: center;">
-                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount') + $transaction->delivery_dollar_cost}}</td>
+                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount') + $transaction->delivery_cost}}</td>
                 <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.dinar') </td>
             </tr>
         </table>
