@@ -299,14 +299,25 @@
                 <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.remaining_balance') </td>
             </tr>
         </table>
-        @if(!empty($transaction->delivery))
+
             <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
                 <tr style="text-align: center;">
-                    <td style="text-align: center;"> {{$transaction->delivery_cost??''}}</td>
-                    <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.delivery') : ({{!empty($transaction->delivery)?$transaction->delivery->employee_name:''}}) </td>
+                    @if(!empty($transaction->delivery_cost))
+                    <td style="text-align: center;"> @if(empty($transaction->delivery)) @lang('lang.delivery') : @endif {{$transaction->delivery_cost??''}}</td>
+                    @endif
+                    @if(!empty($transaction->delivery))
+                        <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.delivery') : ({{!empty($transaction->delivery)?$transaction->delivery->employee_name:''}}) </td>
+                    @endif
                 </tr>
             </table>
-        @endif
+            @if (!empty($transaction->loading_cost))
+            <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
+                <tr style="text-align: center;">
+                    <td style="text-align: center;"> {{$transaction->loading_cost}}</td>
+                    <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.loading_cost') </td>
+                </tr>
+            </table>
+            @endif
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%">
             <tr style="text-align: center;">
                 <td style="text-align: center;"> {{$transaction->store->name}}</td>

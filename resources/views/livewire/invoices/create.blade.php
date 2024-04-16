@@ -141,7 +141,7 @@
                         <div class="d-flex justify-content-center">
 
                             <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id" required>
-                                <option  value="0 " readonly >اختر </option>
+                                <option  value="0" readonly >اختر </option>
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}> {{ $customer->name }} - {{($customer->phone != '[null]' ) ? $customer->phone : ''}}</option>
                                 @endforeach

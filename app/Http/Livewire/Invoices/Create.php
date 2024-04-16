@@ -400,11 +400,11 @@ class Create extends Component
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
-            if ($this->checkRepresentativeUser()) {
+            // if ($this->checkRepresentativeUser()) {
                 $transaction->deliveryman_id = isset($this->deliveryman_id) ? $this->deliveryman_id : null;
                 $transaction->delivery_cost = isset($this->delivery_cost) ? $this->num_uf($this->delivery_cost) : 0;
                 $transaction->save();
-            }
+            // }
             // Add Sell line
             foreach ($this->items as $key => $item) {
                 if ($item['discount_type'] == 0) {
@@ -564,6 +564,13 @@ class Create extends Component
             $this->added_to_balance = 0;
             $this->new_added_dinar_balance = 0;
             $this->new_added_dollar_balance = 0;
+            $this->delivery_cost = null;
+            $this->delivery_date = Carbon::now()->format('Y-m-d');
+            $this->deliveryman_id = null;
+            $this->representative_id = null;
+            if (!empty($this->customers)) {
+                $this->client_id = $this->customers[0]->id;
+            }
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
             // return $this->redirect('/invoices/create');
         } catch (\Exception $e) {
