@@ -401,7 +401,6 @@ class Create extends Component
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
             // if ($this->checkRepresentativeUser()) {
-            // if ($this->checkRepresentativeUser()) {
                 $transaction->deliveryman_id = isset($this->deliveryman_id) ? $this->deliveryman_id : null;
                 $transaction->delivery_cost = isset($this->delivery_cost) ? $this->num_uf($this->delivery_cost) : 0;
                 $transaction->delivery_dollar_cost = isset($this->delivery_dollar_cost) ? $this->num_uf($this->delivery_dollar_cost) : 0;
