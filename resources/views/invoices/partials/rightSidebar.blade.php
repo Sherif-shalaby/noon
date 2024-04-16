@@ -240,7 +240,7 @@
                         {!! Form::number('loading_cost', null, [
                             'class' => 'form-control',
                             'wire:model' => 'loading_cost',
-                            'placeholder' => __('lang.loading_cost'),'readonly'
+                            'placeholder' => __('lang.loading_cost'),
                         ]) !!}
                     </div>
                 </div>
@@ -250,7 +250,7 @@
                         {!! Form::number('dollar_loading_cost', null, [
                             'class' => 'form-control',
                             'wire:model' => 'dollar_loading_cost',
-                            'placeholder' => __('lang.loading_cost') .' $','readonly'
+                            'placeholder' => __('lang.loading_cost') .' $',
                         ]) !!}
                         <div class="{{$dollar_loading_cost > 0 ? '':'d-none'}}" title="{{__('lang.change_remaining_to_dinar')}}">
                             <button class="btn btn-sm btn-danger text-white" type="button" wire:click="change_dollar_loading_cost_to_dinar()">></button>
