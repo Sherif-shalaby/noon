@@ -299,7 +299,6 @@
                 <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.remaining_balance') </td>
             </tr>
         </table>
-
             <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
                 <tr style="text-align: center;">
                     @if(!empty($transaction->delivery_cost))
@@ -318,6 +317,15 @@
                 </tr>
             </table>
             @endif
+        @endif
+        @if(!empty($transaction->delivery) && $transaction->delivery_dollar_cost!=0)
+        <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
+            <tr style="text-align: center;">
+                <td style="text-align: center;"> {{$transaction->delivery_dollar_cost??''}} $</td>
+                <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.delivery') : ({{!empty($transaction->delivery)?$transaction->delivery->employee_name:''}}) </td>
+            </tr>
+        </table>
+    @endif
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%">
             <tr style="text-align: center;">
                 <td style="text-align: center;"> {{$transaction->store->name}}</td>
@@ -326,13 +334,13 @@
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
             <tr style="text-align: center;">
-                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,2)->sum('amount')}}</td>
+                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,2)->sum('amount') + $transaction->delivery_dollar_cost}}</td>
                 <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.dollar') </td>
             </tr>
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
             <tr style="text-align: center;">
-                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount')}}</td>
+                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount') + $transaction->delivery_cost}}</td>
                 <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.dinar') </td>
             </tr>
         </table>

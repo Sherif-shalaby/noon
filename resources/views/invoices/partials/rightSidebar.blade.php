@@ -202,6 +202,16 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            {!! Form::label('delivery_dollar_cost', __('lang.delivery_cost').'$', ['class' => 'text-primary']) !!}
+                            {!! Form::number('delivery_dollar_cost', null, [
+                                'class' => 'form-control',
+                                'wire:model' => 'delivery_dollar_cost',
+                                'placeholder' => __('lang.delivery_cost').'$',
+                            ]) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             {!! Form::label('delivery_date', __('lang.delivery_date'), ['class' => 'text-primary']) !!}
                             {!! Form::date('delivery_date', now()->format('Y-m-d'), [
                                 'class' => 'form-control',

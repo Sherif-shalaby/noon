@@ -486,7 +486,7 @@ class Create extends Component
         // dd($this->rules);
         $this->validate();
 
-
+        
         try {
             if (!empty($this->po_id)) {
                 $ref_transaction_po = PurchaseOrderTransaction::find($this->po_id);
@@ -673,12 +673,18 @@ class Create extends Component
                 $supplier->end_date = $this->end_date ?? null;
                 $supplier->save();
             }
-
+            $supplier = Supplier::find($this->supplier);
+            if($this->payment_status=="pending" || $this->payment_status=="partial"){
+                $supplier->owner_debt_in_dinar=$this->num_uf($supplier->owner_debt_in_dinar)+$this->num_uf($this->total_amount);
+                $supplier->owner_debt_in_dollar=$this->num_uf($supplier->owner_debt_in_dollar)+$this->num_uf($this->total_amount_dollar);
+            }
+            $supplier->save();
+            // dd($this->total_amount,$this->total_amount_dollar);
             // Add payment transaction
             if (!empty($this->total_amount) || !empty($this->total_amount_dollar)) {
                 $payment  = new StockTransactionPayment();
                 $payment->stock_transaction_id  = $transaction->id;
-                $payment->amount  = $this->total_amount;
+                $payment->amount  = $this->total_amount??0;
                 $payment->dollar_amount  = $this->toggle_dollar == "0" ? $this->total_amount_dollar : 0;
                 $payment->method = !empty($this->method) ? $this->method : ' ';
                 $payment->paid_on = !empty($this->paid_on) ? $this->paid_on :  Carbon::now();
