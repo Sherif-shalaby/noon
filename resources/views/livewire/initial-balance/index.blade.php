@@ -4,7 +4,6 @@
             <div class="card mt-1">
                 <div class="card-header">
                     <h6 class="print-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-
                         @lang('lang.initial_balance')</h6>
                 </div>
                 <div class="row">

@@ -20,12 +20,12 @@
         }
 
         .table-scroll-wrapper {
-            width: fit-content;
+            width: fit-content !important;
         }
 
-        @media(min-width:1900px) {
+        @media(min-width:2000px) {
             .table-scroll-wrapper {
-                width: 100%;
+                width: 100% !important;
             }
         }
 
@@ -108,7 +108,7 @@
                             <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div class="div2 table-scroll-wrapper">
                                     <!-- content goes here -->
-                                    <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
+                                    <div style="min-width: 1800px;max-height: 90vh;overflow: auto;">
                                         <div id="status"></div>
                                         <table id="datatable-buttons"
                                             class="table table-striped table-bordered table-hover">
@@ -192,7 +192,9 @@
                                                         <td class="col5">
                                                             @foreach ($product->product_stores as $store)
                                                                 @php
-                                                                    $unit = !empty($store->variations) ? $store->variations : [];
+                                                                    $unit = !empty($store->variations)
+                                                                        ? $store->variations
+                                                                        : [];
                                                                     $amount = 0;
                                                                 @endphp
                                                             @endforeach

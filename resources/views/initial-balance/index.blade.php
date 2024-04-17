@@ -5,7 +5,7 @@
 @push('css')
     <style>
         .table-top-head {
-            top: 155px;
+            top: 155px !important;
         }
 
         .wrapper1 {
