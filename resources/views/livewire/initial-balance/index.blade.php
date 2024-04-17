@@ -94,13 +94,14 @@
 
                                                         @foreach ($stock->add_stock_lines as $index => $line)
                                                             {{ @num_format($line->quantity) . ' ( ' . $line->variation?->unit->name . ' ) ' }}
-                                                            {{ !empty($transaction->add_stock_lines[$index + 1]) ? '<br>' : '' }}
+                                                            {{ !empty($transaction->add_stock_lines[$index + 1]) }} <br>
                                                         @endforeach
                                                         @if (count($stock->childTransactions) > 0)
                                                             @foreach ($stock->childTransactions as $transaction)
                                                                 @foreach ($transaction->add_stock_lines as $index => $line)
                                                                     {{ @num_format($line->quantity) . ' ( ' . $line->variation?->unit->name . ' ) ' }}
-                                                                    {{ !empty($transaction->add_stock_lines[$index + 1]) ? '<br>' : '' }}
+                                                                    {{ !empty($transaction->add_stock_lines[$index + 1]) }}
+                                                                    <br>
                                                                 @endforeach
                                                             @endforeach
                                                         @endif

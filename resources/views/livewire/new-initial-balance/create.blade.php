@@ -561,6 +561,8 @@
                                         <h2 class="items_quantity_span" style="margin-right: 15px;">
                                             {{ $unitName }} : {{ __('lang.total') }} : {{ $variant_qty }} </h2>
                                     @endforeach
+                                    <h2 style="margin-right: 15px;">
+                                        {{ __('lang.total_stores') }} </h2>
                                 @endif
                             </div>
                             <div class="d-flex mx-1">
