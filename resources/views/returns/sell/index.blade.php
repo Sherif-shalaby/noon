@@ -59,7 +59,7 @@
                                 <div class="div2 table-scroll-wrapper">
                                     <!-- content goes here -->
                                     <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
-                                        <table id="datatable-buttons" class="table table-striped table-bordered">
+                                        <table id="example" class="table table-striped table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th class="date">@lang('lang.date')</th>
@@ -79,7 +79,7 @@
                                             <tbody>
                                                 @foreach ($sell_returns as $return)
                                                     <tr>
-                                                        <td>
+                                                        <td class="col1">
 
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
@@ -88,7 +88,7 @@
                                                                 {{ $return->transaction_date }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col2">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
@@ -96,7 +96,7 @@
                                                                 {{ $return->invoice_no }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col3">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
@@ -104,7 +104,7 @@
                                                                 {{ $return->customer->name }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col4">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
@@ -112,7 +112,7 @@
                                                                 {{ __('lang.' . $return->payment_status) }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col5">
                                                             @foreach ($return->transaction_payments as $payment)
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
@@ -122,7 +122,7 @@
                                                                 </span>
                                                             @endforeach
                                                         </td>
-                                                        <td>
+                                                        <td class="col6">
                                                             @foreach ($return->transaction_payments as $payment)
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
@@ -132,7 +132,7 @@
                                                                 </span>
                                                             @endforeach
                                                         </td>
-                                                        <td>
+                                                        <td class="col7">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
@@ -140,7 +140,7 @@
                                                                 {{ number_format($return->final_total, num_of_digital_numbers()) }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col8">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
@@ -148,7 +148,7 @@
                                                                 {{ $return->transaction_payments->sum('amount') }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col9">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
@@ -156,7 +156,7 @@
                                                                 {{ $return->transaction_payments->last()->paid_on ?? '' }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col10">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
@@ -164,8 +164,8 @@
                                                                 {{ $return->notes }}
                                                             </span>
                                                         </td>
-                                                        <td></td>
-                                                        <td>
+                                                        <td class="col11"></td>
+                                                        <td class="col12">
                                                             <button type="button" style="font-size: 10px;font-weight: 600"
                                                                 class="btn btn-default btn-sm dropdown-toggle"
                                                                 data-toggle="dropdown" aria-haspopup="true"
@@ -201,6 +201,53 @@
     <!-- This will be printed -->
     {{--    <section class="invoice print_section print-only" id="receipt_section"> </section> --}}
 @endsection
-
-@section('javascript')
-@endsection
+@push('javascripts')
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                dom: "<'row flex-wrap my-2 justify-content-center table-top-head'<'d-flex justify-content-center col-md-2'l><'d-flex justify-content-center col-md-6 text-center 'B><'d-flex justify-content-center col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+                lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],
+                pageLength: 10,
+                buttons: ['copy', 'csv', 'excel', 'pdf',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ":visible:not(.notexport)"
+                        }
+                    }
+                    // ,'colvis'
+                ],
+                "fnDrawCallback": function(row, data, start, end, display) {
+                    var api = this.api();
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+                    // Total over all pages
+                    total1 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(6)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total2 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(7)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    // Update status DIV
+                    $('#sum1').html('<span>' + total1 + '<span/>');
+                    $('#sum2').html('<span>' + total2 + '<span/>');
+                }
+            });
+        });
+    </script>
+@endpush

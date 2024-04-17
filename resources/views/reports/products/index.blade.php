@@ -95,7 +95,7 @@
                                     <!-- content goes here -->
                                     <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
                                         <div id="status"></div>
-                                        <table id="datatable-buttons"
+                                        <table id="example"
                                             class="table dataTable table-striped  table-hover  table-bordered"
                                             style="height: 90vh;overflow: scroll">
                                             <thead>
@@ -168,7 +168,9 @@
 
                                                                 @foreach ($product->product_stores as $store)
                                                                     @php
-                                                                        $unit = !empty($store->variations) ? $store->variations : [];
+                                                                        $unit = !empty($store->variations)
+                                                                            ? $store->variations
+                                                                            : [];
                                                                         $amount = 0;
                                                                     @endphp
                                                                 @endforeach
@@ -443,12 +445,21 @@
                                                     </tr>
                                                 @endforeach
                                             </tbody>
-                                            {{--                                <tfoot> --}}
+                                            <tfoot>
+                                                <td colspan="6" style="text-align: right">@lang('lang.total')</td>
+                                                <td id="sum1"></td>
+                                                <td id="sum2"></td>
+                                                <td id="sum3"></td>
+                                                <td id="sum4"></td>
+                                                <td id="sum5"></td>
+                                                <td id="sum6"></td>
+                                                <td id="sum7"></td>
+                                                <td id="sum8"></td>
+                                                <td id="sum9"></td>
+                                                <td id="sum10"></td>
+                                                <td colspan="7"></td>
+                                            </tfoot>
 
-                                            {{--                                <td colspan="4" style="text-align: right">@lang('lang.total')</td> --}}
-                                            {{--                                <td id="sum"></td> --}}
-                                            {{--                                <td colspan="7"></td> --}}
-                                            {{--                                </tfoot> --}}
                                         </table>
                                     </div>
                                 </div>
@@ -465,6 +476,116 @@
     @push('javascripts')
         <script src="{{ asset('js/product/product.js') }}"></script>
         <script>
+            $(document).ready(function() {
+                $('#example').DataTable({
+                    dom: "<'row flex-wrap my-2 justify-content-center table-top-head'<'d-flex justify-content-center col-md-2'l><'d-flex justify-content-center col-md-6 text-center 'B><'d-flex justify-content-center col-md-4'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+                    lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],
+                    pageLength: 10,
+                    buttons: ['copy', 'csv', 'excel', 'pdf',
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: ":visible:not(.notexport)"
+                            }
+                        }
+                        // ,'colvis'
+                    ],
+                    "fnDrawCallback": function(row, data, start, end, display) {
+                        var api = this.api();
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function(i) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '') * 1 :
+                                typeof i === 'number' ?
+                                i : 0;
+                        };
+                        // Total over all pages
+                        total1 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(6)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        total2 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(7)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        total3 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(8)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        total4 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(9)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        total5 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(10)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        total6 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(11)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        total7 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(12)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        total8 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(13)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        total9 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(14)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        total10 = api.rows({
+                            'page': 'current'
+                        }).nodes().to$().find('td:eq(15)').map(function() {
+                            return intVal($(this).text());
+                        }).get().reduce(function(a, b) {
+                            return a + b;
+                        }, 0);
+                        // Update status DIV
+                        $('#sum1').html('<span>' + total1 + '<span/>');
+                        $('#sum2').html('<span>' + total2 + '<span/>');
+                        $('#sum3').html('<span>' + total3 + '<span/>');
+                        $('#sum4').html('<span>' + total4 + '<span/>');
+                        $('#sum5').html('<span>' + total5 + '<span/>');
+                        $('#sum6').html('<span>' + total6 + '<span/>');
+                        $('#sum7').html('<span>' + total7 + '<span/>');
+                        $('#sum8').html('<span>' + total8 + '<span/>');
+                        $('#sum9').html('<span>' + total9 + '<span/>');
+                        $('#sum10').html('<span>' + total10 + '<span/>');
+                    }
+                });
+            });
             $(document).on('click', '.product_unit', function() {
                 var $this = $(this);
                 var variation_id = $(this).data('variation_id');

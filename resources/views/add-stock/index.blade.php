@@ -100,7 +100,7 @@
                             <!-- content goes here -->
                             <div style="min-width: 1800px;max-height: 90vh;overflow: auto;">
                                 {{--  --}}
-                                <table id="datatable-buttons" class="table table-hover dataTable">
+                                <table id="example" class="table table-hover dataTable">
                                     <thead>
                                         <tr
                                             style="position: sticky;
@@ -424,6 +424,13 @@
                                         @endforeach
                                     </tbody>
                                     <tfoot>
+                                        <td colspan="7" style="text-align: right">@lang('lang.total')</td>
+                                        <td id="sum1"></td>
+                                        <td id="sum2"></td>
+                                        <td id="sum3"></td>
+                                        <td colspan="1"></td>
+                                        <td id="sum4"></td>
+                                        <td colspan=""></td>
                                     </tfoot>
                                 </table>
                             </div>
@@ -443,6 +450,69 @@
 
 @push('javascripts')
     <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                dom: "<'row flex-wrap my-2 justify-content-center table-top-head'<'d-flex justify-content-center col-md-2'l><'d-flex justify-content-center col-md-6 text-center 'B><'d-flex justify-content-center col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+                lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],
+                pageLength: 10,
+                buttons: ['copy', 'csv', 'excel', 'pdf',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ":visible:not(.notexport)"
+                        }
+                    }
+                    // ,'colvis'
+                ],
+                "fnDrawCallback": function(row, data, start, end, display) {
+                    var api = this.api();
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+                    // Total over all pages
+                    total1 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(7)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total2 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(8)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total3 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(9)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total4 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(11)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    // Update status DIV
+                    $('#sum1').html('<span>' + total1 + '<span/>');
+                    $('#sum2').html('<span>' + total2 + '<span/>');
+                    $('#sum3').html('<span>' + total3 + '<span/>');
+                    $('#sum4').html('<span>' + total4 + '<span/>');
+
+                }
+            });
+        });
         window.addEventListener('openAddPaymentModal', event => {
             $("#addPayment").modal('show');
         })

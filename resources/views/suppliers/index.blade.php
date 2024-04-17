@@ -58,7 +58,7 @@
                                     <div class="div2 table-scroll-wrapper">
                                         <!-- content goes here -->
                                         <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
-                                            <table id="datatable-buttons"
+                                            <table id="example"
                                                 class="table table-striped table-bordered table-hover @if (app()->isLocale('ar')) dir-rtl @endif">
                                                 <thead>
                                                     <tr>
@@ -101,11 +101,19 @@
                                                                 $phoneArray = explode(',', $supplier->mobile_number);
                                                                 // Remove square brackets from each element in the emailArray
                                                                 foreach ($emailArray as $key => $email) {
-                                                                    $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
+                                                                    $emailArray[$key] = str_replace(
+                                                                        ['[', ']', '"'],
+                                                                        '',
+                                                                        $email,
+                                                                    );
                                                                 }
                                                                 // Remove square brackets from each element in the emailArray
                                                                 foreach ($phoneArray as $key => $phone) {
-                                                                    $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
+                                                                    $phoneArray[$key] = str_replace(
+                                                                        ['[', ']', '"'],
+                                                                        '',
+                                                                        $phone,
+                                                                    );
                                                                 }
                                                             @endphp
                                                             <td class="col3">
@@ -243,6 +251,13 @@
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
+                                                <tfoot>
+                                                    <td colspan="6" style="text-align: right">@lang('lang.total')</td>
+                                                    <td id="sum1"></td>
+                                                    <td id="sum2"></td>
+                                                    <td id="sum3"></td>
+                                                    <td colspan="3"></td>
+                                                </tfoot>
                                             </table>
                                         </div>
                                     </div>
@@ -261,6 +276,60 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                dom: "<'row flex-wrap my-2 justify-content-center table-top-head'<'d-flex justify-content-center col-md-2'l><'d-flex justify-content-center col-md-6 text-center 'B><'d-flex justify-content-center col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+                lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],
+                pageLength: 10,
+                buttons: ['copy', 'csv', 'excel', 'pdf',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ":visible:not(.notexport)"
+                        }
+                    }
+                    // ,'colvis'
+                ],
+                "fnDrawCallback": function(row, data, start, end, display) {
+                    var api = this.api();
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+                    // Total over all pages
+                    total1 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(6)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total2 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(7)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total3 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(8)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    // Update status DIV
+                    $('#sum1').html('<span>' + total1 + '<span/>');
+                    $('#sum2').html('<span>' + total2 + '<span/>');
+                    $('#sum3').html('<span>' + total3 + '<span/>');
+                }
+            });
+        });
         // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
         $("input:checkbox:not(:checked)").each(function() {
             var column = "table ." + $(this).attr("name");

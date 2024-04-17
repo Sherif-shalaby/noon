@@ -95,7 +95,7 @@
                                 <div class="div2 table-scroll-wrapper">
                                     <!-- content goes here -->
                                     <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
-                                        <table id="datatable-buttons" class="table dataTable table-hover table-bordered">
+                                        <table id="example" class="table dataTable table-hover table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -131,16 +131,26 @@
                                                             $sell_store = 0;
                                                             foreach ($product->sell_lines as $key => $sellLine) {
                                                                 // =========== sell_quantity ===========
-                                                                $sell_quantity = $sell_quantity + ($sellLine->quantity - $sellLine->quantity_returned);
+                                                                $sell_quantity =
+                                                                    $sell_quantity +
+                                                                    ($sellLine->quantity -
+                                                                        $sellLine->quantity_returned);
                                                                 // =========== sell_price ===========
                                                                 if (!empty($sellLine->sell_price)) {
-                                                                    $sell_price_var = $sell_price_var + $sellLine->sell_price;
+                                                                    $sell_price_var =
+                                                                        $sell_price_var + $sellLine->sell_price;
                                                                 } else {
-                                                                    $sell_price_var = $sell_price_var + $sellLine->dollar_sell_price * $sellLine->exchange_rate;
+                                                                    $sell_price_var =
+                                                                        $sell_price_var +
+                                                                        $sellLine->dollar_sell_price *
+                                                                            $sellLine->exchange_rate;
                                                                 }
                                                                 // =========== store ===========
                                                                 foreach ($product->stock_lines as $key => $stock_line) {
-                                                                    $sell_store = $stock_line->quantity - $stock_line->quantity_sold + $stock_line->quantity_returned;
+                                                                    $sell_store =
+                                                                        $stock_line->quantity -
+                                                                        $stock_line->quantity_sold +
+                                                                        $stock_line->quantity_returned;
                                                                 }
                                                             }
                                                         @endphp
@@ -236,6 +246,12 @@
                                                     {{-- @include('products.edit',$product) --}}
                                                 @endforeach
                                             </tbody>
+                                            <tfoot>
+                                                <td colspan="2" style="text-align: right">@lang('lang.total')</td>
+                                                <td id="sum1"></td>
+                                                <td id="sum2"></td>
+                                                <td id="sum3"></td>
+                                            </tfoot>
                                         </table>
                                         <div class="view_modal no-print">
 
@@ -253,3 +269,62 @@
     </div>
     <!-- End Contentbar -->
 @endsection
+
+@push('javascripts')
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                dom: "<'row flex-wrap my-2 justify-content-center table-top-head'<'d-flex justify-content-center col-md-2'l><'d-flex justify-content-center col-md-6 text-center 'B><'d-flex justify-content-center col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+                lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],
+                pageLength: 10,
+                buttons: ['copy', 'csv', 'excel', 'pdf',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ":visible:not(.notexport)"
+                        }
+                    }
+                    // ,'colvis'
+                ],
+                "fnDrawCallback": function(row, data, start, end, display) {
+                    var api = this.api();
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+                    // Total over all pages
+                    total1 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(2)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total2 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(3)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total3 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(4)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    // Update status DIV
+                    $('#sum1').html('<span>' + total1 + '<span/>');
+                    $('#sum2').html('<span>' + total2 + '<span/>');
+                    $('#sum3').html('<span>' + total3 + '<span/>');
+                }
+            });
+        });
+    </script>
+@endpush

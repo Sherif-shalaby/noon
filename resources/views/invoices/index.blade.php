@@ -212,60 +212,60 @@
                                                                 </span>
                                                             </td>
 
-                                                            <td class="col12">
+                                                            <td class="col11">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.grand_total') @lang('lang.dinar_c')">
                                                                     {{ number_format($line->final_total, num_of_digital_numbers()) }}
-                                                                    د.ع
+
+                                                                </span>
+                                                            </td>
+                                                            <td class="col12">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.paid') @lang('lang.dinar_c')">
+                                                                    {{ $line->transaction_payments->sum('amount') }}
+
                                                                 </span>
                                                             </td>
                                                             <td class="col13">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
-                                                                    data-tooltip="@lang('lang.paid') @lang('lang.dinar_c')">
-                                                                    {{ $line->transaction_payments->sum('amount') }}
-                                                                    د.ع
-                                                                </span>
-                                                            </td>
-                                                            <td class="col14">
-                                                                <span
-                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.due_sale_list') @lang('lang.dinar_c')">
-                                                                    {{ $line->dinar_remaining }} د.ع
+                                                                    {{ $line->dinar_remaining }}
                                                                 </span>
                                                             </td>
-                                                            <td class="col12 dollar-cell">
+                                                            <td class="col14 dollar-cell">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.grand_total') @lang('lang.dollar_c')">
                                                                     {{ number_format($line->dollar_final_total, num_of_digital_numbers()) }}
-                                                                    $
+
                                                                 </span>
                                                             </td>
-                                                            <td class="col13 dollar-cell">
+                                                            <td class="col15 dollar-cell">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.paid') @lang('lang.dollar_c')">
                                                                     {{ $line->transaction_payments->sum('dollar_amount') }}
-                                                                    $
+
                                                                 </span>
                                                             </td>
 
-                                                            <td class="col14 dollar-cell">
+                                                            <td class="col16 dollar-cell">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.due_sale_list') @lang('lang.dollar_c')">
-                                                                    {{ $line->dollar_remaining }} $
+                                                                    {{ $line->dollar_remaining }}
                                                                 </span>
                                                             </td>
-                                                            <td class="col15">
+                                                            <td class="col17">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
@@ -273,7 +273,7 @@
                                                                     {{ $line->transaction_payments->last()->due_date ?? '' }}
                                                                 </span>
                                                             </td>
-                                                            <td class="col16">
+                                                            <td class="col18">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
@@ -281,7 +281,7 @@
                                                                     {{ $line->transaction_payments->last()->paid_on ?? '' }}
                                                                 </span>
                                                             </td>
-                                                            <td class="col17">
+                                                            <td class="col19">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
@@ -289,11 +289,11 @@
                                                                     {{ $line->store_pos->name }}
                                                                 </span>
                                                             </td>
-                                                            <td class="col23">
+                                                            <td class="col20">
                                                                 {{ $line->representative->employee_name ?? '' }} </td>
-                                                            <td class="col18">
+                                                            <td class="col21">
                                                             </td>
-                                                            <td class="col19">
+                                                            <td class="col22">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
@@ -307,7 +307,7 @@
                                                                     @endforeach
                                                                 </span>
                                                             </td>
-                                                            <td class="col20">
+                                                            <td class="col23">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
@@ -317,7 +317,7 @@
                                                                     @endforeach
                                                                 </span>
                                                             </td>
-                                                            <td class="col21">
+                                                            <td class="col24">
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
@@ -332,7 +332,7 @@
                                                                     @endif
                                                                 </span>
                                                             </td>
-                                                            <td class="col22">
+                                                            <td class="col25">
                                                                 <button type="button"
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     class="btn btn-default btn-sm dropdown-toggle"
@@ -407,6 +407,16 @@
                                                     @endif
                                                 @endforeach
                                             </tbody>
+                                            <tfoot>
+                                                <td colspan="9" style="text-align: right">@lang('lang.total')</td>
+                                                <td id="sum1"></td>
+                                                <td id="sum2"></td>
+                                                <td id="sum3"></td>
+                                                <td id="sum4"></td>
+                                                <td id="sum5"></td>
+                                                <td id="sum6"></td>
+                                                <td colspan="9"></td>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -458,6 +468,89 @@
 
 @push('javascripts')
     <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                dom: "<'row flex-wrap my-2 justify-content-center table-top-head'<'d-flex justify-content-center col-md-2'l><'d-flex justify-content-center col-md-6 text-center 'B><'d-flex justify-content-center col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+                lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],
+                pageLength: 10,
+                buttons: ['copy', 'csv', 'excel', 'pdf',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ":visible:not(.notexport)"
+                        }
+                    }
+                    // ,'colvis'
+                ],
+                "fnDrawCallback": function(row, data, start, end, display) {
+                    var api = this.api();
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+
+                    // Total over all pages
+                    total1 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(9)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total2 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(10)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total3 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(11)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total4 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(12)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total5 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(13)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total6 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(14)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+
+                    // Update status DIV
+                    $('#sum1').html('<span>' + total1 + '<span/>');
+                    $('#sum2').html('<span>' + total2 + '<span/>');
+                    $('#sum3').html('<span>' + total3 + '<span/>');
+                    $('#sum4').html('<span>' + total4 + '<span/>');
+                    $('#sum5').html('<span>' + total5 + '<span/>');
+                    $('#sum6').html('<span>' + total6 + '<span/>');
+                }
+            });
+        });
+
+
         document.addEventListener('livewire:load', function() {
             Livewire.on('printInvoice', function(htmlContent) {
                 // Set the generated HTML content
