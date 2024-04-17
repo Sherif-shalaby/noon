@@ -14,7 +14,6 @@ $(document).ready(function() {
         responsive: true,
     } );
     var table = $('#datatable-buttons').DataTable({
-
         "order": [],
         // lengthChange: false,
         // responsive: true,
@@ -28,8 +27,11 @@ $(document).ready(function() {
             {
             extend: 'print',
             exportOptions: {columns: ":visible:not(.notexport)"}
-            }
-            // ,'colvis'
+            },
+            {
+                extend: "colvis",
+                columns: ":gt(0)",
+            },
             ],
 
 

@@ -1,9 +1,10 @@
 @php
-    $local_code=LaravelLocalization::getCurrentLocale();
+    $local_code = LaravelLocalization::getCurrentLocale();
 @endphp
 <!DOCTYPE html>
-<html lang="{{$local_code}}" >
+<html lang="{{ $local_code }}">
 {{-- dir="rtl" --}}
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,6 +22,7 @@
     @livewireStyles
 </head>
 {{-- {{app()->getLocale() === 'ar'?'text-right':''}} --}}
+
 <body class="horizontal-layout">
     <!-- Start Infobar Notifications Sidebar -->
     <div id="infobar-notifications-sidebar" class="infobar-notifications-sidebar">
@@ -182,13 +184,17 @@
             $cash_register = App\Models\CashRegister::where('user_id', Auth::user()->id)
                 ->where('status', 'open')
                 ->first();
+            $toggle_dollar = App\Models\System::getProperty('toggle_dollar');
+            $keyboord_letter_to_toggle_dollar = App\Models\System::getProperty('keyboord_letter_to_toggle_dollar')??'';
         @endphp
+        <input type="hidden" class="keyboord_letter_to_toggle_dollar" value="{{ $keyboord_letter_to_toggle_dollar }}" />
+        <input type="hidden" class="toggle_dollar" value="{{ $toggle_dollar }}" />
         <input type="hidden" name="is_register_close" id="is_register_close"
-               value="@if (!empty($cash_register)) {{ 0 }}@else{{ 1 }} @endif">
+            value="@if (!empty($cash_register)) {{ 0 }}@else{{ 1 }} @endif">
         <input type="hidden" name="cash_register_id" id="cash_register_id"
-               value="@if (!empty($cash_register)) {{ $cash_register->id }} @endif">
+            value="@if (!empty($cash_register)) {{ $cash_register->id }} @endif">
         <div id="closing_cash_modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-             class="modal">
+            class="modal">
         </div>
         {{-- @php
         $notifications=\App\Models\BalanceRequestNotification::orderby('created_at','desc')->get();
@@ -256,11 +262,45 @@
     <x-livewire-alert::scripts /> --}}
     @stack('js')
     <script>
+        function __read_number(inputElement) {
+            return parseFloat(inputElement.val()) || 0;
+        }
+
+        // Define the __write_number function to write a number to an input field
+        function __write_number(outputElement, value) {
+            outputElement.val(value);
+        }
+        $(document).ready(function() {
+            if ($('.toggle_dollar').val() == "1") {
+                $('#toggleDollar').click();
+            }
+        });
+        $(document).ready(function() {
+            // Event handler for key press
+            $(document).on('keydown', function(event) {
+                // Check if Ctrl+G is pressed
+                if (event.ctrlKey && event.key === $('.keyboord_letter_to_toggle_dollar').val()) {
+                    // Prevent the default Ctrl+G behavior (e.g., find)
+                    event.preventDefault();
+                    $.ajax({
+                        url: '/toggle-dollar',
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire("Success", response.msg, "success");
+                                $('#toggleDollar').click();
+                                location.reload(true);
+                            }
+                        }
+                    });
+                }
+            });
+        });
         window.addEventListener('swal:modal', event => {
             Swal.fire({
                 title: event.detail.message,
                 text: event.detail.text,
-                icon:event.detail.type,
+                icon: event.detail.type,
             });
         });
 
@@ -278,12 +318,12 @@
                     }
                 });
         });
-        $(document).on("change","#branch_id",function () {
+        $(document).on("change", "#branch_id", function() {
             $.ajax({
                 type: "get",
-                url: "/get_branch_stores/"+$(this).val().join(','),
+                url: "/get_branch_stores/" + $(this).val().join(','),
                 dataType: "html",
-                success: function (response) {
+                success: function(response) {
                     console.log(response)
                     $("#store_id").empty().append(response).change();
                 }
@@ -316,7 +356,7 @@
             });
         }
     </script>
-{{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script>
     Pusher.logToConsole = true;
     var obj = new Object();
@@ -340,28 +380,27 @@
 </script> --}}
     @push('javascripts')
         <script>
-            document.addEventListener('livewire:load', function () {
-                Livewire.on('printInvoice', function (htmlContent) {
+            document.addEventListener('livewire:load', function() {
+                Livewire.on('printInvoice', function(htmlContent) {
                     // Set the generated HTML content
                     $("#receipt_section").html(htmlContent);
                     // Trigger the print action
                     window.print("#receipt_section");
                 });
             });
-            $(document).on("click", ".print-invoice", function () {
+            $(document).on("click", ".print-invoice", function() {
                 // $(".modal").modal("hide");
                 $.ajax({
                     method: "get",
                     url: $(this).data("href"),
                     data: {},
-                    success: function (result) {
+                    success: function(result) {
                         if (result.success) {
                             Livewire.emit('printInvoice', result.html_content);
                         }
                     },
                 });
             });
-
         </script>
     @endpush
 

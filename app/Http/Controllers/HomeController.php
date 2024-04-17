@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\BalanceRequestNotification;
+use App\Models\Customer;
+use App\Models\Product;
 use App\Models\Store;
 use App\Models\System;
 use App\Models\User;
@@ -33,6 +35,16 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $customers = [];
+        if(!empty(request()->customer_name) || !empty(request()->customer_phone)){
+           $customers = Customer::when(\request()->customer_name != null, function ($query) {
+                $query->where('name',\request()->category_id);
+            })
+           ->when(\request()->customer_phone != null, function ($query) {
+               $query->where('phone', 'like', '%' . request()->customer_phone . '%');
+           })->orderBy('created_at', 'desc')->get();
+            //           dd($customers);
+        }
         $start_date = new Carbon('first day of this month');
         $end_date = new Carbon('last day of this month');
         $stores = Store::getDropdown();
@@ -40,11 +52,12 @@ class HomeController extends Controller
         $store_pos_id = null;
         $logo = System::getProperty('logo');
         $site_title = System::getProperty('site_title');
+        $products=Product::latest()->get();
         if (Auth::check()) {
             return view('home.index',compact('logo','site_title',
             'stores',
             'start_date',
-            'end_date',));
+            'end_date','customers','products'));
         } else {
             return redirect('/login');
         }

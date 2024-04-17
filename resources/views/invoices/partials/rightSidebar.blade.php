@@ -30,7 +30,7 @@
         </div>
         <div class="body-card-app pt-2">
             <div class="row">
-                <div class="col-md-9 {{(($dollar_final_total!=0 && $total_dollar!=0 && $back_to_dollar==0)||$back_to_dollar==2 )?'':'d-none'}}">
+                <div class="col-md-9 {{(($dollar_final_total!=0 && $total_dollar!=0 && $back_to_dollar==0)||$back_to_dollar==2 )&& $toggle_dollar=='0'?'':'d-none'}}">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="customSwitch1" >
                         <label class="custom-control-label" for="customSwitch1" wire:click="ChangeBillToDinar()" {{$back_to_dollar==1?'checked':''}}>{{__('lang.change_bill_to')}} {{$back_to_dollar==0?__('lang.dinar_c'):__('lang.dollar_c')}}</label>
@@ -43,6 +43,7 @@
             <div class="row ">
                 {{-- +++++++++++ الاجمالي بالدولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     <div class="form-group">
                         {!! Form::label('dollar_grand_total', 'الاجمالي بالدولار', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_grand_total', $total_dollar, [
@@ -52,6 +53,7 @@
                             'placeholder' => __('lang.dollar_price'),
                             'wire:model' => 'total_dollar',
                         ]) !!}
+                    </div>
                     </div>
                 </div>
                 {{-- +++++++++++ الاجمالي بالدينار +++++++++++ --}}
@@ -69,6 +71,7 @@
                 </div>
                 {{-- +++++++++++ الخصم دولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     <div class="form-group">
                         {!! Form::label('dollar_discount', 'الخصم دولار', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_discount', null, [
@@ -77,6 +80,7 @@
                             'wire:model' => 'discount_dollar',
                             'wire:change' => 'changeDollarTotal',
                         ]) !!}
+                    </div>
                     </div>
                 </div>
                 {{-- +++++++++++ الخصم دينار +++++++++++ --}}
@@ -92,10 +96,12 @@
                 </div>
                 {{-- +++++++++++ النهائي دولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     {!! Form::label('dollar_final_total', 'النهائي دولار', ['class' => 'text-primary']) !!}
                         <div class="form-group">
                             {!! Form::number('dollar_final_total', $dollar_final_total, ['class' => 'form-control', 'readonly']) !!}
                         </div>
+                    </div>
                 </div>
                 {{-- +++++++++++ النهائي دينار +++++++++++ --}}
                 <div class="col-md-6">
@@ -105,10 +111,12 @@
                     </div>
                 </div>
                 <div class="col-md-12 ">
-                    <button class="btn btn-danger {{$this->add_to_balance=='0'?'d-none':''}}" wire:click="addToBalance()">{{__('lang.add_to_balance')}}</button>
+{{--                    {{$add_to_balance}}--}}
+                    <button class="btn btn-danger {{$add_to_balance == '0' ? 'd-none' : ''}}" wire:click="addToBalance()">{{__('lang.add_to_balance')}}</button>
                 </div>
                 {{-- +++++++++++ الواصل دولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     <div class="form-group">
                         {!! Form::label('dollar_amount', 'الواصل دولار', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_amount', null, [
@@ -117,7 +125,7 @@
                             'wire:change' => 'changeReceivedDollar',
                         ]) !!}
                     </div>
-
+                    </div>
                 </div>
                 {{-- +++++++++++ الواصل دينار +++++++++++ --}}
                 <div class="col-md-6">
@@ -132,6 +140,7 @@
                 </div>
                 {{-- +++++++++++ الباقي دولار +++++++++++ --}}
                 <div class="col-md-6">
+                    <div class="{{$toggle_dollar=='1'?'d-none':''}}">
                     {!! Form::label('dollar_remaining', 'الباقي دولار', ['class' => 'text-primary']) !!}
                     <div class="d-flex justify-content-between">
                         <div class="form-group">
@@ -144,6 +153,7 @@
                         <div class="{{$dollar_remaining > 0 ? '':'d-none'}}" title="{{__('lang.change_remaining_to_dinar')}}">
                             <button class="btn btn-sm btn-danger text-white" type="button" wire:click="changeRemaining()">></button>
                         </div>
+                    </div>
                     </div>
                 </div>
                 {{-- +++++++++++ الباقي دينار +++++++++++ --}}
@@ -190,7 +200,53 @@
                             ]) !!}
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {!! Form::label('delivery_date', __('lang.delivery_date'), ['class' => 'text-primary']) !!}
+                            {!! Form::date('delivery_date', now()->format('Y-m-d'), [
+                                'class' => 'form-control',
+                                'wire:model' => 'delivery_date',
+                                'placeholder' => __('lang.delivery_date'),
+                            ]) !!}
+                        </div>
+                    </div>
                 @endif
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('representative_id', __('lang.representative') . ':*', []) !!}
+                        {!! Form::select('representative_id', $representatives, null, [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'representative_id',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'representative_id',
+                            'wire:model' => 'representative_id',
+                        ]) !!}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('loading_cost', __('lang.loading_cost'), ['class' => 'text-primary']) !!}
+                        {!! Form::number('loading_cost', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'loading_cost',
+                            'placeholder' => __('lang.loading_cost'),'readonly'
+                        ]) !!}
+                    </div>
+                </div>
+                <div class="col-md-6 {{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                    <div class="form-group">
+                        {!! Form::label('dollar_loading_cost', __('lang.loading_cost').' $', ['class' => 'text-primary']) !!}
+                        {!! Form::number('dollar_loading_cost', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'dollar_loading_cost',
+                            'placeholder' => __('lang.loading_cost') .' $','readonly'
+                        ]) !!}
+                        <div class="{{$dollar_loading_cost > 0 ? '':'d-none'}}" title="{{__('lang.change_remaining_to_dinar')}}">
+                            <button class="btn btn-sm btn-danger text-white" type="button" wire:click="change_dollar_loading_cost_to_dinar()">></button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row hide-print">
@@ -248,17 +304,60 @@
                         </div>
                     </div>
                 @endif
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('customer_name', __('lang.customer_name'), ['class' => 'text-primary']) !!}
+                        {!! Form::text('customer_name', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'cust_name',
+                            'placeholder' => __('lang.customer_name'),
+                        ]) !!}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('customer_phone', __('lang.customer_phone'), ['class' => 'text-primary']) !!}
+                        {!! Form::text('customer_phone', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'cust_phone',
+                            'placeholder' => __('lang.customer_phone'),
+                        ]) !!}
+                    </div>
+                </div>
                 <div class="row hide-print mt-3">
                     <div class="column-5">
                         {{-- <a data-href="{{route('customers.pay_due_view', ['id' => $due->id])}}"   data-container=".view_modal" class="btn btn-modal"  style="background-color: #ffc107;" type="button" class="btn btn-custom"
                             id="recent-transaction-btn"><i class="dripicons-clock"></i>
                             @lang('lang.recent_transactions')</a> --}}
                         {{-- +++++++++++++++++++++++ recent_transaction ++++++++++++++++++++ --}}
-                        <a href="{{ route('recent_transactions') }}" target="_blank" style="background-color: #ffc107;" type="button"
-                            class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
+                        <a href="{{ route('recent_transactions', ['phone_number' => $cust_phone, 'customer_name' => $cust_name]) }}" target="_blank" style="background-color: #ffc107;" type="button"
+                           class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
                             @lang('lang.recent_transactions')</a>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('invoice_number', __('lang.reference'), ['class' => 'text-primary']) !!}
+                        {!! Form::text('invoice_number', null, [
+                            'class' => 'form-control',
+                            'wire:model' => 'invoice_number',
+                            'placeholder' => __('lang.reference'),
+                        ]) !!}
+                    </div>
+                </div>
+                @php
+                $invoice = \App\Models\TransactionSellLine::where('invoice_no',$invoice_number)->first();
+                @endphp
+                @if(!empty($invoice))
+                    <div class="row hide-print mt-3">
+                        <div class="column-5">
+                            <a href="{{ route('invoices.edit', $invoice->id) }}" target="_blank"  type="button"
+                               class="btn btn-custom btn-primary" ><i class="dripicons-clock"></i>
+                                @lang('lang.edit')</a>
+                        </div>
+                    </div>
+                @endif
+
             </div>
 
         </div>

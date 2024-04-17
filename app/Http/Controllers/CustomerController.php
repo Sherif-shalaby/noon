@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\TransactionSellLine;
 use Illuminate\Contracts\View\View;
+use App\Models\StockTransaction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CustomerImportantDate;
@@ -253,8 +254,94 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::find($id);
-        return view('customers.show',compact('customer'));
+
+        // $add_stocks = StockTransaction::whereIn('type', ['add_stock', 'initial_balance'])
+        //                 ->whereIn('status', ['received', 'final'])
+        //                 ->where('customer_id',$id)
+        //                 ->get();
+
+        // $add_stocks = StockTransaction::selectRaw('*, SUM(CASE WHEN dollar_remaining IS NOT NULL THEN dollar_remaining ELSE 0 END) AS dollar_balance,
+        //                                               SUM(CASE WHEN dinar_remaining IS NOT NULL THEN dinar_remaining ELSE 0 END) AS dinar_balance')
+        //                     ->whereIn('type', ['add_stock', 'initial_balance'])
+        //                     ->whereIn('status', ['received', 'final'])
+        //                     ->where('customer_id', $id)
+        //                // Assuming 'id' is the primary key column
+        //                     ->get();
+
+
+
+
+                //    // tab 1 : Stock Transactions : كشف حساب البيع
+                //    $sell_lines = DB::table('transaction_sell_lines')
+                //    ->where('type', 'sell')
+                //    ->where('status', 'final')
+                //    ->where('customer_id', $id)
+                //    ->get();
+           
+                // $sell_lines = DB::table('transaction_sell_lines')
+                // ->selectRaw('*, 
+                //     SUM(dinar_remaining) OVER (ORDER BY transaction_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS dinar_Balance,
+                //     SUM(dollar_remaining) OVER (ORDER BY transaction_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS dollar_Balance')
+                // ->where('type', 'sell')
+                // ->where('status', 'final')
+                // ->where('customer_id', $id)
+                // ->orderBy('transaction_date', 'DESC')
+                // ->get();
+
+
+            
+
+               
+                
+               //كشف حساب البيع 
+           
+
+            $sell_lines = DB::table('transaction_sell_lines')
+                                            ->select([
+                                                'transaction_sell_lines.invoice_no',
+                                                'customers.name',
+                                                'transaction_sell_lines.customer_id',
+                                                'transaction_sell_lines.transaction_date',
+                                                'transaction_sell_lines.final_total as transaction_value_dinar',
+                                                'transaction_sell_lines.dollar_final_total as transaction_value_dollar',
+                                                DB::raw('SUM(IFNULL(transaction_sell_lines.dollar_final_total, 0) - IFNULL(payment_transaction_sell_lines.dollar_amount, 0)) OVER (ORDER BY payment_transaction_sell_lines.created_at ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS DOLLAR_Balance'),
+                                                DB::raw('SUM(IFNULL(transaction_sell_lines.final_total, 0) - IFNULL(payment_transaction_sell_lines.amount, 0)) OVER (ORDER BY payment_transaction_sell_lines.created_at ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS DINAR_Balance'),
+                                                'transaction_sell_lines.dollar_remaining',
+                                                'transaction_sell_lines.dinar_remaining',
+                                                'payment_transaction_sell_lines.amount as payment_dinar_value',
+                                                'payment_transaction_sell_lines.dollar_amount as Payment_dollar_value',
+                                                'payment_transaction_sell_lines.is_confirmed AS IS_CONFIRMED',
+                                                'payment_transaction_sell_lines.id AS payment_id'
+
+                                            ])
+                                            ->join('customers', 'customers.id', '=', 'transaction_sell_lines.customer_id')
+                                            ->join('payment_transaction_sell_lines', 'payment_transaction_sell_lines.transaction_id', '=', 'transaction_sell_lines.id')
+                                            ->where('transaction_sell_lines.customer_id', $id)
+                                            ->get();
+
+          
+           
+           
+           
+
+
+        // dd($sell_lines);
+
+        // dd($customer );
+        return view('customers.show',compact('customer' , 'sell_lines'));
     }
+
+
+    public function updateConfirmStatus(Request $request)
+{
+    $selectedIds = $request->input('ids');
+   
+    // Update IS_CONFIRMED to 1 for the selected IDs
+    PaymentTransactionSellLine::whereIn('id', $selectedIds)->update(['IS_CONFIRMED' => 1]);
+
+    return response()->json(['message' => 'تم تحديث حالة المطابقه.']);
+
+}
 
     /**
      * Show the form for editing the specified resource.
@@ -398,10 +485,8 @@ class CustomerController extends Controller
         if ($request->date) {
             $dues->where('due_date', '=', $request->date);
         }
-
         // Add the get() method to execute the query and retrieve the results
         $dues = $dues->get();
-
         // Now you can use $dues to access the results
         return view('customers.due', compact('dues','cities'));
     }
@@ -425,7 +510,7 @@ class CustomerController extends Controller
         $due = TransactionSellLine::where('id',$id)->first();
         $customer = Customer::where('id',$due->customer_id)->first();
 
-            if(number_format($request->dueAmount <= $request->due ) && number_format($request->dueDollarAmount <= $request->due_dollar)){
+            if(number_format($this->Util->num_uf($request->dueAmount) <= $this->Util->num_uf($request->due) ) && number_format($this->Util->num_uf($request->dueDollarAmount) <= $this->Util->num_uf($request->due_dollar))){
                 // return '1';
                 if($request->add_to_customer_balance_dinar < 0){
                     $customer->balance_in_dinar = $customer->balance_in_dinar + abs($request->add_to_customer_balance_dinar);
@@ -435,8 +520,8 @@ class CustomerController extends Controller
                 }
                 $payment_data = [
                     'transaction_id' => $due->id,
-                    'amount' => $request->due,
-                    'dollar_amount' => $request->due_dollar,
+                    'amount' => $this->Util->num_uf($request->due),
+                    'dollar_amount' => $this->Util->num_uf($request->due_dollar),
                     'method' => 'cash',
                     'paid_on' => Carbon::now(),
                     'exchange_rate' => System::getProperty('dollar_exchange'),
@@ -451,17 +536,17 @@ class CustomerController extends Controller
                 $payment_data['created_by'] = Auth::user()->id;
                 $payment_data['payment_for'] =  $due->customer_id;
                 $transaction_payment = PaymentTransactionSellLine::create($payment_data);
-                $due->dollar_remaining = $due->dollar_remaining - $request->due_dollar;
-                $due->dinar_remaining = $due->dinar_remaining - $request->due;
+                $due->dollar_remaining = $due->dollar_remaining - $this->Util->num_uf($request->due_dollar);
+                $due->dinar_remaining = $due->dinar_remaining - $this->Util->num_uf($request->due);
                 $due->payment_status = 'paid';
                 $due->due_date = null;
 
-            }else if($request->dueAmount > $request->due || $request->dueDollarAmount > $request->due_dollar){
+            }else if($this->Util->num_uf($request->dueAmount) > $this->Util->num_uf($request->due) || $this->Util->num_uf($request->dueDollarAmount) > $this->Util->num_uf($request->due_dollar)){
                 // return '2';
                 $payment_data = [
                     'transaction_id' => $due->id,
-                    'amount' => $request->due,
-                    'dollar_amount' => $request->due_dollar,
+                    'amount' => $this->Util->num_uf($request->due),
+                    'dollar_amount' => $this->Util->num_uf($request->due_dollar),
                     'method' => 'cash',
                     'paid_on' => Carbon::now(),
                     'exchange_rate' => System::getProperty('dollar_exchange'),
@@ -490,6 +575,10 @@ class CustomerController extends Controller
       $transactions = TransactionSellLine::where('customer_id', $cus_id)
           ->where('deliveryman_id', $del_id)->get();
       return view('customers.partials.show_invoices', compact('transactions'));
+    }
+    public function customer_invoices($cus_id){
+      $transactions = TransactionSellLine::where('customer_id', $cus_id)->orderBy('created_at', 'desc')->get();
+      return view('customers.show_invoices', compact('transactions'));
     }
 }
 

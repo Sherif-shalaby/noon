@@ -49,8 +49,10 @@ class RequiredProductController extends Controller
            // $employee_products = $employee_products->latest()->get();
            $requiredProducts = $requiredProducts->with('stores','branch','supplier','employee','product')->orderBy("created_at","asc")->get();
        }
+       // +++++++++++ sum of "final_total" column ++++++++++++++
+       $purchase_price_sum = $requiredProducts->sum('purchase_price');
         return view('purchase_order.required_products.index',
-                    compact('requiredProducts','stores','suppliers','products'));
+                    compact('requiredProducts','stores','suppliers','products','purchase_price_sum'));
     }
 
     /**

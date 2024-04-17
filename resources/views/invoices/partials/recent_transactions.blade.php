@@ -62,6 +62,15 @@
                                 ) !!}
                             </div>
                         </div>
+                        <div class="col-3 pt-4">
+                            <div class="form-group">
+                                {!! Form::text(
+                                    'customer_name', request()->customer_name,
+                                    ['class' => 'form-control', 'placeholder' => __('lang.customer_name'),
+                                    'wire:model' => 'customer_name']
+                                ) !!}
+                            </div>
+                        </div>
                         <div class="col-3">
                             <div class="form-group">
                                 <label for="from">{{ __('site.From') }}</label>
@@ -157,13 +166,13 @@
                                 @endforeach
                             </td>
                             <td>
-                                {{ number_format($line->final_total, 2) }}
+                                {{ number_format($line->final_total, num_of_digital_numbers()) }}
                             </td>
                             <td>
                                 {{ $line->transaction_payments->sum('amount') }}
                             </td>
                             <td>
-                                {{ number_format($line->dollar_final_total, 2) }}
+                                {{ number_format($line->dollar_final_total, num_of_digital_numbers()) }}
                             </td>
                             <td>
                                 {{ $line->transaction_payments->sum('dollar_amount') }}
@@ -171,11 +180,11 @@
                             <td>
                                 {{ $line->final_total - $line->transaction_payments->sum('amount') }}
                             </td>
-                          
+
                             <td>
                                 {{ $line->dollar_final_total - $line->transaction_payments->sum('dollar_amount') }}
                             </td>
-                            
+
                             <td>
                                 {{ $line->transaction_payments->last()->paid_on ?? '' }}
                             </td>
@@ -208,7 +217,7 @@
                                             class="btn btn-modal"><i class="fa fa-eye"></i>{{ __('lang.view') }}
                                         </a>
                                     </li>
-                                    @if ($line->status != 'draft' && $line->payment_status != 'paid' && $line->status != 'canceled') 
+                                    @if ($line->status != 'draft' && $line->payment_status != 'paid' && $line->status != 'canceled')
                                     <li class="divider"></li>
                                     <li>
                                         {{-- if (auth()->user()->can('sale.pay.create_and_edit')) { --}}
@@ -220,8 +229,8 @@
                                                     $dollar_final_total = @num_uf($line->dollar_final_total - $line->return_parent->dollar_final_total);
                                                 }
                                                 @endphp
-                                              
-                                                @if (($final_total > 0) || ($dollar_final_total > 0)) 
+
+                                                @if (($final_total > 0) || ($dollar_final_total > 0))
                                                    <a data-href="{{url('transaction-payment/add-payment/'. $line->id) }}"
                                                     title="{{__('lang.pay_now')}}" data-toggle="tooltip" data-container=".view_modal"
                                                     class="btn btn-modal"><i class="fa fa-money"></i> {{__('lang.pay')}}</a>';
@@ -260,7 +269,7 @@
                                             {{ __('lang.delete') }}
                                         </a>
                                     </li>
-                        
+
                                 </ul>
                             </td>
                         </tr>

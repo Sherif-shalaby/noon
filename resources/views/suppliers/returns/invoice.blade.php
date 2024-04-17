@@ -33,12 +33,12 @@
             <div class="col-lg-12">
                 <div class="card m-b-30">
                     <div class="card-header">
-                        <h5 class="card-title">@lang('lang.products')</h5>
+                        <h5 class="card-title">@lang('lang.invoices')</h5>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="container-fluid">
-{{--                                @include('add-stock.partials.filters')--}}
+                               @include('suppliers.returns.partials.filters')
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,6 @@
                                     <th>@lang('lang.supplier')</th>
                                     <th>@lang('lang.products')</th>
                                     <th>@lang('lang.created_by')</th>
-                                    <th>@lang('lang.return_invoice')</th>
                                     <th class="notexport">@lang('lang.action')</th>
                                 </tr>
                                 </thead>
@@ -77,24 +76,27 @@
                                         </td>
                                         <td>{{$stock->created_by_relationship->first()->name}}</td>
                                         <td>
-                                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#paymentModal">
-                                                @lang('lang.return_invoice')
-                                            </button>
-                                        </td>
-                                        <td>
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
                                                     aria-haspopup="true" aria-expanded="false">
                                                 @lang('lang.action')
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                                                {{-- ++++++++++++++ details button ++++++++++++++ --}}
                                                 <li>
                                                     <a href="{{route('stocks.show', $stock->id)}}"
                                                        class="btn"><i
                                                             class="fa fa-eye"></i>
                                                         @lang('lang.view') </a>
                                                 </li>
-                                                {{--                                            <li class="divider"></li>--}}
+                                                <li class="divider"></li>
+                                                {{-- ++++++++++++++ return_invoice button ++++++++++++++ --}}
+                                                <li>
+                                                    <a href="{{route('suppliers.returns.return_invoice', $stock->id)}}" class="btn">
+                                                       <i class="fa fa-undo" aria-hidden="true"></i>
+                                                        @lang('lang.return')
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </td>
                                     </tr>
@@ -109,7 +111,7 @@
             <!-- End col -->
         </div>
         <!-- End row -->
-        @include('suppliers.returns.partials.payment')
+        {{-- @include('suppliers.returns.partials.payment') --}}
     </div>
     <!-- End Contentbar -->
 

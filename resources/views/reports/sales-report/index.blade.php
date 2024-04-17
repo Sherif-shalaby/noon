@@ -101,7 +101,7 @@
                                                 }
                                              @endphp
                                             {{-- ++++++++++ مبلغ المبيعات ++++++++++ --}}
-                                            <td title="مبلغ المبيعات"> {{ number_format($sell_price_var,2) }}</td>
+                                            <td title="مبلغ المبيعات"> {{ number_format($sell_price_var,num_of_digital_numbers()) }}</td>
                                             {{-- ++++++++++ الكمية المباعة +++++++++ --}}
                                             <td title="الكمية المباعة"> {{ $sell_quantity }} </td>
                                             {{-- ++++++++++ في المخزن ++++++++++ --}}
@@ -113,22 +113,22 @@
                                                         @php
                                                             $purchase_price_var = $purchase_price_var + $stockLine->purchase_price;
                                                         @endphp
-                                                        {{  number_format( $purchase_price_var , 2 ) }}
+                                                        {{  number_format( $purchase_price_var , num_of_digital_numbers() ) }}
                                                     @elseif( !empty($stockLine->dollar_purchase_price) )
                                                         @php
                                                             $last_exchange_rate = $stockLine->transaction->transaction_payments->last()->exchange_rate;
                                                             $purchase_price_var = $purchase_price_var + $stockLine->dollar_purchase_price * $last_exchange_rate;
                                                         @endphp
-                                                        {{  number_format( ( $purchase_price_var ) , 2 ) }}
+                                                        {{  number_format( ( $purchase_price_var ) , num_of_digital_numbers() ) }}
                                                     @endif
                                                 </td> --}}
                                                 {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
                                                 {{-- <td>
-                                                    {{ number_format($stockLine->quantity,2) }}
+                                                    {{ number_format($stockLine->quantity,num_of_digital_numbers()) }}
                                                 </td> --}}
                                                 {{-- ++++++++++ في المخزن ++++++++++ --}}
                                                 {{-- <td>
-                                                    {{ number_format( ( $stockLine->quantity - $stockLine->quantity_sold ) + ( $stockLine->quantity_returned ) , 2 ) }}
+                                                    {{ number_format( ( $stockLine->quantity - $stockLine->quantity_sold ) + ( $stockLine->quantity_returned ) , num_of_digital_numbers()) }}
                                                 </td> --}}
                                             {{-- @endforeach  --}}
                                             {{-- ++++++++++++++++++++++++++ Actions +++++++++++++++++++ --}}

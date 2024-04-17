@@ -462,7 +462,7 @@ class Create1 extends Component
             }
             $this->sub_total[$index] = (int)$this->rows[$index]['quantity'] * (float)$purchase_price * (float)$this->rows[$index]['equal'];
 
-            return number_format($this->sub_total[$index], 2);
+            return number_format($this->sub_total[$index], num_of_digital_numbers());
         }
     }
 
@@ -479,7 +479,7 @@ class Create1 extends Component
             // }
             $this->dollar_sub_total[$index] = (int)$this->rows[$index]['quantity'] * (float)$purchase_price * (float)$this->rows[$index]['equal'] ;
 
-            return number_format($this->dollar_sub_total[$index], 2);
+            return number_format($this->dollar_sub_total[$index], num_of_digital_numbers());
         }
         else{
             $this->quantity[$index] = 0;
@@ -559,12 +559,12 @@ class Create1 extends Component
             $this->cost[$index] = (float)$purchase_price;
         }
 
-        return number_format($this->cost[$index],2);
+        return number_format($this->cost[$index],num_of_digital_numbers());
     }
 
     public function total_cost($index){
         $this->total_cost[$index] = (float)$this->rows[$index]['cost'] * $this->total_quantity($index);
-        return number_format($this->total_cost[$index],2) ;
+        return number_format($this->total_cost[$index],num_of_digital_numbers()) ;
     }
 
     public function dollar_cost($index){
@@ -610,29 +610,29 @@ class Create1 extends Component
         else{
             $this->dollar_cost[$index] = (float)$purchase_price;
         }
-        return number_format($this->dollar_cost[$index],2);
+        return number_format($this->dollar_cost[$index],num_of_digital_numbers());
     }
 
     public function dollar_total_cost($index){
         $this->dollar_total_cost[$index] = (float)$this->rows[$index]['dollar_cost']* (float)$this->total_quantity($index);
-        return number_format($this->dollar_total_cost[$index], 2);
+        return number_format($this->dollar_total_cost[$index], num_of_digital_numbers());
 
     }
 
     public function sum_total_cost(){
-        return number_format(array_sum($this->total_cost),2);
+        return number_format(array_sum($this->total_cost),num_of_digital_numbers());
     }
 
     public function sum_dollar_total_cost(){
-        return number_format(array_sum($this->dollar_total_cost),2);
+        return number_format(array_sum($this->dollar_total_cost),num_of_digital_numbers());
     }
 
     public function sum_sub_total(){
-        return number_format(array_sum($this->sub_total),2);
+        return number_format(array_sum($this->sub_total),num_of_digital_numbers());
     }
 
     public function sum_dollar_tsub_total(){
-        return number_format(array_sum($this->dollar_sub_total),2);
+        return number_format(array_sum($this->dollar_sub_total),num_of_digital_numbers());
     }
 
     public function final_total(){

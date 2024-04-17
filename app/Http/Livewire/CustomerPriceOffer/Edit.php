@@ -196,13 +196,13 @@ class Edit extends Component
         [
             'product' => $product,
             'quantity' => number_format($line->quantity,2),
-            'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price,2)) : 0,
+            'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price,num_of_digital_numbers())) : 0,
             'category_id' => $product->category?->id,
             'customer_id' => $product->customer?->id,
             'discount' => null,
             'discount_price' => $line->discount_amount,
             'discount_type' =>  $line->discount_type,
-            'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price,2) : 0  ,
+            'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price,num_of_digital_numbers()) : 0  ,
             'customer_offer_id' => $line->id,
             'selling_price' => $line->sell_price ,
             'dollar_selling_price' => $line->dollar_sell_price,
@@ -451,14 +451,14 @@ class Edit extends Component
     {
         $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity'];
         $this->items[$index]['dollar_total_cost_var'] = $this->items[$index]['dollar_total_cost'];
-        return number_format($this->items[$index]['dollar_total_cost'], 2);
+        return number_format($this->items[$index]['dollar_total_cost'], num_of_digital_numbers());
     }
     // ++++++++++++++++++++++++++ Task : اجمالي التكاليف بالدينار ++++++++++++++++++++++++++
     public function total_cost($index)
     {
         $this->items[$index]['total_cost'] = $this->items[$index]['selling_price'] * $this->items[$index]['quantity'];
         $this->items[$index]['total_cost_var'] = $this->items[$index]['total_cost'] ;
-        return number_format($this->items[$index]['total_cost'],2) ;
+        return number_format($this->items[$index]['total_cost'],num_of_digital_numbers()) ;
     }
     // ++++++++++++++++++++++++++ Task : convert_dinar_price() : سعر البيع بالدينار ++++++++++++++++++++++++++
     public function convert_dinar_price($index)
@@ -500,7 +500,7 @@ class Edit extends Component
                 $totalCost += (float)$item['total_cost'];
             }
         }
-        return number_format($this->num_uf($totalCost),2);
+        return number_format($this->num_uf($totalCost),num_of_digital_numbers());
     }
     // +++++++++++++++ sum_dollar_total_cost() : sum all "dollar_sell_price" values ++++++++++++++++
     public function sum_dollar_total_cost()
@@ -513,7 +513,7 @@ class Edit extends Component
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-        return number_format($totalDollarCost,2);
+        return number_format($totalDollarCost,num_of_digital_numbers());
     }
     // ++++++++++++++++++++ sum_sub_total() : sum all "sell_price" values ++++++++++++++++
     public function sum_sub_total()
@@ -523,7 +523,7 @@ class Edit extends Component
         {
             $totalSubTotal += $item['sub_total'];
         }
-        return number_format($totalSubTotal,2);
+        return number_format($totalSubTotal,num_of_digital_numbers());
     }
     // +++++++++ Task : "مجموع اجمالي التكاليف " بالدولار +++++++++
     public function sum_dollar_sub_total()
@@ -534,7 +534,7 @@ class Edit extends Component
         {
             $totalDollarSubTotal += $item['dollar_total_cost'];
         }
-        return number_format($totalDollarSubTotal,2);
+        return number_format($totalDollarSubTotal,num_of_digital_numbers());
     }
     // +++++++++ Task : "مجموع اجمالي التكاليف " بالدينار +++++++++
     public function sum_dinar_sub_total()
@@ -545,7 +545,7 @@ class Edit extends Component
         {
             $totalDinarSubTotal += $item['total_cost'];
         }
-        return number_format($totalDinarSubTotal,2);
+        return number_format($totalDinarSubTotal,num_of_digital_numbers());
     }
 
     // public function changeCurrentStock($index)

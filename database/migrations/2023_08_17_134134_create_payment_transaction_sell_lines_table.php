@@ -29,6 +29,7 @@ return new class extends Migration
             $table->text('payment_note')->nullable();
             $table->decimal('exchange_rate');
             $table->unsignedBigInteger('created_by');
+            $table->integer('is_confirmed')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

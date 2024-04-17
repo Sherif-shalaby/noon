@@ -64,11 +64,12 @@
                                     <table id="product_table" style="width: 100% " class="table table-striped">
                                         <thead>
                                         <tr>
-                                            <th style="width: 30%">{{ __('lang.product') }}</th>
+                                            <th style="width: 20%">{{ __('lang.product') }}</th>
                                             <th style="width: 20%">{{ __('lang.product_code') }}</th>
                                             <th style="width: 15%">{{ __('lang.quantity') }}</th>
                                             <th style="width: 15%">{{ __('lang.returned_quantity') }}</th>
-                                            <th style="width: 15%">{{ __('lang.price') }}</th>
+                                            <th style="width: 20%">{{ __('lang.price') }}</th>
+                                            <th style="width: 20%">{{ __('lang.price') }} $</th>
                                             <th style="width: 15%">{{ __('lang.discount') }}</th>
                                             <th style="width: 10%">{{ __('lang.sub_total') }}</th>
                                             <th style="width: 20%"></th>
@@ -82,7 +83,9 @@
                                             <td></td>
                                             <td></td>
                                             <th style="text-align: right">@lang('lang.total')</th>
-                                            <th><span class="grand_total_span">{{ number_format($amount) }}</span>
+                                            <th><span class="grand_total_span">{{ @num_format($amount) }}</span>
+                                            <th style="text-align: right">@lang('lang.total') $</th>
+                                            <th><span class="grand_total_span">{{ @num_format($dollar_amount) }}</span>
                                             </th>
                                         </tr>
                                         </tfoot>
@@ -192,3 +195,25 @@
 
 <!-- This will be printed -->
 <section class="invoice print_section print-only" id="receipt_section"> </section>
+@push('javascripts')
+    @if(empty($store_pos) || empty($stores))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const noUserPosEvent = new Event('NoUserPos');
+                window.dispatchEvent(noUserPosEvent);
+            });
+        </script>
+    @endif
+    @if(empty($store_pos))
+        <script>
+            window.addEventListener('NoUserPos', function(event) {
+                Swal.fire({
+                    title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>" ,
+                    icon: 'error',
+                }).then((result) => {
+                    window.location.href = "{{ route('home') }}";
+                });
+            });
+        </script>
+    @endif
+@endpush

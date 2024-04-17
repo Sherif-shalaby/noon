@@ -50,11 +50,14 @@ use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ProcessInvoiceController;
 use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\TransactionPaymentController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
-use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
+use App\Http\Controllers\CustomerBalanceAdjustmentsController;
+use App\Http\Controllers\StoreTransferController;
+use App\Http\Controllers\productTransacrionReport;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +116,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('wages/update-other-payment/', [WageController::class,'update_other_payment'])->name('update_other_payment');
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
+    Route::get('toggle-dollar', [SettingController::class, 'toggleDollar'])->name('toggleDollar');
+
     // Get "مصدر الاموال" depending on "طريقة الدفع"
     Route::get('/wage/get-source-by-type-dropdown/{type}', [WageController::class,'getSourceByTypeDropdown']);
     // +++++++++++ Get "طريقة الحساب " depending on "الموظف" +++++++++++
@@ -179,11 +184,24 @@ Route::group(['middleware' => ['auth']], function () {
     // fetch "sub_categories3" of selected "sub_categories2" selectbox
     Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_sub_categories3']);
     Route::get('product/add_product_raw', [ProductController::class,'addProductRow']);
-
+    
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
     Route::resource('customers', CustomerController::class);
+    
+    
+    
+    
+    
+    ###################عمل مطابقة فواتير العملاء ######################################
+    
+    // Route::post('update-confirm-status', 'CustomerController@updateConfirmStatus');
+    Route::post('/updateConfirmStatus',[CustomerController::class,'updateConfirmStatus']);
+
+    ###################عمل مطابقة فواتير العملاء ######################################
+
+
     // general_setting : fetch "state" of selected "country" selectbox
     Route::post('api/customers/fetch-state',[CustomerController::class,'fetchState']);
     // general_setting : fetch "city" of selected "state" selectbox
@@ -209,6 +227,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('pay_due_view/{id}', [CustomerController::class,'pay_due_view'])->name('customers.pay_due_view');
 
     Route::get('customer/show-invoices/{customer_id}/{delivery_id}', [CustomerController::class,'show_customer_invoices'])->name('show_customer_invoices');
+    Route::get('customer/show-invoices/{customer_id}', [CustomerController::class,'customer_invoices'])->name('customer_invoices');
 
 
     // stocks
@@ -270,6 +289,25 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('get-due-report', GetDueReportController::class);
     // ########### Supplier Report ###########
     Route::resource('get-supplier-report', SupplierReportController::class);
+    
+
+
+        // ########### product transaction Report ###########
+        
+        
+        Route::resource('ProductReport', productTransacrionReport::class);
+        Route::get('getProductReport', [productTransacrionReport::class, 'getProductReport'])->name('getProductReport');
+        
+        
+        // ########### product transaction Report ###########
+    
+    
+    
+    
+    
+    
+    
+    
     // ########### Customers Report ###########
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
@@ -295,9 +333,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
 
     Route::resource('pos',SellPosController::class);
+    Route::resource('process-invoice',ProcessInvoiceController::class);
     // Route::get('transaction-payment/add-payment/{id}', [TransactionPaymentController::class,'addPayment'])->name('transaction-payment.add-payment');
     Route::resource('pos-pay',TransactionPaymentController::class);
     Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
+    Route::post('transaction-payment/store-payment', [SellPosController::class, 'storePayment'])->name('store_payment');
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
     Route::get('show/payment/{id}',[SellPosController::class, 'show_payment'])->name('show_payment');
     Route::get('add/receipt/{trans_id}',[SellPosController::class, 'upload_receipt'])->name('upload_receipt');
@@ -347,7 +387,13 @@ Route::group(['middleware' => ['auth']], function () {
     // supplier Returns
     Route::get('stock/return/product',[ReturnStockController::class,'show'])->name('suppliers.returns.products');
     Route::get('stock/return/invoices',[ReturnStockController::class,'index'])->name('suppliers.returns.invoices');
-
+    // ++++++++++++++++ suppliers return : invoices : return_invoice : Task 09-01-2024 ++++++++++++++++++
+    Route::get('stock/return/invoices/return_invoice/{id}',[ReturnStockController::class,'return_invoice'])
+            ->name('suppliers.returns.return_invoice');
+    // ++++++++++++++++ suppliers return : invoices : return_invoice : Livewire : Task 09-01-2024 ++++++++++++++++++
+    Route::get('invoice-return/return/{id}', function ($id) {
+        return view('suppliers.returns.return_invoice', compact('id'));
+    })->name('returns.suppliers.return_invoice');
     // user check password
     Route::post('user/check-password', [HomeController::class, 'checkPassword'])->name('check_password');
     //suppliers
@@ -383,7 +429,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
     Route::resource('expense', ExpenseController::class);
 
-                                // Reports
+    // Reports
     // Product Report
     Route::get('reports/product/',[ReportController::class,'getProductReport'])->name('reports.products');
     Route::get('reports/product/{id}',[ReportController::class,'viewProductDetails'])->name('reports.product_details');
@@ -406,6 +452,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('cash/save-add-closing-cash', [CashController::class,'saveAddClosingCash'])->name('cash.save-add-closing-cash');
     Route::resource('cash-register', CashRegisterController::class);
     Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class,'getSourceByTypeDropdown']);
+    Route::get('get_currency', [SettingController::class,'get_currency']);
+
+    // Customer Balance Adjustment
+    Route::resource('customer-balance-adjustment', CustomerBalanceAdjustmentsController::class);
+
+    // Store Transfer
+    Route::view('store_transfer/create','store_transfer.create')->name('store_transfer.create');
+    Route::get('store_transfer', [StoreTransferController::class,'index'])->name('store_transfer.index');
+
+
+
 
 });
 

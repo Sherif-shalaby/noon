@@ -74,7 +74,12 @@
                         {{-- ++++++++++++ tab 3 : statement_of_account +++++++++++ --}}
                         <li class="nav-item">
                             <a class="nav-link @if (request()->show == 'statement_of_account') active @endif" href="#statement-of-account"
-                                role="tab" data-toggle="tab">@lang('lang.statement_of_account')</a>
+                                role="tab" data-toggle="tab">@lang('lang.statement_of_account')  @lang('lang.purchase')</a>
+                        </li>
+                          {{-- ++++++++++++ tab 4 : statement_of_account +++++++++++ --}}
+                        <li class="nav-item">
+                            <a class="nav-link @if (request()->show == 'statement_of_sell_account') active @endif" href="#statement-of-sell-account"
+                                role="tab" data-toggle="tab">@lang('lang.statement_of_account') @lang('lang.sell')</a>
                         </li>
                     </ul>
 
@@ -226,6 +231,9 @@
                             </div>
                         </div>
                         {{-- ++++++++++++ Tab 3 Content : statement_of_account : كشف حساب +++++++++++ --}}
+                        @php
+                         $total_due=0;   
+                        @endphp
                         <div role="tabpanel" class="tab-pane fade @if (request()->show == 'statement_of_account') show active @endif"
                             id="statement-of-account">
                             <div class="table-responsive">
@@ -237,6 +245,7 @@
                                             <th class="sum">@lang('lang.grand_total')</th>
                                             <th class="sum">@lang('lang.paid')</th>
                                             <th class="sum">@lang('lang.due')</th>
+                                            <th class="sum">@lang('lang.total_due')</th>
                                             <th>@lang('lang.status')</th>
                                             <th>@lang('lang.due_date')</th>
                                             {{-- <th>@lang('lang.action')</th> --}}
@@ -263,7 +272,14 @@
                                                     @else{{ @num_format($add_stock->transaction_payments->sum('amount')) }}
                                                     @endif
                                                 </td>
-                                                <td>{{ @num_format($add_stock->final_total - $add_stock->transaction_payments->sum('amount')) }}</td>
+                                                <td>{{ @num_format($add_stock->final_total - $add_stock->transaction_payments->sum('amount')) }}
+                                                @php
+                                                    $total_due+=$add_stock->final_total - $add_stock->transaction_payments->sum('amount');
+                                                @endphp
+                                                </td>
+                                                <td>
+                                                    {{ @num_format($total_due) }}
+                                                </td>
                                                 <td>{{ ucfirst($add_stock->status) }}</td>
                                                 <td>
                                                     @if ($add_stock->payment_status != 'paid')
@@ -385,6 +401,106 @@
                                             @php
                                                 $total_purchase_payments += $add_stock->transaction_payments->sum('amount');
                                                 $total_purchase_due += $add_stock->final_total - $add_stock->transaction_payments->sum('amount');
+                                            @endphp
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th style="text-align: right">@lang('lang.total')</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                         {{-- ++++++++++++ Tab 4 Content : statement_of_account :  البيع كشف حساب +++++++++++ --}}
+                         <div role="tabpanel" class="tab-pane fade @if (request()->show == 'statement_of_sell_account') show active @endif"
+                            id="statement-of-sell-account">
+                            <div class="table-responsive">
+                                <table class="table dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>@lang('lang.date')</th>
+                                            <th>@lang('lang.reference_no')</th>
+                                            <th class="sum">@lang('lang.grand_total')</th>
+                                            <th class="sum">@lang('lang.paid')</th>
+                                            <th class="sum">@lang('lang.due')</th>
+                                            <th class="sum">@lang('lang.total_due')</th>
+                                            <th class="sum">@lang('lang.grand_total') $</th>
+                                            <th class="sum">@lang('lang.paid') $</th>
+                                            <th class="sum">@lang('lang.total_due') $</th>
+                                            <th>@lang('lang.status')</th>
+                                            <th>@lang('lang.due_date')</th>
+                                            {{-- <th>@lang('lang.action')</th> --}}
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @php
+                                            $total_sell_payments = 0;
+                                            $total_sell_due = 0;
+                                            $dianr_total_due = 0;
+                                            $dollar_total_due = 0;
+                                        @endphp
+                                        @foreach ($sell_lines as $line)
+                                            <tr>
+                                                <td>{{ @format_date($line->transaction_date) }}</td>
+                                                <td>{{ $line->invoice_no }}</td>
+                                                <td>
+                                                    @if ($line->type == 'sell_return')
+                                                        {{ @num_format(-$line->final_total) }}@else{{ @num_format($line->final_total) }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($line->type == 'sell_return')
+                                                        {{ @num_format(-$line->transaction_payments->sum('amount')) }}
+                                                    @else{{ @num_format($line->transaction_payments->sum('amount')) }}
+                                                    @endif
+                                                </td>
+                                                <td>{{ @num_format($line->final_total - $line->transaction_payments->sum('amount')) }}</td>
+                                                @php
+                                                    $dinar_total_due=($line->final_total - $line->transaction_payments->sum('amount'));   
+                                                @endphp
+                                            </td>
+                                            <td>
+                                                {{ @num_format($dinar_total_due)}}
+                                            </td>
+                                                <td>
+                                                    @if ($line->type == 'sell_return')
+                                                        {{ @num_format(-$line->dollar_final_total) }}@else{{ @num_format($line->dollar_final_total) }}
+                                                    @endif
+                                                </td>
+                                              
+                                                <td>
+                                                    @if ($line->type == 'sell_return')
+                                                        {{ @num_format(-$line->transaction_payments->sum('dollar_amount')) }}
+                                                    @else{{ @num_format($line->transaction_payments->sum('dollar_amount')) }}
+                                                    @endif
+                                                </td>
+                                                <td>{{ @num_format($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount')) }}
+                                                @php
+                                                    $dollar_total_due=($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount'));   
+                                                @endphp
+                                                </td>
+                                                <td>
+                                                    {{ @num_format($dollar_total_due)}}
+                                                </td>
+                                                <td>{{ ucfirst($line->status) }}</td>
+                                                <td>
+                                                    @if ($line->payment_status != 'paid')
+                                                        @if (!empty($line->due_date))
+                                                            {{-- {{ @format_date($line->due_date) }} --}}
+                                                            {{ $line->due_date }}
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $total_sell_payments += $line->transaction_payments->sum('amount');
+                                                $total_sell_due += $line->final_total - $line->transaction_payments->sum('amount');
                                             @endphp
                                         @endforeach
                                     </tbody>

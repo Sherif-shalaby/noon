@@ -10,11 +10,17 @@
             'form-control', 'placeholder'=> __('lang.amount'), 'wire:model' => 'amount']) !!}
         </div>
     </div>
-
+    <div class="col-md-4">
+        <div class="form-group">
+            {!! Form::label('amount', __('lang.amount'). '$ :*', []) !!} <br>
+            {!! Form::text('dollar_amount', !empty($payment) ? @num_format($payment->dollar_amount) : null, ['class' =>
+            'form-control', 'placeholder'=> __('lang.amount').'$', 'wire:model' => 'dollar_amount']) !!}
+        </div>
+    </div>
     <div class="col-md-4">
         <div class="form-group">
             {!! Form::label('method', __('lang.payment_type'). ':*', []) !!}
-            {!! Form::select('method', $payment_type_array,$method, ['class' => 'selectpicker form-control',
+            {!! Form::select('method', $payment_type_array,$method, ['class' => 'select form-control',
             'data-live-search'=>"true", 'required','placeholder' => __('lang.please_select'), 'wire:model' => 'method']) !!}
         </div>
     </div>

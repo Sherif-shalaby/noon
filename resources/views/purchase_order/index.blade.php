@@ -32,6 +32,56 @@
             </div>
         </div>
     </div>
+    {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
+    <style>
+        .selectBox {
+        position: relative;
+        }
+
+        /* selectbox style */
+        .selectBox select
+        {
+            width: 100%;
+            padding: 0 !important;
+            padding-left: 4px;
+            padding-right: 4px;
+            color: #fff;
+            border: 1px solid #596fd7;
+            background-color: #596fd7;
+            height: 39px !important;
+        }
+
+        .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        }
+
+        #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+        height: 125px;
+        overflow: auto;
+        padding-top: 10px;
+        /* text-align: end;  */
+        }
+
+        #checkboxes label {
+        display: block;
+        padding: 5px;
+
+        }
+
+        #checkboxes label:hover {
+        background-color: #ddd;
+        }
+        #checkboxes label span
+        {
+            font-weight: normal;
+        }
+    </style>
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -46,38 +96,87 @@
                     </div>
                     {{-- ++++++++++++++ Table ++++++++++ --}}
                     <div class="table-responsive">
+                        {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
+                        <div class="col-md-3 col-lg-3">
+                            <div class="multiselect col-md-6">
+                                <div class="selectBox" onclick="showCheckboxes()">
+                                    <select class="form-select form-control form-control-lg">
+                                        <option>@lang('lang.show_hide_columns')</option>
+                                    </select>
+                                    <div class="overSelect"></div>
+                                </div>
+                                <div id="checkboxes">
+                                    {{-- +++++++++++++++++ checkbox1 : reference_no +++++++++++++++++ --}}
+                                    <label for="col1_id">
+                                        <input type="checkbox" id="col1_id" name="col1" checked="checked" />
+                                        <span>@lang('lang.reference_no')</span> &nbsp;
+                                    </label>
+                                    {{-- +++++++++++++++++ checkbox2 : date +++++++++++++++++ --}}
+                                    <label for="col2_id">
+                                        <input type="checkbox" id="col2_id" name="col2" checked="checked" />
+                                        <span>@lang('lang.date')</span>
+                                    </label>
+                                    {{-- +++++++++++++++++ checkbox3 : created_by +++++++++++++++++ --}}
+                                    <label for="col3_id">
+                                        <input type="checkbox" id="col3_id" name="col3" checked="checked" />
+                                        <span>@lang('lang.created_by')</span>
+                                    </label>
+                                    {{-- +++++++++++++++++ checkbox4 : supplier +++++++++++++++++ --}}
+                                    <label for="col4_id">
+                                        <input type="checkbox" id="col4_id" name="col4" checked="checked" />
+                                        <span>@lang('lang.supplier')</span>
+                                    </label>
+                                    {{-- +++++++++++++++++ checkbox5 : value +++++++++++++++++ --}}
+                                    <label for="col5_id">
+                                        <input type="checkbox" id="col5_id" name="col5" checked="checked" />
+                                        <span>@lang('lang.value')</span>
+                                    </label>
+                                    {{-- +++++++++++++++++ checkbox6 : status +++++++++++++++++ --}}
+                                    <label for="col6_id">
+                                        <input type="checkbox" id="col6_id" name="col6" checked="checked" />
+                                        <span>@lang('lang.status')</span>
+                                    </label>
+                                    {{-- +++++++++++++++++ checkbox7 : action +++++++++++++++++ --}}
+                                    <label for="col7_id">
+                                        <input type="checkbox" id="col7_id" name="col7" checked="checked" />
+                                        <span>@lang('lang.action')</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <br/><br/>
                         <table id="datatable-buttons" class="table dataTable">
                             <thead>
                                 <tr>
-                                    <th>@lang('lang.po_ref_no')</th>
-                                    <th>@lang('lang.date')</th>
-                                    <th>@lang('lang.created_by')</th>
-                                    <th>@lang('lang.supplier')</th>
-                                    <th class="sum">@lang('lang.value')</th>
-                                    <th>@lang('lang.status')</th>
-                                    <th class="notexport">@lang('lang.action')</th>
+                                    <th class="col1">@lang('lang.po_ref_no')</th>
+                                    <th class="col2">@lang('lang.date')</th>
+                                    <th class="col3">@lang('lang.created_by')</th>
+                                    <th class="col4">@lang('lang.supplier')</th>
+                                    <th class="sum col5">@lang('lang.value')</th>
+                                    <th class="col6">@lang('lang.status')</th>
+                                    <th class="notexport col7">@lang('lang.action')</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 @foreach ($purchaseOrders as $purchase_order)
                                     <tr>
-                                        <td title="@lang('lang.po_ref_no')">{{$purchase_order->po_no}}</td>
-                                        <td title="@lang('lang.date')"> {{@format_date($purchase_order->transaction_date)}}</td>
+                                        <td class="col1" title="@lang('lang.po_ref_no')">{{$purchase_order->po_no}}</td>
+                                        <td class="col2" title="@lang('lang.date')"> {{@format_date($purchase_order->transaction_date)}}</td>
 
-                                        <td title="@lang('lang.created_by')">{{ App\Models\User::where('id', $purchase_order->created_by)->first()->name }}</td>
+                                        <td class="col3" title="@lang('lang.created_by')">{{ App\Models\User::where('id', $purchase_order->created_by)->first()->name }}</td>
 
-                                        <td title="@lang('lang.supplier')">
+                                        <td class="col4" title="@lang('lang.supplier')">
                                             @if(!empty($purchase_order->supplier)){{$purchase_order->supplier->name}}@endif
                                         </td>
-                                        <td title="@lang('lang.value')">
+                                        <td class="col5" title="@lang('lang.value')">
                                             {{@num_format($purchase_order->final_total)}}
                                         </td>
-                                        <td title="@lang('lang.status')">
+                                        <td class="col6" title="@lang('lang.status')">
                                             {{ $purchase_order->status }}
                                         </td>
                                         {{-- =========================== Actions =========================== --}}
-                                        <td title="@lang('lang.action')">
+                                        <td class="col7" title="@lang('lang.action')">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
                                                         aria-haspopup="true" aria-expanded="false">
@@ -124,7 +223,16 @@
                                 </tfoot>
                             </tbody>
                             <tfoot>
-
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <th class="table_totals" style="text-align: right">@lang('lang.totals')</th>
+                                    <td>{{ @num_format($final_total_sum) }} </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tfoot>
                         </table>
 
@@ -133,4 +241,30 @@
             </div>
         </div>
     </div>
+    <script>
+        // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
+        $("input:checkbox:not(:checked)").each(function() {
+            var column = "table ." + $(this).attr("name");
+            $(column).hide();
+        });
+
+        $("input:checkbox").click(function(){
+            var column = "table ." + $(this).attr("name");
+            $(column).toggle();
+        });
+        // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
+        var expanded = false;
+        function showCheckboxes()
+        {
+            var checkboxes = document.getElementById("checkboxes");
+            if (!expanded) {
+                checkboxes.style.display = "block";
+                expanded = true;
+            } else {
+                checkboxes.style.display = "none";
+                expanded = false;
+            }
+        }
+
+    </script>
 @endsection

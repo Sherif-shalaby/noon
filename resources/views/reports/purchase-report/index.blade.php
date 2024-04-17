@@ -97,7 +97,7 @@
                                                 }
                                              @endphp
                                             {{-- ++++++++++ مبلغ المشتريات ++++++++++ --}}
-                                            <td> {{ number_format($purchase_price_var,2) }}</td>
+                                            <td> {{ number_format($purchase_price_var,num_of_digital_numbers()) }}</td>
                                             {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
                                             <td> {{ $purchase_quantity }} </td>
                                             {{-- ++++++++++ في المخزن ++++++++++ --}}
