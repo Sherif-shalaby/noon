@@ -317,7 +317,7 @@
                                                             <th style="background: transparent !important;color: black !important;"
                                                                 class="pb-0 pt-1 @if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                                 <label class="mb-0">
-                                                                    <span class="text-danger">*</span>@lang('lang.phone_number')
+                                                                    @lang('lang.phone_number')
                                                                 </label>
                                                             </th>
                                                         </tr>

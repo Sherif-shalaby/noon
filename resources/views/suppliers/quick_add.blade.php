@@ -290,7 +290,7 @@
                                                 class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0  @else h5  mx-2 mb-0 @endif
                                 "
                                                 style="font-size: 12px">
-                                                <span class="text-danger">*</span>@lang('lang.email')
+                                                @lang('lang.email')
                                             </label>
                                             <div class="d-flex justify-content-center align-items-center select_body"
                                                 style="background-color: #dedede; border: none;
@@ -342,7 +342,7 @@
                                             <label style="font-size: 12px"
                                                 class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0  @else h5  mx-2 mb-0 @endif
                                 ">
-                                                <span class="text-danger">*</span>@lang('lang.phone_number')
+                                                @lang('lang.phone_number')
                                             </label>
                                             <div class="d-flex justify-content-center align-items-center select_body"
                                                 style="background-color: #dedede; border: none;
