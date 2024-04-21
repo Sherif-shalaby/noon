@@ -17,6 +17,7 @@ use App\Models\Supplier;
 use App\Models\Variation;
 use App\Models\ProductTax;
 use App\Models\AddStockLine;
+use App\Models\Country;
 use App\Models\CustomerType;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
@@ -104,7 +105,7 @@ class Create extends Component
         $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $units = [],
         $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [];
     public $rows = [], $toggle_customers_dropdown, $customer_id, $variationStoreSums, $variationFillStoreSums, $toggle_suppliers,
-        $image, $croppedImage;
+        $image, $croppedImage, $countryId, $countryName;
     public function messages()
     {
         return [
@@ -239,6 +240,8 @@ class Create extends Component
         $this->exchange_rate = $this->changeExchangeRate();
         $this->units = Unit::orderBy('created_at', 'desc')->get();
         $this->customer_types = CustomerType::orderBy('name', 'asc')->get();
+        $this->countryId = System::getProperty('country_id');
+        $this->countryName = Country::where('id', $this->countryId)->pluck('name')->first();
         $this->addPrices();
         $this->dispatchBrowserEvent('initialize-select2');
     }
@@ -1253,9 +1256,9 @@ class Create extends Component
     }
     public function changePrice($index, $via = 'price')
     {
-        // dd($via);
-        $fill_id = $this->prices[$index]['fill_id'];
-        $row_index = $this->getKey($fill_id) ?? null;
+        $fill_id = $this->prices[$index]['fill_id'] ?? 0;
+        $row_index = $this->getKey($fill_id) ?? 0;
+        // dd($row_index);
         $actual_price = 0;
         if ($row_index >= 0) {
             $customer_type = $this->prices[$index]['price_customer_types'];
@@ -1410,6 +1413,9 @@ class Create extends Component
     {
         if (isset($index)) {
             foreach ($this->rows[$index]['prices'] as $key => $row) {
+                if ($customer_type == null) {
+                    return $key;
+                }
                 if ($this->rows[$index]['prices'][$key]['customer_type_id'] == $customer_type) {
                     return $key;
                 }

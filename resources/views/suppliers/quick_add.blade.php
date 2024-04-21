@@ -1,5 +1,5 @@
 <div class="modal modal-supplier-add animate__animated add-supplier" data-animate-in="animate__rollIn" tabindex="-1"
-    role="dialog" aria-hidden="true" style="display: none">
+    role="dialog" aria-hidden="true" style="display: none;z-index: 99;">
     <div class="modal-dialog rollIn  animated modal-lg" role="document">
         <div class="modal-content">
             {!! Form::open([
@@ -396,6 +396,77 @@
                         @enderror
 
                     </div>
+
+                    {{-- ++++++++++++++++ countries selectbox : الدولة : (countries table) +++++++++++++++++ --}}
+                    <div
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                        <label
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
+                                "
+                            style ="font-size: 12px;font-weight: 500;" for="country-dd">@lang('lang.country')</label>
+                        <div class="input-wrapper" style="width: 100%;!important">
+                            <select id="country-dd" name="country" class="form-select  initial-balance-input m-auto"
+                                style="width: 100%; border:2px solid #ccc" disabled>
+                                <option value="{{ $countryId }}">
+                                    {{ $countryName }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    {{-- ++++++++++++++++ state selectbox : المحافظة : (states table) +++++++++++++++++ --}}
+                    <div
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                        <label
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
+                                "
+                            style ="font-size: 12px;font-weight: 500;" for="state-dd">@lang('lang.state')</label>
+                        <div class="input-wrapper" style="width: 100%;!important">
+                            <select id="state-dd" name="state_id"
+                                class="form-select select2 initial-balance-input m-auto"
+                                style="width: 100%; border:2px solid #ccc">
+                                @php
+                                    $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
+                                @endphp
+                                <option value=""> @lang('lang.please_select')</option>
+                                @foreach ($states as $state)
+                                    <option value="{{ $state->id }}">
+                                        {{ $state->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
+                    <div
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                        <label
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
+                                "
+                            style ="font-size: 12px;font-weight: 500;" for="city-dd">@lang('lang.regions')</label>
+                        <div class="input-wrapper" style="width: 100%;!important">
+                            <select id="city-dd" name="city_id"
+                                class="form-select select2 initial-balance-input m-auto"
+                                style="width: 100%; border:2px solid #ccc"></select>
+                            {{-- <button type="button" class="btn btn-primary" data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button> --}}
+                        </div>
+                    </div>
+                    {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
+                    <div
+                        class="mb-2 col-md-3 p-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                        <label
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-1  @else h5  mx-2 mb-0 @endif
+                                "
+                            style ="font-size: 12px;font-weight: 500;" for="quarters_id">@lang('lang.quarters')</label>
+                        <div class="input-wrapper" style="width: 100%;!important">
+                            <select id="quarter-dd" class="form-select select2  initial-balance-input m-auto"
+                                style="width: 100%; border:2px solid #ccc" name="quarter_id"></select>
+                            {{-- <button type="button" class="btn btn-primary" data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button> --}}
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -404,6 +475,8 @@
                 <button id="create-supplier-btn" class="btn btn-primary">{{ __('lang.save') }}</button>
             </div>
             {!! Form::close() !!}
+            {{-- ++++++++++++ Quick_Add "city","quarter" Modal ++++++++++++ --}}
+            @include('suppliers.partials.quick_add')
         </div>
     </div>
 </div>

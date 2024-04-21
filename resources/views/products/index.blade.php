@@ -176,7 +176,10 @@
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.sku')">
-                                                                {{ $product->sku }}
+                                                                {{ $product->sku }} <br>
+                                                                @foreach ($product->variations as $index => $var)
+                                                                    - {{ $var->sku }}
+                                                                @endforeach
                                                             </span>
                                                         </td>
                                                         <td class="col4">

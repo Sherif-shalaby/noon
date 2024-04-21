@@ -978,6 +978,7 @@
                                                         data-index="{{ $key }}"
                                                         data-key="{{ $key }}" class="form-control select2"
                                                         placeholder="{{ __('lang.customer_type') }}">
+                                                        <option value="0">@lang('lang.please_select')</option>
                                                         @foreach ($customer_types as $type)
                                                             <option value="{{ $type->id }}">
                                                                 {{ $type->name }}

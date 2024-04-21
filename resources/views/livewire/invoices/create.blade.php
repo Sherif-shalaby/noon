@@ -520,8 +520,14 @@
                                             <td @if (!$columnVisibility['sku']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
                                                 style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                {{ !empty($item['product']['product_symbol']) ? $item['product']['product_symbol'] : $item['product']['sku'] }}
+                                                @if (empty($item['variation']))
+                                                    {{ !empty($item['product']['product_symbol']) ? $item['product']['product_symbol'] : $item['product']['sku'] }}
+                                                @else
+                                                    {{ $item['unit_sku'] }}
+                                                @endif
                                             </td>
+
+
 
                                             <td @if (!$columnVisibility['product']) style="display: none;font-weight: 700;font-size: 10px;height: 50px;" @endif
                                                 style="font-weight: 700;font-size: 10px;height: 50px;"
