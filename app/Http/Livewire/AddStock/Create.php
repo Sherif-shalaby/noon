@@ -38,6 +38,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use App\Models\CashRegisterTransaction;
 use App\Models\City;
+use App\Models\Country;
 use App\Models\StockTransactionPayment;
 use App\Models\PurchaseOrderTransaction;
 use App\Models\State;
@@ -81,7 +82,7 @@ class Create extends Component
         $end_date, $exchangeRate, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [], $expenses = [], $customer_types, $total_amount_dollar, $dollar_remaining, $dinar_remaining, $units, $date_and_time,
         $toggle_customers_dropdown, $customer_id, $total_expenses = 0, $market_exchange_rate = 1, $dinar_expenses = 0, $dollar_expenses = 0, $productIds,
-        $add_specific_product = 0, $toggle_dollar = 0,$total_dollar, $total;
+        $add_specific_product = 0, $toggle_dollar = 0,$total_dollar, $total,$countryId,$countryName;
     public $supplier_data = [
         'dollar_debit' => '',
         'dinar_debit' => '',
@@ -143,7 +144,8 @@ class Create extends Component
         $this->department_id3 = null;
         $this->department_id4 = null;
         $this->source_id = Employee::where('user_id', Auth::user()->id)->first()->id;
-
+        $this->countryId = System::getProperty('country_id');
+        $this->countryName = Country::where('id', $this->countryId)->pluck('name')->first();
         $productIdsString = request('product_ids', []);
         $this->productIds = is_string($productIdsString) ? explode(',', $productIdsString) : [];
         if (!empty($this->productIds)) {
