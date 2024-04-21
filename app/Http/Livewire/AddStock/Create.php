@@ -1007,10 +1007,6 @@ class Create extends Component
             'dollar_purchase_after_discount' => null,
             'discount_on_bonus_quantity' => true,
             'is_have_stock' => '0',
-            'show_discount' => false,
-            'show_validity' => false,
-            'show_discount_details' => false,
-            'show_unit_details' => false,
             'prices' => [
                 [
                     'price_type' => null,
@@ -1027,6 +1023,10 @@ class Create extends Component
                     'piece_price' => null,
                     'dinar_piece_price' => null,
                     'discount_from_original_price' => true,
+                    'show_discount' => false,
+                    'show_validity' => false,
+                    'show_discount_details' => false,
+                    'show_unit_details' => false,
                 ],
 
             ],
@@ -1429,7 +1429,7 @@ class Create extends Component
                     $qty_difference = 1;
                 }
                 $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? number_format($product_data->product_dimensions->size * $qty_difference, num_of_digital_numbers()) : 0;
-                $this->items[$index]['total_size'] = number_format($this->items[$index]['size'] * $this->items[$index]['quantity'], num_of_digital_numbers());
+                $this->items[$index]['total_size'] = number_format($this->num_uf($this->items[$index]['size']) * $this->num_uf($this->items[$index]['quantity']), num_of_digital_numbers());
                 $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? number_format($product_data->product_dimensions->weight * $qty_difference, num_of_digital_numbers()) : 0;
                 $this->items[$index]['total_weight'] = number_format($this->items[$index]['weight'] * $this->items[$index]['quantity'], num_of_digital_numbers());
                 $this->items[$index]['unit'] = $variant->unit->name ?? '';
