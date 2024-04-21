@@ -286,12 +286,15 @@ class Create extends Component
                 $variation = Variation::when($this->searchProduct, function ($query) {
                     return $query->where('sku', 'like', '%' . $this->searchProduct . '%');
                 })->pluck('product_id');
+                $variationId = Variation::when($this->searchProduct, function ($query) {
+                    return $query->where('sku', 'like', '%' . $this->searchProduct . '%');
+                })->first()->id;
                 $search_result = Product::whereIn('id', $variation);
                 $search_result = $search_result->get();
             }
 
             if (count($search_result) === 1) {
-                $this->add_product($search_result->first()->id);
+                $this->add_product($search_result->first()->id,$variationId);
                 $search_result = '';
                 $this->searchProduct = '';
             }
@@ -565,6 +568,8 @@ class Create extends Component
             $this->added_to_balance = 0;
             $this->new_added_dinar_balance = 0;
             $this->new_added_dollar_balance = 0;
+            $this->loading_cost = 0;
+            $this->dollar_loading_cost = 0;
             $this->delivery_cost = null;
             $this->delivery_date = Carbon::now()->format('Y-m-d');
             $this->deliveryman_id = null;
@@ -802,7 +807,7 @@ class Create extends Component
         //        dump($this->customers);
     }
 
-    public function add_product($id)
+    public function add_product($id,$variationId=null)
     {
         //        dd($id);
 
@@ -831,7 +836,7 @@ class Create extends Component
             $newArr = array_filter($this->items, function ($item) use ($product) {
                 return $item['product']['id'] == $product->id;
             });
-            if (count($newArr) > 0) {
+            if (count($newArr) > 0 && $variationId==null) {
                 $key = array_keys($newArr)[0];
                 ++$this->items[$key]['quantity'];
 
@@ -841,7 +846,67 @@ class Create extends Component
                 } else {
                     $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * (float)$this->items[$key]['quantity']) - ((float)$this->items[$key]['quantity'] * $this->num_uf($this->items[$key]['discount']));
                 }
-            } else {
+            } else if($variationId!=null)  {
+                $get_Variation_price = VariationPrice::where('variation_id', $variationId ?? 0);
+                $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
+                $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
+                if (empty($get_Variation_price->first()->id)) {
+                    $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->first()->sell_price ?? 0), num_of_digital_numbers()) : 0;
+                    $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->first()->dollar_sell_price ?? 0), num_of_digital_numbers()) : 0;
+                } else {
+                    $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->where('variation_price_id', $get_Variation_price->first()->id ?? 0)->first()->sell_price ?? 0), num_of_digital_numbers()) : 0;
+                    $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->where('variation_price_id', $get_Variation_price->first()->id)->first()->dollar_sell_price ?? 0), num_of_digital_numbers()) : 0;
+                }
+                $dollar_exchange = System::getProperty('dollar_exchange');
+                if ($this->num_uf($dollar_exchange) > $this->num_uf($exchange_rate)) {
+                    if ($price == 0) {
+                        $price = $this->num_uf($dollar_price) * $this->num_uf($exchange_rate);
+                        $dollar_price = 0;
+                    }
+                }
+                if($this->toggle_dollar=="1" && $price == 0 && $dollar_price>0){
+                    $price = $this->num_uf($dollar_price) * $this->num_uf($exchange_rate);
+                    $dollar_price = 0;
+                }
+                $variant = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first();
+//                dd($variant->variations->unit->name);
+//                dd($current_stock->prices);
+
+                $new_item = [
+                    'variation' => $product->variations,
+                    'product' => $product,
+                    'customer_types' => $customerTypes,
+                    'customer_type_id' => $get_Variation_price->first()->customer_type_id ?? 0,
+                    'quantity' => 1,
+                    'extra_quantity' => 0,
+                    'price' => $this->num_uf($price),
+                    'category_id' => $product->category?->id,
+                    'department_name' => $product->category?->name,
+                    'client_id' => $product->customer?->id,
+                    'exchange_rate' => $exchange_rate,
+                    'quantity_available' => $quantity_available,
+                    'quantity_available_default' => $quantity_available,
+                    // 'stock_units' => $stock_units,
+                    'sub_total' =>  (float) 1 * $this->num_uf($price),
+                    'dollar_sub_total' => (float) 1 * $this->num_uf($dollar_price),
+                    'current_stock' => $current_stock,
+                    //                    'discount_categories' =>  $discounts,
+                    'discount_categories' => !empty($current_stock) ? $current_stock->prices()->where('price_customer_types', $get_Variation_price->first()->customer_type_id ?? 0)->get() : null,
+                    'discount' => 0,
+                    'discount_price' => 0,
+                    'discount_type' =>  null,
+                    'discount_category' =>  null,
+                    'dollar_price' => $this->num_uf($dollar_price),
+                    'unit_name' => !empty($variant) ? $variant->variations->unit->name : '',
+                    'base_unit_multiplier' => !empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
+                    'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
+                    'stores' => $product_stores,
+                    'unit_id' => $variationId?? '',
+                    'unit_sku'=>Variation::find($variationId)->sku??'',
+                    ];
+                $this->items[] = $new_item;
+            }else
+             {
                 $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id ?? 0);
                 $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
@@ -866,6 +931,7 @@ class Create extends Component
                 $variant = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first();
 //                dd($variant->variations->unit->name);
 //                dd($current_stock->prices);
+
                 $new_item = [
                     'variation' => $product->variations,
                     'product' => $product,
@@ -896,12 +962,13 @@ class Create extends Component
                     'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
                     'stores' => $product_stores,
                     'unit_id' => $variant->variation_id ?? '',
+                    'unit_sku'=>Variation::find($variant->variation_id)->sku??'',
                     ];
                 $this->items[] = $new_item;
             }
         }
         $this->computeForAll();
-        //        $this->sumSubTotal();
+      
     }
     public function cancel()
     {
@@ -1865,6 +1932,8 @@ class Create extends Component
             }
         }
         $this->items[$key]['unit_name'] = Variation::find($variation_id)->unit->name;
+        $this->items[$key]['unit_sku'] = Variation::find($variation_id)->sku;
+        
 //        dd($this->items[$key]['unit_name'] );
         $this->subtotal($key, $via = 'quantity');
         $this->changeCustomerType($key);

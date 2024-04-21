@@ -319,7 +319,13 @@
                                         @endphp
                                         @foreach ($items as $key => $item)
                                             <tr>
-                                                <td @if(!$columnVisibility['sku']) style="display: none;" @endif>{{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}</td>
+                                                <td @if(!$columnVisibility['sku']) style="display: none;" @endif>
+                                                    @if(empty($item['variation']))
+                                                    {{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}
+                                                    @else
+                                                    {{$item['unit_sku']}} 
+                                                    @endif
+                                                </td>
                                                 <td @if(!$columnVisibility['product']) style="display: none;" @endif>
                                                     {{$item['product']['name']}}
                                                 </td>
