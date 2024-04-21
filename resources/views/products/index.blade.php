@@ -249,7 +249,13 @@
                                             <td>{{ $index+1 }}</td>
                                             <td class="col1"><img src="{{!empty($product->image)?'/uploads/products/'.$product->image:'/uploads/'.$settings['logo']}}" style="width: 50px; height: 50px;" alt="{{ $product->name }}" ></td>
                                             <td class="col2">{{$product->name}}</td>
-                                            <td class="col3">{{$product->sku}}</td>
+                                            <td class="col3">{{$product->sku}}
+                                                <br>
+                                                @foreach($product->variations as $index=>$var)
+                                                   - {{$var->sku}}  
+                                                @endforeach
+                                        
+                                            </td>
                                             <td class="col4">
                                                 <input type="checkbox" name="product_selected_delete" class="product_selected_delete" value=" {{ $product->id }} " data-product_id="{{ $product->id }}" />
                                             </td>

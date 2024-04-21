@@ -300,6 +300,56 @@
                             @error('cover')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
+                         {{-- ++++++++++++++++ countries selectbox : الدولة : (countries table) +++++++++++++++++ --}}
+                         <div class="col-md-4 mb-3">
+                            <label for="country-dd">@lang('lang.country')</label>
+                            <select id="country-dd" name="country" class="form-control" disabled>
+                                <option value="{{ $countryId }}">
+                                    {{ $countryName }}
+                                </option>
+                            </select>
+                        </div>
+                        {{-- ++++++++++++++++ state selectbox : المحافظة : (states table) +++++++++++++++++ --}}
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="state-dd">@lang('lang.state')</label>
+                                <select id="state-dd" name="state_id" class="form-control select2">
+                                    @php
+                                        $states = \App\Models\State::where('country_id', $countryId)->get(['id','name']);
+                                    @endphp
+                                    <option value=""> @lang('lang.please_select')</option>
+                                    @foreach ( $states as $state)
+                                        <option value="{{ $state->id }}">
+                                            {{ $state->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="city-dd">@lang('lang.regions')</label>
+                                <div class="d-flex justify-content-center">
+                                    <select id="city-dd" name="city_id" class="form-control select2"></select>
+                                    {{-- <button type="button" class="btn btn-primary" data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button> --}}
+                                </div>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="quarters_id">@lang('lang.quarters')</label>
+                                <div class="d-flex justify-content-center">
+                                    <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
+                                    {{-- <button type="button" class="btn btn-primary" data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button> --}}
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
 
@@ -308,6 +358,8 @@
                 <button  id="create-supplier-btn" class="btn btn-primary">{{__('lang.save')}}</button>
             </div>
             {!! Form::close() !!}
+             {{-- ++++++++++++ Quick_Add "city","quarter" Modal ++++++++++++ --}}
+             @include('suppliers.partials.quick_add')
         </div>
     </div>
 </div>

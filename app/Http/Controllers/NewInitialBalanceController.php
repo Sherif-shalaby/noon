@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
 use App\Models\System;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,9 @@ class NewInitialBalanceController extends Controller
     {
         $exchange_rate=0;
         $exchange_rate =System::getProperty('dollar_exchange');
-        return view('new-initial-balance.create',compact('exchange_rate'));
+        $countryId = System::getProperty('country_id');
+        $countryName = Country::where('id', $countryId)->pluck('name')->first();
+        return view('new-initial-balance.create',compact('exchange_rate','countryId','countryName'));
     }
 
     /**

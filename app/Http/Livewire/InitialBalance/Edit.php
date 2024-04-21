@@ -1145,7 +1145,7 @@ class Edit extends Component
         ProductPrice::whereIn('stock_line_id', $this->deleted_fill_stocks)->delete();
         VariationStockline::whereIn('stock_line_id', $stock_lines)->delete();
         VariationStockline::whereIn('stock_line_id', $this->deleted_fill_stocks)->delete();
-        dd("doaa");
+        // dd("doaa");
         // dd($stockline_id);
     }
     public function get_purchase_price($store_fill_id)
