@@ -5,6 +5,7 @@ namespace App\Http\Livewire\InitialBalance;
 use App\Models\AddStockLine;
 use App\Models\Branch;
 use App\Models\Category;
+use App\Models\Country;
 use App\Models\Currency;
 use App\Models\CustomerType;
 use App\Models\Product;
@@ -80,7 +81,7 @@ class Edit extends Component
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $product_tax, $subcategories = [],
         $deleted_items = [], $deleted_prices = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $customer_types = [],
         $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [], $deteted_prices = [];
-    public $rows = [];
+    public $rows = [] , $countryId,$countryName;
     public function messages()
     {
         return [
@@ -495,6 +496,8 @@ class Edit extends Component
                 }
             }
         }
+        $this->countryId = System::getProperty('country_id');
+        $this->countryName = Country::where('id', $this->countryId)->pluck('name')->first();
         $this->calculateTotalQuantity();
         $this->dispatchBrowserEvent('initialize-select2');
     }
@@ -994,7 +997,7 @@ class Edit extends Component
                         $variation_id = Variation::where('product_id', $product_id)->where('unit_id', $this->rows[$index]['unit_id'])->first()->id ?? '';
                         $variation_price = VariationPrice::where('variation_id', $variation_id)->where('customer_type_id', $this->rows[$index]['prices'][$key]['customer_type_id'])->first();
                         $stock_line = AddStockLine::where('product_id', $product_id)->where('variation_id', $variation_id)->where('stock_transaction_id', $transaction->id)->first();
-                        
+
                         $add_variation_stock_data = [
                             'variation_price_id' => $variation_price->id,
                             'stock_line_id' => $stock_line->id,
@@ -1068,7 +1071,7 @@ class Edit extends Component
                             if (!empty($this->rows[$index]['prices'][$key]['dollar_sell_price']) || !empty($this->rows[$index]['prices'][$key]['dinar_sell_price'])) {
                                 $variation_price = VariationPrice::where('variation_id', $variation->id)->where('customer_type_id', $this->rows[$index]['prices'][$key]['customer_type_id'])->first();
                                 $stock_line = AddStockLine::where('product_id', $product_id)->where('variation_id', $variation_id)->where('stock_transaction_id', $transaction_store->id)->first();
-                                
+
                                 $add_variation_stock_data = [
                                     'variation_price_id' => $variation_price->id,
                                     'stock_line_id' => $stock_line->id,
@@ -1468,7 +1471,7 @@ class Edit extends Component
         }
         unset($this->fill_stores[$index]['data'][$key]);
     }
-    
+
     public function changePrice($index, $via = 'price')
     {
         $fill_id = $this->prices[$index]['fill_id'];
