@@ -401,6 +401,7 @@ class Edit extends Component
                             'fill_currency' => 'dinar',
                             'prices' => [],
                             'fill' => $stock->variation->equal ?? 0,
+                            'show_prices' => false,
                         ];
 
                         // $this->rows[] = $newRow;
