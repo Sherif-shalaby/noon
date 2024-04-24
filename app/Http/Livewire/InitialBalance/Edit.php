@@ -5,6 +5,7 @@ namespace App\Http\Livewire\InitialBalance;
 use App\Models\AddStockLine;
 use App\Models\Branch;
 use App\Models\Category;
+use App\Models\Country;
 use App\Models\Currency;
 use App\Models\CustomerType;
 use App\Models\Product;
@@ -80,7 +81,7 @@ class Edit extends Component
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $product_tax, $subcategories = [],
         $deleted_items = [], $deleted_prices = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $customer_types = [],
         $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [], $deteted_prices = [];
-    public $rows = [];
+    public $rows = [], $countryId, $countryName;
     public function messages()
     {
         return [
@@ -227,7 +228,8 @@ class Edit extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'stock_line_id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => '', 'show_prices' => false,
+            'id' => '', 'stock_line_id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
+            '', 'show_prices' => false,
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -254,6 +256,7 @@ class Edit extends Component
             }
         }
     }
+
 
     public function stayShow()
     {
@@ -397,7 +400,7 @@ class Edit extends Component
                             'unit_id' => $stock->variation->unit_id,
                             'fill_currency' => 'dinar',
                             'prices' => [],
-                            'fill' => $stock->variation->equal ?? 0, 'show_prices' => false,
+                            'fill' => $stock->variation->equal ?? 0,
                         ];
 
                         // $this->rows[] = $newRow;
@@ -511,6 +514,8 @@ class Edit extends Component
                 }
             }
         }
+        $this->countryId = System::getProperty('country_id');
+        $this->countryName = Country::where('id', $this->countryId)->pluck('name')->first();
         $this->calculateTotalQuantity();
         $this->dispatchBrowserEvent('initialize-select2');
     }
@@ -518,10 +523,7 @@ class Edit extends Component
     // {
     //     $this->validateOnly($propertyName);
     // }
-    public function updated()
-    {
-        $this->dispatchBrowserEvent('componentRefreshed');
-    }
+
     public function setSubCategoryValue($value)
     {
         $this->dispatchBrowserEvent('show-modal');
@@ -1249,7 +1251,6 @@ class Edit extends Component
                 'basic_unit_id' => $variation->basic_unit_id,
                 'change_price_stock' => '',
                 'equal' => $variation->equal,
-                'show_prices' => false,
                 'prices' => [
                     [
                         'price_type' => null,
