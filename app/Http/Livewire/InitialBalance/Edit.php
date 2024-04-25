@@ -80,7 +80,12 @@ class Edit extends Component
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $product_tax, $subcategories = [],
         $deleted_items = [], $deleted_prices = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $customer_types = [],
-        $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [], $deteted_prices = [];
+        $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0,
+        $show_discount = 0,
+
+        $show_store = 1,
+
+        $variations = [], $deteted_prices = [];
     public $rows = [], $countryId, $countryName;
     public function messages()
     {

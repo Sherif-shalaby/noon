@@ -527,7 +527,11 @@
                                                         wire:model="items.{{ $key }}.exchange_rate">
 
                                                     @php
-                                                        $dollar_exchange = App\Models\System::where('key', '=', 'dollar_exchange')->get('value');
+                                                        $dollar_exchange = App\Models\System::where(
+                                                            'key',
+                                                            '=',
+                                                            'dollar_exchange',
+                                                        )->get('value');
                                                     @endphp
                                                     <input
                                                         style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece"
@@ -627,7 +631,7 @@
 
         <button class="btn btn-sm btn-danger mx-1" wire:click="getPreviousTransaction">
             < </button>
-                <button class="btn btn-sm btn-danger mx-1" disabled wire:click="getNextTransaction">
+                <button class="btn btn-sm btn-danger mx-1" wire:click="getNextTransaction">
                     ></button>
     </div>
     {!! Form::close() !!}

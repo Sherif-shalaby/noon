@@ -40,7 +40,9 @@
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                     ]) !!}
                                     {!! Form::text('name', $item[0]['name'], [
-                                        'class' => 'form-control  required initial-balance-input',
+                                        'class' => app()->isLocale('ar')
+                                            ? ' text-end  form-control  required initial-balance-input'
+                                            : ' form-control  required initial-balance-input',
                                         'style' => 'width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;',
                                         'wire:model' => 'item.0.name',
                                         'wire:change' => 'confirmCreateProduct()',
@@ -915,11 +917,14 @@
                                         {{ __('lang.add_to_another_store') }}
                                     </div>
                                 </h2>
+
                                 <div
                                     class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
                                     <button type="button" class="plus-button py-2 my-1" wire:click="addStoreRow()">
                                         <i class="fa fa-plus"></i>
                                     </button>
+
+
                                     @forelse ($fill_stores as $i => $store)
                                         <div
                                             class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
