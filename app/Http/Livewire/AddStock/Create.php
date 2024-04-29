@@ -1405,7 +1405,7 @@ class Create extends Component
                 $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? number_format($product_data->product_dimensions->size * $qty_difference,num_of_digital_numbers()) : 0;
                 $this->items[$index]['total_size'] = number_format($this->num_uf($this->items[$index]['size'])* $this->num_uf($this->items[$index]['quantity']),num_of_digital_numbers());
                 $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? number_format($product_data->product_dimensions->weight * $qty_difference,num_of_digital_numbers()) : 0;
-                $this->items[$index]['total_weight'] = number_format($this->items[$index]['weight'] * $this->items[$index]['quantity'],num_of_digital_numbers());
+                $this->items[$index]['total_weight'] = number_format($this->num_uf($this->items[$index]['weight']) * $this->num_uf($this->items[$index]['quantity']),num_of_digital_numbers());
                 $this->items[$index]['unit'] = $variant->unit->name ?? '';
                 $this->items[$index]['base_unit_multiplier'] = $variant->equal ?? 0;
             }
