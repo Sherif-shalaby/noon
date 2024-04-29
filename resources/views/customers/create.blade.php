@@ -269,7 +269,7 @@
                                             <th style="background: transparent !important;color: black !important;padding: 0!important;"
                                                 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                 <label class="mb-0">
-                                                    <span class="text-danger">*</span>@lang('lang.email')
+                                                    @lang('lang.email')
                                                 </label>
                                             </th>
                                         </tr>
