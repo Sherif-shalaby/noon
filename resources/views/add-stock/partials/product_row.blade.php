@@ -602,47 +602,55 @@
     style="overflow-x: auto;">
     <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
         @foreach ($product['customer_prices'] as $key => $price)
-            <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-                style="width: 60px;min-height: 40px;">
-                <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
-                <input type="text"
-                    class="form-control initial-balance-input width-full mx-0 percent{{ $index }} {{ $key }}"
-                    name="items.{{ $index }}.customer_prices.{{ $key }}.percent"
-                    wire:input="changePercent({{ $index }},{{ $key }})"
-                    wire:model="items.{{ $index }}.customer_prices.{{ $key }}.percent"
-                    maxlength="6" placeholder="%">
-            </div>
-            <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-                style="width: 60px;min-height: 40px">
-                <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                    style='font-weight:500;font-size:10px;color:#333'>{{ $items[$index]['customer_prices'][$key]['customer_name'] }}</label>
-                <input type="text" class="form-control mb-0 initial-balance-input width-full mx-0 dinar_sell_price"
-                    wire:model="items.{{ $index }}.customer_prices.{{ $key }}.dinar_increase"
-                    placeholder = "{{ $items[$index]['customer_prices'][$key]['customer_name'] }}"
-                    wire:input="changeIncrease({{ $index }},{{ $key }})">
-                <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
-                    style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['customer_prices'][$key]['dollar_increase'] }}
-                    $</span>
-                @error('items.' . $index . 'customer_prices' . $key . '.dinar_increase')
-                    <label class="text-danger  validation-error error-msg">{{ $message }}</label>
-                @enderror
-            </div>
+            <div
+                class=" @if ($key % 2 == 0) bg-white @else bg-dark-gray @endif mx-1 px-2 rounded-lg d-flex justify-content-center align-items-start">
+                <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
+                    style="width: 60px;min-height: 40px;">
+                    <label
+                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
+                    <input type="text"
+                        class="form-control initial-balance-input width-full mx-0 percent{{ $index }} {{ $key }}"
+                        name="items.{{ $index }}.customer_prices.{{ $key }}.percent"
+                        wire:input="changePercent({{ $index }},{{ $key }})"
+                        wire:model="items.{{ $index }}.customer_prices.{{ $key }}.percent"
+                        maxlength="6" placeholder="%">
+                </div>
+                <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
+                    style="width: 60px;min-height: 40px">
+                    <label
+                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                        style='font-weight:500;font-size:10px;color:#333'>{{ $items[$index]['customer_prices'][$key]['customer_name'] }}</label>
+                    <input type="text"
+                        class="form-control mb-0 initial-balance-input width-full mx-0 dinar_sell_price"
+                        wire:model="items.{{ $index }}.customer_prices.{{ $key }}.dinar_increase"
+                        placeholder = "{{ $items[$index]['customer_prices'][$key]['customer_name'] }}"
+                        wire:input="changeIncrease({{ $index }},{{ $key }})">
+                    <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
+                        style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['customer_prices'][$key]['dollar_increase'] }}
+                        $</span>
+                    @error('items.' . $index . 'customer_prices' . $key . '.dinar_increase')
+                        <label class="text-danger  validation-error error-msg">{{ $message }}</label>
+                    @enderror
+                </div>
 
-            <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-                style="width: 60px;min-height: 40px">
-                <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                    style='font-weight:500;font-size:10px;color:#333'>
-                    {{ $items[$index]['customer_prices'][$key]['customer_name'] }}</label>
-                <input type="text" class="form-control mb-0 initial-balance-input width-full mx-0 dinar_sell_price"
-                    wire:model="items.{{ $index }}.customer_prices.{{ $key }}.dinar_sell_price"
-                    placeholder = "{{ $items[$index]['customer_prices'][$key]['customer_name'] }}">
-                <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
-                    style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['customer_prices'][$key]['dollar_sell_price'] }}
-                    $</span>
-                @error('items.' . $index . 'customer_prices' . $key . '.dinar_sell_price')
-                    <label class="text-danger  validation-error error-msg">{{ $message }}</label>
-                @enderror
+                <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
+                    style="width: 60px;min-height: 40px">
+                    <label
+                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                        style='font-weight:500;font-size:10px;color:#333'>
+                        {{ $items[$index]['customer_prices'][$key]['customer_name'] }}</label>
+                    <input type="text"
+                        class="form-control mb-0 initial-balance-input width-full mx-0 dinar_sell_price"
+                        wire:model="items.{{ $index }}.customer_prices.{{ $key }}.dinar_sell_price"
+                        placeholder = "{{ $items[$index]['customer_prices'][$key]['customer_name'] }}">
+                    <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
+                        style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['customer_prices'][$key]['dollar_sell_price'] }}
+                        $</span>
+                    @error('items.' . $index . 'customer_prices' . $key . '.dinar_sell_price')
+                        <label class="text-danger  validation-error error-msg">{{ $message }}</label>
+                    @enderror
+                </div>
             </div>
         @endforeach
 
@@ -668,6 +676,46 @@
             <input type="checkbox" class="mx-2" name="change_price"
                 wire:model="items.{{ $index }}.change_price_stock">
             {{-- </div> --}}
+        </div>
+
+        <div style="min-width: 90px"
+            class="d-flex justify-content-center align-items-center  @if ($product['show_discount']) hide @endif">
+            <button class="accordion-button-out collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapse{{ $index }}discount"
+                data-index="{{ $index }}" aria-expanded="true"
+                aria-controls="panelsStayOpen-collapse{{ $index }}discount"
+                wire:click="stayShowDiscount({{ $index }})">
+                <h6 class="mb-0">
+                    @lang('lang.discount')
+                    <span class="accordion-arrow-out ml-2">
+                        @if ($product['show_discount'])
+                            <i class="fas text-black fa-arrow-up" style="font-size: 0.8rem"></i>
+                        @else
+                            <i class="fas text-black fa-arrow-down" style="font-size: 0.8rem"></i>
+                        @endif
+                    </span>
+                </h6>
+            </button>
+        </div>
+
+        <div style="min-width: 90px"
+            class="d-flex justify-content-center align-items-center @if ($product['show_validity']) hide @endif">
+            <button class="accordion-button-out collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapse{{ $index }}validity"
+                data-index="{{ $index }}" aria-expanded="true"
+                aria-controls="panelsStayOpen-collapse{{ $index }}validity"
+                wire:click="stayShowValidity({{ $index }})">
+                <h6 class="mb-0">
+                    @lang('lang.validity')
+                    <span class=" accordion-arrow-out ml-2">
+                        @if ($product['show_validity'])
+                            <i class="fas text-black fa-arrow-up" style="font-size: 0.8rem"></i>
+                        @else
+                            <i class="fas  text-black fa-arrow-down" style="font-size: 0.8rem"></i>
+                        @endif
+                    </span>
+                </h6>
+            </button>
         </div>
 
     </div>

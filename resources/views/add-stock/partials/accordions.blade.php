@@ -4,30 +4,28 @@
 
     <div style="width: 100%;" class="accordion m-1 " id="accordionPanelsStayOpenExampleDiscount{{ $index }}">
         <div class="accordion-item" style="border: none">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" style="padding: 5px 15px;margin-bottom: 15px" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}discount"
-                    data-index="{{ $index }}" aria-expanded="true"
-                    aria-controls="panelsStayOpen-collapse{{ $index }}discount"
-                    wire:click="stayShowDiscount({{ $index }})">
-                    <h6>
-                        @lang('lang.discount')
-                    </h6>
-                    <span class="accordion-arrow">
-                        @if ($product['show_discount'])
-                            <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
-                        @else
-                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                        @endif
-                    </span>
-                </button>
-            </h2>
             <div id="panelsStayOpen-collapse{{ $index }}discount"
                 class="accordion-collapse collapse @if ($product['show_discount']) show @endif">
                 <div class="accordion-body @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif p-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" style="padding: 5px 15px;margin-bottom: 15px"
+                            type="button" data-bs-toggle="collapse" aria-expanded="true"
+                            wire:click="stayShowDiscount({{ $index }})">
+                            <h6>
+                                @lang('lang.discount')
+                                <span class="accordion-arrow ml-2">
+                                    @if ($product['show_discount'])
+                                        <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
+                                    @else
+                                        <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                    @endif
+                                </span>
+                            </h6>
+                        </button>
+                    </h2>
                     @foreach ($product['prices'] as $key => $price)
-                        <div class="d-flex flex-wrap @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif width-full mb-2"
-                            style="margin-top:-15px ">
+                        <div
+                            class="d-flex align-items-start flex-wrap @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif width-full mb-2">
 
                             <div style="width: 80px;padding:0;margin:0;font-size: 12px;"
                                 class="d-flex justify-content-center align-items-center flex-column mx-1">
@@ -42,9 +40,9 @@
                                     maxlength="6">
                             </div>
 
-                            <div style="width: 130px;padding:0;margin:0;font-size: 12px;margin-top:-10px"
-                                class="d-flex justify-content-center align-items-end flex-column">
-                                @if (count($product['variations']) > 0)
+                            @if (count($product['variations']) > 0)
+                                <div style="width: 130px;padding:0;margin:0;font-size: 12px;"
+                                    class="d-flex justify-content-center align-items-end flex-column">
                                     <label class="mb-0 mx-2" for="">{{ __('lang.unit') }}</label>
                                     <div class="input-wrapper" style="width: 100%">
                                         <select name="items.{{ $index }}.prices.{{ $key }}.fill_id"
@@ -61,16 +59,19 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                @else
+                                </div>
+                            @else
+                                <div style="width: 130px;padding:0;margin:0;font-size: 12px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
                                     <span>@lang('lang.no_units')</span>
-                                @endif
-                                @error('items.' . $index . '.variation_id')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
+                                </div>
+                            @endif
+                            @error('items.' . $index . '.variation_id')
+                                <span class="error text-danger">{{ $message }}</span>
+                            @enderror
 
 
-                            <div style="width: 100px;padding:0;margin:0;font-size: 12px;margin-top: -10px"
+                            <div style="width: 100px;padding:0;margin:0;font-size: 12px;"
                                 class="d-flex justify-content-center align-items-end mx-1 flex-column">
                                 {!! Form::label('customer_type', __('lang.customer_type'), [
                                     'style' => 'font-weight:700;font-size: 10px;',
@@ -88,7 +89,7 @@
                                 </div>
                             </div>
 
-                            <div style="width: 145px;padding:0;margin:0;margin-top: 13px"
+                            <div style="width: 145px;padding:0;margin:0;"
                                 class="d-flex justify-content-center align-items-end flex-column mx-1">
                                 {!! Form::label('price_type', __('lang.type'), [
                                     'class' => 'mb-0 mx-2',
@@ -241,28 +242,31 @@
 
     <div style="width: 100%;" class="accordion m-1" id="accordionPanelsStayOpenExampleValidity{{ $index }}">
         <div class="accordion-item" style="border: none">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}validity"
-                    data-index="{{ $index }}" aria-expanded="true"
-                    aria-controls="panelsStayOpen-collapse{{ $index }}validity"
-                    wire:click="stayShowValidity({{ $index }})">
-                    <h6>
-                        @lang('lang.validity')
-                    </h6>
-                    <span class="accordion-arrow">
-                        @if ($product['show_validity'])
-                            <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
-                        @else
-                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                        @endif
-                    </span>
-                </button>
-            </h2>
+
             <div id="panelsStayOpen-collapse{{ $index }}validity"
                 class="accordion-collapse collapse @if ($product['show_validity']) show @endif">
                 <div class="accordion-body @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif p-0">
-
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed"
+                            style="padding: 5px 15px;
+                        margin-bottom: 15px" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapse{{ $index }}validity"
+                            data-index="{{ $index }}" aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapse{{ $index }}validity"
+                            wire:click="stayShowValidity({{ $index }})">
+                            <h6>
+                                @lang('lang.validity')
+                                <span class="accordion-arrow ml-2">
+                                    @if ($product['show_validity'])
+                                        <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
+                                    @else
+                                        <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                    @endif
+                                </span>
+                            </h6>
+                        </button>
+                    </h2>
                     <div class="p-0 mt-2 d-flex flex-wrap justify-content-between align-items-center rounded-3 text-center"
                         style="width: 100%;
 
