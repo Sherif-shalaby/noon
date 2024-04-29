@@ -453,12 +453,12 @@
                         class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.invoice_discount"
                         wire:change="cost({{ $index }})" style="width: 100px;"
-                        placeholder="invoice discount">
+                        placeholder="@lang('lang.invoice_discount')">
 
                     <input type="text" name="items.{{ $index }}.cash_discount"
                         id="items.{{ $index }}.cash_discount"class="form-control initial-balance-input width-full mx-0"
                         wire:model="items.{{ $index }}.cash_discount" style="width: 100px;"
-                        wire:change="cost({{ $index }})" placeholder="cash discount">
+                        wire:change="cost({{ $index }})" placeholder="@lang('lang.cash_discount')">
 
 
                     <div class="custom-control custom-switch">

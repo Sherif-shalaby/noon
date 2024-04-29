@@ -872,5 +872,7 @@ return array(
     'store_transfer' => 'تحويل المخازن',
     'all_transfers' => 'كل التحويلات',
     'value_of_transaction' => 'قيمه التحويل',
-    "total_stores" => 'إجمالي المخازن'
+    "total_stores" => 'إجمالي المخازن',
+    'invoice_discount' => 'خصم الفاتورة',
+
 );
