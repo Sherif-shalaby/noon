@@ -87,6 +87,7 @@
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.cost') }}</label>
                 <input type="text" class="form-control initial-balance-input purchase_price"
                     style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                    @if ($index != 0) disabled @endif
                     wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.cost') }}"
                     wire:change="changeUnitPurchasePrice({{ $index }})">
                 @error('rows.' . $index . '.purchase_price')
@@ -152,8 +153,8 @@ width: 75%;
     margin: auto;
     flex-wrap: nowrap;
     margin-bottom: 10px;"
-                            wire:model="rows.{{ $index }}.prices.{{ $key }}.percent" maxlength="6"
-                            placeholder="%">
+                            wire:model="rows.{{ $index }}.prices.{{ $key }}.percent"
+                            @if ($index != 0) disabled @endif maxlength="6" placeholder="%">
                     </div>
                     <div class="mb-2  d-flex flex-column  align-items-end pl-1" style="width: max-content">
                         <div class="d-flex justify-content-between">
@@ -180,6 +181,7 @@ width: 75%;
     margin: auto;
     flex-wrap: nowrap;
     margin-bottom: 10px;"
+                            @if ($index != 0) disabled @endif
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
                             placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
                             wire:change="changeIncrease({{ $index }},{{ $key }})">
@@ -208,6 +210,7 @@ width: 75%;
     flex-wrap: nowrap;
     margin-bottom: 10px;"
                             wire:change="changeSellPrice({{ $index }},{{ $key }})"
+                            @if ($index != 0) disabled @endif
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                             placeholder = "{{ __('lang.price') }}">
                         <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"

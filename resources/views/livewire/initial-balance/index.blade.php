@@ -92,7 +92,7 @@
                                                         data-tooltip="@lang('lang.quantity')">
 
                                                         @foreach ($stock->add_stock_lines as $index => $line)
-                                                            {{ @num_format($line->quantity) . ' ( ' . $line->variation?->unit->name . ' ) ' }}
+                                                            {{ @num_format($line->quantity) . ' (' . ($line->variation && $line->variation->unit ? $line->variation->unit->name : '-') . ')' }}
                                                             {{ !empty($transaction->add_stock_lines[$index + 1]) }} <br>
                                                         @endforeach
                                                         @if (count($stock->childTransactions) > 0)

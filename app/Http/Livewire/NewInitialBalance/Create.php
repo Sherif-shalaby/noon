@@ -507,21 +507,21 @@ class Create extends Component
                     }
                 }
 
-                if (
-                    $this->item[0]['height'] == ('' || 0) && $this->item[0]['length'] == ('' || 0) && $this->item[0]['width'] == ('' || 0)
-                    || $this->item[0]['size'] == ('' || 0) && $this->item[0]['weight'] == ('' || 0)
-                ) {
-                } else {
-                    ProductDimension::create([
-                        'product_id' => $product->id,
-                        'variation_id' => !empty($this->item[0]['basic_unit_variation_id']) ? (Variation::where('product_id', $product->id)->where('unit_id', $this->item[0]['basic_unit_variation_id'])->first()->id ?? '') : null,
-                        'height' => !empty($this->item[0]['height']) ? $this->item[0]['height'] : 0,
-                        'length' => !empty($this->item[0]['length']) ? $this->item[0]['length'] : 0,
-                        'width' => !empty($this->item[0]['width']) ? $this->item[0]['width'] : 0,
-                        'weight' => !empty($this->item[0]['weight']) ? $this->item[0]['weight'] : 0,
-                        'size' => !empty($this->item[0]['size']) ? $this->item[0]['size'] : 0,
-                    ]);
-                }
+                // if (
+                //     $this->item[0]['height'] == ('' || 0) && $this->item[0]['length'] == ('' || 0) && $this->item[0]['width'] == ('' || 0)
+                //     || $this->item[0]['size'] == ('' || 0) && $this->item[0]['weight'] == ('' || 0)
+                // ) {
+                // } else {
+                ProductDimension::create([
+                    'product_id' => $product->id,
+                    'variation_id' => !empty($this->item[0]['basic_unit_variation_id']) ? (Variation::where('product_id', $product->id)->where('unit_id', $this->item[0]['basic_unit_variation_id'])->first()->id ?? '') : null,
+                    'height' => !empty($this->item[0]['height']) ? $this->item[0]['height'] : 0,
+                    'length' => !empty($this->item[0]['length']) ? $this->item[0]['length'] : 0,
+                    'width' => !empty($this->item[0]['width']) ? $this->item[0]['width'] : 0,
+                    'weight' => !empty($this->item[0]['weight']) ? $this->item[0]['weight'] : 0,
+                    'size' => !empty($this->item[0]['size']) ? $this->item[0]['size'] : 0,
+                ]);
+                // }
                 $this->saveTransaction($product->id,);
                 DB::commit();
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
@@ -1213,6 +1213,7 @@ class Create extends Component
                 }
             }
         }
+        $this->changeSellPrice($index, $key);
     }
     public function showDiscount()
     {
@@ -1448,6 +1449,10 @@ class Create extends Component
     }
     public function changeSellPrice($index, $key)
     {
+        $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
+        if ($this->rows[$index]['prices'][$key]['percent'] == null || $this->rows[$index]['prices'][$key]['percent'] == 0) {
+            $this->rows[$index]['prices'][$key]['percent'] = (($this->rows[$index]['prices'][$key]['dinar_sell_price'] - $purchase_price) * 100) / $purchase_price;
+        }
         if ($this->transaction_currency == 2) {
             $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->rows[$index]['prices'][$key]['dinar_sell_price'], num_of_digital_numbers());
             $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) * $this->num_uf($this->exchange_rate), num_of_digital_numbers());
@@ -1455,6 +1460,7 @@ class Create extends Component
             $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
         }
         $this->changeUnitPrices($index);
+        // $this->changePercent($index, $key);
     }
     public function toggle_suppliers_dropdown()
     {
