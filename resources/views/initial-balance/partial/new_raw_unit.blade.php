@@ -33,7 +33,7 @@
                 <input type="text" class="form-control fill {{ $index == 0 ?'d-none':''}}" style="width:90px !important;"
                 wire:model="rows.{{ $index }}.fill" placeholder = "{{ __('lang.fill') }}" wire:change="changeFill({{$index}})">
 
-                <input type="text" class="form-control purchase_price" style="width:120px !important; "
+                <input type="text" class="form-control purchase_price" style="width:120px !important; " @if($index != 0) disabled @endif
                     wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.purchase_price') }}" wire:change="changeUnitPurchasePrice({{$index}})">
                 @error('rows.' . $index . '.purchase_price')
                     <br>
@@ -60,12 +60,12 @@
         <td></td>
         <td>
             <input type="text" class="form-control percent" name="percent" wire:change="changePercent({{$index}},{{$key}})"
-                wire:model="rows.{{ $index }}.prices.{{ $key }}.percent" maxlength="6"
+                wire:model="rows.{{ $index }}.prices.{{ $key }}.percent" maxlength="6" @if($index != 0) disabled @endif
                 placeholder="%">
         </td>
         <td>
             <input type="text" class="form-control dinar_sell_price"
-                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
+                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase" @if($index != 0) disabled @endif
                 placeholder = "{{ $rows[$index]['prices'][$key]['customer_name']??'' }}" wire:change="changeIncrease({{$index}},{{$key}})">
             <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{$rows[$index]['prices'][$key]['dollar_increase']??0}} $</span>
             @error('rows.' . $index.'prices'. $key . '.dinar_increase')
@@ -76,7 +76,7 @@
 
         <td>
             <input type="text" class="form-control dinar_sell_price" wire:change="changeSellPrice({{$index}},{{$key}})"
-                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
+                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price" @if($index != 0) disabled @endif
                 placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}">
             <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">{{$rows[$index]['prices'][$key]['dollar_sell_price']}} $</span>
             @error('rows.' . $index.'prices'. $key . '.dinar_sell_price')
