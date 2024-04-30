@@ -281,20 +281,17 @@ class Create extends Component
                 return $query->where('name', 'like', '%' . $this->searchProduct . '%')
                     ->orWhere('sku', 'like', '%' . $this->searchProduct . '%');
             });
-            $search_result = $search_result->get();
+            $search_result = $search_result->paginate();
             if (count($search_result) == 0) {
                 $variation = Variation::when($this->searchProduct, function ($query) {
                     return $query->where('sku', 'like', '%' . $this->searchProduct . '%');
                 })->pluck('product_id');
-                $variationId = Variation::when($this->searchProduct, function ($query) {
-                    return $query->where('sku', 'like', '%' . $this->searchProduct . '%');
-                })->first()->id;
                 $search_result = Product::whereIn('id', $variation);
-                $search_result = $search_result->get();
+                $search_result = $search_result->paginate();
             }
 
             if (count($search_result) === 1) {
-                $this->add_product($search_result->first()->id,$variationId);
+                $this->add_product($search_result->first()->id);
                 $search_result = '';
                 $this->searchProduct = '';
             }
@@ -968,7 +965,7 @@ class Create extends Component
             }
         }
         $this->computeForAll();
-      
+
     }
     public function cancel()
     {
@@ -1933,7 +1930,7 @@ class Create extends Component
         }
         $this->items[$key]['unit_name'] = Variation::find($variation_id)->unit->name;
         $this->items[$key]['unit_sku'] = Variation::find($variation_id)->sku;
-        
+
 //        dd($this->items[$key]['unit_name'] );
         $this->subtotal($key, $via = 'quantity');
         $this->changeCustomerType($key);
