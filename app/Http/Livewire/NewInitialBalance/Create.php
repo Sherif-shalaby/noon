@@ -1156,7 +1156,7 @@ class Create extends Component
                     $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($dinar_sell_price / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                 }else{
                     $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) + ($this->num_uf($this->rows[$index]['purchase_price'])*$this->num_uf($this->exchange_rate)), num_of_digital_numbers());
-//                    dd($this->rows[$index][]);
+                //                    dd($this->rows[$index][]);
                     $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($this->rows[$index]['purchase_price']) + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), num_of_digital_numbers());
                 }
                 // $this->changeIncrease($index, $key);
