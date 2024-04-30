@@ -1083,12 +1083,11 @@ class Create extends Component
             }
         }
     }
-
     public function stayShow()
     {
         foreach ($this->rows as &$row) {
             $row['show_prices'] =
-                !$row['show_prices'];
+            !$row['show_prices'];
         }
     }
     public function changeUnitPrices($key)
@@ -1215,7 +1214,6 @@ class Create extends Component
                 }
             }
         }
-        $this->changeSellPrice($index, $key);
     }
     public function showDiscount()
     {
