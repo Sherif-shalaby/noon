@@ -363,3 +363,62 @@
         </div>
     </div>
 </div>
+@push('js')
+<script>
+       // ++++++++++++++++++++++ Countries , State , Cities Selectbox ++++++++++++++++
+    // ================ state selectbox ================
+    $('#state-dd').change(function(event) {
+        // Capture the selected state value
+        var idState = this.value;
+        $('#city-dd').html('');
+        $.ajax({
+            url: "/api/customers/fetch-cities",
+            type: 'POST',
+            dataType: 'json',
+            data: {state_id: idState,_token:"{{ csrf_token() }}"},
+            success:function(response)
+            {
+                $('#city-dd').html('<option value="">Select State</option>');
+                $.each(response.cities,function(index, val)
+                {
+                    $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                });
+            }
+        })
+    });
+    // ================ city selectbox ================
+    // ++++++++++++ store "state_id" in hidden inputField in "cities modal" ++++++++++
+    $("#cities_id").on('click', function(){
+        var state_id = $("#state-dd").val();
+        $("#stateId").val(state_id);
+        console.log("+++++++++++++++++++++++++++ "+state_id+" +++++++++++++++++++++++++++");
+    });
+    // ================ quarter selectbox ================
+    $('#city-dd').change(function(event) {
+        // Capture the selected city value
+        var idCity = this.value;
+        $('#quarter-dd').html('');
+        $.ajax({
+            url: "/api/customers/fetch-quarters",
+            type: 'POST',
+            dataType: 'json',
+            data: {city_id: idCity,_token:"{{ csrf_token() }}"},
+            success:function(response)
+            {
+                console.log("Quarter = "+response.quarters);
+                $('#quarter-dd').html('<option value="">Select Quarter</option>');
+                $.each(response.quarters,function(index, val)
+                {
+                    $('#quarter-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                });
+            }
+        })
+    });
+    // ++++++++++++ store "cities_id" in hidden inputField in "quarter modal" ++++++++++
+    $("#add_quarters_btn_id").on('click', function(){
+        var city_id = $("#city-dd").val();
+        $("#cityId").val(city_id);
+        console.log("+++++++++++++++++++++++++++ "+city_id+" +++++++++++++++++++++++++++");
+    });
+</script>
+@endpush
