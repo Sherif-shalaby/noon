@@ -457,6 +457,8 @@ class Edit extends Component
                                     'dollar_sell_price' => $v_price->dollar_sell_price,
                                     'dinar_sell_price' => $v_price->dinar_sell_price,
                                     'quantity' => $v_price->quantity,
+                                    'dinar_increase'=>$v_price->dinar_increase,
+                                    'dollar_increase'=>$v_price->dollar_increase,
                                 ];
                                 $this->rows[$index]['prices'][] = $new_price;
                             } else {
@@ -876,6 +878,8 @@ class Edit extends Component
                     $Variation_price->dinar_sell_price = $this->rows[$index]['prices'][$key]['dinar_sell_price'] ?? null;
                     $Variation_price->dollar_sell_price = $this->rows[$index]['prices'][$key]['dollar_sell_price'] ?? null;
                     $Variation_price->percent = $this->rows[$index]['prices'][$key]['percent'] ?? null;
+                    $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) ?? null;
+                    $Variation_price->dollar_increase =  $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']) ?? null;
                     $Variation_price->save();
                     // }
                 }

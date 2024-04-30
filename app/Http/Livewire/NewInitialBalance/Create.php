@@ -502,6 +502,8 @@ class Create extends Component
                             $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
                             $Variation_price->dollar_sell_price = $this->toggle_dollar=="0"?($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null):0;
                             $Variation_price->percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']) ?? null;
+                            $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) ?? null;
+                            $Variation_price->dollar_increase =  $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']) ?? null;
                             $Variation_price->save();
                         }
                     }
@@ -1198,7 +1200,6 @@ class Create extends Component
             }
 
         }
-        $this->changeSellPrice($index,$key);
     }
     public function showDiscount()
     {
