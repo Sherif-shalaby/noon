@@ -6,9 +6,11 @@
                     <div class="card-header">
 
                         @if (!empty($is_raw_material))
-                            <h6>@lang('lang.add_stock_for_raw_material')</h6>
+                            <h6 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.add_stock_for_raw_material')</h6>
                         @else
-                            <h6>@lang('lang.add_initial_balance')</h6>
+                            <h6 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.add_initial_balance')</h6>
                         @endif
                     </div>
                     @php
@@ -17,7 +19,8 @@
                     <div class="card-body  py-0">
                         <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="overflow-x: auto">
-                            <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div
+                                class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                 <div class=" mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.15s;width: 75px">
@@ -920,6 +923,7 @@
 
                                 <div
                                     class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
+
                                     <button type="button" class="plus-button py-2 my-1" wire:click="addStoreRow()">
                                         <i class="fa fa-plus"></i>
                                     </button>
@@ -927,7 +931,11 @@
 
                                     @forelse ($fill_stores as $i => $store)
                                         <div
-                                            class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                            class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                            <button class="del-button btn-xl mx-1 py-2"
+                                                wire:click="delete_store_raw({{ $i }})">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                             <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
                                                 style="width: 160px">
                                                 <label for="extra_store_id"
@@ -959,6 +967,7 @@
                                             </div>
                                             <div
                                                 class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
                                                 @foreach ($fill_stores[$i]['data'] as $x => $fill)
                                                     <div
                                                         class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -1016,10 +1025,7 @@
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
                                                             {{-- @if ($i > 0) --}}
-                                                            <button class="del-button mx-1 py-2"
-                                                                wire:click="delete_store_raw({{ $i }})">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
+
                                                             {{-- @endif --}}
                                                         </div>
                                                     </div>

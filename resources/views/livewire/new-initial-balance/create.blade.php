@@ -625,8 +625,12 @@
                                     </button>
                                     @foreach ($fill_stores as $i => $store)
                                         <div
-                                            class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <button class="del-button btn-xl mx-1 py-2"
+                                                wire:click="delete_store_raw({{ $i }})">
+                                                <i class="fa fa-trash"></i>
 
+                                            </button>
                                             <div class=" mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
                                                 style="width: 160px">
                                                 <label for="extra_store_id"
@@ -661,6 +665,7 @@
                                                 @foreach ($fill_stores[$i]['data'] as $x => $fill)
                                                     <div
                                                         class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
                                                         <div class=" mb-2 d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                                             style="width: 100px">
                                                             <label for="store_fill_id"
@@ -702,18 +707,17 @@
                                                             @enderror
 
                                                         </div>
+
                                                         <div
                                                             class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mt-1  d-flex px-1">
                                                             <button type="button" class="plus-button mx-1 py-2"
                                                                 wire:click="addStoreDataRow({{ $i }})">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
-                                                            {{-- @if ($i > 0) --}}
-                                                            <button class="del-button mx-1 py-2"
-                                                                wire:click="delete_store_raw({{ $i }})">
+                                                            <button class="btn btn-danger mx-1 py-2"
+                                                                wire:click="delete_store_data_raw({{ $i }},{{ $x }})">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
-                                                            {{-- @endif --}}
                                                         </div>
                                                     </div>
                                                 @endforeach
