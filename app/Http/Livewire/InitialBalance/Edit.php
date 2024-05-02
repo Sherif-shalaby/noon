@@ -80,7 +80,7 @@ class Edit extends Component
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $product_tax, $subcategories = [],
         $deleted_items = [], $deleted_prices = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $customer_types = [],
-        $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [], $deteted_prices = [];
+        $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [], $deteted_prices = [] , $variationStoreSums,$variationFillStoreSums, $toggle_suppliers , $variationSums = [];
     public $rows = [] , $countryId,$countryName;
     public function messages()
     {
@@ -1337,7 +1337,66 @@ class Edit extends Component
     {
         return Unit::where('id', $this->rows[$index]['unit_id'])->first();
     }
-
+    public function count_total_by_variations()
+    {
+        $this->variationSums = [];
+        foreach ($this->rows as $row) {
+            if (!empty($row['unit_id'])) {
+                $unit = Unit::find($row['unit_id']);
+                $variation_name = $unit->name;
+                if (isset($this->variationSums[$variation_name])) {
+                    $this->variationSums[$variation_name] += $this->num_uf($row['quantity']);
+                } else {
+                    $this->variationSums[$variation_name] = $this->num_uf($row['quantity']);
+                }
+            }
+        }
+    }
+    public function count_total_by_variation_stores()
+    {
+        $this->variationStoreSums = [];
+        foreach ($this->rows as $row) {
+            if (!empty($row['unit_id'])) {
+                $unit = Unit::find($row['unit_id']);
+                $variation_name = $unit->name;
+                if (isset($this->variationStoreSums[$variation_name])) {
+                    $this->variationStoreSums[$variation_name] += $this->num_uf($row['quantity']);
+                } else {
+                    $this->variationStoreSums[$variation_name] = $this->num_uf($row['quantity']);
+                }
+            }
+        }
+        foreach($this->fill_stores as $key=>$fill){
+            foreach($this->fill_stores[$key]['data'] as $index=>$fill){
+                if (!empty($fill['store_fill_id'])) {
+                    $unit = Unit::find($fill['store_fill_id']);
+                    $variation_name = $unit->name;
+                    if (isset($this->variationStoreSums[$variation_name])) {
+                        $this->variationStoreSums[$variation_name] += $this->num_uf($fill['quantity']);
+                    } else {
+                        $this->variationStoreSums[$variation_name] = $this->num_uf($fill['quantity']);
+                    }
+                }
+            }
+        }
+    }
+    public function count_fill_stores_unit($key){
+        $this->variationFillStoreSums=[];
+        // foreach($this->fill_stores as $key=>$fill){
+            foreach($this->fill_stores[$key]['data'] as $index=>$fill){
+                if (!empty($fill['store_fill_id'])) {
+                    $unit = Unit::find($fill['store_fill_id']);
+                    $variation_name = $unit->name;
+                    if (isset($this->variationFillStoreSums[$variation_name])) {
+                        $this->variationFillStoreSums[$variation_name] += $this->num_uf($fill['quantity']);
+                    } else {
+                        $this->variationFillStoreSums[$variation_name] = $this->num_uf($fill['quantity']);
+                    }
+                }
+            }
+            return $this->variationFillStoreSums;
+        // }
+    }
     public function sub_total($index)
     {
         if (isset($this->rows[$index]['quantity']) && (isset($this->rows[$index]['purchase_price']) || isset($this->dollar_purchase_price[$index]))) {

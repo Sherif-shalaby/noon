@@ -499,11 +499,12 @@ class Create extends Component
                             $Variation_price = new VariationPrice();
                             $Variation_price->variation_id = $Variation->id;
                             $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
-                            $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
-                            $Variation_price->dollar_sell_price = $this->toggle_dollar=="0"?($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null):0;
-                            $Variation_price->percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']) ?? null;
-                            $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) ?? null;
-                            $Variation_price->dollar_increase =  $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']) ?? null;
+                            $Variation_price->dinar_sell_price =number_format( $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) , num_of_digital_numbers()) ?? null;
+                            $Variation_price->dollar_sell_price = $this->toggle_dollar=="0"?(number_format($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) , num_of_digital_numbers())?? null):0;
+                            $Variation_price->percent = number_format($this->num_uf($this->rows[$index]['prices'][$key]['percent']), num_of_digital_numbers()) ?? null;
+                            // dd($Variation_price->percent);
+                            $Variation_price->dinar_increase = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) , num_of_digital_numbers()) ?? null;
+                            $Variation_price->dollar_increase = number_format( $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']) , num_of_digital_numbers()) ?? null;
                             $Variation_price->save();
                         }
                     }
@@ -574,10 +575,10 @@ class Create extends Component
                         'quantity' => ($i == -1) && $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : $quantity,
                         // 'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
                         // 'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->num_uf($this->rows[$index]['fill_quantity']) : 0,
-                        'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
+                        'purchase_price' => ($this->transaction_currency != 2) ?  number_format($this->num_uf($this->rows[$index]['purchase_price']) , num_of_digital_numbers()) : null,
                         'sell_price' => null,
                         // 'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
-                        'dollar_purchase_price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null):0,
+                        'dollar_purchase_price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ?  number_format($this->num_uf($this->rows[$index]['purchase_price']) , num_of_digital_numbers()) : null):0,
                         'dollar_sell_price' =>  null,
                         'dollar_sub_total' =>  null,
                         'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
