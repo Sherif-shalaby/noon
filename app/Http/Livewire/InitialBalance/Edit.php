@@ -446,7 +446,7 @@ class Edit extends Component
                         $newRow = [
                             'stock_line_id' => $stock->id,
                             'id' => $stock->variation->id, 'sku' => $stock->variation->sku, 'quantity' => $stock->quantity,
-                            'purchase_price' => ($this->transaction_currency == 2) ? $stock->dollar_purchase_price * $this->num_uf($this->exchangeRate) : $stock->purchase_price,
+                            'purchase_price' => ($this->transaction_currency == 2) ?  number_format($stock->dollar_purchase_price * $this->num_uf($this->exchangeRate) , num_of_digital_numbers()):  number_format($stock->purchase_price , num_of_digital_numbers()),
                             'unit_id' => $stock->variation->unit_id,
                             'fill_currency' => 'dinar',
                             'prices' => [],
@@ -520,14 +520,14 @@ class Edit extends Component
                                     'variation_id' => $v_price->variation_id,
                                     'customer_type_id' => $v_price->customer_type_id,
                                     'customer_name' => $customer_type->name,
-                                    'percent' => $v_price->percent,
-                                    'dollar_increase' => 0,
-                                    'dinar_increase' => null,
-                                    'dollar_sell_price' => $v_price->dollar_sell_price,
-                                    'dinar_sell_price' => $v_price->dinar_sell_price,
+                                    'percent' =>  number_format($v_price->percent , num_of_digital_numbers()),
+                                    // 'dollar_increase' => 0,
+                                    // 'dinar_increase' => null,
+                                    'dollar_sell_price' =>  number_format($v_price->dollar_sell_price ,num_of_digital_numbers()),
+                                    'dinar_sell_price' =>  number_format($v_price->dinar_sell_price, num_of_digital_numbers()),
                                     'quantity' => $v_price->quantity,
-                                    'dinar_increase'=>$v_price->dinar_increase,
-                                    'dollar_increase'=>$v_price->dollar_increase,
+                                    'dinar_increase'=> number_format($v_price->dinar_increase ,num_of_digital_numbers()),
+                                    'dollar_increase'=> number_format($v_price->dollar_increase , num_of_digital_numbers()),
                                 ];
                                 $this->rows[$index]['prices'][] = $new_price;
                             } else {
@@ -636,7 +636,7 @@ class Edit extends Component
             if ((float)$this->rows[$unit_index]['equal'] != 0) {
                 $this->rows[$index]['dollar_purchase_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_purchase_price'])) * (float)$this->rows[$index]['equal'];
                 $this->rows[$index]['dollar_selling_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_selling_price'])) * (float)$this->rows[$index]['equal'];
-                $this->rows[$index]['purchase_price'] = ($this->num_uf($this->rows[$unit_index]['purchase_price'])) * (float)$this->rows[$index]['equal'];
+                $this->rows[$index]['purchase_price'] =  number_format(($this->num_uf($this->rows[$unit_index]['purchase_price'])) * (float)$this->rows[$index]['equal'] , num_of_digital_numbers());
                 $this->rows[$index]['selling_price'] = ($this->num_uf($this->rows[$unit_index]['selling_price'])) * (float)$this->rows[$index]['equal'];
                 // dd($this->rows[$unit_index]);
                 if ($this->rows[$index]['fill_type'] == "fixed") {
@@ -1498,7 +1498,7 @@ class Edit extends Component
     }
     public function changePurchasePrice($index)
     {
-        $this->rows[$index]['purchase_price'] = (float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->exchange_rate;
+        $this->rows[$index]['purchase_price'] = number_format((float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->exchange_rate ,num_of_digital_numbers());
         $this->changeFilling($index);
     }
     public function changeDollarPurchasePrice($index)
