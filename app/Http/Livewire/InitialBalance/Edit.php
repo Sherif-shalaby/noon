@@ -940,15 +940,16 @@ class Edit extends Component
                     } else {
                         $Variation_price = new VariationPrice();
                     }
+                    // dd($this->rows[$index]['prices'][$key]);
                     $Variation_price->variation_id = $Variation->id;
                     $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
-                    // $Variation_price->dinar_increase = $this->rows[$index]['prices'][$key]['dinar_increase'] ?? null;
-                    // $Variation_price->dollar_increase = $this->rows[$index]['prices'][$key]['dollar_increase'] ?? null;
-                    $Variation_price->dinar_sell_price = $this->rows[$index]['prices'][$key]['dinar_sell_price'] ?? null;
-                    $Variation_price->dollar_sell_price = $this->rows[$index]['prices'][$key]['dollar_sell_price'] ?? null;
+                    $Variation_price->dinar_increase = $this->rows[$index]['prices'][$key]['dinar_increase'] ?? null;
+                    $Variation_price->dollar_increase = $this->rows[$index]['prices'][$key]['dollar_increase'] ?? null;
+                    $Variation_price->dinar_sell_price = $this->num_uf( $this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
+                    $Variation_price->dollar_sell_price = $this->num_uf( $this->rows[$index]['prices'][$key]['dollar_sell_price'] )?? null;
                     $Variation_price->percent =$this->num_uf( $this->rows[$index]['prices'][$key]['percent'] )?? null;
-                    $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) ?? null;
-                    $Variation_price->dollar_increase =  $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']) ?? null;
+                    // $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) ?? null;
+                    // $Variation_price->dollar_increase =  $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']) ?? null;
                     $Variation_price->save();
                     // }
                 }
@@ -967,9 +968,10 @@ class Edit extends Component
             ) {
                 ProductDimension::where('product_id', $product->id)->delete();
             } else {
+                // dd($this->item[0]['basic_unit_variation_id']);
                 ProductDimension::where('product_id', $product->id)->update([
                     'product_id' => $product->id,
-                    'variation_id' => !empty($this->item[0]['basic_unit_variation_id']) ? (Variation::where('product_id', $product->id)->where('unit_id', $this->item[0]['basic_unit_variation_id'])->first()->id ?? '') : null,
+                    'variation_id' => !empty($this->item[0]['basic_unit_variation_id']) ? (Variation::where('product_id', $product->id)->where('unit_id', $this->item[0]['basic_unit_variation_id'])->first()->id ?? null) : null,
                     'height' => !empty($this->item[0]['height']) ? $this->item[0]['height'] : 0,
                     'length' => !empty($this->item[0]['length']) ? $this->item[0]['length'] : 0,
                     'width' => !empty($this->item[0]['width']) ? $this->item[0]['width'] : 0,
@@ -1031,6 +1033,7 @@ class Edit extends Component
                     if (!empty($price['dinar_price']) || !empty($price['discount_quantity'])) {
                         $variation_id = Variation::where('product_id', $product_id)->where('unit_id', $price['fill_id'])->first()->id ?? '';
                         $stock_line = AddStockLine::where('product_id', $product_id)->where('variation_id', $variation_id)->where('stock_transaction_id', $transaction->id)->first();
+                        // dd($price['fill_id']);
                         $price_data = [
                             'variation_id' => $variation_id,
                             'stock_line_id' => $stock_line->id ?? 0,
@@ -1289,44 +1292,40 @@ class Edit extends Component
 
 
 
-        $variations = Variation::where('product_id', $this->edit_product['id'])->get();
-        foreach ($variations as $variation) {
-            $newRow = [
-                'id' => $variation->id,
-                'sku' => $variation->sku,
-                'quantity' => '',
-                'fill_quantity' => '',
-                'fill_currency' => 'dinar',
-                'fill_type' => 'fixed',
-                'purchase_price' => '',
-                'selling_price' => '',
-                'dollar_purchase_price' => '',
-                'dollar_selling_price' => '',
-                'unit_id' => $variation->unit_id,
-                'basic_unit_id' => $variation->basic_unit_id,
-                'change_price_stock' => '',
-                'equal' => $variation->equal,
-                'prices' => [
-                    [
-                        'price_type' => null,
-                        'price_category' => null,
-                        'price' => null,
-                        'dinar_price' => null,
-                        'price_currency' => 'dollar',
-                        'discount_quantity' => null,
-                        'bonus_quantity' => null,
-                        'price_customer_types' => null,
-                        'price_after_desc' => null,
-                        'dinar_price_after_desc' => null,
-                        'total_price' => null,
-                        'piece_price' => null,
-                        'dinar_total_price' => null,
-                        'dinar_piece_price' => null,
-                    ],
-                ],
-            ];
-            $this->rows[] = $newRow;
-        }
+            $variations = Variation::where('product_id', $this->edit_product['id'])->get();
+            if (count($variations)>=1) {
+                $this->rows = [];
+                foreach ($variations as $variation) {
+                    $newRow = [
+                        'id' => $variation->id,
+                        'sku' => $variation->sku,
+                        'quantity' => '',
+                        'purchase_price' => '',
+                        'unit_id' => $variation->unit_id,
+                        'fill' => $variation->equal,
+                        'prices' => [],
+                    ];
+                    $this->rows[] = $newRow;
+                    $index = count($this->rows) - 1;
+
+                    foreach ($this->customer_types as $customer_type) {
+                        $new_price = [
+                            'customer_type_id' => $customer_type->id,
+                            'customer_name' => $customer_type->name,
+                            'percent' => null,
+                            'dollar_increase' => 0,
+                            'dinar_increase' => null,
+                            'dollar_sell_price' => 0,
+                            'dinar_sell_price' => null,
+                            'quantity' => null,
+                        ];
+                        array_unshift($this->rows[$index]['prices'], $new_price);
+                    }
+                }
+            }else{
+                $this->rows = [];
+                $this->addPrices();
+            }
     }
     public function cancelCreateProduct()
     {
