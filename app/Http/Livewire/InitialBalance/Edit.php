@@ -80,7 +80,7 @@ class Edit extends Component
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $product_tax, $subcategories = [],
         $deleted_items = [], $deleted_prices = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $customer_types = [],
-        $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [], $deteted_prices = [];
+        $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [], $deteted_prices = [] , $variationStoreSums,$variationFillStoreSums, $toggle_suppliers , $variationSums = [];
     public $rows = [] , $countryId,$countryName;
     public function messages()
     {
@@ -446,7 +446,7 @@ class Edit extends Component
                         $newRow = [
                             'stock_line_id' => $stock->id,
                             'id' => $stock->variation->id, 'sku' => $stock->variation->sku, 'quantity' => $stock->quantity,
-                            'purchase_price' => ($this->transaction_currency == 2) ? $stock->dollar_purchase_price * $this->num_uf($this->exchangeRate) : $stock->purchase_price,
+                            'purchase_price' => ($this->transaction_currency == 2) ?  number_format($stock->dollar_purchase_price * $this->num_uf($this->exchangeRate) , num_of_digital_numbers()):  number_format($stock->purchase_price , num_of_digital_numbers()),
                             'unit_id' => $stock->variation->unit_id,
                             'fill_currency' => 'dinar',
                             'prices' => [],
@@ -520,14 +520,14 @@ class Edit extends Component
                                     'variation_id' => $v_price->variation_id,
                                     'customer_type_id' => $v_price->customer_type_id,
                                     'customer_name' => $customer_type->name,
-                                    'percent' => $v_price->percent,
-                                    'dollar_increase' => 0,
-                                    'dinar_increase' => null,
-                                    'dollar_sell_price' => $v_price->dollar_sell_price,
-                                    'dinar_sell_price' => $v_price->dinar_sell_price,
+                                    'percent' =>  number_format($v_price->percent , num_of_digital_numbers()),
+                                    // 'dollar_increase' => 0,
+                                    // 'dinar_increase' => null,
+                                    'dollar_sell_price' =>  number_format($v_price->dollar_sell_price ,num_of_digital_numbers()),
+                                    'dinar_sell_price' =>  number_format($v_price->dinar_sell_price, num_of_digital_numbers()),
                                     'quantity' => $v_price->quantity,
-                                    'dinar_increase'=>$v_price->dinar_increase,
-                                    'dollar_increase'=>$v_price->dollar_increase,
+                                    'dinar_increase'=> number_format($v_price->dinar_increase ,num_of_digital_numbers()),
+                                    'dollar_increase'=> number_format($v_price->dollar_increase , num_of_digital_numbers()),
                                 ];
                                 $this->rows[$index]['prices'][] = $new_price;
                             } else {
@@ -636,7 +636,7 @@ class Edit extends Component
             if ((float)$this->rows[$unit_index]['equal'] != 0) {
                 $this->rows[$index]['dollar_purchase_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_purchase_price'])) * (float)$this->rows[$index]['equal'];
                 $this->rows[$index]['dollar_selling_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_selling_price'])) * (float)$this->rows[$index]['equal'];
-                $this->rows[$index]['purchase_price'] = ($this->num_uf($this->rows[$unit_index]['purchase_price'])) * (float)$this->rows[$index]['equal'];
+                $this->rows[$index]['purchase_price'] =  number_format(($this->num_uf($this->rows[$unit_index]['purchase_price'])) * (float)$this->rows[$index]['equal'] , num_of_digital_numbers());
                 $this->rows[$index]['selling_price'] = ($this->num_uf($this->rows[$unit_index]['selling_price'])) * (float)$this->rows[$index]['equal'];
                 // dd($this->rows[$unit_index]);
                 if ($this->rows[$index]['fill_type'] == "fixed") {
@@ -1337,7 +1337,66 @@ class Edit extends Component
     {
         return Unit::where('id', $this->rows[$index]['unit_id'])->first();
     }
-
+    public function count_total_by_variations()
+    {
+        $this->variationSums = [];
+        foreach ($this->rows as $row) {
+            if (!empty($row['unit_id'])) {
+                $unit = Unit::find($row['unit_id']);
+                $variation_name = $unit->name;
+                if (isset($this->variationSums[$variation_name])) {
+                    $this->variationSums[$variation_name] += $this->num_uf($row['quantity']);
+                } else {
+                    $this->variationSums[$variation_name] = $this->num_uf($row['quantity']);
+                }
+            }
+        }
+    }
+    public function count_total_by_variation_stores()
+    {
+        $this->variationStoreSums = [];
+        foreach ($this->rows as $row) {
+            if (!empty($row['unit_id'])) {
+                $unit = Unit::find($row['unit_id']);
+                $variation_name = $unit->name;
+                if (isset($this->variationStoreSums[$variation_name])) {
+                    $this->variationStoreSums[$variation_name] += $this->num_uf($row['quantity']);
+                } else {
+                    $this->variationStoreSums[$variation_name] = $this->num_uf($row['quantity']);
+                }
+            }
+        }
+        foreach($this->fill_stores as $key=>$fill){
+            foreach($this->fill_stores[$key]['data'] as $index=>$fill){
+                if (!empty($fill['store_fill_id'])) {
+                    $unit = Unit::find($fill['store_fill_id']);
+                    $variation_name = $unit->name;
+                    if (isset($this->variationStoreSums[$variation_name])) {
+                        $this->variationStoreSums[$variation_name] += $this->num_uf($fill['quantity']);
+                    } else {
+                        $this->variationStoreSums[$variation_name] = $this->num_uf($fill['quantity']);
+                    }
+                }
+            }
+        }
+    }
+    public function count_fill_stores_unit($key){
+        $this->variationFillStoreSums=[];
+        // foreach($this->fill_stores as $key=>$fill){
+            foreach($this->fill_stores[$key]['data'] as $index=>$fill){
+                if (!empty($fill['store_fill_id'])) {
+                    $unit = Unit::find($fill['store_fill_id']);
+                    $variation_name = $unit->name;
+                    if (isset($this->variationFillStoreSums[$variation_name])) {
+                        $this->variationFillStoreSums[$variation_name] += $this->num_uf($fill['quantity']);
+                    } else {
+                        $this->variationFillStoreSums[$variation_name] = $this->num_uf($fill['quantity']);
+                    }
+                }
+            }
+            return $this->variationFillStoreSums;
+        // }
+    }
     public function sub_total($index)
     {
         if (isset($this->rows[$index]['quantity']) && (isset($this->rows[$index]['purchase_price']) || isset($this->dollar_purchase_price[$index]))) {
@@ -1439,7 +1498,7 @@ class Edit extends Component
     }
     public function changePurchasePrice($index)
     {
-        $this->rows[$index]['purchase_price'] = (float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->exchange_rate;
+        $this->rows[$index]['purchase_price'] = number_format((float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->exchange_rate ,num_of_digital_numbers());
         $this->changeFilling($index);
     }
     public function changeDollarPurchasePrice($index)

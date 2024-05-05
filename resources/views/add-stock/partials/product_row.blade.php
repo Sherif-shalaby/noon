@@ -21,7 +21,14 @@
     <td title="{{__('lang.products')}}">
         {{ $product['product']['name'] }}
         <br>
-        <span> {{ $product['product']['sku'] }}</span>
+        <span>
+            {{-- @if(empty($item['variation']))
+            {{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}
+            @else
+            {{$item['unit_sku']}}
+            @endif --}}
+             {{ $items[$index]['unit_sku']}}
+        </span>
     </td>
     <td>
         <div class="col-md-3">
@@ -52,7 +59,7 @@
             </div>
             <div>
                 {{-- Iterate through units and display each unit name and value as a span --}}
-                @if($items[$index]['is_have_stock']=='0')
+                @if(isset($items[$index]['is_have_stock']) && $items[$index]['is_have_stock']=='0')
                 @if(isset($items[$index]['units']))
                 @foreach ($items[$index]['units'] as $unitName => $unitValue)
                     @if(!empty($unitName))
@@ -60,7 +67,7 @@
                     @endif
                 @endforeach
                 @endif
-                @elseif($items[$index]['is_have_stock']==1)
+                @elseif( isset($items[$index]['is_have_stock']) && $items[$index]['is_have_stock']==1)
 
                 @foreach ($items[$index]['units'] as $unitName => $unitValue)
                 @if(!empty($unitName))
@@ -116,7 +123,7 @@
         'required', 'placeholder' => __('lang.please_select'),
         'wire:model' => 'items.' . $index . '.discount_type']) !!}
     </td>
-    <td class="{{$items[$index]['discount_type']!="1"?'d-none':''}}">
+    <td @if(isset($items[$index]['discount_type'])) class="{{$items[$index]['discount_type']!="1"?'d-none':''}}" @endif>
         <div class="input-group-prepend">
 {{--            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:change="changePurchasePrice({{ $index }})" placeholder="%">--}}
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount" style="width: 100px;" wire:change="changePurchasePrice({{ $index }})" placeholder="amount">
@@ -130,7 +137,7 @@
             <label class="custom-control-label" for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_from_original_price')</label>
         </div>
     </td>
-    <td class="{{$items[$index]['discount_type']!="1"?'d-none':''}}">
+    <td @if(isset($items[$index]['discount_type'])) class="{{$items[$index]['discount_type']!="1"?'d-none':''}}" @endif>
         <span class="price_after_discount">
             {{ @number_format(num_uf($product['purchase_after_discount']),num_of_digital_numbers())  }}
         </span><br>
@@ -138,10 +145,12 @@
             {{ @number_format(num_uf($product['dollar_purchase_after_discount']),num_of_digital_numbers())  }}
         </span>
     </td>
-    <td class="{{$items[$index]['discount_type']!="2"?'d-none':''}}">
+    <td @if(isset($items[$index]['discount_type'])) class="{{$items[$index]['discount_type']!="2"?'d-none':''}}" @endif>
         <div class="d-flex justify-content-between">
             <div class="input-group-prepend">
+                @if(isset($items[$index]['discount_type']))
                 {{$items[$index]['discount_type']!="2"?'d-none':''}}
+                @endif
 {{--                <input type="text" class="form-control" wire:model="items.{{ $index }}.discount_percent" style="width: 100px;"  placeholder="%">--}}
             </div>
             <input type="text" class="form-control" wire:model="items.{{ $index }}.discount" style="width: 100px;" placeholder="discount amount">
