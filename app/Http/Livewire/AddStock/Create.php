@@ -982,6 +982,7 @@ class Create extends Component
             'quantity' => 1,
             'bonus_quantity' => '',
             'unit' => !empty($variant) ? $variant->unit->name : '',
+            'unit_sku' => !empty($variant) ? $variant->sku : $product->sku,
             'base_unit_multiplier' => !empty($variant) ? $variant->equal : 0,
             'fill_type' => !empty($stock) ? $stock->fill_type : 'fixed',
             'sub_total' => 0,
@@ -1041,6 +1042,7 @@ class Create extends Component
         $last_index = count($this->items) - 1;
         $this->getVariationData($last_index);
     }
+
 
     public function stayShowDiscount($index)
     {
@@ -1390,6 +1392,7 @@ class Create extends Component
                 }
                 $this->items[$index]['unit'] = $variant->unit->name ?? '';
                 $this->items[$index]['stores'][$i]['base_unit_multiplier'] = $variant->equal ?? 0;
+                $this->items[$index]['unit_sku'] = $variant->sku;
             }
             $this->getSubUnits($index, 'stores', $i);
         } else {
@@ -1437,6 +1440,7 @@ class Create extends Component
                 $this->items[$index]['total_weight'] = number_format($this->num_uf($this->items[$index]['weight']) * $this->num_uf($this->items[$index]['quantity']), num_of_digital_numbers());
                 $this->items[$index]['unit'] = $variant->unit->name ?? '';
                 $this->items[$index]['base_unit_multiplier'] = $variant->equal ?? 0;
+                $this->items[$index]['unit_sku'] = $variant->sku;
             }
             $this->getSubUnits($index);
         }
