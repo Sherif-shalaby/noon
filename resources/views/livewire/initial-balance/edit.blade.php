@@ -82,7 +82,7 @@
                             <div class="col-md-1">
                                 <label for="invoice_currency" class="h5 pt-1">@lang('lang.currency') :*</label>
                                 {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency,
-                                    ['class' => 'form-control ','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
+                                    ['class' => 'form-control ','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'disabled',
                                      'required', 'data-name' => 'transaction_currency', 'wire:model' => 'transaction_currency']) !!}
                                 @error('transaction_currency')
                                 <span class="error text-danger">{{ $message }}</span>
