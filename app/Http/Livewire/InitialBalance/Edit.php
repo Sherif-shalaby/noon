@@ -1721,7 +1721,7 @@ class Edit extends Component
     public function changeSellPrice($index,$key){
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
         if($this->rows[$index]['prices'][$key]['percent'] == null || $this->rows[$index]['prices'][$key]['percent'] == 0 ){
-            $this->rows[$index]['prices'][$key]['percent'] = (( $this->rows[$index]['prices'][$key]['dinar_sell_price'] - $purchase_price) * 100) / $purchase_price ;
+            $this->rows[$index]['prices'][$key]['percent'] = (( $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) - $purchase_price) * 100) / $purchase_price ;
         }
         if ($this->transaction_currency == 2){
         $this->rows[$index]['prices'][$key]['dollar_sell_price']=number_format($this->rows[$index]['prices'][$key]['dinar_sell_price'],num_of_digital_numbers());
