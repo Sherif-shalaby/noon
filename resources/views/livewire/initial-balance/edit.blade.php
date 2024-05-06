@@ -161,7 +161,7 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                         {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency, [
-                                            'class' => 'form-control select2',
+                                            'class' => 'form-control ',
                                             'placeholder' => __('lang.please_select'),
                                             'data-live-search' => 'true',
                                             'required',
