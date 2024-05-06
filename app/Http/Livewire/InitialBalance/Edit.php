@@ -228,7 +228,8 @@ class Edit extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'stock_line_id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => '', 'show_prices' => false,
+            'id' => '', 'stock_line_id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
+            '', 'show_prices' => false,
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -247,6 +248,7 @@ class Edit extends Component
             ];
             array_unshift($this->rows[$index]['prices'], $new_price);
         }
+
         // Set 'show_prices' to false for all existing rows
         if ($this->rows[0]['show_prices'] == true) {
             foreach ($this->rows as &$row) {
@@ -254,7 +256,6 @@ class Edit extends Component
             }
         }
     }
-
 
     public function stayShow()
     {
@@ -464,8 +465,7 @@ class Edit extends Component
                             'unit_id' => $stock->variation->unit_id,
                             'fill_currency' => 'dinar',
                             'prices' => [],
-                            'fill' => $previousEqual,
-                            'show_prices' => false,
+                            'fill' => $previousEqual, 'show_prices' => false,
                         ];
                         // Update previousEqual for the next iteration
                         $previousEqual = $stock->variation->equal ?? 0;
@@ -1739,7 +1739,7 @@ class Edit extends Component
     {
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
         if ($this->rows[$index]['prices'][$key]['percent'] == null || $this->rows[$index]['prices'][$key]['percent'] == 0) {
-            $this->rows[$index]['prices'][$key]['percent'] = (($this->rows[$index]['prices'][$key]['dinar_sell_price'] - $purchase_price) * 100) / $purchase_price;
+            $this->rows[$index]['prices'][$key]['percent'] = (($this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) - $purchase_price) * 100) / $purchase_price;
         }
         if ($this->transaction_currency == 2) {
             $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($this->rows[$index]['prices'][$key]['dinar_sell_price'], num_of_digital_numbers());
