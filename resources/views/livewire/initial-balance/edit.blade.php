@@ -31,7 +31,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-  
+
                             <div class="col-md-2">
                                 {!! Form::label('name', __('lang.product_name'), ['class' => 'h5']) !!}
                                 {!! Form::text('name', $item[0]['name'], [
@@ -82,7 +82,7 @@
                             <div class="col-md-1">
                                 <label for="invoice_currency" class="h5 pt-1">@lang('lang.currency') :*</label>
                                 {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency,
-                                    ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
+                                    ['class' => 'form-control ','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
                                      'required', 'data-name' => 'transaction_currency', 'wire:model' => 'transaction_currency']) !!}
                                 @error('transaction_currency')
                                 <span class="error text-danger">{{ $message }}</span>
@@ -126,8 +126,8 @@
                                 ) !!}
                             </div>
 
-                          
-                            
+
+
                             <div class="col-md-3">
                                 <div class="main_category">
                                     {!! Form::label('category', __('lang.category'), ['class' => 'h5']) !!}
@@ -232,7 +232,7 @@
                                     @enderror
                                 </div>
                             </div>
-                           
+
                             <div class="col-md-3">
                                 {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
                                 <div class="d-flex justify-content-center">
@@ -252,13 +252,13 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            
-                           
+
+
                         </div>
                         <br>
 
                         {{-- add prices --}}
-                        
+
                         {{-- <div class="row">
                                     <div class="col-md-12 pt-5">
                                         <h4 class="text-primary">{{ __('lang.add_prices_for_different_users') }}</h4>
@@ -431,7 +431,7 @@
                         </div>
                         @foreach ($prices as $key => $price)
                         <div class="discount {{ $show_discount == 0 ? (empty($prices)?'d-none':'') : '' }}">
-                            
+
                                 <div class="row">
                                     <div class="col-md-1">
                                         <label for="fill_id" class="h5 pt-3">{{ __('lang.fill') . ':*' }}</label>
@@ -612,7 +612,7 @@
                                                 'wire:model' => 'fill_stores.'.$i.'.extra_store_id',
                                                 'wire:key' => 'extra_store_id_'.$i,
                                             ]) !!}
-                                            
+
                                         {{-- @error('fill_stores.'.$i.'.extra_store_id')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror --}}
@@ -640,7 +640,7 @@
                                                 <br>
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
-                                            
+
                                         </div>
                                         <div class="col-md-1">
                                             <button class="btn btn-sm btn-danger"
@@ -674,7 +674,7 @@
                             @endforelse
                         </div>
                     </div>
-                     
+
                     {{-- {!! Form::close() !!} --}}
                     <div class="col-sm-12">
                         <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
