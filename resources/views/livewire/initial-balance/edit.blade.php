@@ -164,6 +164,7 @@
                                             'class' => 'form-control ',
                                             'placeholder' => __('lang.please_select'),
                                             'data-live-search' => 'true',
+                                            'disabled',
                                             'required',
                                             'data-name' => 'transaction_currency',
                                             'wire:model' => 'transaction_currency',
