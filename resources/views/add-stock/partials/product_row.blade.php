@@ -263,6 +263,8 @@
     </td>
 </tr>
 <tr>
+    {{-- @if (isset($product['customer_prices'] )) --}}
+
     @foreach ($product['customer_prices'] as $key => $price)
         <td></td>
         <td>
@@ -292,7 +294,10 @@
             @enderror
         </td>
         @endforeach
+
+    {{-- @endif --}}
     </tr>
+{{-- @isset($product['stores']) --}}
 @foreach($product['stores'] as $i => $store)
     <tr>
         <td></td>
@@ -381,10 +386,10 @@
         <td>
             <div class="input-group-prepend">
                     <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="amount">
-{{--                <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="%">--}}
+        {{--                <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="%">--}}
             </div>
             <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount'],num_of_digital_numbers()) }} $</span>
-{{--            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount_percent'],num_of_digital_numbers()) }} $ </span>--}}
+        {{--            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount_percent'],num_of_digital_numbers()) }} $ </span>--}}
             <div class="input-group-prepend">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}{{$i}}" id="discount_on_bonus_quantity{{$i}}"
@@ -516,8 +521,11 @@
         @endforeach
     </tr>
 @endforeach
+{{-- @endisset --}}
+{{-- @isset($product['prices'] ) --}}
 
 @foreach( $product['prices'] as $key => $price)
+    {{-- @dd($product['prices']) --}}
     <tr>
         <td></td>
         <td title="{{__('lang.unit')}}">
@@ -563,7 +571,7 @@
             {!! Form::label('price_type' ,__('lang.type')) !!}
             {!! Form::select('items.'.$index.'.prices.'.$key.'.price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
                 'class' => ' form-control price_type',
-//                'data-index' =>$index,
+            //                'data-index' =>$index,
                 'placeholder' => __('lang.please_select'),
                 'wire:model' => 'items.'.$index.'.prices.'.$key.'.price_type',
                 'wire:input' => 'changePrice(' .$index.','.$key.')',
@@ -586,9 +594,9 @@
             <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                 {{ $price['price_type'] == 'fixed' ? __('lang.amount'). ' $'  : __('lang.percent') . ' $' }} : {{$this->items[$index]['prices'][$key]['dollar_price'] ?? '' }}
             </p>
-{{--            <p>--}}
-{{--                {{!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount'): __('lang.percent')}}:{{$this->items[$index]['prices'][$key]['dinar_price']??''}}--}}
-{{--            </p>--}}
+    {{--            <p>--}}
+    {{--                {{!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount'): __('lang.percent')}}:{{$this->items[$index]['prices'][$key]['dinar_price']??''}}--}}
+    {{--            </p>--}}
         </td>
         <td colspan="2">
             {!! Form::label('' ,__('lang.price')) !!}
@@ -628,6 +636,7 @@
 
 @endforeach
 
+{{-- @endisset --}}
 <tr>
     <td></td>
     <td > {!! Form::label('', __('lang.expiry_date'), []) !!}<br>
