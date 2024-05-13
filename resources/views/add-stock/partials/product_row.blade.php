@@ -601,6 +601,7 @@
 <div class="d-flex justify-content-start align-items-center mt-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
     style="overflow-x: auto;">
     <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        {{-- @if (isset($product['customer_prices'])) --}}
         @foreach ($product['customer_prices'] as $key => $price)
             <div
                 class=" @if ($key % 2 == 0) bg-white @else bg-dark-gray @endif mx-1 px-2 rounded-lg d-flex justify-content-center align-items-start">
@@ -654,7 +655,7 @@
             </div>
         @endforeach
 
-
+        {{-- @endif --}}
 
 
         <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center align-items-center mt-1"
@@ -723,6 +724,7 @@
 
 @include('add-stock.partials.accordions')
 
+{{-- @isset($product['stores']) --}}
 @foreach ($product['stores'] as $i => $store)
     <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
         style="overflow-x: auto">
@@ -1142,3 +1144,5 @@
         </div>
     </div>
 @endforeach
+
+{{-- @endisset --}}

@@ -451,7 +451,6 @@ class Create extends Component
     {
         $this->validateOnly($propertyName);
         $this->sum_total_cost();
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function store(): Redirector|Application|RedirectResponse
     {
@@ -553,10 +552,11 @@ class Create extends Component
                     }
                 }
                 $supplier = Supplier::find($this->supplier);
-                //                dd($item['fill_quantity']);
+                //    dd($item['used_currency'] );
                 $add_stock_data = [
                     'variation_id' => $item['variation_id'] ?? null,
                     'product_id' => $item['product']['id'],
+                    // 'used_currency ' => $this->num_uf($item['used_currency']),
                     'stock_transaction_id' => $transaction->id,
                     'quantity' => $this->num_uf($item['quantity']),
                     'purchase_price' => !empty($item['purchase_price']) ? $this->num_uf($item['purchase_price'])  : null,
@@ -586,12 +586,20 @@ class Create extends Component
                     'annual_discount_amount' => !empty($item['annual_discount_amount']) ? ($item['annual_discount_amount']) : null,
                     'discount_on_bonus_quantity' => !empty($item['discount_on_bonus_quantity']) ? 1 : 0,
                     'discount_dependency' => !empty($item['discount_dependency']) ? 1 : 0,
+                    'purchase_discount' => !empty($item['purchase_discount']) ? ($item['purchase_discount']) : null,
+                    'invoice_discount' => !empty($item['invoice_discount']) ? ($item['invoice_discount']) : null,
                     //'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
                     'notes' => !empty($item['notes']) ? ($item['notes']) : null,
-                    'used_currency ' => !empty($item['used_currency']) ? $item['used_currency'] : null,
+                    'used_currency' => $item['used_currency'],
+                    'purchase_after_discount' => !empty($item['purchase_after_discount']) ? ($item['purchase_after_discount']) : null,
+                    'dollar_purchase_after_discount' => !empty($item['dollar_purchase_after_discount']) ? ($item['dollar_purchase_after_discount']) : null,
+
 
                 ];
+
                 $stock_line = AddStockLine::create($add_stock_data);
+                $stock_line->used_currency = $add_stock_data['used_currency'];
+                $stock_line->save();
                 foreach ($this->items[$index]['units'] as $key => $unit) {
                     if (!empty($key)) {
                         $var_unit = Unit::where('name', 'like', $key)->first();
@@ -700,6 +708,9 @@ class Create extends Component
                 $payment->ref_number = $this->ref_number ?? null;
                 $payment->bank_name = $this->bank_name ?? null;
                 $payment->bank_deposit_date = $this->bank_deposit_date ?? null;
+                // $payment->amount_change_dinar = $this->amount_change_dinar;
+                // $payment->amount_change_dollar = $this->amount_change_dollar;
+
 
 
                 //upload Documents
@@ -1042,7 +1053,6 @@ class Create extends Component
         $last_index = count($this->items) - 1;
         $this->getVariationData($last_index);
     }
-
 
     public function stayShowDiscount($index)
     {
