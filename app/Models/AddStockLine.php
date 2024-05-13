@@ -11,7 +11,6 @@ class AddStockLine extends Model
     use HasFactory, SoftDeletes ;
 
     protected $guarded = ['id'];
-
     public function transaction()
     {
         // return $this->belongsTo(StockTransaction::class,'stock_transaction_id ','id');

@@ -29,7 +29,7 @@
 @endsection
 
 @section('content')
-   {{-- {{dd($id)}} --}}
+   {{-- @dd($id) --}}
     @livewire('add-stock.edit',['id' => $id])
 @endsection
 @push('javascripts')
