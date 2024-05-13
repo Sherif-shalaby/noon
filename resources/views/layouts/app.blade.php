@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ url('css/front-style.css') }}">
     <link rel="stylesheet" href="{{ url('css/animation.css') }}">
     <!-- End css -->
+
     @livewireStyles
 </head>
 

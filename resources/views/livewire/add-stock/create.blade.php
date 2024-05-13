@@ -115,8 +115,6 @@
 
                                                 'wire:change' => 'changeExchangeRate()',
                                             ]) !!}
-
-
                                             <button type="button"
                                                 class="add-button d-flex justify-content-center align-items-center"
                                                 data-toggle="modal" data-target=".add-supplier"><i
@@ -251,16 +249,12 @@
                                     </label>
                                 </div>
 
-
-
-
-
                             </div>
                             <div class="col-md-12 pb-2 {{ $supplier != null ? '' : 'd-none' }}">
                                 <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="font-weight: 500">
                                     <div
-                                        class="col-md-1 p-0 d-flex  border-left border-2 flex-column justify-content-start align-items-center dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} s">
+                                        class="col-md-1 p-0 d-flex  border-left border-2 flex-column justify-content-start align-items-center dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
                                         <span>
                                             @lang('lang.debit')
                                         </span>
@@ -333,8 +327,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
 
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <div class="col-md-1 border border-1 p-0 animate__animated animate__bounceInRight"
@@ -606,27 +598,7 @@
                                 class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <div
                                     class="col-md-12 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                    {{-- <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                        style="animation-delay: 1.5s">
-                                        <label
-                                            class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @endif"
 
-                                            for="expenses_currency">@lang('lang.expenses_currency') </label>
-                                        <div class="input-wrapper" style="width:100%">
-                                            {!! Form::select('expenses_currency', $selected_currencies, $transaction_currency, [
-                                                'class' => 'form-control select2',
-                                                'placeholder' => __('lang.please_select'),
-                                                'data-live-search' => 'true',
-
-                                                'data-name' => 'expenses_currency',
-                                                'wire:model' => 'expenses_currency',
-                                            ]) !!}
-                                        </div>
-
-                                        @error('expenses_currency')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div> --}}
                                     <div class="col-md-2 mx-3">
                                         {{ $this->getTotalExpenses() }}
                                         <h3

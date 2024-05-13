@@ -1,4 +1,4 @@
-$(document).on('click', '.add_date', function() {
+$(document).on('click', '.add_date', function () {
     let index = $('#important_date_index').val();
 
     $('#important_date_index').val(index + 1);
@@ -9,9 +9,9 @@ $(document).on('click', '.add_date', function() {
         data: {
             index: index
         },
-        success: function(result) {
+        success: function (result) {
             $('#important_date_table tbody').prepend(result);
-            $( ".datepicker" ).datepicker({});
+            $(".datepicker").datepicker({});
         },
     });
 });
@@ -20,7 +20,7 @@ $(document).on("click", ".remove_row", function () {
     $(this).closest("tr").remove();
 });
 // ++++++++++++++++++++++++++++++++++ Crop Uploaded Image with Cropperjs ++++++++++++++++++++++++++++++++++
-
+//
 
 // Dropzone.autoDiscover = false;
 // myDropzone = new Dropzone("div#my-dropzone2", {
