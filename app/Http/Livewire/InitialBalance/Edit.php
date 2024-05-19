@@ -464,7 +464,8 @@ class Edit extends Component
                             'unit_id' => $stock->variation->unit_id,
                             'fill_currency' => 'dinar',
                             'prices' => [],
-                            'fill' => $previousEqual, 'show_prices' => false,
+                            'fill' => $previousEqual,
+                            'show_prices' => false,
                         ];
                         // Update previousEqual for the next iteration
                         $previousEqual = $stock->variation->equal ?? 0;
@@ -747,13 +748,13 @@ class Edit extends Component
                     // dd($this->rows[$index]['prices'][$key]);
                     $Variation_price->variation_id = $Variation->id;
                     $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
-                    $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) ?? null;
-                    $Variation_price->dollar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']) ?? null;
+                    $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'] ?? null);
+                    $Variation_price->dollar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'] ?? null);
+
                     $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
                     $Variation_price->dollar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null;
                     $Variation_price->percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']) ?? null;
-                    // $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) ?? null;
-                    // $Variation_price->dollar_increase =  $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']) ?? null;
+
                     $Variation_price->save();
                     // }
                 }
