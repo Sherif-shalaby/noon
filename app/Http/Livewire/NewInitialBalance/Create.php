@@ -499,8 +499,8 @@ class Create extends Component
                             $Variation_price = new VariationPrice();
                             $Variation_price->variation_id = $Variation->id;
                             $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
-                            $Variation_price->dinar_sell_price =number_format( $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) , num_of_digital_numbers()) ?? null;
-                            $Variation_price->dollar_sell_price = $this->toggle_dollar=="0"?(number_format($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) , num_of_digital_numbers())?? null):0;
+                            $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
+                            $Variation_price->dollar_sell_price = $this->toggle_dollar=="0"?($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null):0;
                             $Variation_price->percent = number_format($this->num_uf($this->rows[$index]['prices'][$key]['percent']), num_of_digital_numbers()) ?? null;
                             // dd($Variation_price->percent);
                             $Variation_price->dinar_increase = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) , num_of_digital_numbers()) ?? null;
@@ -575,7 +575,7 @@ class Create extends Component
                         'quantity' => ($i == -1) && $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : $quantity,
                         // 'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
                         // 'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->num_uf($this->rows[$index]['fill_quantity']) : 0,
-                        'purchase_price' => ($this->transaction_currency != 2) ?  number_format($this->num_uf($this->rows[$index]['purchase_price']) , num_of_digital_numbers()) : null,
+                        'purchase_price' => ($this->transaction_currency != 2) ?  $this->num_uf($this->rows[$index]['purchase_price']) : null,
                         'sell_price' => null,
                         // 'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
                         'dollar_purchase_price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ?  number_format($this->num_uf($this->rows[$index]['purchase_price']) , num_of_digital_numbers()) : null):0,
@@ -1271,7 +1271,7 @@ class Create extends Component
             $sell_price = ($row_index >= 0) && isset($price_key) ?  $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price']) : null;
             $dollar_sell_price = ($row_index >= 0) && isset($price_key) ?  $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']) : null;
             $total_quantity = $this->num_uf($this->prices[$index]['discount_quantity']) + $this->num_uf($this->prices[$index]['bonus_quantity']);
-            if (!$this->prices[$index]['discount_from_original_price']  && !empty($this->prices[$index]['discount_quantity'])) {
+            if (!$this->prices[$index]['discount_from_original_price']  && !empty($this->prices[$index]['discount_quantity']) && !empty($this->prices[$index]['dinar_price'])) {
                 if ($this->prices[$index]['price_type'] == "fixed") {
                     if($via!="change_price"){
                         if ($this->transaction_currency == 2) {
