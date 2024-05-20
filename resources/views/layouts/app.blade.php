@@ -320,7 +320,7 @@
 
     {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <x-livewire-alert::scripts /> --}}
-    @stack('js')
+
     <script>
         function __read_number(inputElement) {
             return parseFloat(inputElement.val()) || 0;
@@ -475,6 +475,7 @@
             }, 500);
         });
     </script>
+    @stack('js')
     @push('javascripts')
         <script>
             document.addEventListener('livewire:load', function() {

@@ -1306,7 +1306,10 @@
         //         window.close();
         //     });
         // });
-
+    </script>
+@endpush
+@push('js')
+    <script>
         window.addEventListener('swal:modal', event => {
             Swal.fire({
                 title: event.detail.message,
