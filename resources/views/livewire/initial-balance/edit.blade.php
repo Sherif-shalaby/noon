@@ -1152,5 +1152,15 @@
             row_id = $(this).closest("tr").data("row_id");
             $(this).closest("tr").remove();
         });
+
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('redirectAndClose', url => {
+                // Open the new URL in a new tab
+                // window.open(url, '_blank');
+
+                // Close the current tab
+                window.close();
+            });
+        });
     </script>
 @endpush

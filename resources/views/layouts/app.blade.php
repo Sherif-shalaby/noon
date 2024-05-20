@@ -355,12 +355,16 @@
                 }
             });
         });
+
         window.addEventListener('swal:modal', event => {
             Swal.fire({
                 title: event.detail.message,
                 text: event.detail.text,
                 icon: event.detail.type,
+                showConfirmButton: false,
+                timer: 2000,
             });
+
         });
 
         window.addEventListener('swal:confirm', event => {

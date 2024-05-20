@@ -1295,5 +1295,30 @@
             row_id = $(this).closest("tr").data("row_id");
             $(this).closest("tr").remove();
         });
+
+
+        // document.addEventListener('livewire:load', function() {
+        //     Livewire.on('redirectAndClose', url => {
+        //         // Open the new URL in a new tab
+        //         // window.open(url, '_blank');
+
+        //         // Close the current tab
+        //         window.close();
+        //     });
+        // });
+
+        window.addEventListener('swal:modal', event => {
+            Swal.fire({
+                title: event.detail.message,
+                text: event.detail.text,
+                icon: event.detail.type,
+                showConfirmButton: false,
+                timer: 2000,
+            }).then(() => {
+                window.opener.location.reload()
+            }).then(() => {
+                window.close()
+            });
+        });
     </script>
 @endpush

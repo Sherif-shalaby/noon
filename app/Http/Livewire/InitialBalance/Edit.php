@@ -788,6 +788,12 @@ class Edit extends Component
             // DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
             return redirect()->route('initial-balance.edit', $this->stockId);
+
+            // Your redirection logic
+            // $route = route('initial-balance.edit', $this->stockId);
+
+            // Emit an event with the route URL
+            $this->emit('redirectAndClose');
         }
         // } catch (\Exception $e) {
         //     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);

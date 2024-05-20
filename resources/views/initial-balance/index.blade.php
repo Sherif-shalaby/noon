@@ -37,10 +37,36 @@
 
 @section('button')
     <div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-        <a type="button" class="btn btn-primary" href="{{ route('new-initial-balance.create') }}">@lang('lang.add_initial_balance')</a>
+        {{-- <a type="button" class="btn btn-primary" target="_blank"
+            href="{{ route('new-initial-balance.create') }}">@lang('lang.add_initial_balance')</a> --}}
+
+
+        <button class="btn btn-primary" onclick="openNewWindow('{{ route('new-initial-balance.create') }}')">
+            @lang('lang.add_initial_balance')
+        </button>
     </div>
 @endsection
 
 @section('content')
     @livewire('initial-balance.index')
 @endsection
+
+@push('javascripts')
+    <script>
+        function openNewWindow(routeName) {
+            // Open the new URL in a new tab/window
+
+            window.open(routeName, "_blank")
+            // Check if the current window has an opener
+            // if (window.opener) {
+            //     // Reload the opener window
+            //     window.opener.location.reload();
+            //     // Close the current tab
+            //     window.close();
+            // } else {
+            //     // Reload the current window if there is no opener
+            //     window.location.reload();
+            // }
+        }
+    </script>
+@endpush

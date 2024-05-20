@@ -528,7 +528,10 @@ class Create extends Component
                 $this->saveTransaction($product->id,);
                 DB::commit();
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
-                return redirect('/new-initial-balance/create');
+                // return redirect('/new-initial-balance/create');
+
+                // Emit an event with the route URL
+                // $this->emit('redirectAndClose');
             }
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
