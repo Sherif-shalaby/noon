@@ -54,7 +54,7 @@
                 <input type="file" name="upload_documents[]" id="upload_documents" wire:model="upload_documents">
             </div>
         </div>
-        {{-- @if(isset( $method) && $method != 'cash') --}}
+        @if(isset( $method) && $method != 'cash')
             <div class="col-md-3 {{$payment_status!='pending'?'':'d-none'}}">
                 <div class="form-group">
                     {!! Form::label('ref_number', __('lang.ref_number'). ':*', []) !!} <br>
@@ -89,6 +89,6 @@
                 @enderror
             </div>
         </div>
-    {{-- @endif --}}
+    @endif
 </div>
 
