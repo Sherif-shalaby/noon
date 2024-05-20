@@ -125,14 +125,16 @@
                                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
                                                         user="menu">
                                                         <li>
-                                                            <a href="{{ route('initial-balance.show', $stock->id) }}"
+                                                            <a target="_blank"
+                                                                href="{{ route('initial-balance.show', $stock->id) }}"
                                                                 class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                     class="fa fa-eye"></i>
                                                                 @lang('lang.view') </a>
                                                         </li>
 
                                                         <li>
-                                                            <a href="{{ route('initial-balance.edit', $stock->id) }}"
+                                                            <a target="_blank"
+                                                                href="{{ route('initial-balance.edit', $stock->id) }}"
                                                                 class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                     class="fa fa-edit"></i>
                                                                 @lang('lang.edit') </a>
