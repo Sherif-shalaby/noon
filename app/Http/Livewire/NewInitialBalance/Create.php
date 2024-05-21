@@ -503,8 +503,8 @@ class Create extends Component
                             $Variation_price->dollar_sell_price = $this->toggle_dollar=="0"?($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null):0;
                             $Variation_price->percent = number_format($this->num_uf($this->rows[$index]['prices'][$key]['percent']), num_of_digital_numbers()) ?? null;
                             // dd($Variation_price->percent);
-                            $Variation_price->dinar_increase = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) , num_of_digital_numbers()) ?? null;
-                            $Variation_price->dollar_increase = number_format( $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']) , num_of_digital_numbers()) ?? null;
+                            $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'])  ?? null;
+                            $Variation_price->dollar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'])  ?? null;
                             $Variation_price->save();
                         }
                     }
