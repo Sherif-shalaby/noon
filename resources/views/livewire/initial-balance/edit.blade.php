@@ -562,7 +562,7 @@
                                         {{ __('lang.product_dimensions') }}
                                     </div>
                                 </h2>
-                                <div class="d-flex dimensions {{ $show_dimensions == 0 ? (empty($item[0]['basic_unit_variation_id']) ? 'd-none' : '') : '' }}"
+                                <div class="d-flex  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dimensions {{ $show_dimensions == 0 ? (empty($item[0]['basic_unit_variation_id']) ? 'd-none' : '') : '' }}"
                                     style="overflow-x: auto">
 
                                     <div
