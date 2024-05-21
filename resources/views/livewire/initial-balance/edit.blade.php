@@ -1164,3 +1164,20 @@
         });
     </script>
 @endpush
+@push('js')
+    <script>
+        window.addEventListener('swal:modal', event => {
+            Swal.fire({
+                title: event.detail.message,
+                text: event.detail.text,
+                icon: event.detail.type,
+                showConfirmButton: false,
+                timer: 2000,
+            }).then(() => {
+                window.opener.location.reload()
+            }).then(() => {
+                window.close()
+            });
+        });
+    </script>
+@endpush

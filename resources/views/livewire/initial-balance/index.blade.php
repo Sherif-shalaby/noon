@@ -133,11 +133,18 @@
                                                         </li>
 
                                                         <li>
-                                                            <a target="_blank"
-                                                                href="{{ route('initial-balance.edit', $stock->id) }}"
+
+
+                                                            <button
+                                                                class="btn d-flex w-100 drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                                onclick="openNewWindow('{{ route('initial-balance.edit', $stock->id) }}')">
+                                                                <i class="fa fa-edit"></i>@lang('lang.edit')
+                                                            </button>
+
+                                                            {{-- <a href="{{ route('initial-balance.edit', $stock->id) }}"
                                                                 class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                     class="fa fa-edit"></i>
-                                                                @lang('lang.edit') </a>
+                                                                @lang('lang.edit') </a> --}}
                                                         </li>
 
                                                         <li>

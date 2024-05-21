@@ -54,19 +54,9 @@
 @push('javascripts')
     <script>
         function openNewWindow(routeName) {
-            // Open the new URL in a new tab/window
 
+            // Open the new URL in a new tab/window
             window.open(routeName, "_blank")
-            // Check if the current window has an opener
-            // if (window.opener) {
-            //     // Reload the opener window
-            //     window.opener.location.reload();
-            //     // Close the current tab
-            //     window.close();
-            // } else {
-            //     // Reload the current window if there is no opener
-            //     window.location.reload();
-            // }
         }
     </script>
 @endpush
