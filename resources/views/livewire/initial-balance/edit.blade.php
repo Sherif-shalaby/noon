@@ -343,10 +343,22 @@
 
                         </div>
                         <div class="col-md-12 text-center mt-1 ">
-                            <h4>@lang('lang.items_count'):
-                                <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
-                                <br> @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                    style="margin-right: 15px;">{{ $totalQuantity }}</span>
+                            <h4>
+                                {{--                                @lang('lang.items_count'): --}}
+                                {{--                                <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span> --}}
+                                {{--                                <br> --}}
+                                {{ $this->count_total_by_variations() }}
+                                @if (!empty($variationSums))
+                                    @foreach ($variationSums as $unit_name => $variant)
+                                        {{ $unit_name }}:
+                                        <span class="items_quantity_span" style="margin-right: 15px;">
+                                            {{ $variant }} </span><br>
+                                    @endforeach
+                                @endif
+                                <span class="items_quantity_span" style="margin-right: 15px;">
+                                    {{ $this->getStore() }}</span>
+                                {{--                                @lang('lang.items_quantity'): <span class="items_quantity_span" --}}
+                                {{--                                    style="margin-right: 15px;">{{ $totalQuantity }}</span> --}}
                             </h4>
                         </div>
 
@@ -421,7 +433,7 @@
 
 
                            {{-- discount --}}
-                           <div class="row">
+                        <div class="row">
                             <div class="col-md-12 pt-5 ">
                                 <h5 class="text-primary">{{ __('lang.discount') }}</h5>
                                 <button type="button" class="btn btn-warning btn-sm ml-2 "
@@ -430,6 +442,7 @@
                             </div>
                         </div>
                         @foreach ($prices as $key => $price)
+                        {{-- @dd($prices) --}}
                         <div class="discount {{ $show_discount == 0 ? (empty($prices)?'d-none':'') : '' }}">
 
                                 <div class="row">
@@ -516,12 +529,13 @@
                                                 <option selected value="dollar">Dollar</option>
                                             </select> --}}
                                         </div>
-                                         <div class="custom-control custom-switch">
+                                        <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input"
-                                                name="discount_from_original_price" id="discount_from_original_price{{ $key }}"
-                                                style="font-size: 0.75rem" wire:model='prices.{{ $key }}.discount_from_original_price'
-
-                                                wire:change="changePrice({{ $key }})">
+                                                name="discount_from_original_price"
+                                                id="discount_from_original_price{{ $key }}"
+                                                style="font-size: 0.75rem"
+                                                wire:model='prices.{{ $key }}.discount_from_original_price'
+                                                wire:change="changePrice({{ $key }},'change_price')">
                                             <label class="custom-control-label"
                                                 for="discount_from_original_price{{ $key }}">@lang('lang.discount_from_original_price')</label>
                                         </div>
@@ -535,39 +549,62 @@
                                             'price',
                                             isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
                                         ) !!}
-                                        <input type="text" name="price" class="form-control price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_price"
+                                            class="form-control price"
                                             wire:model="prices.{{ $key }}.dinar_price"
                                             wire:change="changePrice({{ $key }})"
                                             placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                             @if (empty($prices[$key]['price_type'])) readonly @endif>
+                                        <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                                            {{ $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') . ' $' }} : {{ $this->prices[$key]['price'] ?? '' }}
+                                        </p>
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('', __('lang.price')) !!}
-                                        <input type="text" name="" class="form-control price"
+                                        <input type="text"
+                                            name="prices.{{ $key }}.dinar_price_after_desc"
+                                            class="form-control price"
                                             wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                             placeholder = "{{ __('lang.price') }}">
-                                        {{-- <p>
-                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price_after_desc'] ?? '' }}
-                                        </p> --}}
+                                        <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
+                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$key]['price_after_desc'] ?? '' }}
+                                        </p>
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('total_price', __('lang.total_price')) !!}
-                                        <input type="text" name="total_price" class="form-control total_price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_total_price"
+                                            class="form-control total_price"
                                             wire:model="prices.{{ $key }}.dinar_total_price"
                                             placeholder = "{{ __('lang.total_price') }}">
-                                        {{-- <p>
+                                        <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                             {{ __('lang.total_price') . ' $' }}:{{ $this->prices[$key]['total_price'] ?? '' }}
-                                        </p> --}}
+                                        </p>
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('piece_price', __('lang.piece_price')) !!}
-                                        <input type="text" name="piece_price" class="form-control piece_price"
+                                        <input type="text" name="prices.{{ $key }}.dinar_piece_price"
+                                            class="form-control piece_price"
                                             wire:model="prices.{{ $key }}.dinar_piece_price"
                                             placeholder = "{{ __('lang.total_price') }}">
-                                        {{-- <p>
+                                        {{--                                             <span>{{$rows[$index]['prices'][$key]['dollar_piece_price']??0}} $</span> --}}
+                                        <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">
                                             {{ __('lang.piece_price') . ' $' }}:{{ $this->prices[$key]['piece_price'] ?? '' }}
-                                        </p> --}}
+                                        </p>
                                     </div>
+                                    <div class="col-md-1">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="prices.{{ $key }}.apply_on_all_customers"
+                                                id="apply_on_all_customers{{ $key }}"
+                                                style="font-size: 0.75rem"
+                                                wire:model="prices.{{ $key }}.apply_on_all_customers"
+                                                wire:change="applyOnAllCustomers({{ $key }})">
+                                            <br>
+                                            <label class="custom-control-label"
+                                                for="apply_on_all_customers{{ $key }}">@lang('lang.apply_on_all_customers')</label>
+                                        </div>
+                                    </div>
+
 
                                     <div class="col-md-1">
                                         <button type="button" class="btn btn-sm btn-primary"

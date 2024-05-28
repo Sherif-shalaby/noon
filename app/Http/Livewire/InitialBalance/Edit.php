@@ -368,6 +368,11 @@ class Edit extends Component
         }
         $this->changeUnitPrices($index);
     }
+    public function getStore(){
+        if(!empty($this->item[0]['store_id'])){
+            return __('lang.store') .' : '.Store::find($this->item[0]['store_id'])?->name;
+        }
+    }
     public function render()
     {
         $currenciesId = [System::getProperty('currency'), 2];
@@ -384,7 +389,7 @@ class Edit extends Component
         $product_taxes = Tax::select('name', 'id', 'status')->get();
         $customer_types = CustomerType::latest()->get();
         $this->dispatchBrowserEvent('initialize-select2');
-
+        $this->count_total_by_variations();
         return view(
             'livewire.initial-balance.edit',
             compact(
@@ -486,28 +491,29 @@ class Edit extends Component
                                 ];
                                 array_unshift($this->prices, $new_price);
                             }
-                        } else {
-                            $new_price = [
-                                'fill_id' => null,
-                                'stock_line_id' => null,
-                                'price_type' => null,
-                                'price_category' => null,
-                                'price' => null,
-                                'price_currency' => 'dollar',
-                                'discount_quantity' => null,
-                                'bonus_quantity' => null,
-                                'price_customer_types' => null,
-                                'price_after_desc' => null,
-                                'dinar_price_after_desc' => null,
-                                'total_price' => null,
-                                'piece_price' => null,
-                                'dinar_price' => null,
-                                'dinar_total_price' => null,
-                                'dinar_piece_price' => null,
-                                'discount_from_original_price' => false,
-                            ];
-                            array_unshift($this->prices, $new_price);
                         }
+                        // else {
+                        //     $new_price = [
+                        //         'fill_id' => null,
+                        //         'stock_line_id' => null,
+                        //         'price_type' => null,
+                        //         'price_category' => null,
+                        //         'price' => null,
+                        //         'price_currency' => 'dollar',
+                        //         'discount_quantity' => null,
+                        //         'bonus_quantity' => null,
+                        //         'price_customer_types' => null,
+                        //         'price_after_desc' => null,
+                        //         'dinar_price_after_desc' => null,
+                        //         'total_price' => null,
+                        //         'piece_price' => null,
+                        //         'dinar_price' => null,
+                        //         'dinar_total_price' => null,
+                        //         'dinar_piece_price' => null,
+                        //         'discount_from_original_price' => false,
+                        //     ];
+                        //     array_unshift($this->prices, $new_price);
+                        // }
                         $this->rows[] = $newRow;
 
                         $index = count($this->rows) - 1;
