@@ -91,19 +91,45 @@
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.quantity')">
 
-                                                        @foreach ($stock->add_stock_lines as $index => $line)
-                                                            {{ @num_format($line->quantity) . ' (' . ($line->variation && $line->variation->unit ? $line->variation->unit->name : '-') . ')' }}
-                                                            {{ !empty($transaction->add_stock_lines[$index + 1]) }} <br>
+                                                        @php
+                                                            // Initialize an array to hold the quantities of each unit type
+                                                            $quantities = [];
+                                                        @endphp
+
+                                                        @foreach ($stock->add_stock_lines as $line)
+                                                            @php
+                                                                $unit_name =
+                                                                    $line->variation && $line->variation->unit
+                                                                        ? $line->variation->unit->name
+                                                                        : '-';
+                                                                if (!isset($quantities[$unit_name])) {
+                                                                    $quantities[$unit_name] = 0;
+                                                                }
+                                                                $quantities[$unit_name] += $line->quantity;
+                                                            @endphp
                                                         @endforeach
+
                                                         @if (count($stock->childTransactions) > 0)
                                                             @foreach ($stock->childTransactions as $transaction)
-                                                                @foreach ($transaction->add_stock_lines as $index => $line)
-                                                                    {{ @num_format($line->quantity) . ' ( ' . $line->variation?->unit->name . ' ) ' }}
-                                                                    {{ !empty($transaction->add_stock_lines[$index + 1]) }}
-                                                                    <br>
+                                                                @foreach ($transaction->add_stock_lines as $line)
+                                                                    @php
+                                                                        $unit_name =
+                                                                            $line->variation && $line->variation->unit
+                                                                                ? $line->variation->unit->name
+                                                                                : '-';
+                                                                        if (!isset($quantities[$unit_name])) {
+                                                                            $quantities[$unit_name] = 0;
+                                                                        }
+                                                                        $quantities[$unit_name] += $line->quantity;
+                                                                    @endphp
                                                                 @endforeach
                                                             @endforeach
                                                         @endif
+
+                                                        @foreach ($quantities as $unit => $total_quantity)
+                                                            {{ @num_format($total_quantity) . ' (' . $unit . ')' }}
+                                                            <br>
+                                                        @endforeach
                                                     </span>
                                                 </td>
                                                 <td>

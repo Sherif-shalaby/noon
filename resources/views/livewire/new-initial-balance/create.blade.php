@@ -669,7 +669,10 @@
 
                                                         <div
                                                             class="d-flex justify-content-start align-items-center flex-row">
-
+                                                            <button class="btn btn-danger mx-1 py-2"
+                                                                wire:click="delete_store_data_raw({{ $i }},{{ $x }})">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
                                                             <div class=" mb-2 d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                                                 style="width: 100px">
                                                                 <label for="store_fill_id"
@@ -721,10 +724,7 @@
                                                             wire:click="addStoreDataRow({{ $i }})">
                                                             <i class="fa fa-plus"></i>
                                                         </button>
-                                                        <button class="btn btn-danger mx-1 py-2"
-                                                            wire:click="delete_store_data_raw({{ $i }},{{ $x }})">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+
                                                     </div>
                                                 @endforeach
                                             </div>

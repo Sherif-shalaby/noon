@@ -538,11 +538,27 @@
                             @endforeach
 
                         </div> --}}
+
+
                         <div class="col-md-12 text-center mt-1 ">
-                            <h4>@lang('lang.items_count'):
+                            <h4>
+
+
+                                {{ $this->count_total_by_variations() }}
+                                @if (!empty($variationSums))
+                                    @foreach ($variationSums as $unit_name => $variant)
+                                        {{ $unit_name }}:
+                                        <span class="items_quantity_span" style="margin-right: 15px;">
+                                            {{ $variant }} </span><br>
+                                    @endforeach
+                                @endif
+                                <span class="items_quantity_span" style="margin-right: 15px;">
+                                    {{ $this->getStore() }}</span>
+
+                                {{-- @lang('lang.items_count'):
                                 <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
                                 <br> @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                    style="margin-right: 15px;">{{ $totalQuantity }}</span>
+                                    style="margin-right: 15px;">{{ $totalQuantity }}</span> --}}
                             </h4>
                         </div>
 
@@ -838,24 +854,32 @@
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                     ],
                                                 ) !!}
-                                                <input type="text" name="price" style="width: 100px"
+                                                <input type="text" name="prices.{{ $key }}.dinar_price"
+                                                    style="width: 100px"
                                                     class="form-control initial-balance-input m-0 price"
                                                     wire:model="prices.{{ $key }}.dinar_price"
                                                     wire:change="changePrice({{ $key }})"
                                                     placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                                     @if (empty($prices[$key]['price_type'])) readonly @endif>
+                                                <p class="{{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                                    {{ $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') . ' $' }}
+                                                    : {{ $this->prices[$key]['price'] ?? '' }}
+                                                </p>
                                             </div>
                                             <div
                                                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                                 {!! Form::label('', __('lang.price'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 ]) !!}
-                                                <input type="text" name=""
+                                                <input type="text"
+                                                    name="prices.{{ $key }}.dinar_price_after_desc"
                                                     style="width: 150px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 price"
                                                     wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                                     placeholder = "{{ __('lang.price') }}">
-
+                                                <p class="{{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                                    {{ __('lang.price') . ' $' }}:{{ $this->prices[$key]['price_after_desc'] ?? '' }}
+                                                </p>
                                             </div>
 
 
@@ -865,24 +889,46 @@
                                                 {!! Form::label('total_price', __('lang.total_price'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 ]) !!}
-                                                <input type="text" name="total_price"
+                                                <input type="text"
+                                                    name="prices.{{ $key }}.dinar_total_price"
                                                     style="width: 150px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 total_price"
                                                     wire:model="prices.{{ $key }}.dinar_total_price"
                                                     placeholder = "{{ __('lang.total_price') }}">
-
+                                                <p class="{{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                                    {{ __('lang.total_price') . ' $' }}:{{ $this->prices[$key]['total_price'] ?? '' }}
+                                                </p>
                                             </div>
                                             <div
                                                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                                 {!! Form::label('piece_price', __('lang.piece_price'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 ]) !!}
-                                                <input type="text" name="piece_price"
+                                                <input type="text"
+                                                    name="prices.{{ $key }}.dinar_piece_price"
                                                     style="width: 150px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 piece_price"
                                                     wire:model="prices.{{ $key }}.dinar_piece_price"
                                                     placeholder = "{{ __('lang.total_price') }}">
+                                                <p class="{{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                                    {{ __('lang.piece_price') . ' $' }}:{{ $this->prices[$key]['piece_price'] ?? '' }}
+                                                </p>
+                                            </div>
 
+
+                                            <div class=" mb-4 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-center pl-1"
+                                                style="width: 50px">
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        name="prices.{{ $key }}.apply_on_all_customers"
+                                                        id="apply_on_all_customers{{ $key }}"
+                                                        style="font-size: 0.75rem"
+                                                        wire:model="prices.{{ $key }}.apply_on_all_customers"
+                                                        wire:change="applyOnAllCustomers({{ $key }})">
+                                                    <br>
+                                                    <label class="custom-control-label"
+                                                        for="apply_on_all_customers{{ $key }}">@lang('lang.apply_on_all_customers')</label>
+                                                </div>
                                             </div>
 
                                             <div class=" mb-4 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-center pl-1"

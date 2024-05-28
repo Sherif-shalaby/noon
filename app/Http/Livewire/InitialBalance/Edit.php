@@ -256,6 +256,7 @@ class Edit extends Component
         }
     }
 
+
     public function stayShow()
     {
         foreach ($this->rows as &$row) {
@@ -382,6 +383,12 @@ class Edit extends Component
         }
         $this->changeUnitPrices($index);
     }
+    public function getStore()
+    {
+        if (!empty($this->item[0]['store_id'])) {
+            return __('lang.store') . ' : ' . Store::find($this->item[0]['store_id'])?->name;
+        }
+    }
     public function render()
     {
         $currenciesId = [System::getProperty('currency'), 2];
@@ -398,7 +405,7 @@ class Edit extends Component
         $product_taxes = Tax::select('name', 'id', 'status')->get();
         $customer_types = CustomerType::latest()->get();
         $this->dispatchBrowserEvent('initialize-select2');
-
+        $this->count_total_by_variations();
         return view(
             'livewire.initial-balance.edit',
             compact(
@@ -464,8 +471,7 @@ class Edit extends Component
                             'unit_id' => $stock->variation->unit_id,
                             'fill_currency' => 'dinar',
                             'prices' => [],
-                            'fill' => $previousEqual,
-                            'show_prices' => false,
+                            'fill' => $previousEqual, 'show_prices' => false,
                         ];
                         // Update previousEqual for the next iteration
                         $previousEqual = $stock->variation->equal ?? 0;
@@ -501,28 +507,29 @@ class Edit extends Component
                                 ];
                                 array_unshift($this->prices, $new_price);
                             }
-                        } else {
-                            $new_price = [
-                                'fill_id' => null,
-                                'stock_line_id' => null,
-                                'price_type' => null,
-                                'price_category' => null,
-                                'price' => null,
-                                'price_currency' => 'dollar',
-                                'discount_quantity' => null,
-                                'bonus_quantity' => null,
-                                'price_customer_types' => null,
-                                'price_after_desc' => null,
-                                'dinar_price_after_desc' => null,
-                                'total_price' => null,
-                                'piece_price' => null,
-                                'dinar_price' => null,
-                                'dinar_total_price' => null,
-                                'dinar_piece_price' => null,
-                                'discount_from_original_price' => false,
-                            ];
-                            array_unshift($this->prices, $new_price);
                         }
+                        // else {
+                        //     $new_price = [
+                        //         'fill_id' => null,
+                        //         'stock_line_id' => null,
+                        //         'price_type' => null,
+                        //         'price_category' => null,
+                        //         'price' => null,
+                        //         'price_currency' => 'dollar',
+                        //         'discount_quantity' => null,
+                        //         'bonus_quantity' => null,
+                        //         'price_customer_types' => null,
+                        //         'price_after_desc' => null,
+                        //         'dinar_price_after_desc' => null,
+                        //         'total_price' => null,
+                        //         'piece_price' => null,
+                        //         'dinar_price' => null,
+                        //         'dinar_total_price' => null,
+                        //         'dinar_piece_price' => null,
+                        //         'discount_from_original_price' => false,
+                        //     ];
+                        //     array_unshift($this->prices, $new_price);
+                        // }
                         $this->rows[] = $newRow;
 
                         $index = count($this->rows) - 1;
@@ -787,13 +794,7 @@ class Edit extends Component
             $this->saveTransaction($product->id);
             // DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
-            // return redirect()->route('initial-balance.edit', $this->stockId);
-
-            // Your redirection logic
-            // $route = route('initial-balance.edit', $this->stockId);
-
-            // Emit an event with the route URL
-            // $this->emit('redirectAndClose');
+            return redirect()->route('initial-balance.edit', $this->stockId);
         }
         // } catch (\Exception $e) {
         //     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
