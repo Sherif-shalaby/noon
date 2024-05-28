@@ -96,20 +96,47 @@
 
                                 <td>{{$stock->store?->branch->name??''}}</td>
                                 <td>
-                                     @foreach($stock->add_stock_lines as $index => $line)
-                                     {{ @num_format($line->quantity) . ' (' . ($line->variation && $line->variation->unit ? $line->variation->unit->name : '-') . ')' }}
+                                    <span
+                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                        style="font-size: 12px;font-weight: 600"
+                                        data-tooltip="@lang('lang.quantity')">
 
-                                        {{ !empty($transaction->add_stock_lines[$index+1]) ? '<br>' : '' }}
-                                    @endforeach
-                                         @if(count($stock->childTransactions) > 0)
-                                             @foreach($stock->childTransactions as $transaction)
-                                                 @foreach($transaction->add_stock_lines as $index => $line)
-                                                     {{ @num_format( $line->quantity) .' ( '. $line->variation?->unit->name .' ) ' }}
-                                                     {{ !empty($transaction->add_stock_lines[$index+1]) ? '<br>' : '' }}
-                                                 @endforeach
-                                             @endforeach
-                                         @endif
+                                        @php
+                                            // Initialize an array to hold the quantities of each unit type
+                                            $quantities = [];
+                                        @endphp
+
+                                        @foreach ($stock->add_stock_lines as $line)
+                                            @php
+                                                $unit_name = $line->variation && $line->variation->unit ? $line->variation->unit->name : '-';
+                                                if (!isset($quantities[$unit_name])) {
+                                                    $quantities[$unit_name] = 0;
+                                                }
+                                                $quantities[$unit_name] += $line->quantity;
+                                            @endphp
+                                        @endforeach
+
+                                        @if (count($stock->childTransactions) > 0)
+                                            @foreach ($stock->childTransactions as $transaction)
+                                                @foreach ($transaction->add_stock_lines as $line)
+                                                    @php
+                                                        $unit_name = $line->variation && $line->variation->unit ? $line->variation->unit->name : '-';
+                                                        if (!isset($quantities[$unit_name])) {
+                                                            $quantities[$unit_name] = 0;
+                                                        }
+                                                        $quantities[$unit_name] += $line->quantity;
+                                                    @endphp
+                                                @endforeach
+                                            @endforeach
+                                        @endif
+
+                                        @foreach ($quantities as $unit => $total_quantity)
+                                            {{ @num_format($total_quantity) . ' (' . $unit . ')' }}
+                                            <br>
+                                        @endforeach
+                                    </span>
                                 </td>
+
                                 <td class="col6">{{$stock->created_by_relationship->name}}</td>
                                 <td class="col7">
                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
