@@ -1016,98 +1016,105 @@ class Create extends Component
         $this->total_dollar = 0;
         $this->loading_cost = 0;
         $this->dollar_loading_cost = 0;
+        $this->discount = 0;
+        $this->discount_dollar = 0;
+
         if (count($this->items) > 0) {
             foreach ($this->items as $item) {
                 // dinar_sub_total
                 $this->total += round_250($this->num_uf($item['sub_total']));
                 // dollar_sub_total
-                $this->total_dollar += $this->num_uf($item['dollar_sub_total'] );
+                $this->total_dollar += $this->num_uf($item['dollar_sub_total']);
                 $this->discount += $this->num_uf($item['discount_price']);
                 $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
-                //  calculate loading cost
-                if(!empty($item['unit_id'])){
+
+                // Calculate loading cost
+                if (!empty($item['unit_id'])) {
                     $first_variation = Product::find($item['product']['id'])->variations->first();
                     $item_variation = Variation::find($item['unit_id']);
-                    if($first_variation->id == $item['unit_id']){
-                        if(System::getProperty('loading_cost_currency') == 2){
+                    // dd($item_variation);
+                    if ($first_variation->id === $item['unit_id']) {
+                        if (System::getProperty('loading_cost_currency') == 2) {
                             $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
-                        }
-                        elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
+                        } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
                             $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
                         }
-                    }
-                    else{
-                        $product_variations = Variation::where('product_id', $item['product']['id'])->get();
-                        $qtyByUnit = 1;
-                       if (isset($item_variation->unit_id) && $first_variation->basic_unit_id == $item_variation->unit_id) {
-                            $qtyByUnit = $first_variation->equal;
-                       }
-                       else {
-                            foreach ($product_variations as $key => $product_variation) {
-                                if (!empty($product_variations[$key + 1])) {
-                                    if ($first_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
-                                        if ($product_variations[$key + 1]->basic_unit_id == $item_variation->unit_id) {
-                                            $qtyByUnit = $first_variation->equal * $product_variations[$key + 1]->equal;
-                                            break;
-                                        } else {
-                                            $qtyByUnit = $product_variation->equal;
+                    } else {
+                        if ($item_variation->unit->loading_cost != 0) {
+                            if (System::getProperty('loading_cost_currency') == 2) {
+                                $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                            } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
+                                $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                            }
+                        } else {
+                            $product_variations = Variation::where('product_id', $item['product']['id'])->get();
+                            $qtyByUnit = 1;
+                            // dd($product_variations);
+                            foreach ($product_variations as $variation) {
+                                if ($item_variation->basic_unit_id != null) {
+                                    $basic_variation = Variation::where('product_id', $item['product']['id'])
+                                                                ->where('unit_id', $item_variation->basic_unit_id)
+                                                                ->first();
+
+                                    if ($basic_variation && $basic_variation->basic_unit_id != null) {
+                                        $increment = $item_variation->equal;
+                                        if ($item['quantity'] > 0) {
+                                            $qtyByUnit = floor(($item['quantity'] - 1) / $increment) + 1;
+                                            $increment = $basic_variation->equal;
+                                            if ($item['quantity'] > 0) {
+                                                $qtyByUnit = floor(($qtyByUnit - 1) / $increment) + 1;
+                                            }
                                         }
                                     } else {
-                                        if ($product_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
-                                            $qtyByUnit *= $product_variation->equal;
+                                        $increment = $item_variation->equal;
+                                        if ($item['quantity'] > 0) {
+                                            $qtyByUnit = floor(($item['quantity'] - 1) / $increment) + 1;
                                         }
-                                        if ($product_variation->basic_unit_id == $item['unit_id'] || $product_variation->unit_id == $item['unit_id']) {
-                                            break;
-                                        }
-                                    }
-                                } else {
-                                    if ($product_variation->basic_unit_id == $item['unit_id']) {
-                                        $qtyByUnit *= $product_variation->equal;
-                                        break;
                                     }
                                 }
                             }
-                        }
-                        $qty_difference = 1 / $qtyByUnit;
-                        if(System::getProperty('loading_cost_currency') == 2){
-                            $this->dollar_loading_cost += $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
-                        }
-                        elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
-                            $this->loading_cost += $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
+
+                            if (System::getProperty('loading_cost_currency') == 2) {
+                                $this->dollar_loading_cost += $first_variation->unit->loading_cost * $qtyByUnit;
+                            } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
+                                $this->loading_cost += $first_variation->unit->loading_cost * $qtyByUnit;
+                            }
                         }
                     }
                 }
             }
         }
-        if($this->invoice_status == 'monetary'){
+
+        if ($this->invoice_status == 'monetary') {
             $this->dollar_amount = $this->total_dollar + $this->dollar_loading_cost;
             $this->amount = round_250($this->total + $this->loading_cost);
             $this->changeReceivedDinar();
             $this->changeReceivedDollar();
             $this->add_to_balance = '0';
         }
+
         $this->payments[0]['method'] = 'cash';
-        $this->rest  = 0;
+        $this->rest = 0;
+
         // النهائي دينار
         $this->final_total = $this->total > 0 ? round_250($this->num_uf($this->total) + $this->loading_cost) : 0;
         // النهائي دولار
-        $this->dollar_final_total = $this->num_uf($this->total_dollar )+ $this->dollar_loading_cost;
-        // dd($this->dollar_final_total,round($this->dollar_final_total / 10) * 10);
-        // $this->net_dollar_remaining = ($this->dollar_final_total - round($this->dollar_final_total, -1));
+        $this->dollar_final_total = $this->num_uf($this->total_dollar) + $this->dollar_loading_cost;
 
-        $this->total += round_250( $this->loading_cost);
-        // dollar_sub_total
+        $this->total += round_250($this->loading_cost);
         $this->total_dollar += $this->dollar_loading_cost;
+
         // task : الباقي دينار
         $dinar_remaining = $this->num_uf($this->final_total) - $this->num_uf($this->amount);
         $this->dinar_remaining = $dinar_remaining > 0 ? round_250($dinar_remaining) : 0;
         // task : الباقي دولار
         $dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
         $this->dollar_remaining = $dollar_remaining > 0 ? round_250($dollar_remaining) : 0;
+
         $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at', 'desc')->get();
         $this->count_total_by_variations();
-
     }
+
     public function count_total_by_variations()
     {
         // dd($this->items);
@@ -1934,6 +1941,7 @@ class Create extends Component
 //        dd($this->items[$key]['unit_name'] );
         $this->subtotal($key, $via = 'quantity');
         $this->changeCustomerType($key);
+        $this->computeForAll();
     }
 
     public function getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id)
