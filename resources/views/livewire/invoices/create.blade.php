@@ -157,8 +157,8 @@
                         <div class="form-group">
                             {!! Form::label('invoice_status', __('lang.invoice') . ':*', []) !!}
                             {!! Form::select('invoice_status', ['monetary' => __('lang.monetary') , 'deferred_time' => __('lang.deferred_time')], $invoice_status,
-                            ['class' => 'select2 form-control','data-name'=>'invoice_status', 'data-live-search' => 'true', 'required',
-                            'placeholder' => __('lang.please_select'), 'wire:model' => 'invoice_status']) !!}
+                            ['class' => 'form-control','data-name'=>'invoice_status', 'data-live-search' => 'true', 'required',
+                            'placeholder' => __('lang.please_select'), 'wire:model' => 'invoice_status','wire:change' => 'computeForAll()']) !!}
                             @error('store_pos_id')
                             <span class="error text-danger">{{ $message }}</span>
                             @enderror
@@ -323,7 +323,7 @@
                                                     @if(empty($item['variation']))
                                                     {{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}
                                                     @else
-                                                    {{$item['unit_sku']}} 
+                                                    {{$item['unit_sku']}}
                                                     @endif
                                                 </td>
                                                 <td @if(!$columnVisibility['product']) style="display: none;" @endif>

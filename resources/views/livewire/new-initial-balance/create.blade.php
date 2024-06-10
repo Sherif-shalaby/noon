@@ -557,7 +557,7 @@
                                         <input type="text" name="prices.{{ $key }}.dinar_price"
                                             class="form-control price"
                                             wire:model="prices.{{ $key }}.dinar_price"
-                                            wire:change="changePrice({{ $key }})"
+                                            wire:change="changePrice({{ $key }},'change_amount')"
                                             placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                             @if (empty($prices[$key]['price_type'])) readonly @endif>
                                         <p class="{{$settings['toggle_dollar']=='1'?'d-none':''}}">

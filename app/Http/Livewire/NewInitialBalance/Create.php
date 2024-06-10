@@ -596,10 +596,10 @@ class Create extends Component
                                         'stock_line_id' => $stockLine->id,
                                         'unit_id' => !empty($price['fill_id']) ? $price['fill_id'] : null,
                                         'price_type' => !empty($price['price_type']) ? $price['price_type'] : null,
-                                        'price' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? (!empty($price['price']) ? $this->num_uf($price['price'])  : null) : null):0,
-                                        'dinar_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null) : null,
-                                        'price_customers' => $this->toggle_dollar=="0"?(($this->transaction_currency == 2) ? (!empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null) : null):0,
-                                        'dinar_price_customers' => ($this->transaction_currency != 2) ? (!empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc']) : null) : null,
+                                        'price' =>  (!empty($price['price']) ? $this->num_uf($price['price'])  : null),
+                                        'dinar_price' =>  (!empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null),
+                                        'price_customers' => (!empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null),
+                                        'dinar_price_customers' => (!empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc']) : null),
                                         'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
                                         'quantity' => !empty($price['discount_quantity']) ? $this->num_uf($price['discount_quantity']) : null,
                                         'bonus_quantity' => !empty($price['bonus_quantity']) ? $this->num_uf($price['bonus_quantity']) : null,
@@ -1262,6 +1262,21 @@ class Create extends Component
     {
         $fill_id = $this->prices[$index]['fill_id']??0;
         $row_index = $this->getKey($fill_id) ?? 0;
+        if($this->transaction_currency == 2){
+            if(!empty($this->prices[$index]['dinar_price']) && !empty($this->prices[$index]['price']) && $via !='change_amount'){
+                $this->prices[$index]['price'] = $this->prices[$index]['price'];
+                $this->prices[$index]['dinar_price']= $this->prices[$index]['dinar_price'];
+                // dd($this->prices[$index]['price']);
+            }else{
+                $this->prices[$index]['price'] = $this->prices[$index]['dinar_price'];
+                // dd($this->prices[$index]['price']);
+                $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) * (float)$this->exchange_rate, num_of_digital_numbers());
+
+            }
+        }else{
+             $this->prices[$index]['price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) / (float)$this->exchange_rate, num_of_digital_numbers());
+
+        }
         // dd($row_index);
         $actual_price = 0;
         if ($row_index >= 0) {
@@ -1280,7 +1295,7 @@ class Create extends Component
                                     $actual_price = $this->prices[$index]['price'];
                                 } else {
                                     $actual_price = $this->num_uf($this->prices[$index]['dinar_price']);
-                                    $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) * (float)$this->exchange_rate, num_of_digital_numbers());
+                                    // $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) * (float)$this->exchange_rate, num_of_digital_numbers());
                                 }
                             }
                             $dollar_price = number_format($this->num_uf($actual_price), num_of_digital_numbers());
@@ -1292,7 +1307,7 @@ class Create extends Component
                     }
                     $sell_price =($sell_price * $this->prices[$index]['discount_quantity'])/($total_quantity==0 ? 1 : $total_quantity);
                     $dollar_sell_price =($dollar_sell_price * $this->prices[$index]['discount_quantity'])/($total_quantity==0 ? 1 : $total_quantity);
-                    $this->prices[$index]['price'] = $this->num_uf($dollar_price);
+                    // $this->prices[$index]['price'] = $this->num_uf($dollar_price);
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($this->num_uf($sell_price) - $this->num_uf($this->prices[$index]['dinar_price']), num_of_digital_numbers());
                     $this->prices[$index]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) - $this->num_uf($this->prices[$index]['price']), num_of_digital_numbers());
 
@@ -1308,12 +1323,14 @@ class Create extends Component
                 if ($this->prices[$index]['price_type'] == "fixed") {
                     if($via!="change_price"){
                         if ($this->transaction_currency == 2) {
+                            //problem here
+                            // if(!empty($this->prices[$index]['dinar_price']) && !empty($this->prices[$index]['price']))
                             if (!empty($this->prices[$index]['dinar_price'])) {
                                 if ($via == 'quantity' && !empty($this->prices[$index]['dinar_price']) && !empty($this->prices[$index]['price'])) {
                                     $actual_price = $this->prices[$index]['price'];
                                 } else {
                                     $actual_price = $this->num_uf($this->prices[$index]['dinar_price']);
-                                    $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) * (float)$this->exchange_rate, num_of_digital_numbers());
+                                    // $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) * (float)$this->exchange_rate, num_of_digital_numbers());
                                 }
                             }
                             $dollar_price = number_format($this->num_uf($actual_price), num_of_digital_numbers());
@@ -1324,7 +1341,7 @@ class Create extends Component
                             $dollar_price=number_format($this->num_uf($this->prices[$index]['price']));
                         }
 
-                        $this->prices[$index]['price'] = $this->num_uf($dollar_price);
+                        // $this->prices[$index]['price'] = $this->num_uf($dollar_price);
                         $this->prices[$index]['dinar_price_after_desc'] = number_format($this->num_uf($sell_price) - $this->num_uf($this->prices[$index]['dinar_price']), num_of_digital_numbers());
                         $this->prices[$index]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) - $this->num_uf($this->prices[$index]['price']), num_of_digital_numbers());
                 } else {
@@ -1398,6 +1415,9 @@ class Create extends Component
                             $this->changePrice(count($this->prices)-1);
                         }
                     }
+                    // dd($this->prices[$key]['price']);
+
+                    // dd($this->prices);
                 }
             }
         } else {

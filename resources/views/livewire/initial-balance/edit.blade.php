@@ -699,6 +699,18 @@
                                         </div>
                                     @endforeach
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                            @if (!empty($this->count_fill_stores_unit($i)))
+                                                @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
+                                                    <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                                        {{ $unit_name }}: {{ $variant }} </h2><br>
+                                                @endforeach
+                                            @endif
+                                            <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                                {{ $this->getExtraFillStore($i) }}</h2>
+                                    </div>
+                                </div>
                             @empty
                             <div class="row">
                                 <div class="col-md-2">
@@ -718,6 +730,15 @@
                             class="btn btn-primary pull-right btn-flat submit"
                             wire:click.prevent="edit()">@lang('lang.edit')</button>
 
+                    </div>
+                    <div class="col-md-12 text-center">
+                        {{ $this->count_total_by_variation_stores() }}
+                        @if (!empty($variationStoreSums))
+                            @foreach ($variationStoreSums as $unitName => $variant_qty)
+                                <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                    {{ $unitName }} : {{ $variant_qty }} </h2><br>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
