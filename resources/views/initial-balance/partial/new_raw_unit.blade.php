@@ -1,7 +1,7 @@
 {{-- <td>
         {{ $index + 1 }}
     </td> --}}
-<div class="d-flex flex-column">
+<div class="d-flex flex-column d-flex rounded mx-1 py-2 bg-light flex-column">
 
     <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
         <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
@@ -131,12 +131,12 @@
         </div>
     </div>
 
-    <div class="accordion-collapse @if ($rows[$index]['show_prices']) show @endif flex-column collapse">
+    <div class="accordion-collapse @if ($rows[$index]['show_prices']) show @endif  collapse">
         @foreach ($rows[$index]['prices'] as $key => $price)
             <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div
                     class="d-flex justify-content-start align-items-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div class="mb-2  d-flex flex-column  align-items-end pl-1" style="width: max-content">
+                    <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 70px">
                         <label
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                             style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
@@ -144,19 +144,19 @@
                             wire:change="changePercent({{ $index }},{{ $key }})"
                             style="margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
                              background-color: #dedede;
-    border: 2px solid #cececf;
-    border-radius: 16px;
-    color: #373737;
-    box-shadow: 0 8px 6px -5px #bbb;
-width: 75%;
-    height: 30px;
-    margin: auto;
-    flex-wrap: nowrap;
-    margin-bottom: 10px;"
+                            border: 2px solid #cececf;
+                            border-radius: 16px;
+                            color: #373737;
+                            box-shadow: 0 8px 6px -5px #bbb;
+                            width: 100%;
+                            height: 30px;
+                            margin: auto;
+                            flex-wrap: nowrap;
+                            margin-bottom: 10px;"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.percent"
                             @if ($index != 0) disabled @endif maxlength="6" placeholder="%">
                     </div>
-                    <div class="mb-2  d-flex flex-column  align-items-end pl-1" style="width: max-content">
+                    <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 130px">
                         <div class="d-flex justify-content-between">
                             <label
                                 class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
@@ -172,15 +172,15 @@ width: 75%;
                         <input type="text" class="form-control dinar_sell_price"
                             style="margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
                              background-color: #dedede;
-    border: 2px solid #cececf;
-    border-radius: 16px;
-    color: #373737;
-    box-shadow: 0 8px 6px -5px #bbb;
-width: 75%;
-    height: 30px;
-    margin: auto;
-    flex-wrap: nowrap;
-    margin-bottom: 10px;"
+                                border: 2px solid #cececf;
+                                border-radius: 16px;
+                                color: #373737;
+                                box-shadow: 0 8px 6px -5px #bbb;
+                                width: 100%;
+                                height: 30px;
+                                margin: auto;
+                                flex-wrap: nowrap;
+                                margin-bottom: 10px;"
                             @if ($index != 0) disabled @endif
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
                             placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
@@ -192,7 +192,7 @@ width: 75%;
                             <label class="text-danger validation-error error-msg">{{ $message }}</label>
                         @enderror
                     </div>
-                    <div class="mb-2  d-flex flex-column  align-items-end pl-1" style="width: max-content">
+                    <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 130px">
                         <label
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                             style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.price') }}</label>
@@ -200,15 +200,15 @@ width: 75%;
                         <input type="text" class="form-control dinar_sell_price"
                             style=" margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
                              background-color: #dedede;
-    border: 2px solid #cececf;
-    border-radius: 16px;
-    color: #373737;
-    box-shadow: 0 8px 6px -5px #bbb;
-    width: 75%;
-    height: 30px;
-    margin: auto;
-    flex-wrap: nowrap;
-    margin-bottom: 10px;"
+                            border: 2px solid #cececf;
+                            border-radius: 16px;
+                            color: #373737;
+                            box-shadow: 0 8px 6px -5px #bbb;
+                            width: 100%;
+                            height: 30px;
+                            margin: auto;
+                            flex-wrap: nowrap;
+                            margin-bottom: 10px;"
                             wire:change="changeSellPrice({{ $index }},{{ $key }})"
                             @if ($index != 0) disabled @endif
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"

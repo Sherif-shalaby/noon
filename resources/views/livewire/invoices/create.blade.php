@@ -657,7 +657,7 @@
                                                     <input class="form-control initial-balance-input dinarPrice m-0"
                                                         data-key="{{ $key }}" type="text"
                                                         wire:model="items.{{ $key }}.price"
-                                                        style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece" />
+                                                        style="font-weight: 700;font-size: 12px;width: 120px;border: 2px solid #cecece" />
                                                     {{-- {{ $item['price'] ?? '' }} --}}
                                                 </div>
                                             </td>

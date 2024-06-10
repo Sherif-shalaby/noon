@@ -430,7 +430,7 @@
                                                     </div>
                                                     <input
                                                         class="form-control p-1 text-center initial-balance-input mb-0"
-                                                        style="width: 50px font-size: 12px;font-weight: 700;border:2px solid #cecece"
+                                                        style="width: 50px;font-size: 12px;font-weight: 700;border:2px solid #cecece"
                                                         type="text" min="1"
                                                         wire:model="items.{{ $key }}.quantity"
                                                         Wire:change="subtotal({{ $key }})">
@@ -498,10 +498,10 @@
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
-                                                    <input class="form-control dinarPrice"
+                                                    <input class="form-control initial-balance-input dinarPrice"
                                                         data-key="{{ $key }}" type="text"
                                                         wire:model="items.{{ $key }}.price"
-                                                        style="width: 65px" />
+                                                        style="font-weight: 700;font-size: 12px;width: 120px;border: 2px solid #cecece" />
                                                     {{-- {{$item['price']??''}} --}}
                                                 </div>
                                             </td>

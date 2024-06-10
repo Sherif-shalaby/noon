@@ -1092,6 +1092,17 @@ class Create extends Component
                 !$row['show_prices'];
         }
     }
+
+    public function getIsDiscountVisibleProperty()
+    {
+        foreach ($this->rows as $index => $row) {
+            if (!empty($this->rows[$index]['quantity']) || !empty($this->rows[$index]['purchase_price'])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function changeUnitPrices($key)
     {
         foreach ($this->rows as $index => $row) {
