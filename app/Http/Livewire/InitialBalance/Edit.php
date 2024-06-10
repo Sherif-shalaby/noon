@@ -373,6 +373,11 @@ class Edit extends Component
             return __('lang.store') .' : '.Store::find($this->item[0]['store_id'])?->name;
         }
     }
+    public function getExtraFillStore($key){
+        if(!empty($this->fill_stores[$key]['extra_store_id'])){
+            return __('lang.store') .' : '.Store::find($this->fill_stores[$key]['extra_store_id'])?->name;
+        }
+    }
     public function render()
     {
         $currenciesId = [System::getProperty('currency'), 2];
@@ -577,6 +582,7 @@ class Edit extends Component
         $this->countryName = Country::where('id', $this->countryId)->pluck('name')->first();
         $this->calculateTotalQuantity();
         $this->dispatchBrowserEvent('initialize-select2');
+        $this->count_total_by_variation_stores();
     }
     // public function updated($propertyName)
     // {
