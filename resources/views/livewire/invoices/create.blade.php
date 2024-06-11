@@ -96,12 +96,14 @@
                         ['monetary' => __('lang.monetary'), 'deferred_time' => __('lang.deferred_time')],
                         $invoice_status,
                         [
-                            'class' => 'select2 form-control',
+                            'class' => ' form-control',
                             'data-name' => 'invoice_status',
                             'data-live-search' => 'true',
                             'required',
                             'placeholder' => __('lang.please_select'),
                             'wire:model' => 'invoice_status',
+                    
+                            'wire:change' => 'computeForAll()',
                         ],
                     ) !!}
                     @error('store_pos_id')

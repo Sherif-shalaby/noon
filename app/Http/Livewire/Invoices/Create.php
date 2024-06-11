@@ -542,13 +542,13 @@ class Create extends Component
                     $new_dinar_balance = $balance[0];
                     $new_dollar_balance = $balance[1];
                     if (($new_dinar_balance < $this->new_added_dinar_balance) || ($new_dollar_balance < $this->new_added_dollar_balance)) {
-                        dd(1);
+                        // dd(1);
                         $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
                         $this->createCashRegisterTransaction($register, $this->num_uf($this->new_added_dinar_balance) - $new_dinar_balance,$this->num_uf($this->new_added_dollar_balance) - $new_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
                     }
                 } else {
                     if ($this->new_added_dinar_balance > 0 || $this->new_added_dollar_balance > 0) {
-                        dd(2);
+                        // dd(2);
                         $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
                         $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance,$this->new_added_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
                     }
@@ -1027,7 +1027,7 @@ class Create extends Component
                 $this->total_dollar += $this->num_uf($item['dollar_sub_total']);
                 $this->discount += $this->num_uf($item['discount_price']);
                 $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
-
+                // dd($this->total_dollar);
                 // Calculate loading cost
                 if (!empty($item['unit_id'])) {
                     $first_variation = Product::find($item['product']['id'])->variations->first();
@@ -1035,16 +1035,33 @@ class Create extends Component
                     // dd($item_variation);
                     if ($first_variation->id === $item['unit_id']) {
                         if (System::getProperty('loading_cost_currency') == 2) {
-                            $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                            if($this->total > 0){
+                                $this->loading_cost +=( $item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate']))* $item['quantity'];
+                            }else{
+                                $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                            }
                         } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
-                            $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                            if($this->total_dollar > 0){
+                                $this->dollar_loading_cost +=( $item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))* $item['quantity'];
+                            }else{
+                                $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                            }
                         }
                     } else {
                         if ($item_variation->unit->loading_cost != 0) {
                             if (System::getProperty('loading_cost_currency') == 2) {
-                                $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                                if($this->total > 0){
+                                    $this->loading_cost +=( $item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate']))* $item['quantity'];
+                                }else{
+                                    $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+
+                                }
                             } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
-                                $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                                if($this->total_dollar > 0){
+                                    $this->dollar_loading_cost +=( $item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))* $item['quantity'];
+                                }else{
+                                    $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                                }
                             }
                         } else {
                             $product_variations = Variation::where('product_id', $item['product']['id'])->get();
@@ -1075,9 +1092,18 @@ class Create extends Component
                             }
 
                             if (System::getProperty('loading_cost_currency') == 2) {
-                                $this->dollar_loading_cost += $first_variation->unit->loading_cost * $qtyByUnit;
+                                if($this->total > 0){
+                                    $this->loading_cost +=( $first_variation->unit->loading_cost  * $this->num_uf($item['exchange_rate']) )* $qtyByUnit;
+                                }else{
+                                    $this->dollar_loading_cost += $first_variation->unit->loading_cost * $qtyByUnit;
+
+                                }
                             } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
-                                $this->loading_cost += $first_variation->unit->loading_cost * $qtyByUnit;
+                                if($this->total_dollar > 0){
+                                    $this->dollar_loading_cost +=( $first_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))*  $qtyByUnit;
+                                }else{
+                                    $this->loading_cost += $first_variation->unit->loading_cost * $qtyByUnit;
+                                }
                             }
                         }
                     }
@@ -1093,6 +1119,11 @@ class Create extends Component
             $this->add_to_balance = '0';
         }
 
+        // dd($this->invoice_status);
+        if($this->invoice_status == 'deferred_time'){
+            $this->dollar_amount =0;
+            $this->amount = 0;
+        }
         $this->payments[0]['method'] = 'cash';
         $this->rest = 0;
 
@@ -2122,7 +2153,7 @@ class Create extends Component
             $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
             if (!empty($stock_line)) {
                 $variation_price = VariationPrice::where('variation_id', $this->items[$key]['unit_id'])->where('customer_type_id', $this->items[$key]['customer_type_id'])->first();
-                dd($this->items[$key]['current_stock']['id']);
+                // dd($this->items[$key]['current_stock']['id']);
                 $variation_stock = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
                 if (isset($variation_stock->dollar_sell_price) && $variation_stock->dollar_sell_price == 0 && $variation_stock->sell_price > 0) {
                     $variation_stock->sell_price = $this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['exchange_rate']);
