@@ -1035,13 +1035,13 @@ class Create extends Component
                     // dd($item_variation);
                     if ($first_variation->id === $item['unit_id']) {
                         if (System::getProperty('loading_cost_currency') == 2) {
-                            if($this->total > 0){
+                            if($item['sub_total'] > 0){
                                 $this->loading_cost +=( $item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate']))* $item['quantity'];
                             }else{
                                 $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
                             }
                         } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
-                            if($this->total_dollar > 0){
+                            if($item['dollar_sub_total'] > 0){
                                 $this->dollar_loading_cost +=( $item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))* $item['quantity'];
                             }else{
                                 $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
@@ -1050,14 +1050,14 @@ class Create extends Component
                     } else {
                         if ($item_variation->unit->loading_cost != 0) {
                             if (System::getProperty('loading_cost_currency') == 2) {
-                                if($this->total > 0){
+                                if($item['sub_total'] > 0){
                                     $this->loading_cost +=( $item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate']))* $item['quantity'];
                                 }else{
                                     $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
 
                                 }
                             } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
-                                if($this->total_dollar > 0){
+                                if($item['dollar_sub_total'] > 0){
                                     $this->dollar_loading_cost +=( $item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))* $item['quantity'];
                                 }else{
                                     $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
@@ -1092,14 +1092,14 @@ class Create extends Component
                             }
 
                             if (System::getProperty('loading_cost_currency') == 2) {
-                                if($this->total > 0){
+                                if($item['sub_total'] > 0){
                                     $this->loading_cost +=( $first_variation->unit->loading_cost  * $this->num_uf($item['exchange_rate']) )* $qtyByUnit;
                                 }else{
                                     $this->dollar_loading_cost += $first_variation->unit->loading_cost * $qtyByUnit;
 
                                 }
                             } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
-                                if($this->total_dollar > 0){
+                                if($item['dollar_sub_total']> 0){
                                     $this->dollar_loading_cost +=( $first_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))*  $qtyByUnit;
                                 }else{
                                     $this->loading_cost += $first_variation->unit->loading_cost * $qtyByUnit;
