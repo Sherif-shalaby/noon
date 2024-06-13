@@ -118,10 +118,10 @@
     </td>
     <td class="{{$items[$index]['discount_type']!="1"?'d-none':''}}">
         <div class="input-group-prepend">
-            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:change="changePurchasePrice({{ $index }})" placeholder="%">
+{{--            <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount_percent" style="width: 100px;" wire:change="changePurchasePrice({{ $index }})" placeholder="%">--}}
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_discount" style="width: 100px;" wire:change="changePurchasePrice({{ $index }})" placeholder="amount">
         </div>
-        <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount_percent']),num_of_digital_numbers())  }} $ </span>
+{{--        <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount_percent']),num_of_digital_numbers())  }} $ </span>--}}
         <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format(num_uf($product['dollar_purchase_discount']),num_of_digital_numbers())  }} $</span>
         <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}" id="discount_on_bonus_quantity_{{ $index }}"
@@ -142,7 +142,7 @@
         <div class="d-flex justify-content-between">
             <div class="input-group-prepend">
                 {{$items[$index]['discount_type']!="2"?'d-none':''}}
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.discount_percent" style="width: 100px;"  placeholder="%">
+{{--                <input type="text" class="form-control" wire:model="items.{{ $index }}.discount_percent" style="width: 100px;"  placeholder="%">--}}
             </div>
             <input type="text" class="form-control" wire:model="items.{{ $index }}.discount" style="width: 100px;" placeholder="discount amount">
         </div>
@@ -150,7 +150,10 @@
     <td>
         <div class="d-flex justify-content-between">
             <div class="input-group-prepend">
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.cash_discount" style="width: 100px;" wire:input="purchase_final({{ $index }})" placeholder="cash discount">
+                <div class="input-group-prepend">
+                    <input type="text" name="items.{{ $index }}.invoice_discount" id="items.{{ $index }}.invoice_discount" class="form-control" wire:model="items.{{ $index }}.invoice_discount" wire:change="cost({{ $index }})" style="width: 100px;" placeholder="invoice discount">
+                </div>
+                <input type="text" name="items.{{ $index }}.cash_discount" id="items.{{ $index }}.cash_discount" class="form-control" wire:model="items.{{ $index }}.cash_discount" style="width: 100px;" wire:change="cost({{ $index }})" placeholder="cash discount">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" name="discount_dependency{{ $index }}" id="discount_dependency_{{ $index }}"
                            wire:model="items.{{ $index }}.discount_dependency"
@@ -160,11 +163,11 @@
             </div>
 
             <div class="input-group-prepend">
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.seasonal_discount" wire:input="purchase_final({{ $index }})" style="width: 100px;" placeholder="seasonal discount">
+                <input type="text" name="items.{{ $index }}.seasonal_discount" id="items.{{ $index }}.seasonal_discount" class="form-control" wire:model="items.{{ $index }}.seasonal_discount" wire:change="cost({{ $index }})" style="width: 100px;" placeholder="seasonal discount">
             </div>
 
             <div class="input-group-prepend">
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.annual_discount" wire:input="purchase_final({{ $index }})" style="width: 100px;" placeholder="Annual discount">
+                <input type="text" class="form-control" name="items.{{ $index }}.annual_discount" id="items.{{ $index }}.annual_discount" wire:model="items.{{ $index }}.annual_discount" wire:change="cost({{ $index }})" style="width: 100px;" placeholder="Annual discount">
             </div>
         </div>
     </td>
@@ -181,7 +184,7 @@
         @endif
     </td>
 
-    <td title="{{__('lang.final_total')}}">
+    <td title="{{__('lang.final_total')}} $">
         @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
             <span class="final_total_span" aria-placeholder="{{__('lang.final purchase for piece')}}">
                 {{@number_format($this->final_purchase_for_piece($index),num_of_digital_numbers())}}
@@ -192,8 +195,8 @@
         @endif
     </td>
     <td title="{{__('lang.cost')}}">
-        @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
-        {{$this->cost($index)}}
+{{--        {{$this->cost($index)}}--}}
+    @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
             <span class="cost" aria-placeholder="dollar cost">
                 {{ $product['cost'] }}
             </span>
@@ -369,10 +372,10 @@
         <td>
             <div class="input-group-prepend">
                     <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="amount">
-                <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="%">
+{{--                <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_discount_percent" style="width: 100px;" wire:input="changePurchasePrice({{$index}},'stores',{{$i}})" placeholder="%">--}}
             </div>
             <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount'],num_of_digital_numbers()) }} $</span>
-            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount_percent'],num_of_digital_numbers()) }} $ </span>
+{{--            <span class="{{$settings['toggle_dollar']=='1'?'d-none':''}}"> {{ @number_format($items[$index]['stores'][$i]['dollar_purchase_discount_percent'],num_of_digital_numbers()) }} $ </span>--}}
             <div class="input-group-prepend">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input" name="discount_on_bonus_quantity{{ $index }}{{$i}}" id="discount_on_bonus_quantity{{$i}}"

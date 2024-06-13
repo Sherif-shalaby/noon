@@ -12,6 +12,7 @@
                 <th>@lang('lang.amount')</th>
                 <th>@lang('lang.payment_date')</th>
                 <th>@lang('lang.payment_type')</th>
+                <th>@lang('lang.image')</th>
 {{--                @if(!empty($show_action))--}}
 {{--                    <th>@lang('lang.action')</th>--}}
 {{--                @endif--}}
@@ -24,6 +25,28 @@
                     <td>{{($payment->amount)}}</td>
                     <td>{{@format_date($payment->paid_on)}}</td>
                     <td>{{$payment_type_array[$payment->method]}}</td>
+                    <td>
+                        <!-- Image thumbnail -->
+                        <img src="{{asset('uploads/'.$payment->photo)}}" alt="Image"  width="20%" data-toggle="modal" data-target="#imageModal" data-fullsize="{{asset('uploads/'.$payment->photo)}}">
+
+                        <!-- Modal -->
+                        <div class="modal fade mod" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img class="img-fluid" id="modalImg" src=""  alt="Fullsize Image">
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+
+                    </td>
 {{--                    @if(!empty($show_action))--}}
 {{--                        <td>--}}
 {{--                            <div class="btn-group">--}}
@@ -57,3 +80,14 @@
         </table>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+      // Set the fullsize image source when modal is shown
+      $('#imageModal').on('show.bs.modal', function (event) {
+        var thumbnail = $(event.relatedTarget); // Thumbnail that triggered the modal
+        var fullsizeImage = thumbnail.data('fullsize'); // Extract info from data-* attributes
+        $('#modalImg').attr('src', fullsizeImage); // Set the src attribute of the modal image
+      });
+    
+    });
+  </script>

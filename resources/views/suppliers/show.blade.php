@@ -232,7 +232,7 @@
                         </div>
                         {{-- ++++++++++++ Tab 3 Content : statement_of_account : كشف حساب +++++++++++ --}}
                         @php
-                         $total_due=0;   
+                         $total_due=0;
                         @endphp
                         <div role="tabpanel" class="tab-pane fade @if (request()->show == 'statement_of_account') show active @endif"
                             id="statement-of-account">
@@ -462,7 +462,7 @@
                                                 </td>
                                                 <td>{{ @num_format($line->final_total - $line->transaction_payments->sum('amount')) }}</td>
                                                 @php
-                                                    $dinar_total_due=($line->final_total - $line->transaction_payments->sum('amount'));   
+                                                    $dinar_total_due=($line->final_total - $line->transaction_payments->sum('amount'));
                                                 @endphp
                                             </td>
                                             <td>
@@ -473,7 +473,7 @@
                                                         {{ @num_format(-$line->dollar_final_total) }}@else{{ @num_format($line->dollar_final_total) }}
                                                     @endif
                                                 </td>
-                                              
+
                                                 <td>
                                                     @if ($line->type == 'sell_return')
                                                         {{ @num_format(-$line->transaction_payments->sum('dollar_amount')) }}
@@ -482,7 +482,7 @@
                                                 </td>
                                                 <td>{{ @num_format($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount')) }}
                                                 @php
-                                                    $dollar_total_due=($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount'));   
+                                                    $dollar_total_due=($line->dollar_final_total - $line->transaction_payments->sum('dollar_amount'));
                                                 @endphp
                                                 </td>
                                                 <td>
@@ -523,7 +523,7 @@
     </div>
 @endsection
 
-@section('javascript')
+@push('javascripts')
     <script>
         $(document).ready(function() {
             supplier_service_table = $('#supplier_service_table').DataTable({
@@ -684,4 +684,4 @@
             supplier_service_table.ajax.reload();
         })
     </script>
-@endsection
+@endpush

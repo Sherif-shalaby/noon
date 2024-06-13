@@ -34,7 +34,7 @@
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         <div class="table-responsive">
-                            <table id="datatable-buttons" class="table table-striped table-bordered">
+                            <table id="example" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th>{{ __('lang.date') }}</th>
@@ -58,7 +58,11 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-
+                                <tfoot>
+                                    <td colspan="2" style="text-align: right">@lang('lang.total')</td>
+                                    <td id="sum1"></td>
+                                    <td colspan="1"></td>
+                                </tfoot>
                             </table>
                             <div class="view_modal no-print" >
 
@@ -73,5 +77,51 @@
     </div>
     <!-- End Contentbar -->
 @endsection
+@push('javascripts')
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                dom: "<'row'<'col-md-3 'l><'col-md-5 text-center 'B><'col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+                lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],
+                pageLength: 10,
+                buttons: ['copy', 'csv', 'excel', 'pdf',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ":visible:not(.notexport)"
+                        }
+                    }
+                    // ,'colvis'
+                ],
+                "fnDrawCallback": function(row, data, start, end, display) {
+                    var api = this.api();
 
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
 
+                    // Total over all pages
+                    total1 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(2)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    
+
+                    // Update status DIV
+                    $('#sum1').html('<span>' + total1 + '<span/>');
+              
+                }
+            });
+        });
+
+    </script>
+@endpush

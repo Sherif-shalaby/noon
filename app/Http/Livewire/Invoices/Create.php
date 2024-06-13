@@ -49,7 +49,7 @@ class Create extends Component
         $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id,
         $countryId, $countryName, $country, $back_to_dollar, $supplier_id, $add_to_balance = '0', $new_added_dollar_balance = 0,
         $new_added_dinar_balance = 0, $added_to_balance = 0, $total_paid_dollar = 0, $total_paid_dinar = 0,$representative_id, $loading_cost,
-        $dollar_loading_cost,$toggle_suppliers,$delivery_date,$toggle_dollar=0 , $cust_name, $cust_phone, $invoice_number;
+        $dollar_loading_cost,$toggle_suppliers,$delivery_date,$toggle_dollar=0 , $cust_name, $cust_phone, $invoice_number, $variationSums = [] ,$delivery_dollar_cost;
 
 
     protected $rules =[
@@ -286,12 +286,15 @@ class Create extends Component
                 $variation = Variation::when($this->searchProduct, function ($query) {
                     return $query->where('sku', 'like', '%' . $this->searchProduct . '%');
                 })->pluck('product_id');
+                $variationId = Variation::when($this->searchProduct, function ($query) {
+                    return $query->where('sku', 'like', '%' . $this->searchProduct . '%');
+                })->first()->id;
                 $search_result = Product::whereIn('id', $variation);
                 $search_result = $search_result->get();
             }
 
             if (count($search_result) === 1) {
-                $this->add_product($search_result->first()->id);
+                $this->add_product($search_result->first()->id,$variationId);
                 $search_result = '';
                 $this->searchProduct = '';
             }
@@ -400,11 +403,12 @@ class Create extends Component
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
-            if ($this->checkRepresentativeUser()) {
+            // if ($this->checkRepresentativeUser()) {
                 $transaction->deliveryman_id = isset($this->deliveryman_id) ? $this->deliveryman_id : null;
                 $transaction->delivery_cost = isset($this->delivery_cost) ? $this->num_uf($this->delivery_cost) : 0;
+                $transaction->delivery_dollar_cost = isset($this->delivery_dollar_cost) ? $this->num_uf($this->delivery_dollar_cost) : 0;
                 $transaction->save();
-            }
+            // }
             // Add Sell line
             foreach ($this->items as $key => $item) {
                 if ($item['discount_type'] == 0) {
@@ -534,22 +538,24 @@ class Create extends Component
                 }
             }
             // dd($transaction->payment_status);
-            if(!$this->toggle_suppliers){
-            if ($transaction->payment_status== 'partial' || $transaction->payment_status== 'pending') {
-                $balance = $this->payCustomerDue($transaction->customer_id);
-                $new_dinar_balance = $balance[0];
-                $new_dollar_balance = $balance[1];
-                if (($new_dinar_balance < $this->new_added_dinar_balance) || ($new_dollar_balance < $this->new_added_dollar_balance)) {
-                    $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
-                    $this->createCashRegisterTransaction($register, $this->num_uf($this->new_added_dinar_balance) - $new_dinar_balance,$this->num_uf($this->new_added_dollar_balance) - $new_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
+//            dd($this->toggle_suppliers);
+            if(!empty($this->toggle_suppliers) && !$this->toggle_suppliers){
+                if ($transaction->payment_status== 'partial' || $transaction->payment_status== 'pending') {
+                    $balance = $this->payCustomerDue($transaction->customer_id);
+                    $new_dinar_balance = $balance[0];
+                    $new_dollar_balance = $balance[1];
+                    if (($new_dinar_balance < $this->new_added_dinar_balance) || ($new_dollar_balance < $this->new_added_dollar_balance)) {
+                        dd(1);
+                        $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
+                        $this->createCashRegisterTransaction($register, $this->num_uf($this->new_added_dinar_balance) - $new_dinar_balance,$this->num_uf($this->new_added_dollar_balance) - $new_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
+                    }
+                } else {
+                    if ($this->new_added_dinar_balance > 0 || $this->new_added_dollar_balance > 0) {
+                        dd(2);
+                        $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
+                        $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance,$this->new_added_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
+                    }
                 }
-            } else {
-                if ($this->new_added_dinar_balance > 0 || $this->new_added_dollar_balance > 0) {
-                    $register = CashRegister::where('store_id', $this->store_id)->where('store_pos_id', $this->store_pos_id)->where('user_id', Auth::user()->id)->where('closed_at', null)->where('status', 'open')->first();
-                    $this->createCashRegisterTransaction($register, $this->new_added_dinar_balance,$this->new_added_dollar_balance, 'cash_in', 'debit',Auth::user()->id,'customer_balance',$customer->id,$transaction->id);
-                }
-            }
-
             }
 
             DB::commit();
@@ -562,6 +568,15 @@ class Create extends Component
             $this->added_to_balance = 0;
             $this->new_added_dinar_balance = 0;
             $this->new_added_dollar_balance = 0;
+            $this->loading_cost = 0;
+            $this->dollar_loading_cost = 0;
+            $this->delivery_cost = null;
+            $this->delivery_date = Carbon::now()->format('Y-m-d');
+            $this->deliveryman_id = null;
+            $this->representative_id = null;
+            if (!empty($this->customers)) {
+                $this->client_id = $this->customers[0]->id;
+            }
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
             // return $this->redirect('/invoices/create');
         } catch (\Exception $e) {
@@ -690,30 +705,28 @@ class Create extends Component
     public function getCustomerData($id)
     {
         $this->customer_data = Customer::find($id);
+        $this->cust_name= $this->customer_data->name;
+        $this->cust_phone= $this->customer_data->phone;
+
         //        dd($this->customer_data);
     }
     // ++++++++++++++++++++++++ updatedDepartmentId() ++++++++++++++++++++++++
     // ++++++++++++++++++++++++++ updatedDepartmentId() ++++++++++++++++++++++++++
     public function updatedDepartmentId($value, $name)
     {
-        $this->allproducts = Product::when($name == 'department_id1', function ($query) {
-            $query->where('category_id', $this->department_id1);
-            // $query->where(function ($query) {
-            //     $query->where('category_id', $this->department_id1)
-            //         ->Where('subcategory_id1', $this->department_id2)
-            //         ->Where('subcategory_id2', $this->department_id3)
-            //         ->Where('subcategory_id3', $this->department_id4);
-            // });
-        })->when($name == 'department_id2', function ($query) {
-            $query->where('subcategory_id1', $this->department_id2);
-        })
-            ->when($name == 'department_id3', function ($query) {
+        $this->allproducts = Product::
+            when(isset($this->department_id1) && $this->department_id1 != '0 ', function ($query) {
+                $query->where('category_id', $this->department_id1);
+            })->when(isset($this->department_id2) && $this->department_id2 != '0 ', function ($query) {
+                $query->where('subcategory_id1', $this->department_id2);
+            })
+            ->when(isset($this->department_id3) && $this->department_id3 != '0 ', function ($query) {
                 $query->where('subcategory_id2', $this->department_id3);
             })
-            ->when($name == 'department_id4', function ($query) {
+            ->when(isset($this->department_id4) &&$this->department_id4 != '0 ', function ($query) {
                 $query->where('subcategory_id3', $this->department_id4);
                 // ++++++++++++++++ brand_id filter ++++++++++++++++
-            })->when($name == 'brand_id', function ($query) use ($value) {
+            })->when($this->brand_id != 0 , function ($query) use ($value) {
                 $query->where('brand_id', $this->brand_id);
                 // ========================== price_order filter ==========================
                 // ++++++++++++++++ if price_order == lowest_price ++++++++++++++++
@@ -794,7 +807,7 @@ class Create extends Component
         //        dump($this->customers);
     }
 
-    public function add_product($id)
+    public function add_product($id,$variationId=null)
     {
         //        dd($id);
 
@@ -823,7 +836,7 @@ class Create extends Component
             $newArr = array_filter($this->items, function ($item) use ($product) {
                 return $item['product']['id'] == $product->id;
             });
-            if (count($newArr) > 0) {
+            if (count($newArr) > 0 && $variationId==null) {
                 $key = array_keys($newArr)[0];
                 ++$this->items[$key]['quantity'];
 
@@ -833,8 +846,8 @@ class Create extends Component
                 } else {
                     $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * (float)$this->items[$key]['quantity']) - ((float)$this->items[$key]['quantity'] * $this->num_uf($this->items[$key]['discount']));
                 }
-            } else {
-                $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id ?? 0);
+            } else if($variationId!=null)  {
+                $get_Variation_price = VariationPrice::where('variation_id', $variationId ?? 0);
                 $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
                 if (empty($get_Variation_price->first()->id)) {
@@ -855,7 +868,10 @@ class Create extends Component
                     $price = $this->num_uf($dollar_price) * $this->num_uf($exchange_rate);
                     $dollar_price = 0;
                 }
+                $variant = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first();
+//                dd($variant->variations->unit->name);
 //                dd($current_stock->prices);
+
                 $new_item = [
                     'variation' => $product->variations,
                     'product' => $product,
@@ -881,17 +897,78 @@ class Create extends Component
                     'discount_type' =>  null,
                     'discount_category' =>  null,
                     'dollar_price' => $this->num_uf($dollar_price),
-                    'unit_name' => !empty($product->unit) ? $product->unit->name : '',
+                    'unit_name' => !empty($variant) ? $variant->variations->unit->name : '',
                     'base_unit_multiplier' => !empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
                     'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
                     'stores' => $product_stores,
-                    'unit_id' => ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first()->variation_id ?? '',
-                ];
+                    'unit_id' => $variationId?? '',
+                    'unit_sku'=>Variation::find($variationId)->sku??'',
+                    ];
+                $this->items[] = $new_item;
+            }else
+             {
+                $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id ?? 0);
+                $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
+                $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
+                if (empty($get_Variation_price->first()->id)) {
+                    $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->first()->sell_price ?? 0), num_of_digital_numbers()) : 0;
+                    $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->first()->dollar_sell_price ?? 0), num_of_digital_numbers()) : 0;
+                } else {
+                    $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->where('variation_price_id', $get_Variation_price->first()->id ?? 0)->first()->sell_price ?? 0), num_of_digital_numbers()) : 0;
+                    $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id ?? 0)->where('variation_price_id', $get_Variation_price->first()->id)->first()->dollar_sell_price ?? 0), num_of_digital_numbers()) : 0;
+                }
+                $dollar_exchange = System::getProperty('dollar_exchange');
+                if ($this->num_uf($dollar_exchange) > $this->num_uf($exchange_rate)) {
+                    if ($price == 0) {
+                        $price = $this->num_uf($dollar_price) * $this->num_uf($exchange_rate);
+                        $dollar_price = 0;
+                    }
+                }
+                if($this->toggle_dollar=="1" && $price == 0 && $dollar_price>0){
+                    $price = $this->num_uf($dollar_price) * $this->num_uf($exchange_rate);
+                    $dollar_price = 0;
+                }
+                $variant = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first();
+//                dd($variant->variations->unit->name);
+//                dd($current_stock->prices);
+
+                $new_item = [
+                    'variation' => $product->variations,
+                    'product' => $product,
+                    'customer_types' => $customerTypes,
+                    'customer_type_id' => $get_Variation_price->first()->customer_type_id ?? 0,
+                    'quantity' => 1,
+                    'extra_quantity' => 0,
+                    'price' => $this->num_uf($price),
+                    'category_id' => $product->category?->id,
+                    'department_name' => $product->category?->name,
+                    'client_id' => $product->customer?->id,
+                    'exchange_rate' => $exchange_rate,
+                    'quantity_available' => $quantity_available,
+                    'quantity_available_default' => $quantity_available,
+                    // 'stock_units' => $stock_units,
+                    'sub_total' =>  (float) 1 * $this->num_uf($price),
+                    'dollar_sub_total' => (float) 1 * $this->num_uf($dollar_price),
+                    'current_stock' => $current_stock,
+                    //                    'discount_categories' =>  $discounts,
+                    'discount_categories' => !empty($current_stock) ? $current_stock->prices()->where('price_customer_types', $get_Variation_price->first()->customer_type_id ?? 0)->get() : null,
+                    'discount' => 0,
+                    'discount_price' => 0,
+                    'discount_type' =>  null,
+                    'discount_category' =>  null,
+                    'dollar_price' => $this->num_uf($dollar_price),
+                    'unit_name' => !empty($variant) ? $variant->variations->unit->name : '',
+                    'base_unit_multiplier' => !empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
+                    'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
+                    'stores' => $product_stores,
+                    'unit_id' => $variant->variation_id ?? '',
+                    'unit_sku'=>Variation::find($variant->variation_id)->sku??'',
+                    ];
                 $this->items[] = $new_item;
             }
         }
         $this->computeForAll();
-        //        $this->sumSubTotal();
+      
     }
     public function cancel()
     {
@@ -952,29 +1029,54 @@ class Create extends Component
                 $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
                 //  calculate loading cost
                 if(!empty($item['unit_id'])){
+                    $first_variation = Product::find($item['product']['id'])->variations->first();
                     $item_variation = Variation::find($item['unit_id']);
-                    if(empty($item_variation->basic_unit_id)){
-                        // dd( $item_variation->unit);
+                    if($first_variation->id == $item['unit_id']){
                         if(System::getProperty('loading_cost_currency') == 2){
-                            $this->dollar_loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                            $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
                         }
                         elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
-                            $this->loading_cost = $item_variation->unit->loading_cost * $item['quantity'];
+                            $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
                         }
-                    }else{
-                        $quantity=$this->num_uf($item['quantity']);
-                        $basic_unit=Variation::whereNull('basic_unit_id')
-                        ->where('product_id',$item['product']['id'])->first();
-                        // if($item_variation->basic_unit_id==$basic_unit->unit_id){
-                        //     if($item['quantity'] > $item_variation->equal){
-                                $quantity=1;
-                            // }
-                        // }
+                    }
+                    else{
+                        $product_variations = Variation::where('product_id', $item['product']['id'])->get();
+                        $qtyByUnit = 1;
+                       if (isset($item_variation->unit_id) && $first_variation->basic_unit_id == $item_variation->unit_id) {
+                            $qtyByUnit = $first_variation->equal;
+                       }
+                       else {
+                            foreach ($product_variations as $key => $product_variation) {
+                                if (!empty($product_variations[$key + 1])) {
+                                    if ($first_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                                        if ($product_variations[$key + 1]->basic_unit_id == $item_variation->unit_id) {
+                                            $qtyByUnit = $first_variation->equal * $product_variations[$key + 1]->equal;
+                                            break;
+                                        } else {
+                                            $qtyByUnit = $product_variation->equal;
+                                        }
+                                    } else {
+                                        if ($product_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                                            $qtyByUnit *= $product_variation->equal;
+                                        }
+                                        if ($product_variation->basic_unit_id == $item['unit_id'] || $product_variation->unit_id == $item['unit_id']) {
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    if ($product_variation->basic_unit_id == $item['unit_id']) {
+                                        $qtyByUnit *= $product_variation->equal;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        $qty_difference = 1 / $qtyByUnit;
                         if(System::getProperty('loading_cost_currency') == 2){
-                            $this->dollar_loading_cost = $basic_unit->unit->loading_cost * $quantity;
+                            $this->dollar_loading_cost += $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
                         }
                         elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))){
-                            $this->loading_cost = $basic_unit->unit->loading_cost * $quantity;
+                            $this->loading_cost += $first_variation->unit->loading_cost * ceil(($qty_difference * $item['quantity']));
                         }
                     }
                 }
@@ -995,7 +1097,7 @@ class Create extends Component
         $this->dollar_final_total = $this->num_uf($this->total_dollar )+ $this->dollar_loading_cost;
         // dd($this->dollar_final_total,round($this->dollar_final_total / 10) * 10);
         // $this->net_dollar_remaining = ($this->dollar_final_total - round($this->dollar_final_total, -1));
-        
+
         $this->total += round_250( $this->loading_cost);
         // dollar_sub_total
         $this->total_dollar += $this->dollar_loading_cost;
@@ -1006,7 +1108,23 @@ class Create extends Component
         $dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
         $this->dollar_remaining = $dollar_remaining > 0 ? round_250($dollar_remaining) : 0;
         $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at', 'desc')->get();
+        $this->count_total_by_variations();
 
+    }
+    public function count_total_by_variations()
+    {
+        // dd($this->items);
+        $this->variationSums = [];
+        foreach ($this->items as $item) {
+            $variation_name = $item['unit_name'];
+            if (isset($this->variationSums[$variation_name])) {
+                // If the variation_id already exists in the sums array, add the quantity
+                $this->variationSums[$variation_name] += (float)$item['quantity'];
+            } else {
+                // If the variation_id doesn't exist, create a new entry
+                $this->variationSums[$variation_name] = (float)$item['quantity'];
+            }
+        }
     }
     public function changeRemaining()
     {
@@ -1752,7 +1870,7 @@ class Create extends Component
     }
     public function changeUnit($key)
     {
-        //    dd($this->items[$key]['unit_id']);
+        //    dd($this->items[$key]['unift_id']);
         if (!empty($this->items[$key]['unit_id'])) {
             $variation_id = $this->items[$key]['unit_id'];
             $stock_line = AddStockLine::where('variation_id', $variation_id)->first();
@@ -1761,7 +1879,10 @@ class Create extends Component
             } else {
                 $variation_price = VariationPrice::where('variation_id', $variation_id)->first();
             }
-            $stock_variation = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
+//            dd($variation_price);
+            if(!empty($variation_price)){
+                $stock_variation = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
+            }
 
             if (empty($stock_variation->sell_price) && empty($stock_variation->dollar_sell_price)) {
                 //            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
@@ -1810,6 +1931,10 @@ class Create extends Component
                 $this->items[$key]['quantity_available'] = $qty;
             }
         }
+        $this->items[$key]['unit_name'] = Variation::find($variation_id)->unit->name;
+        $this->items[$key]['unit_sku'] = Variation::find($variation_id)->sku;
+        
+//        dd($this->items[$key]['unit_name'] );
         $this->subtotal($key, $via = 'quantity');
         $this->changeCustomerType($key);
     }

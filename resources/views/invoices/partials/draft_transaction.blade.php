@@ -12,7 +12,7 @@
                 <div class="modal-body">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table id="draft_table" class="table">
+                            <table id="example" class="table">
                                 <thead>
                                 <tr>
                                     <th>@lang('lang.date')</th>
@@ -100,6 +100,12 @@
                                     @endforeach
                                 @endif
                                 </tbody>
+                                <tfoot>
+                                    <td colspan="2" style="text-align: right">@lang('lang.total')</td>
+                                    <td id="sum1"></td>
+                                    <td id="sum2"></td>
+                                    <td colspan="7"></td>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -112,5 +118,59 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
+    @push('javascripts')
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                dom: "<'row'<'col-md-3 'l><'col-md-5 text-center 'B><'col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+                lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],
+                pageLength: 10,
+                buttons: ['copy', 'csv', 'excel', 'pdf',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ":visible:not(.notexport)"
+                        }
+                    }
+                    // ,'colvis'
+                ],
+                "fnDrawCallback": function(row, data, start, end, display) {
+                    var api = this.api();
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+
+                    // Total over all pages
+                    total1 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(2)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+                    total2 = api.rows({
+                        'page': 'current'
+                    }).nodes().to$().find('td:eq(3)').map(function() {
+                        return intVal($(this).text());
+                    }).get().reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+
+                    // Update status DIV
+                    $('#sum1').html('<span>' + total1 + '<span/>');
+                    $('#sum2').html('<span>' + total2 + '<span/>');
+                }
+            });
+        });
+
+    </script>
+@endpush
 
 

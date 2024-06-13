@@ -239,19 +239,23 @@
                             <th colspan="2" style="text-align:right">{{ __('lang.coupon_discount', [], 'ar') }}</th>
                         </tr>
                     @endif
-                    @if (!empty($transaction->deliveryman_id))
+
                         <tr>
+                            @if (!empty($transaction->delivery_cost))
                             <th colspan="2" style="text-align:left">
                                 {{ @num_format($transaction->delivery_cost) }}
                                 {{ $transaction->received_currency->symbol }}
                             </th>
+                            @endif
+                            @if (!empty($transaction->deliveryman_id))
                             <th colspan="2" style="text-align:right">{{ __('lang.delivery_cost', [], 'ar') }}
                                 @if (!empty($transaction->deliveryman->employee_name))
                                     ({{ $transaction->deliveryman->employee_name }})
                                 @endif
                             </th>
+                            @endif
                         </tr>
-                    @endif
+
                     @if (!empty($transaction->rp_redeemed_value))
                         <tr>
                             <th colspan="2" style="text-align:left">

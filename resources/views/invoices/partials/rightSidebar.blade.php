@@ -202,6 +202,16 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            {!! Form::label('delivery_dollar_cost', __('lang.delivery_cost').'$', ['class' => 'text-primary']) !!}
+                            {!! Form::number('delivery_dollar_cost', null, [
+                                'class' => 'form-control',
+                                'wire:model' => 'delivery_dollar_cost',
+                                'placeholder' => __('lang.delivery_cost').'$',
+                            ]) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             {!! Form::label('delivery_date', __('lang.delivery_date'), ['class' => 'text-primary']) !!}
                             {!! Form::date('delivery_date', now()->format('Y-m-d'), [
                                 'class' => 'form-control',
@@ -230,7 +240,7 @@
                         {!! Form::number('loading_cost', null, [
                             'class' => 'form-control',
                             'wire:model' => 'loading_cost',
-                            'placeholder' => __('lang.loading_cost'),'readonly'
+                            'placeholder' => __('lang.loading_cost'),
                         ]) !!}
                     </div>
                 </div>
@@ -240,7 +250,7 @@
                         {!! Form::number('dollar_loading_cost', null, [
                             'class' => 'form-control',
                             'wire:model' => 'dollar_loading_cost',
-                            'placeholder' => __('lang.loading_cost') .' $','readonly'
+                            'placeholder' => __('lang.loading_cost') .' $',
                         ]) !!}
                         <div class="{{$dollar_loading_cost > 0 ? '':'d-none'}}" title="{{__('lang.change_remaining_to_dinar')}}">
                             <button class="btn btn-sm btn-danger text-white" type="button" wire:click="change_dollar_loading_cost_to_dinar()">></button>
@@ -357,9 +367,16 @@
                         </div>
                     </div>
                 @endif
-
+                @if (!empty($variationSums))
+                    @foreach ($variationSums as $unit_name => $variant)
+                        {{ $unit_name == "" ? __('lang.no_units') : $unit_name }}:
+                        <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant }} </span><br>
+                    @endforeach
+                @endif
+                @if(!empty($items))
+                    <span class="items_quantity_span" style="margin-right: 15px;"> @lang('lang.product_quantity')  {{ count($items) }} </span><br>
+                @endif
             </div>
-
         </div>
     </div>
 </div>

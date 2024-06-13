@@ -141,7 +141,7 @@
                         <div class="d-flex justify-content-center">
 
                             <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id" required>
-                                <option  value="0 " readonly >اختر </option>
+                                <option  value="0" readonly >اختر </option>
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}> {{ $customer->name }} - {{($customer->phone != '[null]' ) ? $customer->phone : ''}}</option>
                                 @endforeach
@@ -319,7 +319,13 @@
                                         @endphp
                                         @foreach ($items as $key => $item)
                                             <tr>
-                                                <td @if(!$columnVisibility['sku']) style="display: none;" @endif>{{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}</td>
+                                                <td @if(!$columnVisibility['sku']) style="display: none;" @endif>
+                                                    @if(empty($item['variation']))
+                                                    {{!empty($item['product']['product_symbol'])?$item['product']['product_symbol']:$item['product']['sku']}}
+                                                    @else
+                                                    {{$item['unit_sku']}} 
+                                                    @endif
+                                                </td>
                                                 <td @if(!$columnVisibility['product']) style="display: none;" @endif>
                                                     {{$item['product']['name']}}
                                                 </td>
@@ -435,9 +441,7 @@
                                             </tr>
                                         @endforeach
                                         <tr>
-                                            {{--                                            <div class="col-md-7">--}}
                                             @include('invoices.partials.search')
-                                            {{--                                            </div>--}}
                                         </tr>
                                     </table>
                                 </div>

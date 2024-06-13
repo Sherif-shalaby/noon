@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AddStockLine;
 use App\Models\CashRegisterTransaction;
 use App\Models\Category;
+use App\Models\Country;
 use App\Models\MoneySafeTransaction;
 use App\Models\Product;
 use App\Models\ProductDimension;
@@ -69,7 +70,9 @@ class InitialBalanceController extends Controller
 
         $exchange_rate=0;
         $exchange_rate =System::getProperty('dollar_exchange');
-        return view('initial-balance.create',compact('exchange_rate'));
+        $countryId = System::getProperty('country_id');
+        $countryName = Country::where('id', $countryId)->pluck('name')->first();
+        return view('initial-balance.create',compact('exchange_rate','countryId','countryName'));
     }
 
     /**

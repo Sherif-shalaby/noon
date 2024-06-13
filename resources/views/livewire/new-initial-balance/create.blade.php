@@ -494,6 +494,7 @@
                                             data-name='price_customer_types' data-index="{{ $key }}"
                                             data-key="{{ $key }}" class="form-control select2"
                                             placeholder="{{ __('lang.please_select') }}">
+                                            <option value="0">@lang('lang.please_select')</option>
                                             @foreach ($customer_types as $type)
                                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
                                             @endforeach
