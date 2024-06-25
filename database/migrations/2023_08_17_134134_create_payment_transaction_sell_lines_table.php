@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('amount', 15, 4)->nullable();
             $table->decimal('dollar_amount', 15, 4)->nullable();
             $table->string('method');
+            $table->boolean('IS_CONFIRMED')->default('0');
             $table->string('paid_on');
             $table->boolean('is_return')->default(0);
             $table->unsignedBigInteger('payment_for')->nullable();
