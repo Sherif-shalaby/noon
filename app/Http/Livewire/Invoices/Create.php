@@ -1036,31 +1036,31 @@ class Create extends Component
                     if ($first_variation->id === $item['unit_id']) {
                         if (System::getProperty('loading_cost_currency') == 2) {
                             if($item['sub_total'] > 0){
-                                $this->loading_cost +=( $item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate']))* $item['quantity'];
+                                $this->loading_cost +=( $item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate']))* ($item['quantity'] + $item['extra_quantity']);
                             }else{
-                                $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                                $this->dollar_loading_cost += $item_variation->unit->loading_cost * ($item['quantity'] + $item['extra_quantity']);
                             }
                         } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
                             if($item['dollar_sub_total'] > 0){
-                                $this->dollar_loading_cost +=( $item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))* $item['quantity'];
+                                $this->dollar_loading_cost +=( $item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))* ($item['quantity'] + $item['extra_quantity']);
                             }else{
-                                $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                                $this->loading_cost += $item_variation->unit->loading_cost * ($item['quantity'] + $item['extra_quantity']);
                             }
                         }
                     } else {
                         if ($item_variation->unit->loading_cost != 0) {
                             if (System::getProperty('loading_cost_currency') == 2) {
                                 if($item['sub_total'] > 0){
-                                    $this->loading_cost +=( $item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate']))* $item['quantity'];
+                                    $this->loading_cost +=( $item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate']))* ($item['quantity'] + $item['extra_quantity']);
                                 }else{
                                     $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
 
                                 }
                             } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
                                 if($item['dollar_sub_total'] > 0){
-                                    $this->dollar_loading_cost +=( $item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))* $item['quantity'];
+                                    $this->dollar_loading_cost +=( $item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate']))* ($item['quantity'] + $item['extra_quantity']);
                                 }else{
-                                    $this->loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
+                                    $this->loading_cost += $item_variation->unit->loading_cost * ($item['quantity'] + $item['extra_quantity']);
                                 }
                             }
                         } else {
@@ -1076,7 +1076,7 @@ class Create extends Component
                                     if ($basic_variation && $basic_variation->basic_unit_id != null) {
                                         $increment = $item_variation->equal;
                                         if ($item['quantity'] > 0) {
-                                            $qtyByUnit = floor(($item['quantity'] - 1) / $increment) + 1;
+                                            $qtyByUnit = floor((($item['quantity'] + $item['extra_quantity']) - 1) / $increment) + 1;
                                             $increment = $basic_variation->equal;
                                             if ($item['quantity'] > 0) {
                                                 $qtyByUnit = floor(($qtyByUnit - 1) / $increment) + 1;
@@ -1085,7 +1085,7 @@ class Create extends Component
                                     } else {
                                         $increment = $item_variation->equal;
                                         if ($item['quantity'] > 0) {
-                                            $qtyByUnit = floor(($item['quantity'] - 1) / $increment) + 1;
+                                            $qtyByUnit = floor((($item['quantity'] + $item['extra_quantity']) - 1) / $increment) + 1;
                                         }
                                     }
                                 }
@@ -1126,7 +1126,6 @@ class Create extends Component
         }
         $this->payments[0]['method'] = 'cash';
         $this->rest = 0;
-
         // النهائي دينار
         $this->final_total = $this->total > 0 ? round_250($this->num_uf($this->total) + $this->loading_cost) : 0;
         // النهائي دولار
