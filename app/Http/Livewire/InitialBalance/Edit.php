@@ -255,13 +255,10 @@ class Edit extends Component
             }
         }
     }
-
-
     public function stayShow()
     {
         foreach ($this->rows as &$row) {
-            $row['show_prices'] =
-                !$row['show_prices'];
+            $row['show_prices'] = !$row['show_prices'];
         }
     }
 

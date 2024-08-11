@@ -1,0 +1,147 @@
+## Example for item
+
+Item amount -> 100 "التكلفة"
+Item Qty -> 1     "الكمية"
+-----------------------------
+All Customers Data
+1) single  "مفرد"
+amount -> 50 "المبلغ"
+price -> 150 "السعر" (item amount + customer amount)
+
+2) private "خاص"
+amount -> 40 "المبلغ"
+price -> 140 "السعر" (item amount + customer amount)
+
+3) gomla  "جملة"
+amount -> 30 "المبلغ"
+price -> 130 "السعر" (item amount + customer amount)
+
+4) G gomla "ج جملة"
+amount -> 20 "المبلغ"
+price -> 120 "السعر" (item amount + customer amount)
+------------------------------------------------------------
+## Calculations
+qty = 10
+additional qty = 5
+total qty = qty + additional qty = 15
+Discount = 10$
+
+
+Note : this two cases in which user choose discount as fixed amount or percentage
+
+//TODO:: Case 1
+# case 1 (Enable discount from original price)
+#### Total price = (customer price * qty) - (discount * qty) ######
+//fixed
+Total price = (150 * 10) - (10 * 10) = 1,400
+//percentage
+discount = (customer price * discount)
+Total price = (150 * 10) - (15 * 10) = 1,350
+
+
+####### Price = total price / qty ###########
+Price = 1400 / 10 = 140
+
+#### Price For One Piece = Total price / total qty ######
+Price For One Piece = 1400 / 15 = 93.33
+
+
+//TODO:: Case 2
+# case 2 (disable discount from original price)
+#### Total price = (customer price * qty) - (discount * total qty) ######
+Total price = (150 * 10) - (10 * 15) = 1,350
+
+###### Price = total price / total qty ########
+Price = 1,350 / 15 = 90
+
+#### Price For One Piece = Total price / total qty ######
+Price For One Piece = 1350 / 15 = 90
+
+
+## implement here other customers depend on the above calculations
+customer 2
+case 1
+total price = (140 * 10) - (10 * 10) = 1,300
+price for one piece = 1300 / 15 = 86.67
+case 2
+total price = (140 * 10) - (10 * 15) = 1,250
+price for one piece = 1250 / 15 = 83.33
+--------------------------------------------------------
+
+customer 3
+case 1
+total price = (130 * 10) - (10 * 10) = 1,200
+price for one piece = 1200 / 15 = 80
+case 2
+total price = (130 * 10) - (10 * 15) = 1,150
+price for one piece = 1150 / 15 = 76.67
+--------------------------------------------------------
+
+customer 4
+case 1
+total price = (120 * 10) - (10 * 10) = 1,100
+price for one piece = 1100 / 15 = 73.33
+case 2
+total price = (120 * 10) - (10 * 15) = 1,050
+price for one piece = 1050 / 15 = 70
+
+
+
+-----------------------------------------------------------------------
+
+Final calculations
+
+fixed
+value = 10
+qty = 10
+bonus qty = 5
+total = 15
+- خصم من السعر الاصلي
+المفرد ->
+150 - 10 = 140
+دا السعر اللي هبيع بيه
+140 * 10 = 1400
+هضرب السعر دا في عدد القطع
+
+piece price = 1400 / 15 = 93.3
+دا السعر اللي التاجر فعليا خرج بيه
+
+(150*10)-(10*10) = 1400
+piece price = 1400 / 15 = 93.3
+price = 150 - 10 "discount" = 140
+
+- من غير خصم من السعر الاصلي
+
+(150*15) - (10*15) = 2100
+
+1500 / 15  = 100
+
+piece price = 90
+
+price = 90
+------------------------------------------
+percentage
+value = 10%
+خصم من السعر الاصلي
+
+price 150 * 10% = 135
+
+total price = 135 * 10 = 1350
+
+piece price = 1500 / 15 = 100 * 10% = 90
+
+تنفيذ الخصم بعد خصم الكمية
+
+price before discount = 1500 / 15 = 100
+
+price after discount = 100 * 10% = 90
+
+price = 90
+
+piece price = 90
+
+total price = 1350   NOTED: هنضرب في 10 ولا 15
+----------------------------------
+
+
+
