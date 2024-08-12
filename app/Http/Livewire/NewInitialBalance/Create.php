@@ -432,12 +432,11 @@ class Create extends Component
     public function store()
     {
         $this->updatedInputs();
-        try {
+//        try {
             if (empty($this->rows)) {
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
             } else {
-                // dd(77);
-                DB::beginTransaction();
+//                DB::beginTransaction();
                 //Add Product
                 $product = [];
                 $this->toggle_dollar = System::getProperty('toggle_dollar');
@@ -525,14 +524,14 @@ class Create extends Component
                 ]);
                 // }
                 $this->saveTransaction($product->id,);
-                DB::commit();
+//                DB::commit();
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
                 return redirect('/new-initial-balance/create');
             }
-        } catch (\Exception $e) {
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
-            dd($e);
-        }
+//        } catch (\Exception $e) {
+//            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
+//            dd($e);
+//        }
     }
     public function saveTransaction($product_id, $variations = [])
     {
@@ -603,10 +602,11 @@ class Create extends Component
                                         'bonus_quantity' => !empty($price['bonus_quantity']) ? $this->num_uf($price['bonus_quantity']) : null,
                                         'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : null,
                                         'created_by' => Auth::user()->id,
-                                        'dinar_total_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_total_price']) ? $this->num_uf($price['dinar_total_price']) : $this->num_uf($price['total_price'])) : null,
+                                        'dinar_total_price' => empty($price['dinar_total_price']) ? ($this->transaction_currency == 2 ? $this->num_uf($price['total_price']) : null)  : $this->num_uf($price['dinar_total_price']),
+//                                        'dinar_total_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_total_price']) ? $this->num_uf($price['dinar_total_price']) : $this->num_uf($price['total_price'])) : null,
                                         'total_price' => $this->toggle_dollar == "0" ? (($this->transaction_currency == 2) ? (!empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null) : null) : 0,
-                                        //conflict here
-                                        'dinar_piece_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price']) : null) : null,
+                                        'dinar_piece_price' => empty($price['dinar_piece_price']) ? ($this->transaction_currency == 2 ? $this->num_uf($price['piece_price']) : null) : $this->num_uf($price['dinar_piece_price']),
+//                                        'dinar_piece_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price']) : null) : null,
                                         'piece_price' => $this->toggle_dollar == "0" ? (($this->transaction_currency == 2) ? (!empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null) : null) : 0,
                                         'discount_from_original_price' => 0,
                                     ];
