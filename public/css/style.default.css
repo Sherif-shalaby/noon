@@ -141,7 +141,7 @@ h2 {
 }
 
 .card:not([class*="text"]) p {
-    color: #888;
+    color: #000;
 }
 
 .display {
@@ -1293,7 +1293,7 @@ button {
     }
 
     .forms p {
-        font-size: 0.9em;
+        font-size: 0.8em;
     }
 
     .forms label {

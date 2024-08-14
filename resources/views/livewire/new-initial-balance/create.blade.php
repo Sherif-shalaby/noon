@@ -50,7 +50,7 @@
                             <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                 <div class=" mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
-                                    style="animation-delay: 1.15s;width: 75px">
+                                    style="animation-delay: 1.15s;width: 85px">
                                     {!! Form::label('product_symbol', __('lang.product_symbol'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                     ]) !!}
@@ -126,7 +126,7 @@
                                 @include('suppliers.quick_add', ['quick_add' => 1])
 
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
-                                    style="animation-delay: 1.2s;width: 75px">
+                                    style="animation-delay: 1.2s;width: 95px">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                     ]) !!}
@@ -138,7 +138,7 @@
                                 </div>
                                 {{-- +++++++++++++++++++++++ "balance return request" +++++++++++++++++++++++ --}}
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
-                                    style="animation-delay: 1.2s;width: 100px">
+                                    style="animation-delay: 1.2s;width: 130px">
                                     {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                     ]) !!}
@@ -586,7 +586,6 @@
                                 @endif
                                 <h2 class="items_quantity_span" style="margin-right: 15px;">
                                     {{ $this->getStore() }}</h2>
-
                                 </h4>
                             </div>
                         </div>
@@ -877,13 +876,13 @@
 
                                         <div class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
                                                     @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
-                                                    pl-1">
+                                                    pl-1" style="width:145px">
                                             {!! Form::label('price_category', __('lang.price_category'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
                                             ]) !!}
                                             <input type="text" style="width: 100px;border:2px solid #cececf;"
-                                                class="form-control initial-balance-input m-0 price_category"
+                                                class="form-control w-100 initial-balance-input m-0 price_category"
                                                 name="prices.{{ $key }}.price_category"
                                                 placeholder="{{ __('lang.price_category') }}"
                                                 wire:model="prices.{{ $key }}.price_category" maxlength="6">
@@ -959,7 +958,7 @@
 
                                         <div class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
                                                                 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
-                                                                pl-1" style="width: 160px">
+                                                                pl-1" style="width: 100px">
                                             {!! Form::label('customer_type', __('lang.customer_type'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -990,7 +989,7 @@
 
                                         <div class="price_type  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
                                                                     @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
-                                                                    pl-1" style="width: 160px">
+                                                                    pl-1" style="width: 100px">
                                             {!! Form::label('price_type', __('lang.type'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -1031,7 +1030,7 @@
                                                     wire:model='prices.{{ $key }}.discount_from_original_price'
                                                     wire:change="changePrice({{ $key }},'change_price')">
                                                 <label class="custom-control-label"
-                                                    style="font-size: 10px;font-weight: 500"
+                                                    style="font-size: 12px !important;font-weight: 500"
                                                     for="discount_from_original_price{{ $key }}">@lang('lang.discount_from_original_price')</label>
                                             </div>
                                             {{-- @error('prices.' . $key . '.price_type')
@@ -1055,8 +1054,8 @@
                                                 wire:change="changePrice({{ $key }},'change_amount')"
                                                 placeholder="{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                                 @if (empty($prices[$key]['price_type'])) readonly @endif>
-                                            <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                                                style="font-weight:500;font-size:10px;">
+                                            <p class="dollar-cell showHideDollarCells d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                                                style="font-size:0.8em;">
                                                 <span>
                                                     {{ $price['price_type'] == 'fixed' ? __('lang.amount') :
                                                     __('lang.percent') . ' $' }}
@@ -1075,12 +1074,12 @@
                                             mb-0',
                                             ]) !!}
                                             <input type="text" name="prices.{{ $key }}.dinar_price_after_desc"
-                                                style="width: 100px;border:2px solid #cececf;"
+                                                style="width: 125px;border:2px solid #cececf;"
                                                 class="form-control initial-balance-input m-0 price"
                                                 wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                                 placeholder="{{ __('lang.price') }}">
-                                            <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                                                style="font-weight:500;font-size:10px;">
+                                            <p class="dollar-cell showHideDollarCells d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                                                style="font-size:0.8em">
                                                 <span>
                                                     {{ __('lang.price') . ' $' }}
                                                 </span>
@@ -1098,12 +1097,12 @@
                                             mb-0',
                                             ]) !!}
                                             <input type="text" name="prices.{{ $key }}.dinar_total_price"
-                                                style="width: 100px;border:2px solid #cececf;"
+                                                style="width: 130px;border:2px solid #cececf;"
                                                 class="form-control initial-balance-input m-0 total_price"
                                                 wire:model="prices.{{ $key }}.dinar_total_price"
                                                 placeholder="{{ __('lang.total_price') }}">
-                                            <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                                                style="font-weight:500;font-size:10px;">
+                                            <p class="dollar-cell showHideDollarCells d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                                                style="font-size:0.8em;">
                                                 <span>
                                                     {{ __('lang.total_price') . ' $' }}
                                                 </span>
@@ -1121,12 +1120,12 @@
                                             mb-0',
                                             ]) !!}
                                             <input type="text" name="prices.{{ $key }}.dinar_piece_price"
-                                                style="width: 100px;border:2px solid #cececf;"
+                                                style="width: 150px;border:2px solid #cececf;"
                                                 class="form-control initial-balance-input m-0 piece_price"
                                                 wire:model="prices.{{ $key }}.dinar_piece_price"
                                                 placeholder="{{ __('lang.piece_price') }}">
-                                            <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                                                style="font-weight:500;font-size:10px;">
+                                            <p class="dollar-cell showHideDollarCells d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                                                style="font-size:0.8em;">
                                                 <span>
                                                     {{ __('lang.piece_price') . ' $' }}
                                                 </span>
@@ -1150,18 +1149,21 @@
                                             </button>
                                             @endif
                                         </div>
+                                        <div class=" mb-4 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-center pl-1"
+                                            style="width: fit-content">
 
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    name="prices.{{ $key }}.apply_on_all_customers"
+                                                    id="apply_on_all_customers{{ $key }}" style="font-size: 0.75rem"
+                                                    wire:model="prices.{{ $key }}.apply_on_all_customers"
+                                                    wire:change="applyOnAllCustomers({{ $key }})">
 
-                                        <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input"
-                                                name="prices.{{ $key }}.apply_on_all_customers"
-                                                id="apply_on_all_customers{{ $key }}" style="font-size: 0.75rem"
-                                                wire:model="prices.{{ $key }}.apply_on_all_customers"
-                                                wire:change="applyOnAllCustomers({{ $key }})">
-
-                                            <label class="custom-control-label"
-                                                for="apply_on_all_customers{{ $key }}">@lang('lang.apply_on_all_customers')</label>
+                                                <label class="custom-control-label"
+                                                    for="apply_on_all_customers{{ $key }}">@lang('lang.apply_on_all_customers')</label>
+                                            </div>
                                         </div>
+
                                     </div>
                                     @endforeach
 
@@ -1201,14 +1203,14 @@
 <script>
     document.addEventListener('componentRefreshed', function() {
             // Execute your JavaScript code here after Livewire component refreshes
-            const value = localStorage.getItem("showHideDollar");
+            // const value = localStorage.getItem("showHideDollar");
 
             var dollarCells = document.getElementsByClassName('dollar-cell');
 
             for (var i = 0; i < dollarCells.length; i++) {
-                if (value === "hide") {
+                // if (value === "hide") {
                     dollarCells[i].classList.add('showHideDollarCells')
-                }
+                // }
             }
         });
         document.addEventListener('livewire:load', function() {

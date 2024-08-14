@@ -1,6 +1,6 @@
 {{-- <td>
-        {{ $index + 1 }}
-    </td> --}}
+    {{ $index + 1 }}
+</td> --}}
 <div class="d-flex flex-column d-flex rounded mx-1 py-2 bg-light flex-column">
 
     <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -9,24 +9,23 @@
             <div
                 class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
 
-                <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>@lang('lang.sku')</label>
-                <input type="text" class="form-control initial-balance-input sku"
-                    wire:model="rows.{{ $index }}.sku"
+                <input type="text" class="form-control initial-balance-input sku" wire:model="rows.{{ $index }}.sku"
                     style="width:160px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                     placeholder="@lang('lang.sku')" required>
                 @error('rows.' . $index . '.sku')
-                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
+                <label class="text-danger validation-error error-msg">{{ $message }}</label>
                 @enderror
             </div>
 
             <div
                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                    style='font-weight:500;font-size:10px;color:#888'>{{ $index == 0 ? __('lang.choose_big_unit') : __('lang.choose_small_unit') }}</label>
+                <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                    style='font-weight:500;font-size:10px;color:#888'>{{ $index == 0 ? __('lang.choose_big_unit') :
+                    __('lang.choose_small_unit') }}</label>
 
-                <div class="d-flex justify-content-center align-items-center"
-                    style="background-color: #dedede;
+                <div class="d-flex justify-content-center align-items-center" style="background-color: #dedede;
                   border: none;
                                         border-radius: 16px;
                                         color: #373737;
@@ -34,16 +33,14 @@
                                         width: 100%;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                    <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id'
-                        data-index="{{ $index }}" required
-                        class="form-control select2 unit_id{{ $index }}" style="width: 160px !important;">
+                    <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id' data-index="{{ $index }}"
+                        required class="form-control select2 unit_id{{ $index }}" style="width: 160px !important;">
                         <option value="">
                             {{ $index == 0 ? __('lang.choose_big_unit') : __('lang.choose_small_unit') }}
                         </option>
                         @foreach ($units as $unit)
-                            <option value="{{ $unit->id }}"
-                                {{ $rows[$index]['unit_id'] == $unit->id ? 'selected' : '' }}>
-                                {{ $unit->name }}</option>
+                        <option value="{{ $unit->id }}" {{ $rows[$index]['unit_id']==$unit->id ? 'selected' : '' }}>
+                            {{ $unit->name }}</option>
                         @endforeach
                     </select>
                     <button type="button"
@@ -74,30 +71,29 @@
             <div
                 class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                 <label
-                    class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif  {{ $index == 0 ? 'd-none' : '' }}"
+                    class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif  {{ $index == 0 ? 'd-none' : '' }}"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.fill') }}</label>
                 <input type="text" class="form-control initial-balance-input fill {{ $index == 0 ? 'd-none' : '' }}"
                     style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
-                    wire:model="rows.{{ $index }}.fill" placeholder = "{{ __('lang.fill') }}"
+                    wire:model="rows.{{ $index }}.fill" placeholder="{{ __('lang.fill') }}"
                     wire:change="changeFill({{ $index }})">
             </div>
             <div
                 class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.cost') }}</label>
                 <input type="text" class="form-control initial-balance-input purchase_price"
                     style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
-                    @if ($index != 0) disabled @endif
-                    wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.cost') }}"
-                    wire:change="changeUnitPurchasePrice({{ $index }})">
+                    placeholder="{{ __('lang.cost') }}" @if ($index !=0) disabled @endif
+                    wire:model="rows.{{ $index }}.purchase_price" wire:change="changeUnitPurchasePrice({{ $index }})">
                 @error('rows.' . $index . '.purchase_price')
-                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
+                <label class="text-danger validation-error error-msg">{{ $message }}</label>
                 @enderror
             </div>
 
             <div
                 class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.quantity') }}</label>
                 <input type="text" class="form-control initial-balance-input quantity" name="quantity"
                     wire:change="count_total_by_variation_stores()" wire:model="rows.{{ $index }}.quantity"
@@ -109,20 +105,18 @@
             <td class="text-center">
                 <div style="width:50px" class="{{ $index == '0' ? 'd-none' : '' }}">
                     <div class="btn
-                    btn-sm btn-danger py-0 px-1 "
-                        wire:click="delete_product({{ $index }})">
+                    btn-sm btn-danger py-0 px-1 " wire:click="delete_product({{ $index }})">
                         <i class="fa fa-trash"></i>
                     </div>
                 </div>
                 <div style="width:50px">
-                    <button class="plus-button h-100 py-1 px-1 "data-bs-toggle=" collapse"
+                    <button class="plus-button h-100 py-1 px-1 " data-bs-toggle=" collapse"
                         data-bs-target="#panelsStayOpen-collapse{{ $index }}" data-index="{{ $index }}"
-                        aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}"
-                        wire:click="stayShow">
+                        aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}" wire:click="stayShow">
                         @if ($rows[$index]['show_prices'])
-                            <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
+                        <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
                         @else
-                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                        <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
                         @endif
                     </button>
                 </div>
@@ -133,16 +127,14 @@
 
     <div class="accordion-collapse @if ($rows[$index]['show_prices']) show @endif  collapse">
         @foreach ($rows[$index]['prices'] as $key => $price)
-            <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div
-                    class="d-flex justify-content-start align-items-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 70px">
-                        <label
-                            class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                            style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
-                        <input type="text" class="form-control percent" name="percent"
-                            wire:change="changePercent({{ $index }},{{ $key }})"
-                            style="margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
+        <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            <div
+                class="d-flex justify-content-start align-items-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 70px">
+                    <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.percente') }}</label>
+                    <input type="text" class="form-control percent" name="percent"
+                        wire:change="changePercent({{ $index }},{{ $key }})" style="margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
                              background-color: #dedede;
                             border: 2px solid #cececf;
                             border-radius: 16px;
@@ -152,25 +144,22 @@
                             height: 30px;
                             margin: auto;
                             flex-wrap: nowrap;
-                            margin-bottom: 10px;"
-                            wire:model="rows.{{ $index }}.prices.{{ $key }}.percent"
-                            @if ($index != 0) disabled @endif maxlength="6" placeholder="%">
-                    </div>
-                    <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 130px">
-                        <div class="d-flex justify-content-between">
-                            <label
-                                class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                                style='font-weight:500;font-size:10px;color:#333'>{{ $rows[$index]['prices'][$key]['customer_name'] }}</label>
-                            <span style='font-weight:500;font-size:10px;color:#333'>
-                                :
-                            </span>
-                            <label
-                                class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                                style='font-weight:500;font-size:10px;color:#333'>{{ __('lang.amount') }} </label>
+                            margin-bottom: 10px;" wire:model="rows.{{ $index }}.prices.{{ $key }}.percent" @if ($index
+                        !=0) disabled @endif maxlength="6" placeholder="%">
+                </div>
+                <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 130px">
+                    <div class="d-flex justify-content-between">
+                        <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                            style='font-weight:500;font-size:10px;color:#333'>{{
+                            $rows[$index]['prices'][$key]['customer_name'] }}</label>
+                        <span style='font-weight:500;font-size:10px;color:#333'>
+                            :
+                        </span>
+                        <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                            style='font-weight:500;font-size:10px;color:#333'>{{ __('lang.amount') }} </label>
 
-                        </div>
-                        <input type="text" class="form-control dinar_sell_price"
-                            style="margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
+                    </div>
+                    <input type="text" class="form-control dinar_sell_price" style="margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
                              background-color: #dedede;
                                 border: 2px solid #cececf;
                                 border-radius: 16px;
@@ -180,25 +169,24 @@
                                 height: 30px;
                                 margin: auto;
                                 flex-wrap: nowrap;
-                                margin-bottom: 10px;"
-                            @if ($index != 0) disabled @endif
-                            wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
-                            placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
-                            wire:change="changeIncrease({{ $index }},{{ $key }})">
-                        <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                            style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_increase'] ?? 0 }}
-                            $</span>
-                        @error('rows.' . $index . 'prices' . $key . '.dinar_increase')
-                            <label class="text-danger validation-error error-msg">{{ $message }}</label>
-                        @enderror
-                    </div>
-                    <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 130px">
-                        <label
-                            class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                            style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.price') }}</label>
+                                margin-bottom: 10px;" @if ($index !=0) disabled @endif
+                        wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
+                        placeholder="{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
+                        wire:change="changeIncrease({{ $index }},{{ $key }})">
+                    <span
+                        class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                        style='font-weight:500;font-size:12px;color:#888'>{{
+                        $rows[$index]['prices'][$key]['dollar_increase'] ?? 0 }}
+                        $</span>
+                    @error('rows.' . $index . 'prices' . $key . '.dinar_increase')
+                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
+                    @enderror
+                </div>
+                <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 130px">
+                    <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.price') }}</label>
 
-                        <input type="text" class="form-control dinar_sell_price"
-                            style=" margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
+                    <input type="text" class="form-control dinar_sell_price" style=" margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;
                              background-color: #dedede;
                             border: 2px solid #cececf;
                             border-radius: 16px;
@@ -208,20 +196,20 @@
                             height: 30px;
                             margin: auto;
                             flex-wrap: nowrap;
-                            margin-bottom: 10px;"
-                            wire:change="changeSellPrice({{ $index }},{{ $key }})"
-                            @if ($index != 0) disabled @endif
-                            wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
-                            placeholder = "{{ __('lang.price') }}">
-                        <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                            style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_sell_price'] }}
-                            $</span>
-                        @error('rows.' . $index . 'prices' . $key . '.dinar_sell_price')
-                            <label class="text-danger validation-error error-msg">{{ $message }}</label>
-                        @enderror
-                    </div>
+                            margin-bottom: 10px;" wire:change="changeSellPrice({{ $index }},{{ $key }})" @if ($index
+                        !=0) disabled @endif wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
+                        placeholder="{{ __('lang.price') }}">
+                    <span
+                        class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                        style='font-weight:500;font-size:12px;color:#888'>{{
+                        $rows[$index]['prices'][$key]['dollar_sell_price'] }}
+                        $</span>
+                    @error('rows.' . $index . 'prices' . $key . '.dinar_sell_price')
+                    <label class="text-danger validation-error error-msg">{{ $message }}</label>
+                    @enderror
                 </div>
             </div>
+        </div>
         @endforeach
     </div>
 </div>

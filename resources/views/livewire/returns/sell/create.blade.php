@@ -7,23 +7,25 @@
                     <h6>@lang('lang.return_sell')</h6>
                 </div>
                 <div class="card-body">
-                    {!! Form::open(['method' => 'post', 'files' => true, 'class' => 'pos-form', 'id' => 'sell_return_form']) !!}
+                    {!! Form::open(['method' => 'post', 'files' => true, 'class' => 'pos-form', 'id' =>
+                    'sell_return_form']) !!}
                     <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                         {{-- +++++++++++++++++ stores filter +++++++++++++++++ --}}
                         <div
                             class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                             {!! Form::label('store_id', __('lang.store'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0
+                            width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
 
                                 {!! Form::select('store_id', $stores, $store, [
-                                    'class' => 'form-control select2',
-                                    'placeholder' => __('lang.all'),
-                                    'data-live-search' => 'true',
-                                    'wire:model' => 'store',
+                                'class' => 'form-control select2',
+                                'placeholder' => __('lang.all'),
+                                'data-live-search' => 'true',
+                                'wire:model' => 'store',
                                 ]) !!}
                             </div>
                         </div>
@@ -32,15 +34,16 @@
                         <div
                             class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                             {!! Form::label('branch_id', __('lang.branch'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0
+                            width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
                                 {!! Form::select('branch_id', $branches, $branch_id, [
-                                    'class' => 'form-control select2',
-                                    'placeholder' => __('lang.all'),
-                                    'data-live-search' => 'true',
-                                    'wire:model' => 'branch_id',
+                                'class' => 'form-control select2',
+                                'placeholder' => __('lang.all'),
+                                'data-live-search' => 'true',
+                                'wire:model' => 'branch_id',
                                 ]) !!}
                             </div>
                         </div>
@@ -48,18 +51,19 @@
                         {{-- <div
                             class="col-md-4 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {!! Form::label('pos_id', __('lang.pos'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0
+                            width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
                                 {!! Form::select(
-                                    'pos_id',
-                                    $store_pos,
-                                    [],
-                                    [
-                                        'class' => 'form-control select2 sale_filter',
-                                        'placeholder' => __('lang.all'),
-                                    ],
+                                'pos_id',
+                                $store_pos,
+                                [],
+                                [
+                                'class' => 'form-control select2 sale_filter',
+                                'placeholder' => __('lang.all'),
+                                ],
                                 ) !!}
                             </div>
                         </div> --}}
@@ -67,13 +71,14 @@
                         <div
                             class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                             {!! Form::label('pos_id', __('lang.pos'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0
+                            width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
                                 {!! Form::select('pos_id', $store_pos, $store_pos_id, [
-                                    'class' => 'form-control select2 sale_filter',
-                                    'placeholder' => __('lang.all'),
+                                'class' => 'form-control select2 sale_filter',
+                                'placeholder' => __('lang.all'),
                                 ]) !!}
                             </div>
                         </div>
@@ -117,7 +122,8 @@
                                                 <th>{{ __('lang.quantity') }}</th>
                                                 <th>{{ __('lang.returned_quantity') }}</th>
                                                 <th>{{ __('lang.price') }}</th>
-                                                <th class="dollar-cell">{{ __('lang.price') }} $</th>
+                                                <th class="dollar-cell showHideDollarCells">{{ __('lang.price') }} $
+                                                </th>
                                                 <th>{{ __('lang.discount') }}</th>
                                                 <th>{{ __('lang.sub_total') }}</th>
                                                 <th></th>
@@ -125,7 +131,7 @@
                                         </thead>
                                         <tbody>
                                             @include('returns.partials.product_row', [
-                                                'products' => $sale->transaction_sell_lines,
+                                            'products' => $sale->transaction_sell_lines,
                                             ])
                                         </tbody>
                                         <tfoot>
@@ -134,10 +140,11 @@
                                                 <td></td>
                                                 <th style="text-align: right">@lang('lang.total')</th>
                                                 <th><span class="grand_total_span">{{ @num_format($amount) }}</span>
-                                                <th class="dollar-cell" style="text-align: right">@lang('lang.total') $
+                                                <th class="dollar-cell showHideDollarCells" style="text-align: right">
+                                                    @lang('lang.total') $
                                                 </th>
-                                                <th><span
-                                                        class="grand_total_span">{{ @num_format($dollar_amount) }}</span>
+                                                <th><span class="grand_total_span">{{ @num_format($dollar_amount)
+                                                        }}</span>
                                                 </th>
                                             </tr>
                                         </tfoot>
@@ -149,10 +156,8 @@
                                     <div class="form-group">
                                         <input type="hidden" id="transaction_id" name="transaction_id"
                                             value="{{ $sale->id }}" />
-                                        <input type="hidden" id="final_total" name="final_total"
-                                            value="{{ 0 }}" />
-                                        <input type="hidden" id="grand_total" name="grand_total"
-                                            value="{{ 0 }}" />
+                                        <input type="hidden" id="final_total" name="final_total" value="{{ 0 }}" />
+                                        <input type="hidden" id="grand_total" name="grand_total" value="{{ 0 }}" />
                                         <input type="hidden" id="store_pos_id" name="store_pos_id"
                                             value="{{ $sale->store_pos_id }}" />
                                         <input type="hidden" id="customer_id" name="customer_id"
@@ -174,15 +179,15 @@
                     <div class="row" style="position:relative;z-index:999999">
                         <div class="col-md-12">
                             @if (!empty($sell_return))
-                                @if ($sell_return->transaction_payments->count() > 0)
-                                    @include('transaction_payment.partials.payment_form', [
-                                        'payment' => $sell_return->transaction_payments->first(),
-                                    ])
-                                @else
-                                    @include('transaction_payment.partials.payment_form')
-                                @endif
+                            @if ($sell_return->transaction_payments->count() > 0)
+                            @include('transaction_payment.partials.payment_form', [
+                            'payment' => $sell_return->transaction_payments->first(),
+                            ])
                             @else
-                                @include('transaction_payment.partials.payment_form')
+                            @include('transaction_payment.partials.payment_form')
+                            @endif
+                            @else
+                            @include('transaction_payment.partials.payment_form')
                             @endif
                         </div>
                     </div>
@@ -190,24 +195,26 @@
                         <div
                             class="mb-2 col-md-9 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                             <label class="mb-0">@lang('lang.notes')</label>
-                            <textarea rows="3" class="form-control initial-balance-input width-full" name="notes" id="notes"
-                                wire:model = 'notes'>{{ !empty($sell_return) ? $sell_return->notes : '' }}</textarea>
+                            <textarea rows="3" class="form-control initial-balance-input width-full" name="notes"
+                                id="notes"
+                                wire:model='notes'>{{ !empty($sell_return) ? $sell_return->notes : '' }}</textarea>
                         </div>
                         <div
                             class="mb-2 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                             {!! Form::label('files', __('lang.files'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                'style' => 'font-size: 12px;font-weight: 500;',
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0
+                            width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="input-wrapper">
-                                <input class="initial-balance-input width-full" type="file" name="files[]"
-                                    id="files" multiple>
+                                <input class="initial-balance-input width-full" type="file" name="files[]" id="files"
+                                    multiple>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <button type="button" wire:click ='store()'
+                            <button type="button" wire:click='store()'
                                 class="btn btn-primary save-btn">@lang('lang.save')</button>
                         </div>
                     </div>
@@ -222,17 +229,17 @@
 <!-- This will be printed -->
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @push('javascripts')
-    @if (empty($store_pos) || empty($stores))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+@if (empty($store_pos) || empty($stores))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
                 const noUserPosEvent = new Event('NoUserPos');
                 window.dispatchEvent(noUserPosEvent);
             });
-        </script>
-    @endif
-    @if (empty($store_pos))
-        <script>
-            window.addEventListener('NoUserPos', function(event) {
+</script>
+@endif
+@if (empty($store_pos))
+<script>
+    window.addEventListener('NoUserPos', function(event) {
                 Swal.fire({
                     title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>",
                     icon: 'error',
@@ -240,6 +247,6 @@
                     window.location.href = "{{ route('home') }}";
                 });
             });
-        </script>
-    @endif
+</script>
+@endif
 @endpush

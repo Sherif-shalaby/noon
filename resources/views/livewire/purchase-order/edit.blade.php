@@ -11,14 +11,16 @@
                             <h6>@lang('lang.edit_purchase_order')</h6>
                         </div>
                         <div class="row ">
-                            {{-- <div class="col-md-9  animate__animated animate__bounceInRight" style="animation-delay: 1.1s">
+                            {{-- <div class="col-md-9  animate__animated animate__bounceInRight"
+                                style="animation-delay: 1.1s">
                                 <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
                             </div> --}}
-                            <div class="col-md-3 animate__animated animate__bounceInRight" style="animation-delay: 1.1s">
+                            <div class="col-md-3 animate__animated animate__bounceInRight"
+                                style="animation-delay: 1.1s">
                                 <div class="form-group">
                                     <label>
                                         {!! Form::checkbox('change_exchange_rate_to_supplier', 1, false, [
-                                            'wire:model' => 'change_exchange_rate_to_supplier',
+                                        'wire:model' => 'change_exchange_rate_to_supplier',
                                         ]) !!}
                                         @lang('lang.change_exchange_rate_to_supplier')
                                     </label>
@@ -30,64 +32,64 @@
                         <div class="card-body">
                             {{-- ============ filter ============ --}}
                             <div class="col-md-12">
-                                <div
-                                    class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {{-- ////////////////// stores filter ////////////////// --}}
                                     <div class="col-md-3 d-flex mb-2  animate__animated animate__bounceInLeft  align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                         style="animation-delay: 1.15s">
                                         {!! Form::label('store_id', __('lang.store') . '*', [
-                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                            'style' => 'font-size: 12px;font-weight: 500;',
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
                                         <div class="input-wrapper">
 
                                             {!! Form::select('store_id', $stores, $store_id, [
-                                                'class' => 'form-control select2',
-                                                'data-name' => 'store_id',
-                                                'data-live-search' => 'true',
-                                                'required',
-                                                'placeholder' => __('lang.please_select'),
-                                                'wire:model' => 'store_id',
+                                            'class' => 'form-control select2',
+                                            'data-name' => 'store_id',
+                                            'data-live-search' => 'true',
+                                            'required',
+                                            'placeholder' => __('lang.please_select'),
+                                            'wire:model' => 'store_id',
                                             ]) !!}
                                         </div>
                                         @error('store_id')
-                                            <span class="error text-danger">{{ $message }}</span>
+                                        <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     {{-- ////////////////// suppliers filter ////////////////// --}}
                                     <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                         style="animation-delay: 1.2s">
                                         {!! Form::label('supplier_id', __('lang.supplier') . '*', [
-                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                            'style' => 'font-size: 12px;font-weight: 500;',
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
                                         <div class="input-wrapper" wire:ignore>
                                             {!! Form::select('supplier_id', $suppliers, $supplier, [
-                                                'class' => 'form-control select2',
-                                                // 'data-live-search' => 'true',
-                                                'placeholder' => __('lang.please_select'),
-                                                // +++++++++++++ 26-11-2023 المشكلة هنا +++++++++++++
-                                                'data-name' => 'supplier_id',
-                                                // 'wire:model' => 'supplier_id2',
-                                                'wire:change' => 'changeExchangeRate()',
+                                            'class' => 'form-control select2',
+                                            // 'data-live-search' => 'true',
+                                            'placeholder' => __('lang.please_select'),
+                                            // +++++++++++++ 26-11-2023 المشكلة هنا +++++++++++++
+                                            'data-name' => 'supplier_id',
+                                            // 'wire:model' => 'supplier_id2',
+                                            'wire:change' => 'changeExchangeRate()',
                                             ]) !!}
                                         </div>
                                         @error('supplier')
-                                            <span class="error text-danger">{{ $message }}</span>
+                                        <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    {{-- ////////////////// product_number inputField : رقم طلب الشراء  ////////////////// --}}
+                                    {{-- ////////////////// product_number inputField : رقم طلب الشراء
+                                    ////////////////// --}}
                                     <div class="col-md-3  animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                         style="animation-delay: 1.25s">
                                         {!! Form::label('po_no', __('lang.po_no') . '*', [
-                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                            'style' => 'font-size: 12px;font-weight: 500;',
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
                                         {!! Form::text('po_no', $po_no, [
-                                            'class' => 'form-control m-0 initial-balance-input width-full',
-                                            'required',
-                                            'readonly',
-                                            'placeholder' => __('lang.po_no'),
+                                        'class' => 'form-control m-0 initial-balance-input width-full',
+                                        'required',
+                                        'readonly',
+                                        'placeholder' => __('lang.po_no'),
                                         ]) !!}
                                     </div>
 
@@ -101,32 +103,31 @@
                                             <input type="search" name="search_by_product_symbol"
                                                 id="search_by_product_symbol"
                                                 wire:model.debounce.200ms="search_by_product_symbol"
-                                                placeholder="@lang('lang.enter_product_symbol')" class="form-control" autocomplete="off">
+                                                placeholder="@lang('lang.enter_product_symbol')" class="form-control"
+                                                autocomplete="off">
 
                                             @if (!empty($search_result) && !empty($search_by_product_symbol))
-                                                <ul id="ui-id-1" tabindex="0"
-                                                    class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
-                                                    style="top: 37.423px; left: 39.645px; width: 90.2%;">
-                                                    @foreach ($search_result as $product)
-                                                        <li class="ui-menu-item"
-                                                            wire:click="add_product({{ $product->id }})">
-                                                            <div id="ui-id-73" tabindex="-1"
-                                                                class="ui-menu-item-wrapper">
-                                                                @if ($product->image)
-                                                                    <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                                        alt="{{ $product->name }}" class="img-thumbnail"
-                                                                        width="100px">
-                                                                @else
-                                                                    <img src="{{ asset('uploads/' . $settings['logo']) }}"
-                                                                        alt="{{ $product->name }}" class="img-thumbnail"
-                                                                        width="100px">
-                                                                @endif
-                                                                {{ $product->product_symbol ?? '' }} -
-                                                                {{ $product->name }}
-                                                            </div>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
+                                            <ul id="ui-id-1" tabindex="0"
+                                                class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                                                style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                                                @foreach ($search_result as $product)
+                                                <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
+                                                    <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
+                                                        @if ($product->image)
+                                                        <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                            alt="{{ $product->name }}" class="img-thumbnail"
+                                                            width="100px">
+                                                        @else
+                                                        <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                            alt="{{ $product->name }}" class="img-thumbnail"
+                                                            width="100px">
+                                                        @endif
+                                                        {{ $product->product_symbol ?? '' }} -
+                                                        {{ $product->name }}
+                                                    </div>
+                                                </li>
+                                                @endforeach
+                                            </ul>
                                             @endif
                                         </div>
                                         {{-- ++++++ "البحث "باسم المنتج" و "الباركود ++++++ --}}
@@ -137,31 +138,30 @@
                                             </button>
                                             <input type="search" name="search_product" id="search_product"
                                                 wire:model.debounce.200ms="searchProduct"
-                                                placeholder="@lang('lang.enter_product_name_to_print_labels')" class="form-control" autocomplete="off">
+                                                placeholder="@lang('lang.enter_product_name_to_print_labels')"
+                                                class="form-control" autocomplete="off">
 
                                             @if (!empty($search_result) && !empty($searchProduct))
-                                                <ul id="ui-id-1" tabindex="0"
-                                                    class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
-                                                    style="top: 37.423px; left: 39.645px; width: 90.2%;">
-                                                    @foreach ($search_result as $product)
-                                                        <li class="ui-menu-item"
-                                                            wire:click="add_product({{ $product->id }})">
-                                                            <div id="ui-id-73" tabindex="-1"
-                                                                class="ui-menu-item-wrapper">
-                                                                @if ($product->image)
-                                                                    <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                                        alt="{{ $product->name }}"
-                                                                        class="img-thumbnail" width="100px">
-                                                                @else
-                                                                    <img src="{{ asset('uploads/' . $settings['logo']) }}"
-                                                                        alt="{{ $product->name }}"
-                                                                        class="img-thumbnail" width="100px">
-                                                                @endif
-                                                                {{ $product->sku ?? '' }} - {{ $product->name }}
-                                                            </div>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
+                                            <ul id="ui-id-1" tabindex="0"
+                                                class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                                                style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                                                @foreach ($search_result as $product)
+                                                <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
+                                                    <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
+                                                        @if ($product->image)
+                                                        <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                            alt="{{ $product->name }}" class="img-thumbnail"
+                                                            width="100px">
+                                                        @else
+                                                        <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                            alt="{{ $product->name }}" class="img-thumbnail"
+                                                            width="100px">
+                                                        @endif
+                                                        {{ $product->sku ?? '' }} - {{ $product->name }}
+                                                    </div>
+                                                </li>
+                                                @endforeach
+                                            </ul>
                                             @endif
                                         </div>
                                     </div>
@@ -180,16 +180,16 @@
                                         <div class="form-group">
                                             {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
                                             {!! Form::select('supplier_id', $suppliers, null, [
-                                                'class' => 'form-control select2',
-                                                'data-live-search' => 'true',
-                                                'id' => 'supplier_id2',
-                                                'placeholder' => __('lang.please_select'),
-                                                'data-name' => 'supplier',
-                                                'wire:model' => 'supplier_id',
+                                            'class' => 'form-control select2',
+                                            'data-live-search' => 'true',
+                                            'id' => 'supplier_id2',
+                                            'placeholder' => __('lang.please_select'),
+                                            'data-name' => 'supplier',
+                                            'wire:model' => 'supplier_id',
                                             ]) !!}
                                         </div>
                                         @error('supplier_id2')
-                                            <span class="error text-danger">{{ $message }}</span>
+                                        <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     {{-- ============= filter : العلامة التجارية ============= --}}
@@ -198,15 +198,15 @@
                                         <div class="form-group">
                                             {!! Form::label('brand_id', __('lang.brand') . ':', []) !!}
                                             {!! Form::select('brand_id', $brands, null, [
-                                                'class' => 'select2 form-control brand_class',
-                                                'id' => 'brand_id',
-                                                'required',
-                                                'placeholder' => __('lang.please_select'),
-                                                'data-name' => 'brand_id',
-                                                'wire:model' => 'brand_id',
+                                            'class' => 'select2 form-control brand_class',
+                                            'id' => 'brand_id',
+                                            'required',
+                                            'placeholder' => __('lang.please_select'),
+                                            'data-name' => 'brand_id',
+                                            'wire:model' => 'brand_id',
                                             ]) !!}
                                             @error('brand_id')
-                                                <span class="error text-danger">{{ $message }}</span>
+                                            <span class="error text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -220,13 +220,13 @@
                                                 data-name="department_id">
                                                 <option value="0" readonly selected>اختر </option>
                                                 @foreach ($departments as $depart)
-                                                    <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                    </option>
+                                                <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                </option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- /////////// products of filters :  filters المنتجات اسفل ال /////////// --}}
+                                    {{-- /////////// products of filters : filters المنتجات اسفل ال /////////// --}}
                                     <div class="p-2">
                                         @include('purchase_order.partials.products')
                                     </div>
@@ -240,9 +240,11 @@
                                                 <th>#</th>
                                                 <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
                                                 <th style="width: 10%">@lang('lang.quantity')</th>
-                                                <th style="width: 10%" class="dollar-cell">@lang('lang.purchase_price')$</th>
+                                                <th style="width: 10%" class="dollar-cell showHideDollarCells">
+                                                    @lang('lang.purchase_price')$</th>
                                                 <th style="width: 10%">@lang('lang.dinar_purchase_price') </th>
-                                                <th style="width: 10%" class="dollar-cell">@lang('lang.dollar_total_prices')</th>
+                                                <th style="width: 10%" class="dollar-cell showHideDollarCells">
+                                                    @lang('lang.dollar_total_prices')</th>
                                                 <th style="width: 10%">@lang('lang.dinar_total_prices')</th>
                                                 <th style="width: 10%">@lang('lang.current_stock')</th>
                                                 <th style="width: 10%">@lang('lang.delete')</th>
@@ -250,29 +252,30 @@
                                         </thead>
                                         <tbody>
                                             @if (!empty($items))
-                                                {{-- {{ dd($items) }} --}}
-                                                @foreach ($items as $index => $product)
-                                                    @include('purchase_order.partials.product_row')
-                                                @endforeach
-                                                <tr>
-                                                    {{-- +++++++++ Task : "مجموع اجمالي التكاليف" +++++++++ --}}
-                                                    <td colspan="5" style="text-align: right">
-                                                        @lang('lang.total')
-                                                    </td>
-                                                    <td class="dollar-cell"> {{ $this->sum_dollar_sub_total() }} </td>
-                                                    {{-- <td></td>  --}}
-                                                    {{-- <td></td>
+                                            {{-- {{ dd($items) }} --}}
+                                            @foreach ($items as $index => $product)
+                                            @include('purchase_order.partials.product_row')
+                                            @endforeach
+                                            <tr>
+                                                {{-- +++++++++ Task : "مجموع اجمالي التكاليف" +++++++++ --}}
+                                                <td colspan="5" style="text-align: right">
+                                                    @lang('lang.total')
+                                                </td>
+                                                <td class="dollar-cell showHideDollarCells"> {{
+                                                    $this->sum_dollar_sub_total() }} </td>
+                                                {{-- <td></td> --}}
+                                                {{-- <td></td>
                                                 <td> {{$this->sum_sub_total()}} </td>
                                                 <td></td> --}}
-                                                    <td>
-                                                        {{ $this->sum_dinar_sub_total() ?? 0 }}
-                                                    </td>
-                                                    {{-- <td></td>
-                                                <td  style=";">
+                                                <td>
+                                                    {{ $this->sum_dinar_sub_total() ?? 0 }}
+                                                </td>
+                                                {{-- <td></td>
+                                                <td style=";">
                                                     {{$this->sum_total_cost() ?? 0}}
                                                 </td> --}}
 
-                                                </tr>
+                                            </tr>
                                             @endif
                                         </tbody>
                                     </table>
@@ -283,8 +286,8 @@
                                 style="animation-delay: 1.4s">
                                 <div class="col-md-3 offset-md-8 text-right">
                                     <h4>@lang('lang.items_count'):
-                                        <span class="items_count_span"
-                                            style="margin-right: 15px;">{{ !empty($items) ? count($items) : 0 }}</span>
+                                        <span class="items_count_span" style="margin-right: 15px;">{{ !empty($items) ?
+                                            count($items) : 0 }}</span>
                                         @lang('lang.items_quantity'): <span class="items_quantity_span"
                                             style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
                                     </h4>
@@ -297,9 +300,9 @@
                                 <div class="col-md-3 offset-md-8 text-right">
                                     <h3> @lang('lang.total') :
                                         @if ($paying_currency == 2)
-                                            {{ $this->sum_dollar_total_cost() ?? 0.0 }}
+                                        {{ $this->sum_dollar_total_cost() ?? 0.0 }}
                                         @else
-                                            {{ $this->sum_total_cost() ?? 0.0 }}
+                                        {{ $this->sum_total_cost() ?? 0.0 }}
                                         @endif
                                         <span class="final_total_span"></span>
                                     </h3>
@@ -314,19 +317,22 @@
                                 style="animation-delay: 1.5s;">
 
                                 {!! Form::label('details', __('lang.details'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mb-3 width-fit' : ' mb-3 h5 width-fit',
-                                    'style' => 'font-size: 12px;font-weight: 500;',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end h5 mb-3 width-fit' : ' mb-3 h5
+                                width-fit',
+                                'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
-                                {{-- {!! Form::textarea('details', null, ['class' => 'form-control', 'rows' => 3]) !!} --}}
-                                <textarea name="details" class="form-control initial-balance-input width-full" rows="3" wire:model="details"></textarea>
+                                {{-- {!! Form::textarea('details', null, ['class' => 'form-control', 'rows' => 3]) !!}
+                                --}}
+                                <textarea name="details" class="form-control initial-balance-input width-full" rows="3"
+                                    wire:model="details"></textarea>
 
                             </div>
                         </div>
                         {{-- ++++++++++++++++++++ submit ++++++++++++++++++++ --}}
                         <div class="col-sm-12 animate__animated animate__lightSpeedInLeft"
                             style="animation-delay: 1.55s">
-                            <button type="submit" name="submit" id="submit-save" style="margin: 10px"
-                                value="save" class="btn btn-primary pull-right btn-flat submit"
+                            <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
+                                class="btn btn-primary pull-right btn-flat submit"
                                 wire:click.prevent="store()">@lang('lang.save')</button>
                         </div>
                         {!! Form::close() !!}
@@ -337,13 +343,14 @@
     </section>
 </div>
 
-{{-- <!-- This will be printed --> --}}
+{{--
+<!-- This will be printed --> --}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 
 
 @push('javascripts')
-    <script>
-        document.addEventListener('livewire:load', function() {
+<script>
+    document.addEventListener('livewire:load', function() {
             Livewire.hook('message.processed', (message, component) => {
                 if (message.updateQueue && message.updateQueue.some(item => item.payload.event ===
                         'updated:selectedProducts')) {
@@ -415,5 +422,5 @@
                 @this.set('supplier_id', $(this).val());
             });
         });
-    </script>
+</script>
 @endpush

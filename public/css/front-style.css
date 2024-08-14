@@ -13,7 +13,7 @@
 label {
     color: #333 !important;
     font-weight: 500 !important;
-    font-size: 10px !important;
+    font-size: 0.9em !important;
 }
 
 input::placeholder {

@@ -2,295 +2,329 @@
 @section('title', __('lang.add_customers'))
 
 @push('css')
-    <style>
-        .width-quarter {
-            width: 100% !important
-        }
+<style>
+    .width-quarter {
+        width: 100% !important
+    }
 
-        @media(min-width:768px) {
-            .width-quarter {
-                width: 25% !important
-            }
+    @media(min-width:768px) {
+        .width-quarter {
+            width: 25% !important
         }
-    </style>
+    }
+</style>
 @endpush
 
 @section('page_title')
-    @lang('lang.add_customers')
+@lang('lang.add_customers')
 @endsection
 
 @section('breadcrumbs')
-    @parent
-    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif ""><a
-            style="text-decoration: none;color: #596fd7" href="{{ route('customers.index') }}">@lang('lang.customers')</a></li>
-    <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif " active" aria-current="page">
-        @lang('lang.add_customers')</li>
+@parent
+<li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif ""><a
+            style=" text-decoration: none;color: #596fd7" href="{{ route('customers.index') }}">
+    @lang('lang.customers')</a></li>
+<li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif " active" aria-current="page">
+    @lang('lang.add_customers')</li>
 @endsection
 
 @section('button')
-    <div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-        <a href="{{ route('customers.index') }}" class="btn btn-primary">
-            @lang('lang.customers')
-        </a>
-    </div>
+<div class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+    <a href="{{ route('customers.index') }}" class="btn btn-primary">
+        @lang('lang.customers')
+    </a>
+</div>
 @endsection
 
 @section('content')
-    <div class="aniamte-in-page">
+<div class="aniamte-in-page">
 
-        <!-- Start row -->
-        <div class="row d-flex justify-content-center">
-            <!-- Start col -->
-            <div class="col-lg-12">
-                <div class="card m-b-30 p-2">
-                    {!! Form::open([
-                        'route' => 'customers.store',
-                        'method' => 'post',
-                        'enctype' => 'multipart/form-data',
-                        'id' => 'customer-form',
-                    ]) !!}
-                    <div class="container-fluid">
-                        <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
-                            {{-- <div class=" col-6 col-md-3 flex-column col-md-3 mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.1s;position: relative;z-index: 4;">
-                                {!! Form::label('customer_type_id', __('lang.customer_type') . '*', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                    'style' => 'font-size: 12px;font-weight: 500;',
+    <!-- Start row -->
+    <div class="row d-flex justify-content-center">
+        <!-- Start col -->
+        <div class="col-lg-12">
+            <div class="card m-b-30 p-2">
+                {!! Form::open([
+                'route' => 'customers.store',
+                'method' => 'post',
+                'enctype' => 'multipart/form-data',
+                'id' => 'customer-form',
+                ]) !!}
+                <div class="container-fluid">
+                    <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
+                        {{-- <div
+                            class=" col-6 col-md-3 flex-column col-md-3 mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
+                            style="animation-delay: 1.1s;position: relative;z-index: 4;">
+                            {!! Form::label('customer_type_id', __('lang.customer_type') . '*', [
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0
+                            width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+                                {!! Form::select('customer_type_id', $customer_types, null, [
+                                'class' => 'form-control selectpicker',
+                                'required',
+                                'placeholder' => __('lang.please_select'),
                                 ]) !!}
-                                <div class="input-wrapper">
-                                    {!! Form::select('customer_type_id', $customer_types, null, [
-                                        'class' => 'form-control selectpicker',
-                                        'required',
-                                        'placeholder' => __('lang.please_select'),
-                                    ]) !!}
-                                    <button type="button"
-                                        class="add-button d-flex justify-content-center align-items-center"
-                                        data-toggle="modal" data-target="#createCustomerTypesModal">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                                @error('customer_type_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div> --}}
-                            {{-- ++++++++++++++++ customer_type selectbox : انواع العملاء : (customer_type table) +++++++++++++++++ --}}
-                            <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.1s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="customer_type_id">@lang('lang.customer_type')</label>
-                                <div class="input-wrapper">
-                                    {!! Form::select('customer_type_id', $customer_types, null, [
-                                        'class' => 'form-control select2',
-                                        'id' => 'customer_type_id',
-                                        'required',
-                                        'placeholder' => __('lang.please_select'),
-                                    ]) !!}
-                                    <button type="button"
-                                        class="add-button d-flex justify-content-center align-items-end align-items-md-center"
-                                        data-toggle="modal" data-target="#createCustomerTypesModal2">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                                @error('customer_type_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
+                                <button type="button"
+                                    class="add-button d-flex justify-content-center align-items-center"
+                                    data-toggle="modal" data-target="#createCustomerTypesModal">
+                                    <i class="fas fa-plus"></i>
+                                </button>
                             </div>
-                            {{-- +++++++++++++++++++++++++++++++ name  ++++++++++++++++++++++++ --}}
-                            <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.15s">
-                                {!! Form::label('name', __('lang.name'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                    'style' => 'font-size: 12px;font-weight: 500;',
+                            @error('customer_type_id')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                        </div> --}}
+                        {{-- ++++++++++++++++ customer_type selectbox : انواع العملاء : (customer_type table)
+                        +++++++++++++++++ --}}
+                        <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.1s">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="customer_type_id">@lang('lang.customer_type')</label>
+                            <div class="input-wrapper">
+                                {!! Form::select('customer_type_id', $customer_types, null, [
+                                'class' => 'form-control select2',
+                                'id' => 'customer_type_id',
+                                'required',
+                                'placeholder' => __('lang.please_select'),
                                 ]) !!}
-                                <div class="input-wrapper">
-                                    {!! Form::text('name', null, [
-                                        'class' => 'form-control initial-balance-input m-auto width-full required',
-                                    ]) !!}
-                                </div>
-                                @error('name')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
+                                <button type="button"
+                                    class="add-button d-flex justify-content-center align-items-end align-items-md-center"
+                                    data-toggle="modal" data-target="#createCustomerTypesModal2">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            @error('customer_type_id')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                        </div>
+                        {{-- +++++++++++++++++++++++++++++++ name ++++++++++++++++++++++++ --}}
+                        <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.15s">
+                            {!! Form::label('name', __('lang.name'), [
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0
+                            width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+                                {!! Form::text('name', null, [
+                                'class' => 'form-control initial-balance-input m-auto width-full required',
+                                ]) !!}
+                            </div>
+                            @error('name')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                        </div>
+
+                        {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 dollar-cell showHideDollarCells d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.2s">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="min_amount_in_dollar">@lang('lang.min_amount_in_dollar')</label>
+                            <div class="input-wrapper">
+
+                                <input type="number" class="form-control initial-balance-input m-auto width-full "
+                                    name="min_amount_in_dollar" id="min_amount_in_dollar" />
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 dollar-cell showHideDollarCells d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.25s">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="max_amount_in_dollar">@lang('lang.max_amount_in_dollar')</label>
+                            <div class="input-wrapper">
+
+                                <input type="number" class="form-control initial-balance-input m-auto width-full"
+                                    name="max_amount_in_dollar" id="max_amount_in_dollar" />
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ min_amount_in_dinar +++++++++++++++++++++++ --}}
+                        <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.3s">
+
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="min_amount_in_dinar">@lang('lang.min_amount_in_dinar')</label>
+                            <div class="input-wrapper">
+
+                                <input type="number" class="form-control initial-balance-input m-auto width-full"
+                                    name="min_amount_in_dinar" id="min_amount_in_dinar" />
                             </div>
 
-                            {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.2s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="min_amount_in_dollar">@lang('lang.min_amount_in_dollar')</label>
-                                <div class="input-wrapper">
+                        </div>
+                        {{-- +++++++++++++++++++++++ max_amount_in_dinar +++++++++++++++++++++++ --}}
+                        <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.35s">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="max_amount_in_dinar">@lang('lang.max_amount_in_dinar')</label>
+                            <div class="input-wrapper">
 
-                                    <input type="number" class="form-control initial-balance-input m-auto width-full "
-                                        name="min_amount_in_dollar" id="min_amount_in_dollar" />
-                                </div>
+                                <input type="number" class="form-control initial-balance-input m-auto width-full"
+                                    name="max_amount_in_dinar" id="max_amount_in_dinar" />
                             </div>
-                            {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.25s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="max_amount_in_dollar">@lang('lang.max_amount_in_dollar')</label>
-                                <div class="input-wrapper">
+                        </div>
+                        {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-3 dollar-cell showHideDollarCells d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.4s">
 
-                                    <input type="number" class="form-control initial-balance-input m-auto width-full"
-                                        name="max_amount_in_dollar" id="max_amount_in_dollar" />
-                                </div>
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="balance_in_dollar">@lang('lang.balance_in_dollar')</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control initial-balance-input m-auto width-full "
+                                    name="balance_in_dollar" id="balance_in_dollar" />
                             </div>
-                            {{-- +++++++++++++++++++++++ min_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.3s">
+                        </div>
+                        {{-- +++++++++++++++++++++++ balance_in_dinar +++++++++++++++++++++++ --}}
+                        <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.45s">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'
+                                for="balance_in_dinar">@lang('lang.balance_in_dinar')</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control initial-balance-input m-auto width-full"
+                                    name="balance_in_dinar" id="balance_in_dinar" />
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ countries selectbox : الدولة : (countries table) +++++++++++++++++ --}}
+                        <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.5s;position: relative;z-index: 2;">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;' for="country-dd">@lang('lang.country')</label>
+                            <div class="input-wrapper">
+                                <select id="country-dd" name="country" class="form-control select2" disabled>
+                                    <option value="{{ $countryId }}">
+                                        {{ $countryName }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ state selectbox : المحافظة : (states table) +++++++++++++++++ --}}
+                        <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.55s;position: relative;z-index: 2;">
 
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="min_amount_in_dinar">@lang('lang.min_amount_in_dinar')</label>
-                                <div class="input-wrapper">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;' for="state-dd">@lang('lang.state')</label>
+                            <div class="input-wrapper">
+                                <select id="state-dd" name="state_id" class="form-control select2">
+                                    @php
+                                    $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
+                                    @endphp
+                                    @foreach ($states as $state)
+                                    <option value="{{ $state->id }}">
+                                        {{ $state->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
+                        <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.6s;position: relative;z-index: 2;">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter" ,
+                                style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.regions')</label>
+                            <div class="input-wrapper">
+                                <select id="city-dd" name="city_id" class="form-control select2"></select>
+                                <button type="button"
+                                    class="add-button d-flex justify-content-center align-items-end align-items-md-center"
+                                    data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
+                        <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.65s;position: relative;z-index: 2;">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter" ,
+                                style='font-size: 12px;font-weight: 500;'
+                                for="quarters_id">@lang('lang.quarters')</label>
+                            <div class="input-wrapper">
+                                <select id="quarter-dd" class="form-control width-full select2"
+                                    name="quarter_id"></select>
+                                <button type="button"
+                                    class="add-button d-flex justify-content-center align-items-center"
+                                    data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
 
-                                    <input type="number" class="form-control initial-balance-input m-auto width-full"
-                                        name="min_amount_in_dinar" id="min_amount_in_dinar" />
-                                </div>
+                        {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
+                        <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            style="animation-delay: 1.75s">
+                            <table class="bordered m-0" style="width: 100%">
+                                <thead class="email_thead">
+                                    <tr>
+                                        <th style="background: transparent !important;color: black !important;padding: 0!important;"
+                                            class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                            <label class="mb-0">
+                                                @lang('lang.email')
+                                            </label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="email_tbody">
+                                    <tr>
+                                        <td class="col-md-12 p-0 mb-2">
+                                            <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                                                style="width: 100%">
+                                                <input type="text" class=" initial-balance-input m-0" width="100%;"
+                                                    style="flex-grow: 1" placeholder="@lang('lang.email')"
+                                                    name="email[]" value="" required>
+                                                @error('email')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
 
-                            </div>
-                            {{-- +++++++++++++++++++++++ max_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.35s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="max_amount_in_dinar">@lang('lang.max_amount_in_dinar')</label>
-                                <div class="input-wrapper">
-
-                                    <input type="number" class="form-control initial-balance-input m-auto width-full"
-                                        name="max_amount_in_dinar" id="max_amount_in_dinar" />
-                                </div>
-                            </div>
-                            {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-3 dollar-cell d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.4s">
-
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="balance_in_dollar">@lang('lang.balance_in_dollar')</label>
-                                <div class="input-wrapper">
-                                    <input type="text"class="form-control initial-balance-input m-auto width-full "
-                                        name="balance_in_dollar" id="balance_in_dollar" />
-                                </div>
-                            </div>
-                            {{-- +++++++++++++++++++++++ balance_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.45s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'
-                                    for="balance_in_dinar">@lang('lang.balance_in_dinar')</label>
-                                <div class="input-wrapper">
-                                    <input type="text" class="form-control initial-balance-input m-auto width-full"
-                                        name="balance_in_dinar" id="balance_in_dinar" />
-                                </div>
-                            </div>
-                            {{-- ++++++++++++++++ countries selectbox : الدولة : (countries table) +++++++++++++++++ --}}
-                            <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.5s;position: relative;z-index: 2;">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;' for="country-dd">@lang('lang.country')</label>
-                                <div class="input-wrapper">
-                                    <select id="country-dd" name="country" class="form-control select2" disabled>
-                                        <option value="{{ $countryId }}">
-                                            {{ $countryName }}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            {{-- ++++++++++++++++ state selectbox : المحافظة : (states table) +++++++++++++++++ --}}
-                            <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.55s;position: relative;z-index: 2;">
-
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;' for="state-dd">@lang('lang.state')</label>
-                                <div class="input-wrapper">
-                                    <select id="state-dd" name="state_id" class="form-control select2">
-                                        @php
-                                            $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
-                                        @endphp
-                                        @foreach ($states as $state)
-                                            <option value="{{ $state->id }}">
-                                                {{ $state->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
-                            <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.6s;position: relative;z-index: 2;">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
-                                    style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.regions')</label>
-                                <div class="input-wrapper">
-                                    <select id="city-dd" name="city_id" class="form-control select2"></select>
-                                    <button type="button"
-                                        class="add-button d-flex justify-content-center align-items-end align-items-md-center"
-                                        data-toggle="modal" id="cities_id" data-target="#createRegionModal">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
-                            <div class="mb-2 col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.65s;position: relative;z-index: 2;">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
-                                    style='font-size: 12px;font-weight: 500;' for="quarters_id">@lang('lang.quarters')</label>
-                                <div class="input-wrapper">
-                                    <select id="quarter-dd" class="form-control width-full select2"
-                                        name="quarter_id"></select>
-                                    <button type="button"
-                                        class="add-button d-flex justify-content-center align-items-center"
-                                        data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
-                            <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.75s">
+                                                {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                <a href="javascript:void(0)"
+                                                    class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none addRow_email"
+                                                    type="button">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                            </div>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
+                        <div class="col-md-6 mb-2 px-5 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            style="animation-delay: 1.8s">
+                            <div class="m-0 " style="width: 100%">
                                 <table class="bordered m-0" style="width: 100%">
-                                    <thead class="email_thead">
+                                    <thead class="phone_thead">
                                         <tr>
-                                            <th style="background: transparent !important;color: black !important;padding: 0!important;"
+                                            <th style="background: transparent !important;color: black !important;padding: 0!important"
                                                 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                 <label class="mb-0">
-                                                    @lang('lang.email')
+                                                    @lang('lang.phone')
                                                 </label>
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody class="email_tbody">
+                                    <tbody class="phone_tbody">
                                         <tr>
                                             <td class="col-md-12 p-0 mb-2">
                                                 <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
                                                     style="width: 100%">
-                                                    <input type="text" class=" initial-balance-input m-0"
-                                                        width="100%;" style="flex-grow: 1"
-                                                        placeholder="@lang('lang.email')" name="email[]" value=""
-                                                        required>
-                                                    @error('email')
-                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                    {!! Form::text('phone[]', null, [
+                                                    'class' => 'form-control required initial-balance-input m-0
+                                                    width-full',
+                                                    'style' => 'flex-grow: 1',
+                                                    ]) !!}
+                                                    @error('phone')
+                                                    <label class="text-danger error-msg">{{ $message }}</label>
                                                     @enderror
 
                                                     {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
                                                     <a href="javascript:void(0)"
-                                                        class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none addRow_email"
-                                                        type="button">
+                                                        class="add-button d-flex justify-content-center mb-0 align-items-center text-decoration-none addRow"
+                                                        style="margin-bottom: 10px;" type="button" id="submit-btn">
                                                         <i class="fa fa-plus"></i>
                                                     </a>
                                                 </div>
@@ -298,149 +332,112 @@
                                     </tbody>
                                 </table>
                             </div>
-                            {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
-                            <div class="col-md-6 mb-2 px-5 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.8s">
-                                <div class="m-0 " style="width: 100%">
-                                    <table class="bordered m-0" style="width: 100%">
-                                        <thead class="phone_thead">
-                                            <tr>
-                                                <th style="background: transparent !important;color: black !important;padding: 0!important"
-                                                    class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
-                                                    <label class="mb-0">
-                                                        @lang('lang.phone')
-                                                    </label>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="phone_tbody">
-                                            <tr>
-                                                <td class="col-md-12 p-0 mb-2">
-                                                    <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
-                                                        style="width: 100%">
-                                                        {!! Form::text('phone[]', null, [
-                                                            'class' => 'form-control required  initial-balance-input m-0 width-full',
-                                                            'style' => 'flex-grow: 1',
-                                                        ]) !!}
-                                                        @error('phone')
-                                                            <label class="text-danger error-msg">{{ $message }}</label>
-                                                        @enderror
+                        </div>
 
-                                                        {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                        <a href="javascript:void(0)"
-                                                            class="add-button d-flex justify-content-center mb-0 align-items-center text-decoration-none addRow"
-                                                            style="margin-bottom: 10px;" type="button" id="submit-btn">
-                                                            <i class="fa fa-plus"></i>
-                                                        </a>
-                                                    </div>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-6 mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.85s">
-                                {!! Form::label('address', __('lang.address'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    'style' => 'font-size: 12px;font-weight: 500;width:25%',
+                        {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-6 mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.85s">
+                            {!! Form::label('address', __('lang.address'), [
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                            'style' => 'font-size: 12px;font-weight: 500;width:25%',
+                            ]) !!}
+                            <div class=" width-full" style="height: 100px;border-radius: 9px">
+                                {!! Form::textarea('address', null, [
+                                'class' => 'form-control',
+                                'style' => ' width: 100%;height:100%;background-color:#dedede',
+                                'rows' => '4',
                                 ]) !!}
-                                <div class=" width-full" style="height: 100px;border-radius: 9px">
-                                    {!! Form::textarea('address', null, [
-                                        'class' => 'form-control',
-                                        'style' => ' width: 100%;height:100%;background-color:#dedede',
-                                        'rows' => '4',
-                                    ]) !!}
-                                </div>
+                            </div>
+                            @error('address')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                        </div>
+                        {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
+                        <div class="col-6 col-md-6 mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.9s;min-height: 100px;">
+                            {!! Form::label('notes', __('lang.notes'), [
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                            'style' => 'font-size: 12px;font-weight: 500;width:25%',
+                            ]) !!}
+                            <div class=" width-full" style="height: 100px;border-radius: 9px">
+                                {!! Form::textarea('notes', null, [
+                                'class' => 'form-control',
+                                'style' => ' width: 100%;height:100%;background-color:#dedede',
+                                'rows' => '4',
+                                ]) !!}
                                 @error('address')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
-                            <div class="col-6 col-md-6 mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.9s;min-height: 100px;">
-                                {!! Form::label('notes', __('lang.notes'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                    'style' => 'font-size: 12px;font-weight: 500;width:25%',
-                                ]) !!}
-                                <div class=" width-full" style="height: 100px;border-radius: 9px">
-                                    {!! Form::textarea('notes', null, [
-                                        'class' => 'form-control',
-                                        'style' => ' width: 100%;height:100%;background-color:#dedede',
-                                        'rows' => '4',
-                                    ]) !!}
-                                    @error('address')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
-                                </div>
-                            </div>
-                            {{-- ++++++++++++ images ++++++++++++ --}}
-                            <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                style="animation-delay: 1.7s">
-                                <label
-                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
-                                <input class="form-control initial-balance-input width-full img" name="image"
-                                    type="file" accept="image/*" id="image">
-                                {{-- Crop Image : cropper.js --}}
-                                {{-- <div class="dropzone" id="my-dropzone2" required>
-                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                </div> --}}
-                                @error('cover')
-                                    <span class="text-danger">{{ $message }}</span>
+                                <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                         </div>
-                        <div class="row pt-4 pb-5 animate__animated animate__bounceInLeft" style="animation-delay: 1.95s">
-                            <div class="col-md-12">
-                                <h3 class=" @if (app()->isLocale('ar')) text-end @endif">@lang('lang.important_dates')</h3>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <table class="table table-bordered  @if (app()->isLocale('ar')) dir-rtl @endif"
-                                        id="important_date_table" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center" style="width: 20%;">@lang('lang.important_date')</th>
-                                                <th class="text-center" style="width: 20%;">@lang('lang.date')</th>
-                                                <th class="text-center" style="width: 20%;">@lang('lang.notify_before_days')</th>
-                                                <th class="text-center" style="width: 10%;">
-                                                    <button type="button" class="add_date btn btn-success btn-xs">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <input type="hidden" name="important_date_index" id="important_date_index" value="0">
-                        </div>
-                        <div class="row pb-5">
-                            <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
-                            </div>
+                        {{-- ++++++++++++ images ++++++++++++ --}}
+                        <div class="col-6 col-md-3 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                            style="animation-delay: 1.7s">
+                            <label class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
+                            <input class="form-control initial-balance-input width-full img" name="image" type="file"
+                                accept="image/*" id="image">
+                            {{-- Crop Image : cropper.js --}}
+                            {{-- <div class="dropzone" id="my-dropzone2" required>
+                                <div class="dz-message" data-dz-message>
+                                    <span>@lang('categories.drop_file_here_to_upload')</span></div>
+                            </div> --}}
+                            @error('cover')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
-                    {!! Form::close() !!}
-                </div>
-                <!-- End col -->
+                    <div class="row pt-4 pb-5 animate__animated animate__bounceInLeft" style="animation-delay: 1.95s">
+                        <div class="col-md-12">
+                            <h3 class=" @if (app()->isLocale('ar')) text-end @endif">@lang('lang.important_dates')</h3>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <table class="table table-bordered  @if (app()->isLocale('ar')) dir-rtl @endif"
+                                    id="important_date_table" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 20%;">@lang('lang.important_date')
+                                            </th>
+                                            <th class="text-center" style="width: 20%;">@lang('lang.date')</th>
+                                            <th class="text-center" style="width: 20%;">@lang('lang.notify_before_days')
+                                            </th>
+                                            <th class="text-center" style="width: 10%;">
+                                                <button type="button" class="add_date btn btn-success btn-xs">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                {{-- ++++++++++++ customer_types Model ++++++++++++ --}}
-                @include('customer_types.create')
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <input type="hidden" name="important_date_index" id="important_date_index" value="0">
+                    </div>
+                    <div class="row pb-5">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
             </div>
+            <!-- End col -->
+
+            {{-- ++++++++++++ customer_types Model ++++++++++++ --}}
+            @include('customer_types.create')
         </div>
     </div>
+</div>
 @endsection
 @push('js')
-    <script src="{{ asset('js/product/customer.js') }}"></script>
-    {{-- +++++++++++++++++++++++++++++++ Add New Row in phone ++++++++++++++++++++++++ --}}
-    <script>
-        $(document).ready(function() {
+<script src="{{ asset('js/product/customer.js') }}"></script>
+{{-- +++++++++++++++++++++++++++++++ Add New Row in phone ++++++++++++++++++++++++ --}}
+<script>
+    $(document).ready(function() {
             $('.phone_tbody').on('click', '.addRow', function() {
                 console.log('new phone inputField was added');
                 var tr = `<tr>
@@ -542,5 +539,5 @@
                 console.log("+++++++++++++++++++++++++++ " + city_id + " +++++++++++++++++++++++++++");
             });
         });
-    </script>
+</script>
 @endpush
