@@ -1153,10 +1153,12 @@ class Create extends Component
             $variation_name = $item['unit_name'];
             if (isset($this->variationSums[$variation_name])) {
                 // If the variation_id already exists in the sums array, add the quantity
-                $this->variationSums[$variation_name] += (float)$item['quantity'];
+                $this->variationSums[$variation_name]['qty'] += (float)$item['quantity'];
+                $this->variationSums[$variation_name]['extra_qty'] = (float)$item['extra_quantity'];
             } else {
                 // If the variation_id doesn't exist, create a new entry
-                $this->variationSums[$variation_name] = (float)$item['quantity'];
+                $this->variationSums[$variation_name]['qty'] = (float)$item['quantity'];
+                $this->variationSums[$variation_name]['extra_qty'] = (float)$item['extra_quantity'];
             }
         }
     }
@@ -1319,13 +1321,12 @@ class Create extends Component
         } else
             $price = 0;
         $transaction = StockTransaction::find($this->items[$key]['current_stock']['stock_transaction_id']);
-        if($transaction->type == 'initial_balance'){
-            $currency = $transaction->transaction_currency ;
+        if($transaction->type == 'initial_balance') {
+            $currency = $transaction->transaction_currency;
         }
         else{
             $currency = $this->items[$key]['current_stock']['used_currency'];
         }
-//        dd($this->items[$key]);
         if($this->items[$key]['discount_type'] == 'fixed'){
             $this->items[$key]['discount_price'] = $price;
             if($this->items[$key]['price'] != 0 && $currency == 2){
@@ -1338,6 +1339,7 @@ class Create extends Component
                 $this->items[$key]['discount_price']  *= $this->items[$key]['exchange_rate'];
             }
         }
+//        dd($this->items[$key]);
         if($this->items[$key]['price'] != 0){
             $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
                 ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));

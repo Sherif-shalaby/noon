@@ -9,7 +9,6 @@
                 الاجماليات
             </div>
             <div class="d-flex justify-content-between align-items-center flex-column flex-wrap col-md-11 p-0">
-
                 <div class="d-flex justify-content-between align-items-center w-100">
                     @if ($this->checkRepresentativeUser() && $reprsenative_sell_car)
                     <div class="col-md-2 p-0">
@@ -134,9 +133,14 @@
                     @endif
                     @if (!empty($variationSums))
                     @foreach ($variationSums as $unit_name => $variant)
-                    {{ $unit_name == '' ? __('lang.no_units') : $unit_name }}:
-                    <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant }}
+                            {{__('lang.extra_quantity') }}:
+                            <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant['extra_qty'] }}
                     </span>
+
+                    {{ $unit_name == '' ? __('lang.no_units') : $unit_name }}:
+                    <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant['qty'] }}
+                    </span>
+
                     @endforeach
                     @endif
                     @if (!empty($items))
@@ -145,12 +149,6 @@
                     @endif
 
                 </div>
-
-
-
-
-
-
             </div>
         </div>
 
@@ -184,7 +182,6 @@
                         ]) !!}
                     </div>
                 </div>
-                {{-- --}}
                 @if (!$reprsenative_sell_car)
                 <div class="col-sm-2">
                     {!! Form::label('s', __('lang.deliveryman') . '*', [

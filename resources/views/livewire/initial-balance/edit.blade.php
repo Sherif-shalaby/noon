@@ -549,7 +549,6 @@
                         <div class="col-md-12 text-center mt-1 ">
                             <h4>
 
-
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                 @foreach ($variationSums as $unit_name => $variant)
@@ -560,13 +559,21 @@
                                 @endif
                                 <span class="items_quantity_span" style="margin-right: 15px;">
                                     {{ $this->getStore() }}</span>
-
-                                {{-- @lang('lang.items_count'):
-                                <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
-                                <br> @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                    style="margin-right: 15px;">{{ $totalQuantity }}</span> --}}
+                            </h4>
+                            <h4>
+                                @foreach($fill_stores as $i => $store)
+                                    @if (!empty($this->count_fill_stores_unit($i)))
+                                        @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
+                                            <span class="items_quantity_span" style="margin-right: 15px;">
+                                                {{ $unit_name }}: {{ $variant }} </span><br>
+                                        @endforeach
+                                    @endif
+                                    <span class="items_quantity_span" style="margin-right: 15px;">
+                                        {{ $this->getExtraFillStore($i) }}</span>
+                                @endforeach
                             </h4>
                         </div>
+
 
 
                         <div class="accordion animate__animated  animate__bounceInLeft mb-2 "
@@ -673,12 +680,6 @@
                                         <label class="text-danger error-msg">{{ $message }}</label>
                                         @enderror
                                     </div>
-
-
-
-
-
-
                                 </div>
                             </div>
                         </div>
