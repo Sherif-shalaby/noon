@@ -537,8 +537,6 @@ class Create extends Component
     {
         $parent_transction = [];
         for ($i = -1; $i < count($this->fill_stores); $i++) {
-            // dd($this->fill_stores);
-            //Add stock transaction
 
             $store_id = $i < 0 ? $this->item[0]['store_id'] : $this->fill_stores[$i]['extra_store_id'];
             if (!empty($store_id)) {
