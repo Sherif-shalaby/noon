@@ -1338,7 +1338,7 @@ class Create extends Component
                 //you will get the allowed qtys
                 $allowedQty = $discount->quantity * $amount;
                 $allowedBonus = $discount->bonus_quantity * $amount;
-            }else{
+            } else {
                 //if the user enter qty less than the product qty this would not affect
                 $allowedQty = $this->items[$key]['quantity'];
             }
@@ -1359,22 +1359,25 @@ class Create extends Component
                 $this->items[$key]['extra_quantity'] = $discount->bonus_quantity * $maxAllowedAmount;
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => "الكمية غير متاحة",]);
             }
+
+            $modulusOfQty = ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']) % ($discount->quantity + $discount->bonus_quantity);
+            $price = ($this->items[$key]['quantity'] >= $discount->quantity) ? $discount->price : 0;
+            $totalPrice = $discount->total_price != null ? $discount->total_price : $discount->dinar_total_price / $this->items[$key]['exchange_rate'];
+
+            if ($modulusOfQty == 0){
+                $subTotal = $totalPrice * (($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity'])/($discount->quantity + $discount->bonus_quantity));
+            }
+            else{
+                $subTotalDiscountedSet = $totalPrice * (($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']) - $modulusOfQty)/($discount->quantity + $discount->bonus_quantity);
+                $subTotalNormal = ($this->items[$key]['price'] / $this->items[$key]['exchange_rate']) * $modulusOfQty;
+                $subTotal = $subTotalNormal + $subTotalDiscountedSet;
+            }
+            $this->items[$key]['sub_total'] = $subTotal * $this->items[$key]['exchange_rate'];
+            $this->items[$key]['dollar_sub_total'] = $subTotal;
+
         }
 
-        $modulusOfQty = ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']) % ($discount->quantity + $discount->bonus_quantity);
-        $price = ($this->items[$key]['quantity'] >= $discount->quantity) ? $discount->price : 0;
-        $totalPrice = $discount->total_price != null ? $discount->total_price : $discount->dinar_total_price / $this->items[$key]['exchange_rate'];
 
-        if ($modulusOfQty == 0){
-            $subTotal = $totalPrice * (($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity'])/($discount->quantity + $discount->bonus_quantity));
-        }
-        else{
-            $subTotalDiscountedSet = $totalPrice * (($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']) - $modulusOfQty)/($discount->quantity + $discount->bonus_quantity);
-            $subTotalNormal = ($this->items[$key]['price'] / $this->items[$key]['exchange_rate']) * $modulusOfQty;
-            $subTotal = $subTotalNormal + $subTotalDiscountedSet;
-        }
-        $this->items[$key]['sub_total'] = $subTotal * $this->items[$key]['exchange_rate'];
-        $this->items[$key]['dollar_sub_total'] = $subTotal;
 
 
         $transaction = StockTransaction::find($this->items[$key]['current_stock']['stock_transaction_id']);
@@ -1406,15 +1409,18 @@ class Create extends Component
         //--------------------------------------------------------------------------//
         //-------subtotal calc-------//
         //dinar
-//        if($this->items[$key]['price'] != 0){
-//            $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
-//                ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));
-//        }
-//        //dollar
-//        elseif ($this->items[$key]['dollar_price'] != 0){
-//            $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
-//                ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
-//        }
+        if (!$modulusOfQty){
+            if($this->items[$key]['price'] != 0){
+                $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
+                    ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));
+            }
+            //dollar
+            elseif ($this->items[$key]['dollar_price'] != 0){
+                $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
+                    ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
+            }
+        }
+
         $this->items[$key]['quantity_available'] = $this->items[$key]['quantity_available_default'] - ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']);
         $this->computeForAll();
     }
