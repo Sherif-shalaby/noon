@@ -1319,6 +1319,7 @@ class Create extends Component
         $availableStock = $this->items[$key]['quantity_available_default'];
         $allowedBonus = 0;
         $price = 0;
+        $modulusOfQty = 0;
 
         if ($via == 'quantity') {
             $this->changeDiscount($key);
