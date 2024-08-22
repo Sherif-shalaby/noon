@@ -348,7 +348,6 @@ class SettingController extends Controller
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
-            dd($e);
         }
 
         return redirect()->back()->with('status', $output);
