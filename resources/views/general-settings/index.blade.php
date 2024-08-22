@@ -283,6 +283,17 @@
                                 ['class' => 'form-control initial-balance-input m-0'],
                             ) !!}
                         </div>
+                        <div class="col-sm-6 col-md-3 justify-content-end animate__animated animate__bounceInLeft mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif negative_sell"
+                             style="visibility:{{ isset($settings['activate_processing']) && $settings['activate_processing'] == '1' ? 'visible' : 'hidden' }}">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="negative_sell"
+                                       name="negative_sell"
+                                    {{ isset($settings['negative_sell']) && $settings['negative_sell'] == 1 ? 'checked' : '' }}>
+                                <label class="custom-control-label"
+                                       for="negative_sell">{{ __('lang.negative_sell') }}</label>
+                            </div>
+                        </div>
+
                         <div class="col-md-12 d-flex justify-content-center py-2">
                             <div class="col-md-6">
                                 @include('general-settings.partials.add_loading_cost')

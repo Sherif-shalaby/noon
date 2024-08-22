@@ -66,6 +66,7 @@ return array(
     'letter_footer' => 'تذييل الرسالة',
     'logo' => 'شعار',
     'help_page_content' => 'محتوى صفحة المساعدة',
+    'negative_sell' => 'البيع بالسالب',
     'NameRequired' => 'برجاء ادخال الاسم',
     'NameUnique' => 'الاسم موجود من قبل',
     'enter_correct_decimal_number' => 'ادخل رقم عشرى صحيح',

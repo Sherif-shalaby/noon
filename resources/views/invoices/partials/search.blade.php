@@ -29,7 +29,6 @@
                         @endforeach
                     </ul>
                 @endif
-                {{--                                    {{$search_result->links()}} --}}
             </div>
         </div>
         <div class="col-md-8">

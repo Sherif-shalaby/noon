@@ -139,6 +139,7 @@ return [
     'subcategories_name' => 'subcategories',
     'image' => 'image',
     'sku' => 'sku',
+    'negative_sell' => 'Negative Sell',
     'currency_change' => 'Currency Change',
     'dollar_exchange' => 'Dollar Exchange',
     'edit_products' => 'Edit Products',

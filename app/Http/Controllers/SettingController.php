@@ -237,6 +237,12 @@ class SettingController extends Controller
                 ['key' => 'update_processing'],
                 ['value' => $request->update_processing == "on" || isset($request->update_processing) ? 1 : 0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
+
+            System::updateOrCreate(
+                ['key' => 'negative_sell'],
+                ['value' => $request->negative_sell == "on" || isset($request->negative_sell) ? 1 : 0, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
+
             System::updateOrCreate(
                 ['key' => 'loading_cost_currency'],
                 ['value' => $request->loading_cost_currency, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]

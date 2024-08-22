@@ -1314,73 +1314,132 @@ class Create extends Component
         ];
     }
 
+//    public function subtotal($key, $via = 'quantity')
+//    {
+//        $availableStock = $this->items[$key]['quantity_available_default'];
+//        $allowedBonus = 0;
+//        $price = 0;
+//        $modulusOfQty = 0;
+//
+//        if ($via == 'quantity') {
+//            $this->changeDiscount($key);
+//        }
+//
+//        if ($this->items[$key]['discount'] != 0) {
+//            //get the product and its discount
+//            $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
+//            $this->items[$key]['discount_type'] = $discount->price_type;
+//            $this->items[$key]['discount_category'] = $discount->price_category;
+//            //get amounts of the qtys
+//            $amount = (int)($this->items[$key]['quantity'] / $discount->quantity);
+//            $maxAllowedAmount = (int)($availableStock / ($discount->quantity + $discount->bonus_quantity));
+//
+//            //ig user enter qty gt or == to the product qty
+//            if($this->items[$key]['quantity'] >= $discount->quantity){
+//                //you will get the allowed qtys
+//                $allowedQty = $discount->quantity * $amount;
+//                $allowedBonus = $discount->bonus_quantity * $amount;
+//            } else {
+//                //if the user enter qty less than the product qty this would not affect
+//                $allowedQty = $this->items[$key]['quantity'];
+//            }
+//            $this->items[$key]['extra_quantity'] = $allowedBonus;
+//
+//            //check if stock hasn't enough storage for the allowed qty
+//            if ($availableStock < $allowedQty + $allowedBonus) {
+//                //will return the user the max allowed qty depend on the stock
+//                $this->items[$key]['quantity'] = $maxAllowedAmount * $discount->quantity;
+//                $this->items[$key]['extra_quantity'] = $discount->bonus_quantity * $maxAllowedAmount;
+//                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => " هذه الكمية$allowedQty يوجد عليها كمية اضافي $allowedBonus الاجمالي غير متاح ",]);
+//            }
+//
+//            //check after the user enter the allowed values if is remain pieces not exceed the total stock
+//            if($availableStock < ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity'])){
+//                //will return to the allowed again
+//                $this->items[$key]['quantity'] = $maxAllowedAmount * $discount->quantity;
+//                $this->items[$key]['extra_quantity'] = $discount->bonus_quantity * $maxAllowedAmount;
+//                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => "الكمية غير متاحة",]);
+//            }
+//
+//            $modulusOfQty = ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']) % ($discount->quantity + $discount->bonus_quantity);
+//            $price = ($this->items[$key]['quantity'] >= $discount->quantity) ? $discount->price : 0;
+//            $totalPrice = $discount->total_price != null ? $discount->total_price : $discount->dinar_total_price / $this->items[$key]['exchange_rate'];
+//
+//            if ($modulusOfQty == 0){
+//                $subTotal = $totalPrice * (($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity'])/($discount->quantity + $discount->bonus_quantity));
+//            }
+//            else{
+//                $subTotalDiscountedSet = $totalPrice * (($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']) - $modulusOfQty)/($discount->quantity + $discount->bonus_quantity);
+//                $subTotalNormal = ($this->items[$key]['price'] / $this->items[$key]['exchange_rate']) * $modulusOfQty;
+//                $subTotal = $subTotalNormal + $subTotalDiscountedSet;
+//            }
+//            $this->items[$key]['sub_total'] = $subTotal * $this->items[$key]['exchange_rate'];
+//            $this->items[$key]['dollar_sub_total'] = $subTotal;
+//
+//        }
+//
+//
+//        $transaction = StockTransaction::find($this->items[$key]['current_stock']['stock_transaction_id']);
+//        if($transaction->type == 'initial_balance') {
+//            $currency = $transaction->transaction_currency;
+//        }
+//        else{
+//            $currency = $this->items[$key]['current_stock']['used_currency'];
+//        }
+//
+//
+//        //---------Original Approach---------------//
+//        //-------price & discount price calc----------//
+//        //in fixed
+//        if($this->items[$key]['discount_type'] == 'fixed'){
+//            $this->items[$key]['discount_price'] = $price;
+//            //if true the price will be exchanged to dinar
+//            if($this->items[$key]['price'] != 0 && $currency == 2){
+//                $this->items[$key]['discount_price'] = $price  * $this->items[$key]['exchange_rate'];
+//            }
+//        }
+//        //in percentage
+//        elseif ($this->items[$key]['discount_type'] == 'percentage'){
+//            $this->items[$key]['discount_price'] = ( $this->num_uf($this->items[$key]['price'] != 0 ? $this->items[$key]['price'] : $this->items[$key]['dollar_price']) * $discount->price) / 100;
+//            if($this->items[$key]['price'] != 0 && $currency == 2){
+//                $this->items[$key]['discount_price']  *= $this->items[$key]['exchange_rate'];
+//            }
+//        }
+//        //--------------------------------------------------------------------------//
+//        //-------subtotal calc-------//
+//        //dinar
+//        if (!$modulusOfQty){
+//            if($this->items[$key]['price'] != 0){
+//                $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
+//                    ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));
+//            }
+//            //dollar
+//            elseif ($this->items[$key]['dollar_price'] != 0){
+//                $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
+//                    ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
+//            }
+//        }
+//
+//        $this->items[$key]['quantity_available'] = $this->items[$key]['quantity_available_default'] - ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']);
+//        $this->computeForAll();
+//    }
+
     public function subtotal($key, $via = 'quantity')
     {
-        $availableStock = $this->items[$key]['quantity_available_default'];
-        $allowedBonus = 0;
-        $price = 0;
-        $modulusOfQty = 0;
-
+        $negativeSell = System::getProperty('negative_sell');
         if ($via == 'quantity') {
             $this->changeDiscount($key);
         }
 
         if ($this->items[$key]['discount'] != 0) {
-            //get the product and its discount
             $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
             $this->items[$key]['discount_type'] = $discount->price_type;
             $this->items[$key]['discount_category'] = $discount->price_category;
-            //get amounts of the qtys
             $amount = (int)($this->items[$key]['quantity'] / $discount->quantity);
-            $maxAllowedAmount = (int)($availableStock / ($discount->quantity + $discount->bonus_quantity));
-
-            //ig user enter qty gt or == to the product qty
-            if($this->items[$key]['quantity'] >= $discount->quantity){
-                //you will get the allowed qtys
-                $allowedQty = $discount->quantity * $amount;
-                $allowedBonus = $discount->bonus_quantity * $amount;
-            } else {
-                //if the user enter qty less than the product qty this would not affect
-                $allowedQty = $this->items[$key]['quantity'];
-            }
-            $this->items[$key]['extra_quantity'] = $allowedBonus;
-
-            //check if stock hasn't enough storage for the allowed qty
-            if ($availableStock < $allowedQty + $allowedBonus) {
-                //will return the user the max allowed qty depend on the stock
-                $this->items[$key]['quantity'] = $maxAllowedAmount * $discount->quantity;
-                $this->items[$key]['extra_quantity'] = $discount->bonus_quantity * $maxAllowedAmount;
-                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => " هذه الكمية$allowedQty يوجد عليها كمية اضافي $allowedBonus الاجمالي غير متاح ",]);
-            }
-
-            //check after the user enter the allowed values if is remain pieces not exceed the total stock
-            if($availableStock < ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity'])){
-                //will return to the allowed again
-                $this->items[$key]['quantity'] = $maxAllowedAmount * $discount->quantity;
-                $this->items[$key]['extra_quantity'] = $discount->bonus_quantity * $maxAllowedAmount;
-                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => "الكمية غير متاحة",]);
-            }
-
-            $modulusOfQty = ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']) % ($discount->quantity + $discount->bonus_quantity);
-            $price = ($this->items[$key]['quantity'] >= $discount->quantity) ? $discount->price : 0;
-            $totalPrice = $discount->total_price != null ? $discount->total_price : $discount->dinar_total_price / $this->items[$key]['exchange_rate'];
-
-            if ($modulusOfQty == 0){
-                $subTotal = $totalPrice * (($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity'])/($discount->quantity + $discount->bonus_quantity));
-            }
-            else{
-                $subTotalDiscountedSet = $totalPrice * (($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']) - $modulusOfQty)/($discount->quantity + $discount->bonus_quantity);
-                $subTotalNormal = ($this->items[$key]['price'] / $this->items[$key]['exchange_rate']) * $modulusOfQty;
-                $subTotal = $subTotalNormal + $subTotalDiscountedSet;
-            }
-            $this->items[$key]['sub_total'] = $subTotal * $this->items[$key]['exchange_rate'];
-            $this->items[$key]['dollar_sub_total'] = $subTotal;
-
-        }
-
-
-
-
+            $this->items[$key]['extra_quantity'] = ($this->items[$key]['quantity'] >= $discount->quantity) ? (($discount->bonus_quantity ?? 0) * $amount) : 0;
+            $price = ($this->items[$key]['quantity'] >= $discount->quantity) ? $discount->dinar_price : 0;
+        } else
+            $price = 0;
         $transaction = StockTransaction::find($this->items[$key]['current_stock']['stock_transaction_id']);
         if($transaction->type == 'initial_balance') {
             $currency = $transaction->transaction_currency;
@@ -1388,41 +1447,39 @@ class Create extends Component
         else{
             $currency = $this->items[$key]['current_stock']['used_currency'];
         }
-
-
-        //---------Original Approach---------------//
-        //-------price & discount price calc----------//
-        //in fixed
         if($this->items[$key]['discount_type'] == 'fixed'){
             $this->items[$key]['discount_price'] = $price;
-            //if true the price will be exchanged to dinar
             if($this->items[$key]['price'] != 0 && $currency == 2){
                 $this->items[$key]['discount_price'] = $price  * $this->items[$key]['exchange_rate'];
             }
         }
-        //in percentage
         elseif ($this->items[$key]['discount_type'] == 'percentage'){
             $this->items[$key]['discount_price'] = ( $this->num_uf($this->items[$key]['price'] != 0 ? $this->items[$key]['price'] : $this->items[$key]['dollar_price']) * $discount->price) / 100;
             if($this->items[$key]['price'] != 0 && $currency == 2){
                 $this->items[$key]['discount_price']  *= $this->items[$key]['exchange_rate'];
             }
         }
-        //--------------------------------------------------------------------------//
-        //-------subtotal calc-------//
-        //dinar
-        if (!$modulusOfQty){
-            if($this->items[$key]['price'] != 0){
-                $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
-                    ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));
-            }
-            //dollar
-            elseif ($this->items[$key]['dollar_price'] != 0){
-                $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
-                    ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
-            }
+        if($this->items[$key]['price'] != 0){
+            $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
+                ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));
         }
-
-        $this->items[$key]['quantity_available'] = $this->items[$key]['quantity_available_default'] - ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']);
+        elseif ($this->items[$key]['dollar_price'] != 0){
+            $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
+                ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
+        }
+        $negativeQty = $this->items[$key]['quantity_available_default'] - ($this->items[$key]['quantity'] + $this->items[$key]['extra_quantity']);
+        if ($negativeQty < 0){
+            if ($negativeSell){
+                $this->items[$key]['quantity_available'] = $negativeQty;
+            }else{
+                $this->items[$key]['quantity'] = 0;
+                $this->items[$key]['extra_quantity'] = 0;
+                $this->subtotal(0);
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => "الكمية غير متاحة قٌم بتفعيل البيع بالسالب أولا",]);
+            }
+        } else{
+            $this->items[$key]['quantity_available'] = $negativeQty;
+        }
         $this->computeForAll();
     }
 

@@ -1,6 +1,6 @@
 <section class="app mb-0 mt-0 no-print">
 
-    {!! Form::open(['route' => 'pos.store', 'method' => 'post']) !!}
+    {!! Form::open(['route' => 'pos.store', 'method' => 'post' , 'id' => 'invoice-form-id']) !!}
 
     <div class="row justify-content-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
         <div class="col-md-6 row   @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
@@ -849,13 +849,14 @@
     @include('invoices.partials.draft_transaction')
 
     <div>
-
         <button class="btn btn-sm btn-danger mx-1" wire:click="getPreviousTransaction">
             < </button>
                 <button class="btn btn-sm btn-danger mx-1" disabled wire:click="getNextTransaction">
                     ></button>
     </div>
+
     {!! Form::close() !!}
+
 </section>
 @include('customers.quick_add', ['quick_add' => 1])
 
@@ -1009,5 +1010,20 @@
             }
         });
 </script>
+{{--<script>--}}
+{{--    document.addEventListener('DOMContentLoaded', function() {--}}
+{{--        // Select all input elements within the form--}}
+{{--        var inputs = document.querySelectorAll('#invoice-form-id input');--}}
+
+{{--        // Add an event listener to each input element--}}
+{{--        inputs.forEach(function(input) {--}}
+{{--            input.addEventListener('keydown', function(event) {--}}
+{{--                if (event.key === 'Enter') {--}}
+{{--                    event.preventDefault(); // Prevent default form submission--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 
 @endpush
