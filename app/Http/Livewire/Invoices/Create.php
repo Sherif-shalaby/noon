@@ -1452,6 +1452,7 @@ class Create extends Component
             if($this->items[$key]['price'] != 0 && $currency == 2){
                 $this->items[$key]['discount_price'] = $price  * $this->items[$key]['exchange_rate'];
             }
+            dd($this->items[$key],);
         }
         elseif ($this->items[$key]['discount_type'] == 'percentage'){
             $this->items[$key]['discount_price'] = ( $this->num_uf($this->items[$key]['price'] != 0 ? $this->items[$key]['price'] : $this->items[$key]['dollar_price']) * $discount->price) / 100;

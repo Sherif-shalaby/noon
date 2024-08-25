@@ -545,10 +545,9 @@
 
                         </div> --}}
 
-
                         <div class="col-md-12 text-center mt-1 ">
-                            <h4>
-
+                            <div class="d-flex justify-content-end">
+                            <h4 style="margin-right: 20px;">
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                 @foreach ($variationSums as $unit_name => $variant)
@@ -572,6 +571,7 @@
                                         {{ $this->getExtraFillStore($i) }}</span>
                                 @endforeach
                             </h4>
+                            </div>
                         </div>
 
 

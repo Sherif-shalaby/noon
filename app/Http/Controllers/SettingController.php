@@ -342,7 +342,8 @@ class SettingController extends Controller
                 'success' => true,
                 'msg' => __('lang.success')
             ];
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
