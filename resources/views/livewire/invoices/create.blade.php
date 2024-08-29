@@ -502,7 +502,7 @@
                                         <th @if (!$columnVisibility['dollar_price'])
                                             style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 8%"
                                             @endif
-                                            class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                                            class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                             style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                             @lang('lang.price') $ </th>
 
@@ -532,7 +532,7 @@
                                         <th @if (!$columnVisibility['dollar_sub_total'])
                                             style="display: none;font-weight: 700;font-size: 10px;text-align: center"
                                             @endif
-                                            class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                                            class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                             style="font-weight: 700;font-size: 10px;text-align: center">
                                             @lang('lang.sub_total') $</th>
 

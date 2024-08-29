@@ -13,7 +13,6 @@ class AddStockLine extends Model
     protected $guarded = ['id'];
     public function transaction()
     {
-        // return $this->belongsTo(StockTransaction::class,'stock_transaction_id ','id');
         return $this->belongsTo(StockTransaction::class,'stock_transaction_id',);
     }
     public function product()

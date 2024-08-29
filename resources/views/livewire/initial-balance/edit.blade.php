@@ -388,10 +388,7 @@
                                                 class="btn add-button text-white d-flex justify-content-center align-items-center openCategoryModal"
                                                 data-toggle="modal" data-select_category="2"><i
                                                     class="fas fa-plus"></i></a>
-                                            {{-- <button type="button"
-                                                class="btn btn-primary btn-sm ml-2  openCategoryModal"
-                                                data-toggle="modal" data-target=".createSubCategoryModal"
-                                                data-select_category="2"><i class="fas fa-plus"></i></button> --}}
+
                                         </div>
                                         <div style="width: 20%">
                                             <button type="button" class="plus-button-x h-100"
@@ -428,10 +425,7 @@
                                             'id' => 'subCategoryId3',
                                             'wire:model' => 'item.0.subcategory_id3',
                                             ]) !!}
-                                            {{-- <button type="button"
-                                                class="btn btn-primary btn-sm ml-2 openCategoryModal"
-                                                data-toggle="modal" data-target=".createSubCategoryModal"
-                                                data-select_category="3"><i class="fas fa-plus"></i></button> --}}
+
                                             <a data-href="{{ route('categories.sub_category_modal') }}"
                                                 data-container=".view_modal"
                                                 class="btn add-button text-white d-flex justify-content-center align-items-center openCategoryModal"
@@ -461,90 +455,6 @@
                         </div>
                         @include('store.create', ['quick_add' => 1])
 
-
-                        {{-- add prices --}}
-
-                        {{-- <div class="row">
-                            <div class="col-md-12 pt-5">
-                                <h4 class="text-primary">{{ __('lang.add_prices_for_different_users') }}</h4>
-                            </div>
-                            <div class="col-md-12 ">
-                                <table class="table table-bordered" id="consumption_table_price">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 3%;">#</th>
-                                            <th style="width: 10%;">@lang('lang.type')</th>
-                                            <th style="width: 10%;">@lang('lang.price_category')</th>
-                                            <th style="width: 10%;">@lang('lang.price')</th>
-                                            <th style="width: 10%;">@lang('lang.quantity')</th>
-                                            <th style="width: 11%;">@lang('lang.b_qty')</th>
-                                            <th style="width: 20%;">@lang('lang.customer_type')
-                                                <i class="dripicons-question" data-toggle="tooltip"
-                                                    title="@lang('lang.discount_customer_info')"></i>
-                                            </th>
-                                            <th style="width: 5%;">
-                                                <button class="btn btn-xs btn-primary" wire:click="addPriceRaw()"
-                                                    type="button">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($priceRow as $index => $row)
-                                        @include('products.product_raw_price', [
-                                        'index' => $index,
-                                        ])
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <input type="hidden" name="raw_price_index" id="raw_price_index" value="1">
-                            </div>
-                        </div>
-                        <br><br>
-                        <div class="row text-right">
-                            <div class="col">
-                                <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
-                                    <i class="fa fa-plus"></i> @lang('lang.add')
-                                </button>
-                            </div>
-                        </div>
-                        <br>
-                        {{-- add prices --}}
-                        {{-- <div class="row text-right">
-                            <div class="col">
-                                <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
-                                    <i class="fa fa-plus"></i> @lang('lang.add')
-                                </button>
-                            </div>
-                        </div> --}}
-                        {{-- <div class="row">
-                            @foreach ($rows as $index => $row)
-                            <div class="col-md-12 col-sm-12 col-lg-6">
-                                <div class="table-responsive">
-                                    <table class="table " style="border: 2px solid rgb(177, 177, 177);">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 2%">#</th>
-                                                <th style="width: 6%">@lang('lang.sku')</th>
-                                                <th style="width: 6%">@lang('lang.unit')</th>
-                                                <th style="width: 15%">@lang('lang.purchase_price')</th>
-                                                <th style="width: 15%">@lang('lang.quantity')</th>
-                                                <th style="width: 5%">@lang('lang.action')</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @include('initial-balance.partial.new_raw_unit', [
-                                            'index' => $index,
-                                            ])
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            @endforeach
-
-                        </div> --}}
-
                         <div class="col-md-12 text-center mt-1 ">
                             <div class="d-flex justify-content-end">
                             <h4 style="margin-right: 20px;">
@@ -559,8 +469,8 @@
                                 <span class="items_quantity_span" style="margin-right: 15px;">
                                     {{ $this->getStore() }}</span>
                             </h4>
-                            <h4>
                                 @foreach($fill_stores as $i => $store)
+                                <h4>
                                     @if (!empty($this->count_fill_stores_unit($i)))
                                         @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
                                             <span class="items_quantity_span" style="margin-right: 15px;">
@@ -569,8 +479,8 @@
                                     @endif
                                     <span class="items_quantity_span" style="margin-right: 15px;">
                                         {{ $this->getExtraFillStore($i) }}</span>
+                                </h4>
                                 @endforeach
-                            </h4>
                             </div>
                         </div>
 

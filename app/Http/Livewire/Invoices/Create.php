@@ -814,7 +814,6 @@ class Create extends Component
 
     public function add_product($id, $variationId = null)
     {
-        //        dd($id);
 
         if (!empty($this->searchProduct)) {
             $this->searchProduct = '';
@@ -2039,7 +2038,6 @@ class Create extends Component
 
     public function changeUnit($key)
     {
-        //    dd($this->items[$key]['unift_id']);
         if (!empty($this->items[$key]['unit_id'])) {
             $variation_id = $this->items[$key]['unit_id'];
             $stock_line = AddStockLine::where('variation_id', $variation_id)->first();
@@ -2048,7 +2046,6 @@ class Create extends Component
             } else {
                 $variation_price = VariationPrice::where('variation_id', $variation_id)->first();
             }
-//            dd($variation_price);
             if (!empty($variation_price)) {
                 $stock_variation = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
             }
@@ -2103,7 +2100,6 @@ class Create extends Component
         $this->items[$key]['unit_name'] = Variation::find($variation_id)->unit->name;
         $this->items[$key]['unit_sku'] = Variation::find($variation_id)->sku;
 
-//        dd($this->items[$key]['unit_name'] );
         $this->subtotal($key, $via = 'quantity');
         $this->changeCustomerType($key);
         $this->computeForAll();
