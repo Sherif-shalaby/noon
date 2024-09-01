@@ -742,7 +742,7 @@
                                             <div style="height: 100%;max-width: 100%;"
                                                 class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                 <input class="form-control initial-balance-input m-0 p-1 text-center"
-                                                    style="width:60px;border: 2px solid #cecece" type="text" min="1"
+                                                       style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece" type="text" min="1"
                                                     readonly wire:model="items.{{ $key }}.discount_price">
                                             </div>
                                         </td>

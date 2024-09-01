@@ -117,6 +117,9 @@ class Edit extends Component
         ]);
         $this->messages();
     }
+
+
+
     public function changeSize()
     {
         $this->item[0]['size'] = $this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -703,7 +706,8 @@ class Edit extends Component
         // try {
         if (empty($this->rows)) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
-        } else {
+        }
+        else {
             // DB::beginTransaction();
             // Add stock transaction
             //Edit Product
@@ -820,7 +824,7 @@ class Edit extends Component
         $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
         $transaction->transaction_currency = $this->transaction_currency;
         $transaction->created_by = Auth::user()->id;
-        $transaction->parent_transction =  0;
+        $transaction->parent_transction = 0;
         $transaction->save();
         foreach ($this->rows as $index => $row) {
             // dd(Variation::where('product_id',$product_id)->where('unit_id',$this->rows[$index]['unit_id'])->get());

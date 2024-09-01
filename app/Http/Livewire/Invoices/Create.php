@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Invoices;
 
+use App\Models\Unit;
 use Carbon\Carbon;
 use App\Models\Brand;
 use App\Models\Store;
@@ -38,6 +39,19 @@ use App\Models\ProcessInvoice;
 
 class Create extends Component
 {
+    public $fill_stores = [
+        [
+            'stock_id' => '',
+            'extra_store_id' => '',
+            'data' => [
+                [
+                    'stock_line_id' => '',
+                    'store_fill_id' => '',
+                    'quantity' => '',
+                ]
+            ]
+        ]
+    ];
     public $products = [], $variations = [], $department_id1 = null, $department_id2 = null, $department_id3 = null, $department_id4 = null,
             $items = [], $price, $total, $client_phone, $client_id, $client, $cash = 0, $rest, $invoice, $invoice_status, $date, $payment_status,
         $data = [], $payments = [], $invoice_lang, $transaction_currency, $store_id, $store_pos_id, $showColumn = false, $sale_note,
@@ -1446,15 +1460,16 @@ class Create extends Component
         else{
             $currency = $this->items[$key]['current_stock']['used_currency'];
         }
+
         if($this->items[$key]['discount_type'] == 'fixed'){
             $this->items[$key]['discount_price'] = $price;
-            if($this->items[$key]['price'] != 0 && $currency == 2){
+            if($this->items[$key]['price'] != 0 && $price == 0 && $currency == 2){
                 $this->items[$key]['discount_price'] = $price  * $this->items[$key]['exchange_rate'];
             }
         }
         elseif ($this->items[$key]['discount_type'] == 'percentage'){
             $this->items[$key]['discount_price'] = ( $this->num_uf($this->items[$key]['price'] != 0 ? $this->items[$key]['price'] : $this->items[$key]['dollar_price']) * $discount->price) / 100;
-            if($this->items[$key]['price'] != 0 && $currency == 2){
+            if($this->items[$key]['price'] != 0 &&  $price == 0 && $currency == 2){
                 $this->items[$key]['discount_price']  *= $this->items[$key]['exchange_rate'];
             }
         }
