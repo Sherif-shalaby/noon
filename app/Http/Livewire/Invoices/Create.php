@@ -352,8 +352,17 @@ class Create extends Component
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
         $this->allproducts = Product::whereIn('id', $products_store)->get();
         foreach ($this->items as $key => $item) {
-            if (!(ProductStore::where('product_id', $this->items[$key]['product']['id'])->where('store_id', $this->store_id)->exists())) {
+            $product_store = ProductStore::where('product_id', $this->items[$key]['product']['id'])->where('store_id', $this->store_id)->first();
+            if (!$product_store) {
                 $this->delete_item($key);
+            }
+            else{
+                $stock = AddStockLine::where('store_id', $product_store->store_id)->where('product_id', $product_store->product_id)->where('quantity','!=',0)->first();
+                $this->items[$key]['quantity_available'] = $stock->quantity;
+                $this->items[$key]['quantity_available_default'] = $stock->quantity;
+                $this->items[$key]['quantity'] = 0;
+                $this->items[$key]['extra_quantity'] = 0;
+
             }
         }
         //        dd($products_store);
@@ -854,6 +863,7 @@ class Create extends Component
             $newArr = array_filter($this->items, function ($item) use ($product) {
                 return $item['product']['id'] == $product->id;
             });
+
             if (count($newArr) > 0 && $variationId == null) {
                 $key = array_keys($newArr)[0];
                 ++$this->items[$key]['quantity'];
@@ -922,6 +932,7 @@ class Create extends Component
                     'unit_id' => $variationId ?? '',
                     'unit_sku' => Variation::find($variationId)->sku ?? '',
                 ];
+
                 $this->items[] = $new_item;
             } else {
                 $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id ?? 0);
@@ -1449,7 +1460,7 @@ class Create extends Component
             $this->items[$key]['discount_type'] = $discount->price_type;
             $this->items[$key]['discount_category'] = $discount->price_category;
             $amount = (int)($this->items[$key]['quantity'] / $discount->quantity);
-            $this->items[$key]['extra_quantity'] = ($this->items[$key]['quantity'] >= $discount->quantity) ? (($discount->bonus_quantity ?? 0) * $amount) : 0;
+            $this->items[$key]['extra_quantity'] = ($this->items[$key]['quantity'] >= $discount->quantity) ? (($discount->bonus_quantity ? $discount->bonus_quantity: 0) * $amount) : 0;
             $price = ($this->items[$key]['quantity'] >= $discount->quantity) ? $discount->dinar_price : 0;
         } else
             $price = 0;
@@ -1473,7 +1484,7 @@ class Create extends Component
                 $this->items[$key]['discount_price']  *= $this->items[$key]['exchange_rate'];
             }
         }
-        if($this->items[$key]['price'] != 0){
+        if($this->items[$key]['price'] != 0) {
             $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
                 ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));
         }
@@ -1638,10 +1649,12 @@ class Create extends Component
 
     public function quantityAvailable($product)
     {
-        $quantity_available = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)
-            ->first()->quantity_available ?? 0;
+        $quantity_available = AddStockLine::where('product_id', $product->id)->where('store_id', $this->store_id)
+            ->where('quantity','!=', 0)->first();
 
-        return $quantity_available;
+        return isset($quantity_available) && $quantity_available->quantity
+            ? $quantity_available->quantity
+            : ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first()->quantity_available;
     }
 
     public function getProductDiscount($sid)
