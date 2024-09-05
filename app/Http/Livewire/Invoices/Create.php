@@ -846,9 +846,11 @@ class Create extends Component
         }
         $product = Product::where('id', $id)->first();
         $quantity_available = $this->quantityAvailable($product);
+
         if ($quantity_available < 1) {
             $this->dispatchBrowserEvent('quantity_not_enough', ['id' => $id]);
-        } else {
+        }
+        else {
             $current_stock = $this->getCurrentStock($product);
             //            $exchange_rate = $this->getProductExchangeRate($current_stock);
             $exchange_rate = !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
@@ -864,6 +866,7 @@ class Create extends Component
                 return $item['product']['id'] == $product->id;
             });
 
+
             if (count($newArr) > 0 && $variationId == null) {
                 $key = array_keys($newArr)[0];
                 ++$this->items[$key]['quantity'];
@@ -874,7 +877,8 @@ class Create extends Component
                 } else {
                     $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * (float)$this->items[$key]['quantity']) - ((float)$this->items[$key]['quantity'] * $this->num_uf($this->items[$key]['discount']));
                 }
-            } else if ($variationId != null) {
+            }
+            else if ($variationId != null) {
                 $get_Variation_price = VariationPrice::where('variation_id', $variationId ?? 0);
                 $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
@@ -934,8 +938,9 @@ class Create extends Component
                 ];
 
                 $this->items[] = $new_item;
-            } else {
-                $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id ?? 0);
+            }
+            else {
+                $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id ? $product->variations()->first()->id : 0);
                 $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
                 if (empty($get_Variation_price->first()->id)) {
@@ -957,8 +962,16 @@ class Create extends Component
                     $dollar_price = 0;
                 }
                 $variant = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first();
-//                dd($variant->variations->unit->name);
-//                dd($current_stock->prices);
+
+                $varId = $get_Variation_price->first()->customer_type_id ? $get_Variation_price->first()->customer_type_id :  0;
+                $allPrices = $current_stock->prices()->get();
+                $discountCate = [];
+                foreach ($allPrices as $allPrice) {
+                    $priceCustomer = isset($allPrice->price_customer_types) && str_contains($allPrice->price_customer_types,'"') ? str_replace('"','',$allPrice->price_customer_types) : $allPrice->price_customer_types;
+                    if ($priceCustomer == $varId) {
+                        $discountCate[] = $allPrice;
+                    }
+                }
 
                 $new_item = [
                     'variation' => $product->variations,
@@ -979,7 +992,7 @@ class Create extends Component
                     'dollar_sub_total' => (float)1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
                     //                    'discount_categories' =>  $discounts,
-                    'discount_categories' => !empty($current_stock) ? $current_stock->prices()->where('price_customer_types', $get_Variation_price->first()->customer_type_id ?? 0)->get() : null,
+                    'discount_categories' => count($discountCate) > 0 ?  $discountCate : null,
                     'discount' => 0,
                     'discount_price' => 0,
                     'discount_type' => null,
@@ -1454,7 +1467,6 @@ class Create extends Component
         if ($via == 'quantity') {
             $this->changeDiscount($key);
         }
-
         if ($this->items[$key]['discount'] != 0) {
             $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
             $this->items[$key]['discount_type'] = $discount->price_type;
@@ -1649,12 +1661,14 @@ class Create extends Component
 
     public function quantityAvailable($product)
     {
-        $quantity_available = AddStockLine::where('product_id', $product->id)->where('store_id', $this->store_id)
+        $qty_stock = AddStockLine::where('product_id', $product->id)->where('store_id', $this->store_id)
             ->where('quantity','!=', 0)->first();
 
-        return isset($quantity_available) && $quantity_available->quantity
-            ? $quantity_available->quantity
-            : ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first()->quantity_available;
+        $qty_store = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first();
+
+        $qty_available = $qty_stock ? $qty_stock->quantity : ($qty_store ? $qty_store->quantity_available : 0);
+
+        return $qty_available;
     }
 
     public function getProductDiscount($sid)

@@ -74,10 +74,14 @@
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <div class="mx-1 p-0">
-                    <button style="width: 100%; background: #5b808f"
-                        wire:click="redirectToCustomerDetails({{ $client_id }})" class="btn btn-primary payment-btn">
-                        @lang('lang.customer_details')
-                    </button>
+{{--                    <button style="width: 100%; background: #5b808f"--}}
+{{--                        wire:click="redirectToCustomerDetails({{ $client_id }})" class="btn btn-primary payment-btn">--}}
+{{--                        @lang('lang.customer_details')--}}
+{{--                    </button>--}}
+                    <a style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
+                       href="{{ route('customers.show',$client_id) }}" class="btn btn-primary d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
                 </div>
             </div>
         </div>

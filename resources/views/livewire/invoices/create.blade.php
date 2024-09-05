@@ -76,11 +76,15 @@
             </div>
             @endif
             <div class="col-md-1 justify-content-center d-flex flex-column align-items-end mx-1 mt-2 p-0">
-                <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
-                    wire:click="redirectToCustomerDetails({{ $client_id }})"
-                    class="btn btn-primary d-flex justify-content-center align-items-center payment-btn">
+{{--                <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"--}}
+{{--                    wire:click="redirectToCustomerDetails({{ $client_id }})"--}}
+{{--                    class="btn btn-primary d-flex justify-content-center align-items-center payment-btn">--}}
+{{--                    <i class="fa-solid fa-eye"></i>--}}
+{{--                </button>--}}
+                <a style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
+                   href="{{ route('customers.show',$client_id) }}" class="btn btn-primary d-flex justify-content-center align-items-center">
                     <i class="fa-solid fa-eye"></i>
-                </button>
+                </a>
 
             </div>
             <div
