@@ -1199,7 +1199,7 @@ class Create extends Component
             if (isset($this->variationSums[$variation_name])) {
                 // If the variation_id already exists in the sums array, add the quantity
                 $this->variationSums[$variation_name]['qty'] += (float)$item['quantity'];
-                $this->variationSums[$variation_name]['extra_qty'] = (float)$item['extra_quantity'];
+                $this->variationSums[$variation_name]['extra_qty'] += (float)$item['extra_quantity'];
             } else {
                 // If the variation_id doesn't exist, create a new entry
                 $this->variationSums[$variation_name]['qty'] = (float)$item['quantity'];
@@ -1499,6 +1499,8 @@ class Create extends Component
         if($this->items[$key]['price'] != 0) {
             $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
                 ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));
+            $this->items[$key]['sub_total'] = number_format($this->items[$key]['sub_total'], num_of_digital_numbers());
+
         }
         elseif ($this->items[$key]['dollar_price'] != 0){
             $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
