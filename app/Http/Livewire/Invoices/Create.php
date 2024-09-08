@@ -291,6 +291,10 @@ class Create extends Component
                 $this->add_product($search_result->first()->id);
                 $search_result = '';
                 $this->search_by_product_symbol = '';
+            } else {
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'هذا المنتج غير موجود',]);
+                $search_result = '';
+                $this->search_by_product_symbol = '';
             }
         }
         if (!empty($this->searchProduct)) {
@@ -309,6 +313,10 @@ class Create extends Component
 
             if (count($search_result) === 1) {
                 $this->add_product($search_result->first()->id);
+                $search_result = '';
+                $this->searchProduct = '';
+            }else{
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'هذا المنتج غير موجود',]);
                 $search_result = '';
                 $this->searchProduct = '';
             }
@@ -918,11 +926,9 @@ class Create extends Component
                     'exchange_rate' => $exchange_rate,
                     'quantity_available' => $quantity_available,
                     'quantity_available_default' => $quantity_available,
-                    // 'stock_units' => $stock_units,
                     'sub_total' => (float)1 * $this->num_uf($price),
                     'dollar_sub_total' => (float)1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
-                    //                    'discount_categories' =>  $discounts,
                     'discount_categories' => !empty($current_stock) ? $current_stock->prices()->where('price_customer_types', $get_Variation_price->first()->customer_type_id ?? 0)->get() : null,
                     'discount' => 0,
                     'discount_price' => 0,
@@ -987,11 +993,9 @@ class Create extends Component
                     'exchange_rate' => $exchange_rate,
                     'quantity_available' => $quantity_available,
                     'quantity_available_default' => $quantity_available,
-                    // 'stock_units' => $stock_units,
                     'sub_total' => (float)1 * $this->num_uf($price),
                     'dollar_sub_total' => (float)1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
-                    //                    'discount_categories' =>  $discounts,
                     'discount_categories' => count($discountCate) > 0 ?  $discountCate : null,
                     'discount' => 0,
                     'discount_price' => 0,

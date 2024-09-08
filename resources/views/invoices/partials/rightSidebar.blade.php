@@ -134,13 +134,11 @@
                     @if (!empty($variationSums))
                     @foreach ($variationSums as $unit_name => $variant)
                             {{__('lang.extra_quantity') }}:
-                            <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant['extra_qty'] }}
-                    </span>
+                            <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant['extra_qty'] }}</span>
 
                     {{ $unit_name == '' ? __('lang.no_units') : $unit_name }}:
                     <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant['qty'] }}
                     </span>
-
                     @endforeach
                     @endif
                     @if (!empty($items))

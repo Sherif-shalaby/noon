@@ -75,7 +75,7 @@
                             'class' => 'select2 form-control',
                             'data-live-search' => 'true',
                             'id' => 'brand_id',
-                            'required',
+//                            'required',
                             'placeholder' => __('lang.please_select'),
                             'data-name' => 'brand_id',
                             'wire:model' => 'brand_id',
