@@ -1061,21 +1061,7 @@ class Create extends Component
         ];
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
     }
-    public function getAvailableStoreFills($index)
-    {
-        // Collect all selected store_fill_ids from all rows except the current row
-        $selectedStoreFills = collect($this->fill_stores)
-            ->except($index) // Exclude the current row from filtering
-            ->pluck('data.*.store_fill_id')
-            ->flatten()
-            ->filter();
 
-
-        // Convert basic_unit_variations to a collection and filter out selected store_fill_ids from other rows
-        return collect($this->basic_unit_variations)->filter(function($fill_id, $key) use ($selectedStoreFills) {
-            return !$selectedStoreFills->contains($key);
-        });
-    }
 
     public function addPrices()
     {
