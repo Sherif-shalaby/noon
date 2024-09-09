@@ -15,11 +15,8 @@ class AttendanceController extends Controller
         $attendances = Attendance::leftjoin('employees', 'attendances.employee_id', 'employees.id')
             ->leftjoin('users', 'employees.user_id', 'users.id')
             ->leftjoin('users as created_by', 'attendances.created_by', 'created_by.id')
-            ->select(
-                'attendances.*',
-                'users.name as employee_name',
-                'created_by.name as created_by'
-            )->orderBy('attendances.id', 'desc')
+            ->select('attendances.*', 'users.name as employee_name', 'created_by.name as created_by')
+            ->orderBy('attendances.id', 'desc')
             ->get();
 
         return view('employees.attendance.index',compact('attendances'));

@@ -599,20 +599,17 @@
                                         style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;font-size: 14px;font-weight: 500"
                                         wire:click="showStore()">
                                         <span class="mx-2">
-                                            <i class="fas {{ $show_store == 0 ? 'fa-arrow-down' : 'fa-arrow-up' }} d-flex justify-content-center align-items-center"
-                                                style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                                            <i class="fas {{ $show_store == 0 ? 'fa-arrow-down' : 'fa-arrow-up' }} d-flex justify-content-center align-items-center" style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
                                         </span>
                                         {{ __('lang.add_to_another_store') }}
                                     </div>
                                 </h2>
-                                <div
-                                    class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
+                                <div class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
                                     <button type="button" class="plus-button py-2 my-1" wire:click="addStoreRow()">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                     @foreach ($fill_stores as $i => $store)
-                                    <div
-                                        class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <div class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                         <button class="del-button btn-xl mx-1 py-2"
                                             wire:click="delete_store_raw({{ $i }})">
@@ -623,8 +620,7 @@
                                             style="width: 160px">
                                             <label for="extra_store_id"
                                                 class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                                                style='font-weight:500;font-size:10px;color:#888'>{{
-                                                __('lang.store') . '*' }}</label>
+                                                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') . '*' }}</label>
                                             <div class="d-flex justify-content-center align-items-center" style="background-color: #dedede;
                                                     border: none;
                                                     border-radius: 16px;
@@ -650,22 +646,18 @@
                                             @enderror --}}
                                         </div>
 
-
                                         <div class="d-flex flex-row">
                                             @foreach ($fill_stores[$i]['data'] as $x => $fill)
                                             <div class="d-flex flex-row" style="order: 2">
-
                                                 <div class="d-flex justify-content-start align-items-center flex-row">
                                                     <button class="btn btn-danger mx-1 py-2"
                                                         wire:click="delete_store_data_raw({{ $i }},{{ $x }})">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
-                                                    <div class=" mb-2 d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                                        style="width: 100px">
-                                                        <label for="store_fill_id"
-                                                            class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                                                            style='font-weight:500;font-size:10px;color:#888'>{{
-                                                            __('lang.fill') . '*' }}</label>
+                                                    <div class=" mb-2 d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1" style="width: 100px">
+                                                        <label for="store_fill_id" class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif" style='font-weight:500;font-size:10px;color:#888'>
+                                                            {{ __('lang.fill') . '*' }}
+                                                        </label>
                                                         <div class="d-flex justify-content-center align-items-center"
                                                             style="background-color: #dedede;
                                                                         border: none;

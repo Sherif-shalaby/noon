@@ -282,6 +282,8 @@ class Create extends Component
         $rep_job_type = JobType::where('title', 'Representative')->first();
         $representatives = Employee::where('job_type_id', $rep_job_type->id)->pluck('employee_name', 'id');
         $search_result = '';
+        $triggeredModal = false; // Add a flag to track if the modal has been triggered
+
         if (!empty($this->search_by_product_symbol)) {
             $search_result = Product::when($this->search_by_product_symbol, function ($query) {
                 return $query->where('product_symbol', 'like', '%' . $this->search_by_product_symbol . '%');
@@ -292,12 +294,13 @@ class Create extends Component
                 $search_result = '';
                 $this->search_by_product_symbol = '';
             } else {
+                $triggeredModal = true;
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'هذا المنتج غير موجود',]);
                 $search_result = '';
                 $this->search_by_product_symbol = '';
             }
         }
-        if (!empty($this->searchProduct)) {
+        if (!empty($this->searchProduct)  && !$triggeredModal) {
             $search_result = Product::when($this->searchProduct, function ($query) {
                 return $query->where('name', 'like', '%' . $this->searchProduct . '%')
                     ->orWhere('sku', 'like', '%' . $this->searchProduct . '%');
@@ -334,11 +337,6 @@ class Create extends Component
             // If the user is not a superadmin or admin, get sell lines created by the current user
             $sell_lines = $sell_lines->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc');
         }
-
-        // // Filter by the selected created_by value if it is set
-        // if ($this->customer_id) {
-        //     $sell_lines = $sell_lines->where('customer_id', $this->customer_id);
-        // }
 
         $this->dispatchBrowserEvent('componentRefreshed');
 
