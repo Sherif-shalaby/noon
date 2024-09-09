@@ -76,13 +76,14 @@
             </div>
             @endif
             <div class="col-md-1 justify-content-center d-flex flex-column align-items-end mx-1 mt-2 p-0">
-{{--                <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"--}}
-{{--                    wire:click="redirectToCustomerDetails({{ $client_id }})"--}}
-{{--                    class="btn btn-primary d-flex justify-content-center align-items-center payment-btn">--}}
-{{--                    <i class="fa-solid fa-eye"></i>--}}
-{{--                </button>--}}
+                {{-- <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600" --}} {{--
+                    wire:click="redirectToCustomerDetails({{ $client_id }})" --}} {{--
+                    class="btn btn-primary d-flex justify-content-center align-items-center payment-btn">--}}
+                    {{-- <i class="fa-solid fa-eye"></i>--}}
+                    {{-- </button>--}}
                 <a style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
-                   href="{{ route('customers.show',$client_id) }}" class="btn btn-primary d-flex justify-content-center align-items-center">
+                    href="{{ route('customers.show',$client_id) }}"
+                    class="btn btn-primary d-flex justify-content-center align-items-center">
                     <i class="fa-solid fa-eye"></i>
                 </a>
 
@@ -506,7 +507,7 @@
                                         <th @if (!$columnVisibility['dollar_price'])
                                             style="display: none;font-weight: 700;font-size: 10px;text-align: center;width: 8%"
                                             @endif
-                                            class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                                            class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                             style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                             @lang('lang.price') $ </th>
 
@@ -536,7 +537,7 @@
                                         <th @if (!$columnVisibility['dollar_sub_total'])
                                             style="display: none;font-weight: 700;font-size: 10px;text-align: center"
                                             @endif
-                                            class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                                            class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                                             style="font-weight: 700;font-size: 10px;text-align: center">
                                             @lang('lang.sub_total') $</th>
 
@@ -746,8 +747,9 @@
                                             <div style="height: 100%;max-width: 100%;"
                                                 class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                 <input class="form-control initial-balance-input m-0 p-1 text-center"
-                                                       style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece" type="text" min="1"
-                                                    readonly wire:model="items.{{ $key }}.discount_price">
+                                                    style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece"
+                                                    type="text" min="1" readonly
+                                                    wire:model="items.{{ $key }}.discount_price">
                                             </div>
                                         </td>
 
@@ -1014,7 +1016,8 @@
             }
         });
 </script>
-{{--<script>--}}
+{{--<script>
+    --}}
 {{--    document.addEventListener('DOMContentLoaded', function() {--}}
 {{--        // Select all input elements within the form--}}
 {{--        var inputs = document.querySelectorAll('#invoice-form-id input');--}}
@@ -1028,6 +1031,7 @@
 {{--            });--}}
 {{--        });--}}
 {{--    });--}}
-{{--</script>--}}
+{{--
+</script>--}}
 
 @endpush

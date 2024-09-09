@@ -104,16 +104,16 @@
 
     toggleDollarButton.addEventListener('click', function() {
 
-        // const value = localStorage.getItem("showHideDollar");
-        // if (value === null) {
-        //     localStorage.setItem("showHideDollar", "hide");
-        // } else {
-        //     if (localStorage.getItem("showHideDollar") == "show") {
-        //         localStorage.setItem("showHideDollar", "hide");
-        //     } else {
-        //         localStorage.setItem("showHideDollar", "show");
-        //     }
-        // }
+        const value = sessionStorage.getItem("showHideDollar");
+        if (value === null) {
+            sessionStorage.setItem("showHideDollar", "show");
+        } else {
+            if (sessionStorage.getItem("showHideDollar") == "show") {
+                sessionStorage.setItem("showHideDollar", "hide");
+            } else {
+                sessionStorage.setItem("showHideDollar", "show");
+            }
+        }
 
         var dollarCells = document.getElementsByClassName('dollar-cell');
 

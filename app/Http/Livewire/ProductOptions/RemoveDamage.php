@@ -12,22 +12,25 @@ use Livewire\Component;
 
 class RemoveDamage extends Component
 {
-    public $productId = null, $rows = [], $addStockLines = [],$quantity_of_damaged_stock_removed=0;
+    public $productId = null, $rows = [], $addStockLines = [], $quantity_of_damaged_stock_removed = 0;
     public function render()
     {
-    
+        $this->dispatchBrowserEvent('componentRefreshed');
+
+
         return view('livewire.product-options.remove-damage');
     }
-    public function changeStockRemovedValue($i){
-        $this->rows[$i]['quantity_of_damaged_stock_removed']=(float)$this->rows[$i]['quantity_to_remove']*(float)$this->rows[$i]['avg_purchase_price'];
+    public function changeStockRemovedValue($i)
+    {
+        $this->rows[$i]['quantity_of_damaged_stock_removed'] = (float)$this->rows[$i]['quantity_to_remove'] * (float)$this->rows[$i]['avg_purchase_price'];
     }
     public function mount($productId)
     {
         $this->addStockLines = AddStockLine::where("add_stock_lines.product_id", $this->productId)
-        ->where("add_stock_lines.quantity", ">", 0)
-        ->leftjoin('variations', function ($join) {
-            $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
-        });
+            ->where("add_stock_lines.quantity", ">", 0)
+            ->leftjoin('variations', function ($join) {
+                $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
+            });
         $store_query = '';
         $this->addStockLines = $this->addStockLines->select(
             'add_stock_lines.*',
@@ -52,8 +55,8 @@ class RemoveDamage extends Component
                 'stock_line_id' => $stockLine->id,
                 'quantity_to_remove' => '',
                 'status' => 'damage',
-                'avg_purchase_price'=>$stockLine->avg_purchase_price??0,
-                'quantity_of_damaged_stock_removed'=>0,
+                'avg_purchase_price' => $stockLine->avg_purchase_price ?? 0,
+                'quantity_of_damaged_stock_removed' => 0,
             ];
             $this->rows[] = $new_row;
         }

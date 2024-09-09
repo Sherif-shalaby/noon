@@ -11,51 +11,46 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $filter_status, $from, $to, $store_id, $customer_id ;
+    public $filter_status, $from, $to, $store_id, $customer_id;
     // +++++++++++++++ Date filter +++++++++++++++
     public function between($query)
     {
         // Between Two Dates "from" And "to"
-        if ($this->from && $this->to)
-        {
+        if ($this->from && $this->to) {
             $query->whereBetween('created_at', [$this->from, $this->to]);
             // $query->where('created_at', '>=', $this->from);
             // $query->where('created_at', '<=', $this->to);
         }
         // "from" date only
-        elseif ($this->from)
-        {
+        elseif ($this->from) {
             $query->where('created_at', 'like', '%' . $this->from . '%');
         }
         // "to" date only
-        elseif ($this->to)
-        {
+        elseif ($this->to) {
             $query->where('created_at', 'like', '%' . $this->to . '%');
-        }
-        else
-        {
+        } else {
             $query;
         }
     }
     public function render()
     {
-        $customer_offer_prices = TransactionCustomerOfferPrice::with(['customer','store','customer_offer_price'])
-                                    ->where(function ($q)
-                                    {
-                                        $this->between($q);
-                                        if ($this->customer_id)
-                                        {
-                                            $q->where('customer_id', $this->customer_id);
-                                        }
-                                        if ($this->store_id)
-                                        {
-                                            $q->where('store_id', 'like', '%' . $this->store_id . '%');
-                                        }
-                                    })->orderBy('created_at', 'desc')->paginate(10);
+        $customer_offer_prices = TransactionCustomerOfferPrice::with(['customer', 'store', 'customer_offer_price'])
+            ->where(function ($q) {
+                $this->between($q);
+                if ($this->customer_id) {
+                    $q->where('customer_id', $this->customer_id);
+                }
+                if ($this->store_id) {
+                    $q->where('store_id', 'like', '%' . $this->store_id . '%');
+                }
+            })->orderBy('created_at', 'desc')->paginate(10);
         $stores = Store::getDropdown();
         $customers = Customer::get();
+        $this->dispatchBrowserEvent('componentRefreshed');
 
-        return view('livewire.customer-price-offer.index',
-                compact('customer_offer_prices','stores','customers'));
+        return view(
+            'livewire.customer-price-offer.index',
+            compact('customer_offer_prices', 'stores', 'customers')
+        );
     }
 }

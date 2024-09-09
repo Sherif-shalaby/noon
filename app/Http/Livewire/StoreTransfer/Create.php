@@ -120,6 +120,9 @@ class Create extends Component
         }
         $this->dispatchBrowserEvent('initialize-select2');
 
+        $this->dispatchBrowserEvent('componentRefreshed');
+
+
         return view('livewire.store-transfer.create',compact('car_stores','departments','search_result'));
     }
 

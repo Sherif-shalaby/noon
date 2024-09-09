@@ -115,6 +115,9 @@ class Export extends Component
         }
         $this->dispatchBrowserEvent('initialize-select2');
 
+                $this->dispatchBrowserEvent('componentRefreshed');
+
+
         return view('livewire.transfer.export',compact('departments','search_result'));
     }
 

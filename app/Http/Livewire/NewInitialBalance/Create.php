@@ -288,6 +288,9 @@ class Create extends Component
         $product_taxes = Tax::select('name', 'id', 'status')->get();
         $customer_types = CustomerType::latest()->get();
         $this->dispatchBrowserEvent('initialize-select2');
+
+        $this->dispatchBrowserEvent('componentRefreshed');
+
         return view(
             'livewire.new-initial-balance.create',
             compact(

@@ -276,6 +276,8 @@ class Edit extends Component
         //        dd($this->final_total);
         $sell_lines = $sell_lines->paginate(10);
         $toggle_dollar = System::getProperty('toggle_dollar');
+        $this->dispatchBrowserEvent('componentRefreshed');
+
         return view('livewire.invoices.edit', compact(
             'departments',
             'languages',

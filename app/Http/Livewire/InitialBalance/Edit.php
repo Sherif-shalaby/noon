@@ -415,6 +415,8 @@ class Edit extends Component
         $customer_types = CustomerType::latest()->get();
         $this->dispatchBrowserEvent('initialize-select2');
         $this->count_total_by_variations();
+        $this->dispatchBrowserEvent('componentRefreshed');
+
         return view(
             'livewire.initial-balance.edit',
             compact(

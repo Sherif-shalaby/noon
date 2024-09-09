@@ -214,7 +214,7 @@
     });
 </script>
 
-<script>
+{{-- <script>
     const value = localStorage.getItem("showHideDollar");
 
     var dollarCells = document.getElementsByClassName('dollar-cell');
@@ -232,9 +232,9 @@
             exRateCells[i].classList.add('showHideExRateCells')
         }
     }
-</script>
+</script> --}}
 
-<script>
+{{-- <script>
     const value1 = localStorage.getItem("showHideDollar");
     var myExRateCells = document.getElementsByClassName('my-ex-rate-cell');
 
@@ -243,20 +243,20 @@
             myExRateCells[i].classList.add('showHideMyExRateCell')
         }
     }
-</script>
+</script> --}}
 
 <script>
     document.addEventListener('componentRefreshed', function() {
-        // Execute your JavaScript code here after Livewire component refreshes
-        const value = localStorage.getItem("showHideDollar");
+const value = sessionStorage.getItem("showHideDollar");
 
-        var dollarCells = document.getElementsByClassName('dollar-cell');
+if (value === "show") {
+var dollarCells = document.getElementsByClassName('dollar-cell');
 
-        for (var i = 0; i < dollarCells.length; i++) {
-            if (value === "hide") {
-                dollarCells[i].classList.add('showHideDollarCells')
-            }
-        }
+for (var i = 0; i < dollarCells.length; i++) {
+
+    dollarCells[i].classList.remove('showHideDollarCells')
+}
+}
 
     });
 </script>

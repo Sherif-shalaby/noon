@@ -89,7 +89,9 @@ class Create extends Component
         'email' => '',
         'mobile' => '',
         'state' => '',
-        'city' => '', 'address' => '', 'notes' => '',
+        'city' => '',
+        'address' => '',
+        'notes' => '',
     ];
 
 
@@ -335,6 +337,9 @@ class Create extends Component
             ->get();
         $branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
         $quick_add = 1;
+
+        $this->dispatchBrowserEvent('componentRefreshed');
+
         return view(
             'livewire.add-stock.create',
             compact(

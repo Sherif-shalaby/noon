@@ -24,9 +24,9 @@
                         <div class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft"
                             style="animation-delay: 1.1s">
                             <div class="i-checks d-flex align-items-center ">
-                                <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox" @if
-                                    (isset($clear_all_input_stock_form) && $clear_all_input_stock_form=='1' ) checked
-                                    @endif class="">
+                                <input @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form=='1' )
+                                    checked @endif id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
+                                    class="">
                                 <label for="clear_all_input_form" style="font-size: 0.75rem" class="mb-0 mx-1">
                                     @lang('lang.clear_all_input_form')
                                 </label>

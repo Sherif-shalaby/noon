@@ -21,11 +21,12 @@ use Livewire\Component;
 
 class Import extends Component
 {
-    public $sell_car_id, $store_id, $receiver_store_id, $sender_store_id, $stores, $products , $items = [], $searchProduct,
-        $search_by_product_symbol, $notes, $files,$receiver_store_name;
+    public $sell_car_id, $store_id, $receiver_store_id, $sender_store_id, $stores, $products, $items = [], $searchProduct,
+        $search_by_product_symbol, $notes, $files, $receiver_store_name;
 
 
-    public function mount($id){
+    public function mount($id)
+    {
         $this->sell_car_id = $id;
         $this->receiver_store_name = SellCar::find($this->sell_car_id)->car_name;
         $this->stores = Store::pluck('name', 'id');
@@ -37,7 +38,6 @@ class Import extends Component
             $this->products = Product::get();
         }
         $this->dispatchBrowserEvent('initialize-select2');
-
     }
 
     public function updating($propertyName, $value)
@@ -45,15 +45,13 @@ class Import extends Component
         if (Str::startsWith($propertyName, 'items.')) {
             $index = explode('.', $propertyName)[1];
             $name = explode('.', $propertyName)[2];
-            if($name == 'quantity'){
+            if ($name == 'quantity') {
                 $originalValue = $this->num_uf($this->items[$index]['quantity']);
-                if($this->num_uf($value) <= $this->num_uf($this->items[$index]['quantity_available'])){
+                if ($this->num_uf($value) <= $this->num_uf($this->items[$index]['quantity_available'])) {
                     $this->items[$index]['quantity'] = $this->num_uf($value);
-                }
-                else{
+                } else {
                     $this->items[$index]['quantity'] = $this->num_uf($originalValue);
                     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'الكمية غير كافية']);
-
                 }
             }
             $this->sub_total($index);
@@ -66,7 +64,7 @@ class Import extends Component
 
     public function listenerReferenceHere($data)
     {
-        if(isset($data['var1'])) {
+        if (isset($data['var1'])) {
             $this->{$data['var1']} = (int)$data['var2'];
         }
         if (isset($data['var1']) && $data['var1'] == "sender_store_id") {
@@ -77,45 +75,43 @@ class Import extends Component
 
     public function render()
     {
-        if(!empty($this->sell_car_id)){
+        if (!empty($this->sell_car_id)) {
             $sell_car = SellCar::find($this->sell_car_id);
             $car_stores = $sell_car->branch->stores()->pluck('name', 'id');
-//            dd( );
+            //            dd( );
             $this->receiver_store_id = key(reset($car_stores));
-        }
-        else{
+        } else {
             $car_stores = Store::pluck('name', 'id');
         }
 
         $departments = Category::get();
         $search_result = '';
-        if (!empty($this->search_by_product_symbol)){
-            $search_result = Product::when($this->search_by_product_symbol,function ($query){
-                return $query->where('product_symbol','like','%'.$this->search_by_product_symbol.'%');
+        if (!empty($this->search_by_product_symbol)) {
+            $search_result = Product::when($this->search_by_product_symbol, function ($query) {
+                return $query->where('product_symbol', 'like', '%' . $this->search_by_product_symbol . '%');
             });
             $search_result = $search_result->paginate();
-            if(count($search_result) === 1){
+            if (count($search_result) === 1) {
                 $this->add_product($search_result->first()->id);
                 $search_result = '';
                 $this->search_by_product_symbol = '';
             }
-
         }
-        if(!empty($this->searchProduct)){
-            $search_result = Product::when($this->searchProduct,function ($query){
-                return $query->where('name','like','%'.$this->searchProduct.'%')
-                    ->orWhere('sku','like','%'.$this->searchProduct.'%');
+        if (!empty($this->searchProduct)) {
+            $search_result = Product::when($this->searchProduct, function ($query) {
+                return $query->where('name', 'like', '%' . $this->searchProduct . '%')
+                    ->orWhere('sku', 'like', '%' . $this->searchProduct . '%');
             });
             $search_result = $search_result->paginate();
-            if(count($search_result) == 0){
-                $variation = Variation::when($this->searchProduct,function ($query){
-                    return $query->where('sku','like','%'.$this->searchProduct.'%');
+            if (count($search_result) == 0) {
+                $variation = Variation::when($this->searchProduct, function ($query) {
+                    return $query->where('sku', 'like', '%' . $this->searchProduct . '%');
                 })->pluck('product_id');
-                $search_result = Product::whereIn('id',$variation);
+                $search_result = Product::whereIn('id', $variation);
                 $search_result = $search_result->paginate();
             }
 
-            if(count($search_result) === 1){
+            if (count($search_result) === 1) {
                 $this->add_product($search_result->first()->id);
                 $search_result = '';
                 $this->searchProduct = '';
@@ -123,10 +119,14 @@ class Import extends Component
         }
         $this->dispatchBrowserEvent('initialize-select2');
 
-        return view('livewire.transfer.import',compact('car_stores','departments','search_result'));
+        $this->dispatchBrowserEvent('componentRefreshed');
+
+
+        return view('livewire.transfer.import', compact('car_stores', 'departments', 'search_result'));
     }
 
-    public function store(){
+    public function store()
+    {
 
         try {
             $transaction_data = [
@@ -138,7 +138,7 @@ class Import extends Component
                 'final_total' => $this->num_uf($this->sum_sub_total()),
                 'dollar_final_total' => $this->num_uf($this->sum_dollar_sub_total()),
                 'notes' => !empty($this->notes) ? $this->notes : null,
-//            'details' => !empty($data['details']) ? $data['details'] : null,
+                //            'details' => !empty($data['details']) ? $data['details'] : null,
                 'invoice_no' => $this->getNumberByType(),
                 'created_by' => Auth::user()->id,
             ];
@@ -165,21 +165,18 @@ class Import extends Component
                 ];
                 $transfer_line = TransferLine::create($transfer_line_data);
 
-                $this->decreaseProductQuantity($transfer_line->product_id , $transfer_line->variation_id, $transaction->sender_store_id, $transfer_line->quantity);
+                $this->decreaseProductQuantity($transfer_line->product_id, $transfer_line->variation_id, $transaction->sender_store_id, $transfer_line->quantity);
                 $this->updateProductQuantityStore($transfer_line->product_id, $transfer_line->variation_id, $transaction->receiver_store_id,  $transfer_line->quantity);
             }
 
 
             DB::commit();
 
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'lang.success',]);
-
-        }
-        catch (\Exception $e) {
-//            dd($e);
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'lang.success',]);
+        } catch (\Exception $e) {
+            //            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
-
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
         }
         return redirect('/sell-car');
     }
@@ -197,8 +194,7 @@ class Import extends Component
         $quantity_available = $this->quantityAvailable($product);
         if ($quantity_available < 1) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'الكمية غير كافية',]);
-        }
-        else {
+        } else {
             $current_stock = $this->getCurrentStock($product);
             $product_stores = $this->getProductStores($product);
             $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
@@ -280,41 +276,37 @@ class Import extends Component
 
     public function sub_total($index)
     {
-        if(isset($this->items[$index]['quantity']) && (isset($this->items[$index]['purchase_price']) ||isset($this->items[$index]['dollar_purchase_price']) )){
+        if (isset($this->items[$index]['quantity']) && (isset($this->items[$index]['purchase_price']) || isset($this->items[$index]['dollar_purchase_price']))) {
             // convert purchase price from Dollar To Dinar
             $purchase_price = $this->convertDollarPrice($index);
 
-            $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
+            $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
 
             return number_format($this->items[$index]['sub_total'], num_of_digital_numbers());
-        }
-        else{
+        } else {
             $this->items[$index]['purchase_price'] = null;
         }
-
     }
 
     public function dollar_sub_total($index)
     {
-        if(isset($this->items[$index]['quantity']) && isset($this->items[$index]['dollar_purchase_price']) || isset($this->items[$index]['purchase_price'])){
+        if (isset($this->items[$index]['quantity']) && isset($this->items[$index]['dollar_purchase_price']) || isset($this->items[$index]['purchase_price'])) {
             // convert purchase price from Dinar To Dollar
             $purchase_price = $this->convertDinarPrice($index);
 
             $this->items[$index]['dollar_sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
 
             return number_format($this->items[$index]['dollar_sub_total'], num_of_digital_numbers());
-        }
-        else{
+        } else {
             $this->items[$index]['dollar_purchase_price'] = null;
         }
-
     }
 
-    public function convertDollarPrice($index){
-        if(empty($this->items[$index]['purchase_price']) && !empty($this->items[$index]['dollar_purchase_price'])){
+    public function convertDollarPrice($index)
+    {
+        if (empty($this->items[$index]['purchase_price']) && !empty($this->items[$index]['dollar_purchase_price'])) {
             $purchase_price = (float)$this->items[$index]['dollar_purchase_price'] * $this->num_uf($this->exchange_rate);
-        }
-        else{
+        } else {
             $purchase_price = $this->items[$index]['purchase_price'] ?? '';
         }
         return $purchase_price;
@@ -324,16 +316,15 @@ class Import extends Component
     {
         if (!empty($this->items[$index]['purchase_price']) && empty($this->items[$index]['dollar_purchase_price'])) {
             $purchase_price = $this->items[$index]['purchase_price'] / $this->num_uf($this->exchange_rate);
-        }
-        else {
+        } else {
             $purchase_price = $this->items[$index]['dollar_purchase_price'] ?? '';
         }
         return $purchase_price;
-
     }
 
-    public function changeCurrentStock($index){
-        $this->items[$index]['total_stock'] = $this->items[$index]['quantity'] ;
+    public function changeCurrentStock($index)
+    {
+        $this->items[$index]['total_stock'] = $this->items[$index]['quantity'];
     }
 
     public function changeAllProducts()
@@ -342,7 +333,8 @@ class Import extends Component
         $this->products = Product::whereIn('id', $products_store)->get();
     }
 
-    public function sum_sub_total(){
+    public function sum_sub_total()
+    {
         $totalSubTotal = 0;
 
         foreach ($this->items as $item) {
@@ -351,7 +343,8 @@ class Import extends Component
         return $this->num_uf($totalSubTotal);
     }
 
-    public function sum_dollar_sub_total(){
+    public function sum_dollar_sub_total()
+    {
         $totalDollarSubTotal = 0;
 
         foreach ($this->items as $item) {
@@ -360,10 +353,11 @@ class Import extends Component
         return $this->num_uf($totalDollarSubTotal);
     }
 
-    public function total_quantity(){
+    public function total_quantity()
+    {
         $totalQuantity = 0;
-        if(!empty($this->items)){
-            foreach ($this->items as $item){
+        if (!empty($this->items)) {
+            foreach ($this->items as $item) {
                 $totalQuantity += (int)$item['quantity'];
             }
         }
@@ -425,10 +419,11 @@ class Import extends Component
         }
     }
 
-    public function check_items_store(){
-        if(!empty($this->items)){
-            foreach ($this->items  as $key => $item){
-                if($item['sender_store_id'] != $this->sender_store_id){
+    public function check_items_store()
+    {
+        if (!empty($this->items)) {
+            foreach ($this->items  as $key => $item) {
+                if ($item['sender_store_id'] != $this->sender_store_id) {
                     unset($this->items[$key]);
                 }
             }
@@ -528,27 +523,25 @@ class Import extends Component
         return true;
     }
 
-    public function updateProductQuantityStore($product_id,$variation_id, $store_id, $new_quantity)
+    public function updateProductQuantityStore($product_id, $variation_id, $store_id, $new_quantity)
     {
         $product_store = ProductStore::where('product_id', $product_id)
             ->where('store_id', $store_id)
             ->first();
-        $product_variations = Variation::where('product_id',$product_id)->get();
-        $unit = Variation::where('id',$variation_id)->first();
+        $product_variations = Variation::where('product_id', $product_id)->get();
+        $unit = Variation::where('id', $variation_id)->first();
         $qty_difference = 0;
-        $qtyByUnit = 1 ;
-        if(!empty($product_store) && !empty($product_store->variation_id)){
+        $qtyByUnit = 1;
+        if (!empty($product_store) && !empty($product_store->variation_id)) {
             $store_variation = Variation::find($product_store->variation_id);
-            if(isset($unit->unit_id) && $store_variation->unit_id == $unit->unit_id){
+            if (isset($unit->unit_id) && $store_variation->unit_id == $unit->unit_id) {
                 $qty_difference = $new_quantity;
-            }
-            elseif(isset($unit->unit_id) && $store_variation->basic_unit_id == $unit->unit_id){
+            } elseif (isset($unit->unit_id) && $store_variation->basic_unit_id == $unit->unit_id) {
                 $qtyByUnit = 1 / $store_variation->equal;
                 $qty_difference = $qtyByUnit * $new_quantity;
-            }
-            else{
-                foreach ($product_variations as $key => $product_variation){
-                    if (!empty($product_variations[$key+1])) {
+            } else {
+                foreach ($product_variations as $key => $product_variation) {
+                    if (!empty($product_variations[$key + 1])) {
                         if ($store_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
                             if ($product_variations[$key + 1]->basic_unit_id == $unit->unit_id) {
                                 $qtyByUnit = $store_variation->equal * $product_variations[$key + 1]->equal;
@@ -557,19 +550,17 @@ class Import extends Component
                             } else {
                                 $qtyByUnit = $product_variation->equal;
                             }
-                        }
-                        else{
-                            if ($product_variation->basic_unit_id == $product_variations[$key+1]->unit_id){
+                        } else {
+                            if ($product_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
                                 $qtyByUnit *= $product_variation->equal;
                             }
-                            if ($product_variation->basic_unit_id == $variation_id || $product_variation->unit_id == $variation_id){
+                            if ($product_variation->basic_unit_id == $variation_id || $product_variation->unit_id == $variation_id) {
                                 $qty_difference = $new_quantity / $qtyByUnit;
                                 break;
                             }
                         }
-                    }
-                    else{
-                        if ($product_variation->basic_unit_id == $variation_id){
+                    } else {
+                        if ($product_variation->basic_unit_id == $variation_id) {
                             $qtyByUnit *= $product_variation->equal;
                             $qty_difference = $new_quantity / $qtyByUnit;
                             break;
@@ -577,8 +568,7 @@ class Import extends Component
                     }
                 }
             }
-        }
-        else{
+        } else {
             $qty_difference = $new_quantity;
         }
         if ($qty_difference != 0) {
@@ -588,7 +578,7 @@ class Import extends Component
                 $product_store->store_id = $store_id;
                 $product_store->quantity_available = 0;
             }
-            if(empty($product_store->variation_id) && !empty($variation_id)){
+            if (empty($product_store->variation_id) && !empty($variation_id)) {
                 $product_store->variation_id = $variation_id;
             }
             $product_store->quantity_available += $qty_difference;

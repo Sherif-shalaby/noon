@@ -16,6 +16,8 @@ class Show extends Component
     }
     public function render()
     {
+        $this->dispatchBrowserEvent('componentRefreshed');
+
         return view('livewire.invoices.show');
     }
 }

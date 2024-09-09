@@ -1055,7 +1055,7 @@
                                                 placeholder="{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                                 @if (empty($prices[$key]['price_type'])) readonly @endif>
                                             <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                                               style="font-weight:500;font-size:10px;">
+                                                style="font-weight:500;font-size:10px;">
                                                 <span>
                                                     {{ $price['price_type'] == 'fixed' ? __('lang.amount') :
                                                     __('lang.percent') . ' $' }}
@@ -1079,7 +1079,7 @@
                                                 wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                                 placeholder="{{ __('lang.price') }}">
                                             <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                                               style="font-weight:500;font-size:10px;">
+                                                style="font-weight:500;font-size:10px;">
                                                 <span>
                                                     {{ __('lang.price') . ' $' }}
                                                 </span>
@@ -1102,7 +1102,7 @@
                                                 wire:model="prices.{{ $key }}.dinar_total_price"
                                                 placeholder="{{ __('lang.total_price') }}">
                                             <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                                               style="font-weight:500;font-size:10px;">
+                                                style="font-weight:500;font-size:10px;">
                                                 <span>
                                                     {{ __('lang.total_price') . ' $' }}
                                                 </span>
@@ -1125,7 +1125,7 @@
                                                 wire:model="prices.{{ $key }}.dinar_piece_price"
                                                 placeholder="{{ __('lang.piece_price') }}">
                                             <p class="dollar-cell d-flex flex-row-reverse {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                                               style="font-weight:500;font-size:10px;">
+                                                style="font-weight:500;font-size:10px;">
                                                 <span>
                                                     {{ __('lang.piece_price') . ' $' }}
                                                 </span>
@@ -1202,6 +1202,8 @@
 @push('javascripts')
 <script>
     document.addEventListener('componentRefreshed', function() {
+
+
             // Execute your JavaScript code here after Livewire component refreshes
         const value = localStorage.getItem("showHideDollar");
         var dollarCells = document.getElementsByClassName('dollar-cell');
@@ -1211,6 +1213,10 @@
             }
         }
         });
+
+
+
+
         document.addEventListener('livewire:load', function() {
             $('.js-example-basic-multiple').select2({
                 placeholder: LANG.please_select,

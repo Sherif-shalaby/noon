@@ -13,14 +13,14 @@ use Livewire\Component;
 
 class RemoveExpiry extends Component
 {
-    public $productId = null, $rows = [], $addStockLines = [],$quantity_of_expired_stock_removed=0;
+    public $productId = null, $rows = [], $addStockLines = [], $quantity_of_expired_stock_removed = 0;
     public function render()
     {
         $this->addStockLines = AddStockLine::where("add_stock_lines.product_id", $this->productId)
-        ->where("add_stock_lines.quantity", ">", 0)
-        ->leftjoin('variations', function ($join) {
-            $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
-        });
+            ->where("add_stock_lines.quantity", ">", 0)
+            ->leftjoin('variations', function ($join) {
+                $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
+            });
         $store_query = '';
         $this->addStockLines = $this->addStockLines->select(
             'add_stock_lines.*',
@@ -33,19 +33,21 @@ class RemoveExpiry extends Component
             DB::raw('(SELECT AVG(add_stock_lines.purchase_price) FROM add_stock_lines JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . ') as avg_purchase_price'),
             DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as expired_current_stock'),
         )->get();
-        
+
+        $this->dispatchBrowserEvent('componentRefreshed');
+
         return view('livewire.product-options.remove-expiry');
     }
-    public function changeStockRemovedValue($i){
-        $this->rows[$i]['quantity_of_damaged_stock_removed']=(float)$this->rows[$i]['quantity_to_remove']*(float)$this->rows[$i]['avg_purchase_price'];
+    public function changeStockRemovedValue($i)
+    {
+        $this->rows[$i]['quantity_of_damaged_stock_removed'] = (float)$this->rows[$i]['quantity_to_remove'] * (float)$this->rows[$i]['avg_purchase_price'];
     }
     public function mount($productId)
     {
         $this->productId = $productId;
-      
-     
+
+
         $this->addRow($this->addStockLines);
-     
     }
     public function addRow($addStockLines)
     {
@@ -55,8 +57,8 @@ class RemoveExpiry extends Component
                 'stock_line_id' => $stockLine->id,
                 'quantity_to_remove' => '',
                 'status' => 'expiry',
-                'avg_purchase_price'=>$stockLine->avg_purchase_price,
-                'quantity_of_damaged_stock_removed'=>0,
+                'avg_purchase_price' => $stockLine->avg_purchase_price,
+                'quantity_of_damaged_stock_removed' => 0,
             ];
             $this->rows[] = $new_row;
         }

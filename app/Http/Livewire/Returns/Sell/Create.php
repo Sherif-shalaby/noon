@@ -26,9 +26,9 @@ use Livewire\Component;
 class Create extends Component
 {
     public $id, $sellines = [], $quantity = [], $amount, $sell_return, $store,
-            $branches,$branch_id,$store_pos, $dollar_amount,$dollar_final_total,
-            $method, $paid_on, $notes,$sale, $transaction_sell_line_id = [] ,
-            $payment_status,$payment,$final_total , $store_pos_id ;
+        $branches, $branch_id, $store_pos, $dollar_amount, $dollar_final_total,
+        $method, $paid_on, $notes, $sale, $transaction_sell_line_id = [],
+        $payment_status, $payment, $final_total, $store_pos_id;
 
 
     public function __construct($id)
@@ -41,7 +41,7 @@ class Create extends Component
         $this->sale = TransactionSellLine::find($this->id);
         $this->sellines = $this->sale->transaction_sell_lines;
         $this->store = $this->sale->store_id;
-        $this->branches =  Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
+        $this->branches =  Branch::where('type', 'branch')->orderBy('created_at', 'desc')->pluck('name', 'id');
         // $this->branch_id = Store::where('id', $this->sale->store_id)->pluck('branch_id');
         $this->branch_id = Store::where('id', $this->sale->store_id)->value('branch_id');
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
@@ -54,16 +54,15 @@ class Create extends Component
 
         $this->store_pos_id = array_key_first($this->store_pos);
 
-        if ( !empty($sell_return) && $sell_return->transaction_payments->count() > 0){
+        if (!empty($sell_return) && $sell_return->transaction_payments->count() > 0) {
             $this->notes = $sell_return->notes;
             $this->payment = $sell_return->transaction_payments->first();
-            if(!empty($this->payment)){
+            if (!empty($this->payment)) {
                 $this->amount = number_format($this->payment->amount);
                 $this->method = $this->payment->method;
                 $this->paid_on = $this->payment->paid_on;
             }
-        }
-        else{
+        } else {
             $this->method = 'cash';
             $this->paid_on = date('Y-m-d');
         }
@@ -71,7 +70,7 @@ class Create extends Component
 
     public function render()
     {
-//        $sale  = TransactionSellLine::find($this->id);
+        //        $sale  = TransactionSellLine::find($this->id);
         $categories = Category::whereNull('parent_id')->get();
         $sub_categories = Category::whereNotNull('parent_id')->get();
         $brands = Brand::all();
@@ -85,12 +84,13 @@ class Create extends Component
 
         $stores = Store::getDropdown();
 
+        $this->dispatchBrowserEvent('componentRefreshed');
 
 
 
         return view('livewire.returns.sell.create')->with(compact(
-//            'sell_return',
-//            'sale',
+            //            'sell_return',
+            //            'sale',
             'categories',
             'walk_in_customer',
             'deliverymen',
@@ -103,23 +103,22 @@ class Create extends Component
         ));
     }
 
-    public function setAmount(){
+    public function setAmount() {}
 
-    }
-
-    public function changeAmount($index){
-        foreach ($this->quantity as $key => $quantity ){
-            if($this->sellines[$key]['sell_price'] > 0 ){
-                $this->amount = $quantity * $this->sellines[$key]['sell_price'] ;
-            }
-            else if ( $this->sellines[$key]['dollar_sell_price'] > 0){
-                $this->dollar_amount = $quantity * $this->sellines[$key]['dollar_sell_price'] ;
+    public function changeAmount($index)
+    {
+        foreach ($this->quantity as $key => $quantity) {
+            if ($this->sellines[$key]['sell_price'] > 0) {
+                $this->amount = $quantity * $this->sellines[$key]['sell_price'];
+            } else if ($this->sellines[$key]['dollar_sell_price'] > 0) {
+                $this->dollar_amount = $quantity * $this->sellines[$key]['dollar_sell_price'];
             }
         }
         $this->final_total = $this->amount;
         $this->dollar_final_total = $this->dollar_amount;
     }
-    public function store(){
+    public function store()
+    {
         try {
             $sell_return = TransactionSellLine::where('type', 'sell_return')
                 ->where('return_parent_id', $this->id)
@@ -139,17 +138,17 @@ class Create extends Component
                 'status' => 'final',
                 'payment_status' => 'pending',
                 'notes' => $this->notes,
-//                'discount_value' => $this->num_uf($this->discount),
-//            'discount_amount' => $this->commonUtil->num_uf($request->discount_amount),
-//            'current_deposit_balance' => $this->commonUtil->num_uf($request->current_deposit_balance),
-//            'used_deposit_balance' => $this->commonUtil->num_uf($request->used_deposit_balance),
-//            'remaining_deposit_balance' => $this->commonUtil->num_uf($request->remaining_deposit_balance),
-//            'add_to_deposit' => $this->commonUtil->num_uf($request->add_to_deposit),
-//            'tax_id' => !empty($request->tax_id_hidden) ? $request->tax_id_hidden : null,
-//            'tax_method' => $request->tax_method ?? null,
-//            'total_tax' => $this->commonUtil->num_uf($request->total_tax),
-//            'total_item_tax' => $this->commonUtil->num_uf($request->total_item_tax),
-//            'terms_and_condition_id' => !empty($request->terms_and_condition_id) ? $request->terms_and_condition_id : null,
+                //                'discount_value' => $this->num_uf($this->discount),
+                //            'discount_amount' => $this->commonUtil->num_uf($request->discount_amount),
+                //            'current_deposit_balance' => $this->commonUtil->num_uf($request->current_deposit_balance),
+                //            'used_deposit_balance' => $this->commonUtil->num_uf($request->used_deposit_balance),
+                //            'remaining_deposit_balance' => $this->commonUtil->num_uf($request->remaining_deposit_balance),
+                //            'add_to_deposit' => $this->commonUtil->num_uf($request->add_to_deposit),
+                //            'tax_id' => !empty($request->tax_id_hidden) ? $request->tax_id_hidden : null,
+                //            'tax_method' => $request->tax_method ?? null,
+                //            'total_tax' => $this->commonUtil->num_uf($request->total_tax),
+                //            'total_item_tax' => $this->commonUtil->num_uf($request->total_item_tax),
+                //            'terms_and_condition_id' => !empty($request->terms_and_condition_id) ? $request->terms_and_condition_id : null,
                 'created_by' => Auth::user()->id,
             ];
 
@@ -157,8 +156,7 @@ class Create extends Component
 
             if (empty($sell_return)) {
                 $sell_return = TransactionSellLine::create($transaction_data);
-            }
-            else {
+            } else {
                 $sell_return->final_total = $this->num_uf($this->amount);
                 $sell_return->grand_total = $this->num_uf($this->amount);
                 $sell_return->status = 'final';
@@ -167,8 +165,7 @@ class Create extends Component
             }
 
 
-            foreach ($this->sellines as $key => $sell_line)
-            {
+            foreach ($this->sellines as $key => $sell_line) {
                 if (!empty($this->transaction_sell_line_id[$key])) {
 
                     $line = SellLine::find($this->transaction_sell_line_id[$key]);
@@ -178,8 +175,8 @@ class Create extends Component
                     $product = Product::find($line->product_id);
                     if (!$product->is_service) {
                         $this->updateProductQuantityStore($line->product_id, $sell_return->store_id, $sell_line['quantity'], $old_quantity);
-                        if(isset($line->stock_line_id)){
-                            $stock = AddStockLine::where('id',$line->stock_line_id)->first();
+                        if (isset($line->stock_line_id)) {
+                            $stock = AddStockLine::where('id', $line->stock_line_id)->first();
                             $stock->update([
                                 'quantity' =>  $stock->quantity + $old_quantity,
                                 'quantity_sold' =>  $stock->quantity - $old_quantity
@@ -189,17 +186,17 @@ class Create extends Component
                 }
             }
             //deduct employee commission on returned products
-//            $this->transactionUtil->deductCommissionForEmployee($this->sale);
+            //            $this->transactionUtil->deductCommissionForEmployee($this->sale);
 
-//            if ($request->files) {
-//                foreach ($request->file('files', []) as $key => $doc) {
-//                    $sell_return->addMedia($doc)->toMediaCollection('sell_return');
-//                }
-//            }
+            //            if ($request->files) {
+            //                foreach ($request->file('files', []) as $key => $doc) {
+            //                    $sell_return->addMedia($doc)->toMediaCollection('sell_return');
+            //                }
+            //            }
             if ($this->payment_status != 'pending') {
-//                dd($this->payment);
+                //                dd($this->payment);
                 $payment_data = [
-                    'transaction_payment_id' => isset($this->payment)? $this->payment->id : null,
+                    'transaction_payment_id' => isset($this->payment) ? $this->payment->id : null,
                     'transaction_id' => $sell_return->id,
                     'amount' => $this->num_uf($this->amount),
                     'dollar_amount' => $this->num_uf($this->dollar_amount),
@@ -208,20 +205,19 @@ class Create extends Component
                     'exchange_rate' => 0,
                     // 'is_return' => 1,
                 ];
-                if($this->sale->payment_status !== "pending" || ($this->sale->payment_status == "partial" &&  ($this->sale->final_total - $this->sale->transaction_payments->sum('amount')) <  $this->amount)){
+                if ($this->sale->payment_status !== "pending" || ($this->sale->payment_status == "partial" &&  ($this->sale->final_total - $this->sale->transaction_payments->sum('amount')) <  $this->amount)) {
 
                     $transaction_payment = $this->createOrUpdateTransactionPayment($sell_return, $payment_data);
-
-                }else{
+                } else {
                     $this->updateTransactionPaymentStatus($this->sale->id);
                 }
 
 
-//                if ($request->upload_documents) {
-//                    foreach ($request->file('upload_documents', []) as $key => $doc) {
-//                        $transaction_payment->addMedia($doc)->toMediaCollection('transaction_payment');
-//                    }
-//                }
+                //                if ($request->upload_documents) {
+                //                    foreach ($request->file('upload_documents', []) as $key => $doc) {
+                //                        $transaction_payment->addMedia($doc)->toMediaCollection('transaction_payment');
+                //                    }
+                //                }
 
             }
 
@@ -230,13 +226,11 @@ class Create extends Component
 
             DB::commit();
 
-        $output = [
-            'success' => true,
-            'msg' => __('lang.success')
-        ];
-    }
-
-        catch (\Exception $e) {
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        } catch (\Exception $e) {
             dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
@@ -303,10 +297,10 @@ class Create extends Component
         $total_paid = $transaction_payments->sum('amount');
 
         $transaction = TransactionSellLine::find($transaction_id);
-        $returned_transaction = TransactionSellLine::where('return_parent_id',$transaction_id)->sum('final_total');
-        if($returned_transaction){
+        $returned_transaction = TransactionSellLine::where('return_parent_id', $transaction_id)->sum('final_total');
+        if ($returned_transaction) {
             $final_amount = $transaction->final_total - $transaction->used_deposit_balance -  $returned_transaction;
-        }else{
+        } else {
             $final_amount = $transaction->final_total - $transaction->used_deposit_balance;
         }
 
@@ -424,8 +418,7 @@ class Create extends Component
         $register =  CashRegister::where('user_id', $user_id)
             ->where('status', 'open')
             ->first();
-        if (empty($register))
-        {
+        if (empty($register)) {
             $store_pos = StorePos::where('user_id', $user_id)->first();
             $register = CashRegister::create([
                 'user_id' => $user_id,

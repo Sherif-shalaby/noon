@@ -17,7 +17,7 @@ use Livewire\Component;
 class Invoice extends Component
 {
     public $stocks, $brand_id, $supplier_id, $po_no, $product_name, $product_sku, $product_symbol, $created_by, $from, $to, $due_date,
-           $notify_before_days, $payment_status;
+        $notify_before_days, $payment_status;
 
     protected $listeners = ['listenerReferenceHere'];
 
@@ -26,34 +26,32 @@ class Invoice extends Component
         if (isset($data['var1'])) {
             if ($data['var1'] == 'supplier_id' || $data['var1'] == 'created_by') {
                 $this->{$data['var1']} = (int)$data['var2'];
-            }
-            else {
+            } else {
                 $this->{$data['var1']} = $data['var2'];
             }
         }
     }
-    public function mount(){
+    public function mount()
+    {
         $this->to = Carbon::now()->toDateString();
         $this->dispatchBrowserEvent('initialize-select2');
-
     }
 
     public function render()
     {
-        $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
-        $users = User::orderBy('created_at', 'desc')->pluck('name','id');
-        $brands = Brand::pluck('name','id');
+        $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name', 'id');
+        $users = User::orderBy('created_at', 'desc')->pluck('name', 'id');
+        $brands = Brand::pluck('name', 'id');
         $payment_status_array = $this->getPaymentStatusArray();
 
-        $this->stocks =  StockTransaction::
-            when($this->po_no, function ($query) {
-                $query->where('po_no','like', '%' . $this->po_no . '%');
+        $this->stocks =  StockTransaction::when($this->po_no, function ($query) {
+                $query->where('po_no', 'like', '%' . $this->po_no . '%');
             })
             ->when($this->supplier_id != null, function ($query) {
-                $query->where('supplier_id',$this->supplier_id);
+                $query->where('supplier_id', $this->supplier_id);
             })
             ->when($this->created_by != null, function ($query) {
-                $query->where('created_by',$this->created_by);
+                $query->where('created_by', $this->created_by);
             })
             ->when($this->brand_id != null, function ($query) {
                 $query->whereHas('add_stock_lines.product', function ($subquery) {
@@ -75,20 +73,23 @@ class Invoice extends Component
                     $subquery->where('product_symbol', 'like', '%' . $this->product_symbol . '%');
                 });
             })
-            ->when($this->from != null, function ($query){
+            ->when($this->from != null, function ($query) {
                 $query->where('created_at', '>=', $this->from);
             })
-            ->when($this->to, function ($query){
+            ->when($this->to, function ($query) {
                 return $query->where('created_at', '<=', $this->to);
             })
             ->orderBy('created_at', 'desc')->get();
 
         $this->dispatchBrowserEvent('initialize-select2');
 
-        return view('livewire.returns.suppliers.invoice',compact('suppliers','users', 'brands','payment_status_array'));
+        $this->dispatchBrowserEvent('componentRefreshed');
+
+        return view('livewire.returns.suppliers.invoice', compact('suppliers', 'users', 'brands', 'payment_status_array'));
     }
 
-    public function clear_filters(){
+    public function clear_filters()
+    {
         $this->brand_id = null;
         $this->supplier_id = null;
         $this->po_no = null;
@@ -101,11 +102,12 @@ class Invoice extends Component
         $this->stocks =  StockTransaction::orderBy('created_at', 'desc')->get();
     }
 
-    public function submit( $via = 'invoice', $id){
-        if($via == 'all_invoice'){
+    public function submit($via = 'invoice', $id)
+    {
+        if ($via == 'all_invoice') {
             DB::beginTransaction();
             $stock_transcation = StockTransaction::find($id);
-            if(!empty($stock_transcation)){
+            if (!empty($stock_transcation)) {
                 $transaction_data = [
                     'store_id' => $stock_transcation->store_id,
                     'supplier_id' => $stock_transcation->supplier_id,
@@ -127,13 +129,12 @@ class Invoice extends Component
                 ];
                 $transaction = StockTransaction::create($transaction_data);
                 $stocks = $stock_transcation->add_stock_lines;
-                foreach ($stocks as $stock){
+                foreach ($stocks as $stock) {
                     $stock->quantity_returned = $stock->quantity;
                     $stock->save();
-                    $this->decreaseProductQuantity($stock->product_id , $stock->variation_id, $transaction->store_id, $stock->quantity_returned);
+                    $this->decreaseProductQuantity($stock->product_id, $stock->variation_id, $transaction->store_id, $stock->quantity_returned);
                 }
             }
-
         }
     }
 
@@ -210,7 +211,7 @@ class Invoice extends Component
 
         return (float)$num;
     }
-    public function getNumberByType( $i = 1)
+    public function getNumberByType($i = 1)
     {
         $month = Carbon::now()->month;
         $year = Carbon::now()->year;
@@ -228,34 +229,31 @@ class Invoice extends Component
         $pending = 0;
         $amount = 0;
         $payments = $transaction->transaction_payments;
-        if($transaction->transaction_currency == 2){
+        if ($transaction->transaction_currency == 2) {
             $final_total = $transaction->dollar_final_total;
-            foreach ($payments as $payment){
-                if($payment->paying_currency == 2){
+            foreach ($payments as $payment) {
+                if ($payment->paying_currency == 2) {
                     $amount += $payment->amount;
                     $pending = $final_total - $amount;
-                }
-                else{
+                } else {
                     $amount += $payment->amount / $payment->exchange_rate;
                     $pending = $final_total - $amount;
                 }
             }
-        }
-        else {
+        } else {
             $final_total = $transaction->final_total;
-            foreach ($payments as $payment){
-                if($payment->paying_currency == 2){
+            foreach ($payments as $payment) {
+                if ($payment->paying_currency == 2) {
                     $amount += $payment->amount * $payment->exchange_rate;
                     $pending = $final_total - $amount;
-                }
-                else{
+                } else {
                     $amount += $payment->amount;
                     $pending = $final_total - $amount;;
                 }
             }
         }
 
-        return number_format($pending,num_of_digital_numbers());
+        return number_format($pending, num_of_digital_numbers());
     }
 
     public function calculatePaidAmount($transaction_id): string
@@ -264,30 +262,27 @@ class Invoice extends Component
         $final_total = 0;
         $paid = 0;
         $payments = $transaction->transaction_payments;
-        if($transaction->transaction_currency == 2){
+        if ($transaction->transaction_currency == 2) {
             $final_total = $transaction->dollar_final_total;
-            foreach ($payments as $payment){
-                if($payment->paying_currency == 2){
+            foreach ($payments as $payment) {
+                if ($payment->paying_currency == 2) {
                     $paid += $payment->amount;
-                }
-                else{
+                } else {
                     $paid += $payment->amount / $payment->exchange_rate;
                 }
             }
-        }
-        else {
+        } else {
             $final_total = $transaction->final_total;
-            foreach ($payments as $payment){
-                if($payment->paying_currency == 2){
+            foreach ($payments as $payment) {
+                if ($payment->paying_currency == 2) {
                     $paid += $payment->amount * $payment->exchange_rate;
-                }
-                else{
+                } else {
                     $paid += $payment->amount;
                 }
             }
         }
 
-        return number_format($paid,num_of_digital_numbers());
+        return number_format($paid, num_of_digital_numbers());
     }
 
     public function getPaymentStatusArray()
@@ -298,5 +293,4 @@ class Invoice extends Component
             'pending' => __('lang.pay_later'),
         ];
     }
-
 }

@@ -8,7 +8,9 @@ class Product extends Component
 {
     public function render()
     {
-        $products = Product::where('created_at','desc')->get();
-        return view('livewire.returns.suppliers.product',compact('products'));
+        $products = Product::where('created_at', 'desc')->get();
+        $this->dispatchBrowserEvent('componentRefreshed');
+
+        return view('livewire.returns.suppliers.product', compact('products'));
     }
 }

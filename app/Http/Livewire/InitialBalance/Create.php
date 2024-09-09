@@ -43,7 +43,8 @@ class Create extends Component
             'height' => 0,
             'length' => 0,
             'size' => 0,
-            'isExist' => 0, 'status' => '',
+            'isExist' => 0,
+            'status' => '',
             'product_tax_id' => '',
             'change_current_stock' => 0,
             'basic_unit_variation_id' => '',
@@ -63,7 +64,9 @@ class Create extends Component
         $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [];
 
     public $rows = [[
-        'id' => '', 'sku' => '', 'quantity' => '',
+        'id' => '',
+        'sku' => '',
+        'quantity' => '',
         'fill_quantity' => '',
         'fill_type' => 'fixed',
         'fill_currency' => 'dinar',
@@ -236,6 +239,8 @@ class Create extends Component
         $product_taxes = Tax::select('name', 'id', 'status')->get();
         $customer_types = CustomerType::latest()->get();
         $this->dispatchBrowserEvent('initialize-select2');
+        $this->dispatchBrowserEvent('componentRefreshed');
+
         return view(
             'livewire.initial-balance.create',
             compact(
@@ -259,9 +264,7 @@ class Create extends Component
 
         $this->dispatchBrowserEvent('show-modal');
     }
-    public function addSubCategory()
-    {
-    }
+    public function addSubCategory() {}
     public function calculateTotalQuantity()
     {
         $this->totalQuantity = 0;
@@ -272,7 +275,9 @@ class Create extends Component
     public function addRaw()
     {
         $newRow = [
-            'id' => '', 'sku' => '', 'quantity' => '',
+            'id' => '',
+            'sku' => '',
+            'quantity' => '',
             'fill_quantity' => '',
             'fill_type' => 'fixed',
             'fill_currency' => 'dinar',
@@ -646,7 +651,8 @@ class Create extends Component
                 'change_current_stock' => 0,
                 'exchange_rate' => $this->exchange_rate,
                 'store_id' => '',
-                'supplier_id' => '', 'product_tax_id' => '',
+                'supplier_id' => '',
+                'product_tax_id' => '',
                 'balance_return_request' => $this->edit_product['balance_return_request'],
                 'product_symbol' => $this->edit_product['product_symbol'],
             ];
