@@ -1,6 +1,7 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
-{{-- <link rel="shortcut icon" href="{{asset('/uploads/'.$settings['logo'])}}">  --}}
+{{--
+<link rel="shortcut icon" href="{{asset('/uploads/'.$settings['logo'])}}"> --}}
 <!-- Start css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <!-- Switchery css -->
@@ -8,8 +9,11 @@
 <link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
 
 <!-- Tagsinput css -->
-{{--    <link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}" rel="stylesheet" type="text/css"> --}}
-{{--    <link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css')}}" rel="stylesheet" type="text/css"> --}}
+{{--
+<link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}" rel="stylesheet" type="text/css"> --}}
+{{--
+<link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css')}}" rel="stylesheet"
+    type="text/css"> --}}
 <!-- DataTables css -->
 <link href="{{ asset('plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />

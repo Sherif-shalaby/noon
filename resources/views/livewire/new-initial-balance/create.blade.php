@@ -1248,13 +1248,13 @@
         $(document).on('change', 'select', function(e) {
 
             var name = $(this).data('name');
-            console.log(name)
+            // console.log(name)
             if (name != undefined) {
                 var index = $(this).data('index');
                 var key = $(this).data('key');
                 var select2 = $(this);
-                console.log(select2.select2("val"))
-                console.log(index)
+                // console.log(select2.select2("val"))
+                // console.log(index)
                 Livewire.emit('listenerReferenceHere', {
                     var1: name,
                     var2: select2.select2("val"),
@@ -1312,6 +1312,64 @@
         });
     });
 });
+
+
+
+
+
+$(document).on('storeDataRowAdded', function(event) {
+// This event doesn't need to store the data-index anymore since we want to handle all
+});
+
+document.addEventListener('livewire:load', function () {
+// Hook into Livewire's lifecycle to reapply JS changes after any Livewire updates
+Livewire.hook('message.processed', (message, component) => {
+// Array to store the values from all elements based on their data-index
+var selectedValuesByIndex = {};
+
+// Select all the select elements with class 'store_fill_id'
+var elements = $('.store_fill_id.select2');
+
+// Collect the values of all elements grouped by data-index
+elements.each(function() {
+var currentElement = $(this);
+var currentIndex = currentElement.data('index'); // Get the data-index of the current element
+
+// Initialize the array for this data-index if it doesn't exist
+if (!selectedValuesByIndex[currentIndex]) {
+selectedValuesByIndex[currentIndex] = [];
+}
+
+var value = currentElement.val();
+if (value) { // Ensure it's not null or empty
+selectedValuesByIndex[currentIndex].push(value); // Store the value for this index
+}
+});
+
+console.log('Selected values from all elements by data-index:', selectedValuesByIndex);
+
+// Loop through each select element again to remove options based on collected values
+elements.each(function() {
+var currentElement = $(this);
+var currentIndex = currentElement.data('index'); // Get the data-index of the current element
+var currentValue = currentElement.val(); // Get the value of the current select element
+
+// Loop through the options of the current select element
+currentElement.find('option').each(function() {
+var optionValue = $(this).val();
+
+// Remove the option if it is in selectedValues for this index but not the current element's value
+if (selectedValuesByIndex[currentIndex].includes(optionValue) && optionValue !== currentValue) {
+$(this).remove(); // Remove the option if its value is in the selectedValues for this index
+}
+});
+
+// Refresh Select2 to apply the changes
+currentElement.trigger('change.select2');
+});
+});
+});
+
 
 
 // $(document).on("change", ".bonus_quantity", function() {

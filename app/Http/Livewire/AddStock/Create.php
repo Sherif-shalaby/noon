@@ -1063,25 +1063,21 @@ class Create extends Component
     {
         $this->items[$index]['show_discount'] =
             !$this->items[$index]['show_discount'];
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function stayShowValidity($index)
     {
         $this->items[$index]['show_validity'] =
             !$this->items[$index]['show_validity'];
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function stayShowshowDiscountDetails($index)
     {
         $this->items[$index]['show_discount_details'] =
             !$this->items[$index]['show_discount_details'];
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function stayShowUnitDetails($index)
     {
         $this->items[$index]['show_unit_details'] =
             !$this->items[$index]['show_unit_details'];
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function add_by_po()
     {

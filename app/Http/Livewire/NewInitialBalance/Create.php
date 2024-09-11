@@ -438,8 +438,7 @@ class Create extends Component
         try {
             if (empty($this->rows)) {
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
-            }
-            else {
+            } else {
                 DB::beginTransaction();
                 //Add Product
                 $product = $this->updateOrStoreProduct();
@@ -461,7 +460,8 @@ class Create extends Component
         }
     }
 
-    private function updateOrStoreProduct(){
+    private function updateOrStoreProduct()
+    {
         $this->toggle_dollar = System::getProperty('toggle_dollar');
         if ($this->item[0]['isExist'] == 1) {
             $product = Product::find($this->item[0]['id']);
@@ -475,8 +475,7 @@ class Create extends Component
             $product->product_symbol = !empty($this->item[0]['product_symbol']) ? $this->item[0]['product_symbol'] : $this->generateSymbol();
             $product->balance_return_request = $this->item[0]['balance_return_request'] ?? 0;
             $product->save();
-        }
-        else {
+        } else {
             $product = new Product();
             $product->name = $this->item[0]['name'];
             $product->sku = "Default";
@@ -518,7 +517,6 @@ class Create extends Component
             $this->variations[$index] = $Variation->id;
             $this->addVariationPrices($Variation, $row['prices'] ?? []);
         }
-
     }
     private function addVariationPrices($variation, $prices)
     {
@@ -547,7 +545,6 @@ class Create extends Component
             'weight' => !empty($this->item[0]['weight']) ? $this->item[0]['weight'] : 0,
             'size' => !empty($this->item[0]['size']) ? $this->item[0]['size'] : 0,
         ]);
-
     }
 
     public function saveTransaction($product_id, $variations = [])
@@ -996,8 +993,7 @@ class Create extends Component
                     }
                 }
             }
-        }
-        else {
+        } else {
             $qty_difference = $new_quantity;
         }
         if ($qty_difference != 0) {
@@ -1053,14 +1049,23 @@ class Create extends Component
         ];
         array_unshift($this->fill_stores, $new_store);
     }
+
+
+
     public function addStoreDataRow($index)
     {
         $new_store_data = [
             'store_fill_id' => '',
             'quantity' => '',
         ];
+
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
+
+        // Dispatch a browser event
+        $this->dispatchBrowserEvent('storeDataRowAdded', ['index' => $index]);
     }
+
+
 
 
     public function addPrices()
@@ -1213,12 +1218,12 @@ class Create extends Component
     }
     public function changeUnitPurchasePrice($index)
     {
-//        $index = 1;
+        //        $index = 1;
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
-//        dd($index,$this->rows[$index]['prices'],$this->rows[$index]['purchase_price']);
+        //        dd($index,$this->rows[$index]['prices'],$this->rows[$index]['purchase_price']);
         foreach ($this->rows[$index]['prices'] as $key => $price) {
             if ($index == 0 && $key > 0 && !empty($this->rows[$key]['fill'])) {
-                $this->rows[$key]['purchase_price'] = number_format($this->num_uf($this->rows[$key-1]['purchase_price']) / $this->num_uf($this->rows[$key]['fill']), num_of_digital_numbers());
+                $this->rows[$key]['purchase_price'] = number_format($this->num_uf($this->rows[$key - 1]['purchase_price']) / $this->num_uf($this->rows[$key]['fill']), num_of_digital_numbers());
                 $this->changeUnitPurchasePrice($key);
             }
             $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
