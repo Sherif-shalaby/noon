@@ -1060,9 +1060,6 @@ class Create extends Component
         ];
 
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
-
-        // Dispatch a browser event
-        $this->dispatchBrowserEvent('storeDataRowAdded', ['index' => $index]);
     }
 
 

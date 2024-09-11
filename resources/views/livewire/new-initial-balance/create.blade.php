@@ -1314,13 +1314,7 @@
 });
 
 
-
-
-
-$(document).on('storeDataRowAdded', function(event) {
-// This event doesn't need to store the data-index anymore since we want to handle all
-});
-
+// For not Repeating fill
 document.addEventListener('livewire:load', function () {
 // Hook into Livewire's lifecycle to reapply JS changes after any Livewire updates
 Livewire.hook('message.processed', (message, component) => {
@@ -1346,8 +1340,6 @@ selectedValuesByIndex[currentIndex].push(value); // Store the value for this ind
 }
 });
 
-console.log('Selected values from all elements by data-index:', selectedValuesByIndex);
-
 // Loop through each select element again to remove options based on collected values
 elements.each(function() {
 var currentElement = $(this);
@@ -1369,6 +1361,49 @@ currentElement.trigger('change.select2');
 });
 });
 });
+
+
+
+// For Not Repeating Stores
+document.addEventListener('livewire:load', function () {
+// Hook into Livewire's lifecycle to reapply JS changes after any Livewire updates
+Livewire.hook('message.processed', (message, component) => {
+// Array to store the values from all the elements
+var selectedValues = [];
+
+// Select all the select elements with class 'store_fill_id' and data-index equal to event.detail.index
+var elements = $('.extra_store_id.select2');
+
+// Collect the values of all elements
+elements.each(function() {
+var value = $(this).val();
+if (value) { // Ensure it's not null or empty
+selectedValues.push(value);
+}
+});
+
+// Loop through each select element
+elements.each(function() {
+var currentElement = $(this);
+var currentValue = currentElement.val(); // Get the value of the current select element
+
+// Loop through the options of the current select element
+currentElement.find('option').each(function() {
+var optionValue = $(this).val();
+
+// Remove the option if it is in selectedValues but not the current element's value
+if (selectedValues.includes(optionValue) && optionValue !== currentValue) {
+$(this).remove(); // Remove the option if its value is in the selectedValues array but not in the current element
+}
+});
+
+// Refresh Select2 to apply the changes
+currentElement.trigger('change.select2');
+});
+});
+});
+
+
 
 
 
