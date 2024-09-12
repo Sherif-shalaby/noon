@@ -282,7 +282,6 @@ class Create extends Component
         $rep_job_type = JobType::where('title', 'Representative')->first();
         $representatives = Employee::where('job_type_id', $rep_job_type->id)->pluck('employee_name', 'id');
         $search_result = '';
-        $triggeredModal = false; // Add a flag to track if the modal has been triggered
 
         if (!empty($this->search_by_product_symbol)) {
             $search_result = Product::when($this->search_by_product_symbol, function ($query) {
@@ -293,14 +292,9 @@ class Create extends Component
                 $this->add_product($search_result->first()->id);
                 $search_result = '';
                 $this->search_by_product_symbol = '';
-            } else {
-                $triggeredModal = true;
-                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'هذا المنتج غير موجود',]);
-                $search_result = '';
-                $this->search_by_product_symbol = '';
             }
         }
-        if (!empty($this->searchProduct)  && !$triggeredModal) {
+        if (!empty($this->searchProduct)) {
             $search_result = Product::when($this->searchProduct, function ($query) {
                 return $query->where('name', 'like', '%' . $this->searchProduct . '%')
                     ->orWhere('sku', 'like', '%' . $this->searchProduct . '%');
@@ -318,11 +312,13 @@ class Create extends Component
                 $this->add_product($search_result->first()->id);
                 $search_result = '';
                 $this->searchProduct = '';
-            } else {
-                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'هذا المنتج غير موجود',]);
-                $search_result = '';
-                $this->searchProduct = '';
             }
+        }
+
+        if(is_object($search_result) && count($search_result->items()) == 0){
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'هذا المنتج غير موجود',]);
+            $search_result = '';
+            $this->search_by_product_symbol = '';
         }
         $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at', 'desc')->get();
         $this->dispatchBrowserEvent('initialize-select2');

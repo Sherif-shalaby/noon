@@ -5,7 +5,7 @@
         <div class="col-md-4">
             <div class="search-box input-group ">
                 <input type="search" name="search_by_product_symbol" id="search_by_product_symbol"
-                    wire:model.debounce.200ms="search_by_product_symbol" placeholder="@lang('lang.enter_product_symbol')"
+                    wire:model.debounce.600ms="search_by_product_symbol" placeholder="@lang('lang.enter_product_symbol')"
                     class="form-control" autocomplete="off">
 
                 @if (!empty($search_by_product_symbol))
@@ -37,7 +37,7 @@
                 <button type="button" class="btn btn-secondary" id="search_button"><i class="fa fa-search"></i>
                 </button>
                 <input type="search" name="search_product" id="search_product"
-                    wire:model.debounce.200ms="searchProduct" placeholder="@lang('lang.enter_product_name_to_print_labels')" class="form-control"
+                    wire:model.debounce.600ms="searchProduct" placeholder="@lang('lang.enter_product_name_to_print_labels')" class="form-control"
                     autocomplete="off">
 
                 @if (!empty($search_result) && !empty($searchProduct))

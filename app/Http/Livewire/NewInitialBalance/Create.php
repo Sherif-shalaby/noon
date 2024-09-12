@@ -134,6 +134,7 @@ class Create extends Component
             // 'rows.*.sku' => 'required',
             'rows.*.sku' => 'nullable|unique:variations,sku,NULL,id,deleted_at,NULL',
             'rows.*.purchase_price' => 'required',
+            'prices.*.price_customer_types' => 'required',
             // 'rows.*.dollar_purchase_price' => 'required',
             // 'rows.*.dollar_selling_price' => 'required',
             // 'rows.*.selling_price' => 'required',
@@ -790,6 +791,7 @@ class Create extends Component
                 if (!empty($fill['store_fill_id'])) {
                     $unit = Unit::find($fill['store_fill_id']);
                     $variation_name = $unit->name;
+                    $fill['quantity'] = $fill['quantity'] ?? 0;
                     if (isset($this->variationStoreSums[$variation_name])) {
                         $this->variationStoreSums[$variation_name] += $this->num_uf($fill['quantity']);
                     } else {
@@ -807,6 +809,8 @@ class Create extends Component
             if (!empty($fill['store_fill_id'])) {
                 $unit = Unit::find($fill['store_fill_id']);
                 $variation_name = $unit->name;
+                $fill['quantity'] = $fill['quantity'] ?? 0;
+
                 if (isset($this->variationFillStoreSums[$variation_name])) {
                     $this->variationFillStoreSums[$variation_name] += $this->num_uf($fill['quantity']);
                 } else {

@@ -934,9 +934,7 @@
 
 
 
-                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column
-                                                            @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
-                                                            pl-1">
+                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif   pl-1">
                                             {!! Form::label('b_qty', __('lang.b_qty'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -954,9 +952,8 @@
                                             @enderror
                                         </div>
 
-                                        <div class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
-                                                                @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
-                                                                pl-1" style="width: 100px">
+{{-- we are here --}}
+                                        <div class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1" style="width: 100px">
                                             {!! Form::label('customer_type', __('lang.customer_type'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -970,18 +967,22 @@
                                                                             height: 30px;
                                                                             flex-wrap: nowrap;">
                                                 <select wire:model="prices.{{ $key }}.price_customer_types"
-                                                    name="prices.{{ $key }}.price_customer_types"
-                                                    data-name='price_customer_types' data-index="{{ $key }}"
-                                                    data-key="{{ $key }}" class="form-control select2"
-                                                    placeholder="{{ __('lang.customer_type') }}">
+                                                        name="prices.{{ $key }}.price_customer_types"
+                                                        data-name='price_customer_types' data-index="{{ $key }}"
+                                                        data-key="{{ $key }}" class="form-control required select2"
+                                                        placeholder="{{ __('lang.customer_type') }}">
                                                     <option value="0">@lang('lang.please_select')</option>
                                                     @foreach ($customer_types as $type)
-                                                    <option value="{{ $type->id }}">
-                                                        {{ $type->name }}
-                                                    </option>
+                                                        <option value="{{ $type->id }}">
+                                                            {{ $type->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
+                                            @error('prices.' . $key . '.price_customer_types')
+                                            <label class="text-danger validation-error error-msg">
+                                                {{ $message }}</label>
+                                            @enderror
                                         </div>
 
 
