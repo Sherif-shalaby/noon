@@ -34,7 +34,8 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                     <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id' data-index="{{ $index }}"
-                        required class="form-control select2 unit_id{{ $index }}" style="width: 160px !important;">
+                        required class="form-control main_fill select2 unit_id{{ $index }}"
+                        style="width: 160px !important;">
                         <option value="">
                             {{ $index == 0 ? __('lang.choose_big_unit') : __('lang.choose_small_unit') }}
                         </option>
@@ -53,7 +54,7 @@
 
             <div class=" animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                 style="width: 100px;margin-top: 7px;">
-                <button class="mx-1 d-flex justify-content-evenly align-items-center plus-button h-100"
+                <button class="mx-1 d-flex justify-content-evenly align-items-center plus-button h-100 main-fill-btn"
                     style="width: 100%;font-weight: 500" wire:click="addRaw()" type="button">
                     <i class="fa fa-plus"></i>
                     <span>
@@ -173,8 +174,7 @@
                         wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
                         placeholder="{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
                         wire:change="changeIncrease({{ $index }},{{ $key }})">
-                    <span
-                        class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                    <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                         style='font-weight:500;font-size:12px;color:#888'>{{
                         $rows[$index]['prices'][$key]['dollar_increase'] ?? 0 }}
                         $</span>
@@ -199,8 +199,7 @@
                             margin-bottom: 10px;" wire:change="changeSellPrice({{ $index }},{{ $key }})" @if ($index
                         !=0) disabled @endif wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                         placeholder="{{ __('lang.price') }}">
-                    <span
-                        class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
+                    <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
                         style='font-weight:500;font-size:12px;color:#888'>{{
                         $rows[$index]['prices'][$key]['dollar_sell_price'] }}
                         $</span>

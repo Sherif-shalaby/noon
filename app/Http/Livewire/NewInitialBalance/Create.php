@@ -106,7 +106,7 @@ class Create extends Component
         $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $units = [],
         $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [];
     public $rows = [], $toggle_customers_dropdown, $customer_id, $variationStoreSums, $variationFillStoreSums, $toggle_suppliers,
-        $image, $croppedImage, $countryId, $countryName;
+        $image, $croppedImage, $countryId, $countryName, $stores_count, $units_count;
     public function messages()
     {
         return [
@@ -150,7 +150,7 @@ class Create extends Component
         $width = $this->item[0]['width'] ?? 0;
         $this->item[0]['size'] = (float)$height * (float)$length * (float)$width;
     }
-    protected $listeners = ['listenerReferenceHere', 'create', 'cancelCreateProduct'];
+    protected $listeners = ['listenerReferenceHere', 'create', 'cancelCreateProduct', 'calculateFillStoresDataCount'];
 
     public function listenerReferenceHere($data)
     {
@@ -160,6 +160,7 @@ class Create extends Component
                 $this->rows[$data['var3']][$data['var1']] = $data['var2'];
                 if ($data['var1'] == "unit_id") {
                     $this->units = Unit::orderBy('created_at', 'desc')->get();
+                    $this->units_count = $this->units->count();
                     $this->rows[$data['var3']]['unit_id'] = $data['var2'];
                     $this->changeUnit($data['var3']);
                     // $this->count_total_by_variations();
@@ -245,6 +246,7 @@ class Create extends Component
         }
         $this->exchange_rate = $this->changeExchangeRate();
         $this->units = Unit::orderBy('created_at', 'desc')->get();
+        $this->units_count = $this->units->count();
         $this->customer_types = CustomerType::orderBy('name', 'asc')->get();
         $this->countryId = System::getProperty('country_id');
         $this->countryName = Country::where('id', $this->countryId)->pluck('name')->first();
@@ -280,7 +282,11 @@ class Create extends Component
             ];
         })->pluck('full_name', 'id')->toArray();
 
-        //        dd($stores);// Convert the collection to an array
+        // Counting the stores and storing it in a property
+        $this->stores_count = count($stores);
+
+
+        // dd($stores); // Convert the collection to an array
 
 
         $branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
@@ -339,6 +345,8 @@ class Create extends Component
             }
         }
         $this->basic_unit_variations = Unit::whereIn('id', $this->unit_variations)->orderBy('name', 'asc')->pluck('name', 'id');
+
+        $this->calculateBasicUnitVariationsCount();
     }
 
     // public function changeBaseUnit($index)
@@ -864,6 +872,7 @@ class Create extends Component
     {
         unset($this->rows[$index]);
         $this->rows = array_values($this->rows);
+        $this->calculateRowsCount();
     }
 
     public function convertDollarPrice($index)
@@ -1052,7 +1061,17 @@ class Create extends Component
             ]
         ];
         array_unshift($this->fill_stores, $new_store);
+
+        $this->calculateFillStoreCount();
     }
+
+    public $fill_stores_count;
+
+    public function calculateFillStoreCount()
+    {
+        $this->fill_stores_count = count($this->fill_stores);
+    }
+
 
 
 
@@ -1062,13 +1081,34 @@ class Create extends Component
             'store_fill_id' => '',
             'quantity' => '',
         ];
-
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
+
+        $this->calculateFillStoresDataCount($index);
+    }
+
+
+    public $basic_unit_variations_count;
+    public $fill_stores_data_count;
+
+    public function calculateFillStoresDataCount($index)
+    {
+        $this->fill_stores_data_count = count(array_filter($this->fill_stores[$index]['data']));
+    }
+
+
+    public function calculateBasicUnitVariationsCount()
+    {
+        $this->basic_unit_variations_count = $this->basic_unit_variations->count();
     }
 
 
 
+    public $rows_count;
 
+    public function calculateRowsCount()
+    {
+        $this->rows_count = count($this->rows);
+    }
     public function addPrices()
     {
         $newRow = [
@@ -1084,6 +1124,11 @@ class Create extends Component
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
+
+
+        $this->calculateRowsCount();
+
+
         // array_unshift($this->rows, $newRow);
         foreach ($this->customer_types as $customer_type) {
             $new_price = [
@@ -1302,11 +1347,23 @@ class Create extends Component
     public function delete_store_raw($key)
     {
         unset($this->fill_stores[$key]);
+
+        // Reindex the array
+        $this->fill_stores = array_values($this->fill_stores);
+
+        $this->calculateFillStoreCount();
     }
     public function delete_store_data_raw($index, $key)
     {
-        unset($this->fill_stores[$index]['data'][$key]);
+
+        // Remove the element at the specified index
+        array_splice($this->fill_stores[$index]['data'], $key, 1);
+
+        // Reindex the array
+        $this->fill_stores[$index]['data'] = array_values($this->fill_stores[$index]['data']);
+        // $this->calculateStoreCount($index);
     }
+
     public function changePrice($index, $via = 'price')
     {
         //here $index as parameter not make change

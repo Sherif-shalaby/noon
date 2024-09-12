@@ -164,7 +164,7 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                         {!! Form::select('store_id', $stores, $item[0]['store_id'], [
-                                        'class' => ' form-control select2 store_id',
+                                        'class' => ' form-control select2 all_stores store_id',
                                         'data-name' => 'store_id',
                                         'required',
                                         'placeholder' => __('lang.store'),
@@ -605,27 +605,33 @@
                                         {{ __('lang.add_to_another_store') }}
                                     </div>
                                 </h2>
-                                <div
-                                    class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
-                                    <button type="button" class="plus-button py-2 my-1" wire:click="addStoreRow()">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                    @foreach ($fill_stores as $i => $store)
-                                    <div
-                                        class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="card-body py-0">
 
-                                        <button class="del-button btn-xl mx-1 py-2"
-                                            wire:click="delete_store_raw({{ $i }})">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
+                                    <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                        style="overflow-x: auto">
+                                        <div
+                                            class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
+                                            <button type="button" class="plus-button add-store-btn py-2 my-1"
+                                                wire:click="addStoreRow()">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            @foreach ($fill_stores as $i => $store)
+                                            <div
+                                                class="d-flex align-items-center mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                                        <div class=" mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
-                                            style="width: 160px">
-                                            <label for="extra_store_id"
-                                                class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                                                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') .
-                                                '*' }}</label>
-                                            <div class="d-flex justify-content-center align-items-center" style="background-color: #dedede;
+                                                <button class="del-button btn-xl mx-1 py-2"
+                                                    wire:click="delete_store_raw({{ $i }})">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+
+                                                <div class=" mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
+                                                    style="width: 160px">
+                                                    <label for="extra_store_id"
+                                                        class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                        style='font-weight:500;font-size:10px;color:#888'>{{
+                                                        __('lang.store') .
+                                                        '*' }}</label>
+                                                    <div class="d-flex justify-content-center align-items-center" style="background-color: #dedede;
                                                     border: none;
                                                     border-radius: 16px;
                                                     color: #373737;
@@ -633,40 +639,41 @@
                                                     width: 100%;
                                                     height: 30px;
                                                     flex-wrap: nowrap;">
-                                                {!! Form::select('extra_store_id', $stores,
-                                                $fill_stores[$i]['extra_store_id'], [
-                                                'class' => 'form-control select2 extra_store_id',
-                                                'data-index' => $i,
-                                                'data-name' => 'extra_store_id',
-                                                'required',
-                                                'placeholder' => __('lang.please_select'),
-                                                'wire:model' => 'fill_stores.' . $i . '.extra_store_id',
-                                                'wire:key' => 'extra_store_id_' . $i,
-                                                ]) !!}
+                                                        {!! Form::select('extra_store_id', $stores,
+                                                        $fill_stores[$i]['extra_store_id'], [
+                                                        'class' => 'form-control select2 all_stores extra_store_id',
+                                                        'data-index' => $i,
+                                                        'data-name' => 'extra_store_id',
+                                                        'required',
+                                                        'placeholder' => __('lang.please_select'),
+                                                        'wire:model' => 'fill_stores.' . $i . '.extra_store_id',
+                                                        'wire:key' => 'extra_store_id_' . $i,
+                                                        ]) !!}
 
-                                            </div>
-                                            {{-- @error('fill_stores.' . $i . '.extra_store_id')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                            @enderror --}}
-                                        </div>
+                                                    </div>
+                                                    {{-- @error('fill_stores.' . $i . '.extra_store_id')
+                                                    <span class="error text-danger">{{ $message }}</span>
+                                                    @enderror --}}
+                                                </div>
 
-                                        <div class="d-flex flex-row">
-                                            @foreach ($fill_stores[$i]['data'] as $x => $fill)
-                                            <div class="d-flex flex-row" style="order: 2">
-                                                <div class="d-flex justify-content-start align-items-center flex-row">
-                                                    <button class="btn btn-danger mx-1 py-2"
-                                                        wire:click="delete_store_data_raw({{ $i }},{{ $x }})">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                    <div class=" mb-2 d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                                        style="width: 100px">
-                                                        <label for="store_fill_id"
-                                                            class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                                                            style='font-weight:500;font-size:10px;color:#888'>
-                                                            {{ __('lang.fill') . '*' }}
-                                                        </label>
-                                                        <div class="d-flex justify-content-center align-items-center"
-                                                            style="background-color: #dedede;
+                                                <div class="d-flex flex-row fill-stores-data-container">
+                                                    @foreach ($fill_stores[$i]['data'] as $x => $fill)
+                                                    <div class="d-flex flex-row bg-light p-2 mx-1" style="order: 2">
+                                                        <div
+                                                            class="d-flex justify-content-start align-items-center flex-row">
+                                                            <button class="btn btn-danger mx-1 py-2"
+                                                                wire:click="delete_store_data_raw({{ $i }},{{ $x }})">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                            <div class=" mb-2 d-flex   flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                                                style="width: 100px">
+                                                                <label for="store_fill_id"
+                                                                    class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                                    style='font-weight:500;font-size:10px;color:#888'>
+                                                                    {{ __('lang.fill') . '*' }}
+                                                                </label>
+                                                                <div class="d-flex justify-content-center align-items-center"
+                                                                    style="background-color: #dedede;
                                                                         border: none;
                                                                         border-radius: 16px;
                                                                         color: #373737;
@@ -674,57 +681,64 @@
                                                                         width: 100%;
                                                                         height: 30px;
                                                                         flex-wrap: nowrap;">
-                                                            {!! Form::select('store_fill_id',
-                                                            $basic_unit_variations,
-                                                            $fill_stores[$i]['data'][$x]['store_fill_id'], [
-                                                            'class' => 'select2 form-select store_fill_id',
-                                                            'data-name' => 'store_fill_id',
-                                                            'data-index' => $i,
-                                                            'data-key' => $x,
-                                                            'placeholder' => __('lang.fill'),
-                                                            'wire:model' => 'fill_stores.' . $i . '.data.' . $x .
-                                                            '.store_fill_id',
-                                                            ]) !!}
+                                                                    {!! Form::select('store_fill_id',
+                                                                    $basic_unit_variations,
+                                                                    $fill_stores[$i]['data'][$x]['store_fill_id'], [
+                                                                    'class' => 'select2 form-select store_fill_id',
+                                                                    'data-name' => 'store_fill_id',
+                                                                    'data-index' => $i,
+                                                                    'data-key' => $x,
+                                                                    'placeholder' => __('lang.fill'),
+                                                                    'wire:model' => 'fill_stores.' . $i . '.data.' . $x
+                                                                    .
+                                                                    '.store_fill_id',
+                                                                    ]) !!}
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                                                style="width: 75px">
+                                                                {!! Form::label('quantity', __('lang.quantity'), [
+                                                                'class' => app()->isLocale('ar') ? 'd-block text-end
+                                                                mx-2
+                                                                mb-0' : 'mx-2 mb-0',
+                                                                ]) !!}
+                                                                <input type="text"
+                                                                    class="form-control quantity initial-balance-input"
+                                                                    wire:change="count_total_by_variation_stores()"
+                                                                    wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"
+                                                                    style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                                                                    placeholder="{{ __('lang.quantity') }}">
+                                                                @error('fill_stores.' . $i . 'data' . $x .
+                                                                '.quantity')
+                                                                <label class="text-danger validation-error error-msg">{{
+                                                                    $message }}</label>
+                                                                @enderror
+
+                                                            </div>
+
                                                         </div>
                                                     </div>
-                                                    <div class="mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                                        style="width: 75px">
-                                                        {!! Form::label('quantity', __('lang.quantity'), [
-                                                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2
-                                                        mb-0' : 'mx-2 mb-0',
-                                                        ]) !!}
-                                                        <input type="text"
-                                                            class="form-control quantity initial-balance-input"
-                                                            wire:change="count_total_by_variation_stores()"
-                                                            wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"
-                                                            style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
-                                                            placeholder="{{ __('lang.quantity') }}">
-                                                        @error('fill_stores.' . $i . 'data' . $x .
-                                                        '.quantity')
-                                                        <label class="text-danger validation-error error-msg">{{
-                                                            $message }}</label>
-                                                        @enderror
+
+                                                    @endforeach
+                                                    <div class=" mt-1  d-flex justify-content-center align-items-center px-1"
+                                                        style="order: 1">
+                                                        <button type="button"
+                                                            class="plus-button add-store-data-btn mx-1 py-2"
+                                                            data-index="{{ $i }}"
+                                                            wire:click="addStoreDataRow({{ $i }})">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
 
                                                     </div>
-
                                                 </div>
                                             </div>
-
                                             @endforeach
-                                            <div class=" mt-1  d-flex px-1" style="order: 1">
-                                                <button type="button" class="plus-button mx-1 py-2"
-                                                    wire:click="addStoreDataRow({{ $i }})">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
 
-                                            </div>
                                         </div>
+
+
                                     </div>
-                                    @endforeach
-
                                 </div>
-
-
                             </div>
                         </div>
 
@@ -934,7 +948,8 @@
 
 
 
-                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif   pl-1">
+                                        <div
+                                            class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif   pl-1">
                                             {!! Form::label('b_qty', __('lang.b_qty'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -952,8 +967,9 @@
                                             @enderror
                                         </div>
 
-{{-- we are here --}}
-                                        <div class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1" style="width: 100px">
+                                        {{-- we are here --}}
+                                        <div class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                            style="width: 100px">
                                             {!! Form::label('customer_type', __('lang.customer_type'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -967,15 +983,15 @@
                                                                             height: 30px;
                                                                             flex-wrap: nowrap;">
                                                 <select wire:model="prices.{{ $key }}.price_customer_types"
-                                                        name="prices.{{ $key }}.price_customer_types"
-                                                        data-name='price_customer_types' data-index="{{ $key }}"
-                                                        data-key="{{ $key }}" class="form-control required select2"
-                                                        placeholder="{{ __('lang.customer_type') }}">
+                                                    name="prices.{{ $key }}.price_customer_types"
+                                                    data-name='price_customer_types' data-index="{{ $key }}"
+                                                    data-key="{{ $key }}" class="form-control required select2"
+                                                    placeholder="{{ __('lang.customer_type') }}">
                                                     <option value="0">@lang('lang.please_select')</option>
                                                     @foreach ($customer_types as $type)
-                                                        <option value="{{ $type->id }}">
-                                                            {{ $type->name }}
-                                                        </option>
+                                                    <option value="{{ $type->id }}">
+                                                        {{ $type->name }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -1198,6 +1214,10 @@
 @include('units.create', ['quick_add' => 1])
 
 
+
+@include('initial-balance.partial.scripts')
+
+
 @push('javascripts')
 <script>
     document.addEventListener('componentRefreshed', function() {
@@ -1313,99 +1333,6 @@
         });
     });
 });
-
-
-// For not Repeating fill
-document.addEventListener('livewire:load', function () {
-// Hook into Livewire's lifecycle to reapply JS changes after any Livewire updates
-Livewire.hook('message.processed', (message, component) => {
-// Array to store the values from all elements based on their data-index
-var selectedValuesByIndex = {};
-
-// Select all the select elements with class 'store_fill_id'
-var elements = $('.store_fill_id.select2');
-
-// Collect the values of all elements grouped by data-index
-elements.each(function() {
-var currentElement = $(this);
-var currentIndex = currentElement.data('index'); // Get the data-index of the current element
-
-// Initialize the array for this data-index if it doesn't exist
-if (!selectedValuesByIndex[currentIndex]) {
-selectedValuesByIndex[currentIndex] = [];
-}
-
-var value = currentElement.val();
-if (value) { // Ensure it's not null or empty
-selectedValuesByIndex[currentIndex].push(value); // Store the value for this index
-}
-});
-
-// Loop through each select element again to remove options based on collected values
-elements.each(function() {
-var currentElement = $(this);
-var currentIndex = currentElement.data('index'); // Get the data-index of the current element
-var currentValue = currentElement.val(); // Get the value of the current select element
-
-// Loop through the options of the current select element
-currentElement.find('option').each(function() {
-var optionValue = $(this).val();
-
-// Remove the option if it is in selectedValues for this index but not the current element's value
-if (selectedValuesByIndex[currentIndex].includes(optionValue) && optionValue !== currentValue) {
-$(this).remove(); // Remove the option if its value is in the selectedValues for this index
-}
-});
-
-// Refresh Select2 to apply the changes
-currentElement.trigger('change.select2');
-});
-});
-});
-
-
-
-// For Not Repeating Stores
-document.addEventListener('livewire:load', function () {
-// Hook into Livewire's lifecycle to reapply JS changes after any Livewire updates
-Livewire.hook('message.processed', (message, component) => {
-// Array to store the values from all the elements
-var selectedValues = [];
-
-// Select all the select elements with class 'store_fill_id' and data-index equal to event.detail.index
-var elements = $('.extra_store_id.select2');
-
-// Collect the values of all elements
-elements.each(function() {
-var value = $(this).val();
-if (value) { // Ensure it's not null or empty
-selectedValues.push(value);
-}
-});
-
-// Loop through each select element
-elements.each(function() {
-var currentElement = $(this);
-var currentValue = currentElement.val(); // Get the value of the current select element
-
-// Loop through the options of the current select element
-currentElement.find('option').each(function() {
-var optionValue = $(this).val();
-
-// Remove the option if it is in selectedValues but not the current element's value
-if (selectedValues.includes(optionValue) && optionValue !== currentValue) {
-$(this).remove(); // Remove the option if its value is in the selectedValues array but not in the current element
-}
-});
-
-// Refresh Select2 to apply the changes
-currentElement.trigger('change.select2');
-});
-});
-});
-
-
-
 
 
 // $(document).on("change", ".bonus_quantity", function() {
