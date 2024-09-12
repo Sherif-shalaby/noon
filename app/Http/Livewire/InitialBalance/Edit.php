@@ -58,7 +58,9 @@ class Edit extends Component
             'balance_return_request' => ''
         ]
     ];
-    public $prices = [];
+    public $prices = [
+//        'apply_on_all_customers' => 0,
+    ];
     public $fill_stores = [
         [
             'stock_id' => '',
@@ -285,6 +287,8 @@ class Edit extends Component
             'piece_price' => null,
             'dinar_piece_price' => null,
             'discount_from_original_price' => false,
+//            'apply_on_all_customers' => 0,
+
         ];
         array_unshift($this->prices, $new_price);
     }
@@ -758,28 +762,32 @@ class Edit extends Component
                 $Variation->save();
                 $this->variations[$index] = $Variation->id;
                 foreach ($this->rows[$index]['prices'] as $key => $price) {
-                    // if (!empty($this->rows[$index]['prices'][$key]['dollar_sell_price']) || !empty($this->rows[$index]['prices'][$key]['dinar_sell_price'])) {
                     if (!empty($this->rows[$index]['prices'][$key]['id'])) {
                         $Variation_price = VariationPrice::find($this->rows[$index]['prices'][$key]['id']);
                     } else {
                         $Variation_price = new VariationPrice();
                     }
-                    // dd($this->rows[$index]['prices'][$key]);
+//                    $Variation_price->variation_id = $Variation->id;
+//                    $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
+//                    $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'] ?? null);
+//                    $Variation_price->dollar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'] ?? null);
+//
+//                    $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
+//                    $Variation_price->dollar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null;
+//                    $Variation_price->percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']) ?? null;
+
                     $Variation_price->variation_id = $Variation->id;
-                    $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
-                    $Variation_price->dinar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'] ?? null);
-                    $Variation_price->dollar_increase = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'] ?? null);
-
-                    $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
-                    $Variation_price->dollar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null;
-                    $Variation_price->percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']) ?? null;
-
+                    $Variation_price->customer_type_id = $price['customer_type_id'] ?? null;
+                    $Variation_price->dinar_sell_price = $this->num_uf($price['dinar_sell_price']) ?? null;
+                    $Variation_price->dollar_sell_price = ($this->num_uf($price['dollar_sell_price']) ?? null);
+                    $Variation_price->percent = $this->num_uf($price['percent']) ?? null;
+                    $Variation_price->dinar_increase = $this->num_uf($price['dinar_increase']) ?? null;
+                    $Variation_price->dollar_increase = $this->num_uf($price['dollar_increase']) ?? null;
                     $Variation_price->save();
                     // }
                 }
-
-                ////////////////
             }
+
             Variation::whereIn('id', $this->deleted_variations)->delete();
             AddStockLine::whereIn('variation_id', $this->deleted_variations)->delete();
             AddStockLine::whereIn('id', $this->deleted_items)->delete();
@@ -1402,6 +1410,124 @@ class Edit extends Component
         $this->rows[$index]['selling_price'] = (float)$this->rows[$index]['dollar_selling_price'] * (float)$this->exchange_rate;
     }
 
+    public function applyOnAllCustomers($key)
+    {
+        $fill_id = $this->prices[$key]['fill_id'];
+        if ($this->prices[$key]['apply_on_all_customers']) {
+            $row_index = $this->getKey($fill_id) ?? null;
+            if ($row_index >= 0) {
+                $customer_type = $this->prices[$key]['price_customer_types'];
+
+//                foreach ($this->rows as $rowPrice){
+//                    foreach ($rowPrice['prices'] as $index => $price) {
+//                        if ($price['customer_type_id'] == $customer_type) {
+//                            unset($this->rows[$key]['prices'][$index]);
+//                        }
+//                    }
+//                    $rowPrice['prices'] = array_values($rowPrice['prices']);
+//                }
+
+                // Determine the amount of discount in dinars and dollars
+                $amountOfDiscountInDinar = $this->prices[$key]['price_type'] == 'percentage' ?
+                    ($this->num_uf($this->prices[$key]['dinar_price']) * 0.01) : ($this->num_uf($this->prices[$key]['dinar_price']));
+                $amountOfDiscountInDollar = $this->prices[$key]['price_type'] == 'percentage' ?
+                    ($this->num_uf($this->prices[$key]['price']) * 0.01) : ($this->num_uf($this->prices[$key]['price']));
+
+                if (!is_null($row_index) && $row_index >= 0) {
+                    $customer_type = $this->prices[$key]['price_customer_types'];
+                    $price_key = $this->getCustomerType($row_index, $customer_type);
+
+                    // Determine the amount of discount in dinars and dollars
+                    $dinar_price = $this->num_uf($this->prices[$key]['dinar_price']);
+                    $dollar_price = $this->num_uf($this->prices[$key]['price']);
+
+                    $log = [];
+                    if ($price_key >= 0) {
+                        foreach ($this->rows[$row_index]['prices'] as $index => $price) {
+                            if ($price['customer_type_id'] == $this->prices[$key]['price_customer_types']) {
+                                continue;
+                            }
+                            $totalQty = $this->num_uf($this->prices[$key]['discount_quantity']) + $this->num_uf($this->prices[$key]['bonus_quantity']);
+                            // Calculate the discount amount based on percentage
+                            if ($this->prices[$key]['price_type'] == 'percentage') {
+                                $percentageDinar = ($dinar_price / 100);
+                                $percentageDollar = ($dollar_price / 100);
+                                $amountOfDiscountInDinar = $this->num_uf($this->rows[$row_index]['prices'][$index]['dinar_sell_price']) * $percentageDinar;
+                                $amountOfDiscountInDollar = $this->num_uf($this->rows[$row_index]['prices'][$index]['dollar_sell_price']) * $percentageDollar;
+                            } else {
+                                $amountOfDiscountInDinar = $dinar_price;
+                                $amountOfDiscountInDollar = $dollar_price;
+                            }
+
+                            // Calculate the price after discount
+                            if ($this->prices[$key]['discount_from_original_price']) {
+                                $dinar_price_value = $this->num_uf($this->rows[$row_index]['prices'][$index]['dinar_sell_price']) - $amountOfDiscountInDinar;
+                                $price_value = $this->num_uf($this->rows[$row_index]['prices'][$index]['dollar_sell_price']) - $amountOfDiscountInDollar;
+                                $total_price_in_dinar = $dinar_price_value * $this->num_uf($this->prices[$key]['discount_quantity']);
+                                $total_price_in_dollar = $price_value * $this->num_uf($this->prices[$key]['discount_quantity']);
+                                $piecePriceInDollar = $total_price_in_dollar / ($totalQty <= 0 ? 1 : $totalQty);
+                                $piecePriceInDinar = $total_price_in_dinar / ($totalQty <= 0 ? 1 : $totalQty);
+                                $discount_from_original_price = 1;
+                            } else {
+                                //we buy 15 piece with price for 10 piece so user will pay 1500 for 15 piece  1st discount
+                                //1500 / 15 = 100 "price before apply 2nd discount"
+                                // we have 10% percent discount also on piece
+                                // 100 - (100 * 10%) = 90
+                                //final total = 15 * 90 = 1350
+                                //----------------------------------------
+                                //150 * 10 / 15 = 100
+                                $price_1st = $this->num_uf($this->rows[$row_index]['prices'][$index]['dollar_sell_price']) * $this->num_uf($this->prices[$key]['discount_quantity']) / $totalQty;
+                                $dinar_price_1st = $this->num_uf($this->rows[$row_index]['prices'][$index]['dinar_sell_price']) * $this->num_uf($this->prices[$key]['discount_quantity']) / $totalQty;
+                                //100 - 10 = 90
+                                $price_value = $this->prices[$key]['price_type'] == 'percentage' && $percentageDollar ?  $price_1st - ($price_1st * $percentageDollar) : $price_1st - $amountOfDiscountInDollar;
+                                $dinar_price_value = $this->prices[$key]['price_type'] == 'percentage' && $percentageDinar ?  $dinar_price_1st - ($dinar_price_1st * $percentageDinar) : $dinar_price_1st - $amountOfDiscountInDinar;
+                                //90 * 15 = 1350
+                                $total_price_in_dinar = $dinar_price_value * $totalQty;
+                                $total_price_in_dollar = $price_value * $totalQty;
+                                $piecePriceInDollar = $price_value;
+                                $piecePriceInDinar = $dinar_price_value;
+                                $discount_from_original_price = 0;
+                            }
+
+                            $new_price = [
+                                'fill_id' => $this->prices[$key]['fill_id'],
+                                'price_type' => $this->prices[$key]['price_type'],
+                                'price_category' => $this->prices[$key]['price_category'],
+                                'price_currency' => $this->prices[$key]['price_currency'],
+                                'price' => $this->prices[$key]['price'],
+                                'dinar_price' => $this->prices[$key]['dinar_price'],
+                                'discount_quantity' => $this->prices[$key]['discount_quantity'],
+                                'bonus_quantity' => $this->prices[$key]['bonus_quantity'],
+                                'price_customer_types' => $this->rows[$row_index]['prices'][$index]['customer_type_id'],
+                                'price_after_desc' => number_format($price_value, num_of_digital_numbers()),
+                                'dinar_price_after_desc' => number_format($dinar_price_value, num_of_digital_numbers()),
+                                'total_price' => number_format($total_price_in_dollar, num_of_digital_numbers()),
+                                'dinar_total_price' => number_format($total_price_in_dinar, num_of_digital_numbers()),
+                                'piece_price' => number_format($piecePriceInDollar, num_of_digital_numbers()),
+                                'dinar_piece_price' => number_format($piecePriceInDinar, num_of_digital_numbers()),
+                                'apply_on_all_customers' => 0,
+                                'parent_price' => 1,
+                                'discount_from_original_price' => $discount_from_original_price,
+                            ];
+
+
+                            $this->prices[] = $new_price;
+                            $this->changePrice(count($this->prices) - 1);
+                        }
+                    }
+                }
+            }
+        } else {
+            foreach ($this->prices as $i => $price) {
+                if ($i != $key) {
+                    if ($fill_id == $price['fill_id']) {
+                        unset($this->prices[$i]);
+                    }
+                }
+            }
+        }
+    }
+
     public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
     {
         $qty_difference = (float)$new_quantity - (float)$old_quantity;
@@ -1427,6 +1553,15 @@ class Edit extends Component
 
     public function delete_price_raw($key)
     {
+        if ($this->prices[$key]['apply_on_all_customers']) {
+            foreach ($this->prices as $i => $price) {
+                if ($i != $key) {
+                    if ($this->prices[$key]['fill_id'] == $price['fill_id']) {
+                        unset($this->prices[$i]);
+                    }
+                }
+            }
+        }
         $this->deteted_prices[] = $this->prices[$key]['id'];
         unset($this->prices[$key]);
     }
@@ -1453,7 +1588,6 @@ class Edit extends Component
         if ($row_index >= 0) {
             $customer_type = $this->prices[$index]['price_customer_types'];
             $price_key = $this->getCustomerType($row_index, $customer_type);
-            // $this->discount_from_original_price = System::getProperty('discount_from_original_price');
             $sell_price = ($row_index >= 0) && isset($price_key) ?  $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price']) : null;
             $dollar_sell_price = ($row_index >= 0) && isset($price_key) ?  $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']) : null;
             $total_quantity = $this->num_uf($this->prices[$index]['discount_quantity']) + $this->num_uf($this->prices[$index]['bonus_quantity']);
@@ -1465,7 +1599,7 @@ class Edit extends Component
                                 $actual_price = $this->prices[$index]['price'];
                             } else {
                                 $actual_price = $this->num_uf($this->prices[$index]['dinar_price']);
-                                $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) * (float)$this->exchange_rate, num_of_digital_numbers());
+                                $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']));
                             }
                         }
                         $dollar_price = number_format($this->num_uf($actual_price), num_of_digital_numbers());
@@ -1491,7 +1625,7 @@ class Edit extends Component
                                 $actual_price = $this->prices[$index]['price'];
                             } else {
                                 $actual_price = $this->num_uf($this->prices[$index]['dinar_price']);
-                                $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) * (float)$this->exchange_rate, num_of_digital_numbers());
+                                $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']));
                             }
                         }
                         $dollar_price = number_format($this->num_uf($actual_price), num_of_digital_numbers());

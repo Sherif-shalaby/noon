@@ -236,20 +236,20 @@
                 </div>
 
                 {{-- +++++++++++ الخصم دولار +++++++++++ --}}
-                <div class="col-sm-2 dollar-cell showHideDollarCells">
-                    <div class="form-group">
-                        {!! Form::label('dollar_discount', 'الخصم دولار', [
-                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
-                        'style' => 'width:100%;font-weight: 700;font-size: 10px',
-                        ]) !!}
-                        {!! Form::number('dollar_discount', null, [
-                        'class' => 'form-control p-1',
-                        'style' => 'height:30px',
-                        'wire:model' => 'discount_dollar',
-                        'wire:change' => 'changeDollarTotal',
-                        ]) !!}
-                    </div>
-                </div>
+{{--                <div class="col-sm-2 dollar-cell showHideDollarCells">--}}
+{{--                    <div class="form-group">--}}
+{{--                        {!! Form::label('dollar_discount', 'الخصم دولار', [--}}
+{{--                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',--}}
+{{--                        'style' => 'width:100%;font-weight: 700;font-size: 10px',--}}
+{{--                        ]) !!}--}}
+{{--                        {!! Form::number('dollar_discount', null, [--}}
+{{--                        'class' => 'form-control p-1',--}}
+{{--                        'style' => 'height:30px',--}}
+{{--                        'wire:model' => 'discount_dollar',--}}
+{{--                        'wire:change' => 'changeDollarTotal',--}}
+{{--                        ]) !!}--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 {{-- +++++++++++ النهائي دولار +++++++++++ --}}
                 <div class="col-sm-2 dollar-cell showHideDollarCells">

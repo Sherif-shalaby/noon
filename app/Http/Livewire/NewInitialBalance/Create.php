@@ -1582,7 +1582,7 @@ class Create extends Component
                                 'dinar_total_price' => number_format($total_price_in_dinar, num_of_digital_numbers()),
                                 'piece_price' => number_format($piecePriceInDollar, num_of_digital_numbers()),
                                 'dinar_piece_price' => number_format($piecePriceInDinar, num_of_digital_numbers()),
-                                'apply_on_all_customers' => 0,
+                                'apply_on_all_customers' => $this->prices[$key]['apply_on_all_customers'],
                                 'parent_price' => 1,
                                 'discount_from_original_price' => $discount_from_original_price,
                             ];
