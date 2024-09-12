@@ -150,7 +150,7 @@ class Create extends Component
         $width = $this->item[0]['width'] ?? 0;
         $this->item[0]['size'] = (float)$height * (float)$length * (float)$width;
     }
-    protected $listeners = ['listenerReferenceHere', 'create', 'cancelCreateProduct', 'calculateFillStoresDataCount'];
+    protected $listeners = ['listenerReferenceHere', 'create', 'cancelCreateProduct'];
 
     public function listenerReferenceHere($data)
     {
@@ -1083,17 +1083,17 @@ class Create extends Component
         ];
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
 
-        $this->calculateFillStoresDataCount($index);
+        // $this->calculateFillStoresDataCount($index);
     }
 
 
     public $basic_unit_variations_count;
-    public $fill_stores_data_count;
+    // public $fill_stores_data_count;
 
-    public function calculateFillStoresDataCount($index)
-    {
-        $this->fill_stores_data_count = count(array_filter($this->fill_stores[$index]['data']));
-    }
+    // public function calculateFillStoresDataCount($index)
+    // {
+    //     $this->fill_stores_data_count = count(array_filter($this->fill_stores[$index]['data']));
+    // }
 
 
     public function calculateBasicUnitVariationsCount()
