@@ -812,7 +812,7 @@ class Edit extends Component
                 ]);
             }
             $this->saveTransaction($product->id);
-             DB::commit();
+//             DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
             return redirect()->route('initial-balance.edit', $this->stockId);
         }
@@ -843,7 +843,7 @@ class Edit extends Component
                 'quantity' => $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : 0,
                 'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
                 'sell_price' => null,
-                'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
+                'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price']) / $this->num_uf($this->exchange_rate)   : null,
                 'dollar_sell_price' =>  null,
                 'dollar_sub_total' =>  null,
                 'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
@@ -881,7 +881,7 @@ class Edit extends Component
                             'bonus_quantity' => !empty($price['bonus_quantity']) ? $this->num_uf($price['bonus_quantity']) : null,
                             'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : null,
                             'created_by' => Auth::user()->id,
-                            'dinar_total_price' => !empty($price['dinar_total_price']) ? $this->num_uf($price['total_price'])  : null,
+                            'dinar_total_price' => !empty($price['dinar_total_price']) ? $this->num_uf($price['dinar_total_price'])  : null,
                             'total_price' => !empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null,
                             'dinar_piece_price' => !empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price'])  : null,
                             'piece_price' => !empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null,
@@ -1027,7 +1027,7 @@ class Edit extends Component
                                         'bonus_quantity' => !empty($price['bonus_quantity']) ? $this->num_uf($price['bonus_quantity']) : null,
                                         'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : null,
                                         'created_by' => Auth::user()->id,
-                                        'dinar_total_price' => !empty($price['dinar_total_price']) ? $this->num_uf($price['total_price'])  : null,
+                                        'dinar_total_price' => !empty($price['dinar_total_price']) ? $this->num_uf($price['dinar_total_price'])  : null,
                                         'total_price' => !empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null,
                                         'dinar_piece_price' => !empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price'])  : null,
                                         'piece_price' => !empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null,
@@ -1418,15 +1418,6 @@ class Edit extends Component
             if ($row_index >= 0) {
                 $customer_type = $this->prices[$key]['price_customer_types'];
 
-//                foreach ($this->rows as $rowPrice){
-//                    foreach ($rowPrice['prices'] as $index => $price) {
-//                        if ($price['customer_type_id'] == $customer_type) {
-//                            unset($this->rows[$key]['prices'][$index]);
-//                        }
-//                    }
-//                    $rowPrice['prices'] = array_values($rowPrice['prices']);
-//                }
-
                 // Determine the amount of discount in dinars and dollars
                 $amountOfDiscountInDinar = $this->prices[$key]['price_type'] == 'percentage' ?
                     ($this->num_uf($this->prices[$key]['dinar_price']) * 0.01) : ($this->num_uf($this->prices[$key]['dinar_price']));
@@ -1460,7 +1451,10 @@ class Edit extends Component
                             }
 
                             // Calculate the price after discount
-                            if ($this->prices[$key]['discount_from_original_price']) {
+                            $check_discount_from_original_price = ($this->prices[$key]['dinar_price_after_desc'] == $this->prices[$key]['dinar_piece_price']
+                                || $this->prices[$key]['price_after_desc'] == $this->prices[$key]['piece_price']) ? 0 : 1;
+
+                            if ($check_discount_from_original_price) {
                                 $dinar_price_value = $this->num_uf($this->rows[$row_index]['prices'][$index]['dinar_sell_price']) - $amountOfDiscountInDinar;
                                 $price_value = $this->num_uf($this->rows[$row_index]['prices'][$index]['dollar_sell_price']) - $amountOfDiscountInDollar;
                                 $total_price_in_dinar = $dinar_price_value * $this->num_uf($this->prices[$key]['discount_quantity']);
@@ -1517,7 +1511,8 @@ class Edit extends Component
                     }
                 }
             }
-        } else {
+        }
+        else {
             foreach ($this->prices as $i => $price) {
                 if ($i != $key) {
                     if ($fill_id == $price['fill_id']) {
@@ -1602,7 +1597,7 @@ class Edit extends Component
                                 $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']));
                             }
                         }
-                        $dollar_price = number_format($this->num_uf($actual_price), num_of_digital_numbers());
+                        $dollar_price = number_format($this->num_uf($actual_price)  / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                     } else {
                         $dollar_price = number_format($this->num_uf($this->prices[$index]['dinar_price']) / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                     }
@@ -1611,13 +1606,18 @@ class Edit extends Component
                     $this->prices[$index]['price'] = $this->num_uf($dollar_price);
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($this->num_uf($sell_price) - $this->num_uf($this->prices[$index]['dinar_price']), num_of_digital_numbers());
                     $this->prices[$index]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) - $this->num_uf($this->prices[$index]['price']), num_of_digital_numbers());
-                } elseif ($this->prices[$index]['price_type'] === 'percentage') {
-                    $percent = $this->num_uf($this->prices[$index]['dinar_price'])  / 100;
-                    $this->prices[$index]['dinar_price_after_desc'] = number_format(($this->num_uf($sell_price) - ($percent * $this->num_uf($sell_price))), num_of_digital_numbers());
-                    $this->prices[$index]['price_after_desc'] = number_format(($this->num_uf($dollar_sell_price) - ($percent * $this->num_uf($dollar_sell_price))), num_of_digital_numbers());
+                }
+                elseif ($this->prices[$index]['price_type'] === 'percentage') {
+//                    $percent = $this->num_uf($this->prices[$index]['dinar_price'])  / 100;
+//                    $this->prices[$index]['dinar_price_after_desc'] = number_format(($this->num_uf($sell_price) - ($percent * $this->num_uf($sell_price))), num_of_digital_numbers());
+//                    $this->prices[$index]['price_after_desc'] = number_format(($this->num_uf($dollar_sell_price) - ($percent * $this->num_uf($dollar_sell_price))), num_of_digital_numbers());
+//                    dd($this->prices[$index]['dinar_price_after_desc']);
+                    $this->prices[$index]['dinar_price_after_desc'] = $this->prices[$index]['dinar_price_after_desc'];
+                    $this->prices[$index]['price_after_desc'] = $this->prices[$index]['price_after_desc'];
                     $this->prices[$index]['price'] = $this->num_uf($this->prices[$index]['dinar_price']);
                 }
-            } else {
+            }
+            else {
                 if ($this->prices[$index]['price_type'] == "fixed") {
                     if ($this->transaction_currency == 2) {
                         if (!empty($this->prices[$index]['dinar_price'])) {
@@ -1628,18 +1628,19 @@ class Edit extends Component
                                 $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']));
                             }
                         }
-                        $dollar_price = number_format($this->num_uf($actual_price), num_of_digital_numbers());
+                        $dollar_price = number_format($this->num_uf($actual_price) / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                     } else {
                         $dollar_price = number_format($this->num_uf($this->prices[$index]['dinar_price']) / $this->num_uf($this->exchange_rate), num_of_digital_numbers());
                     }
                     $this->prices[$index]['price'] = $this->num_uf($dollar_price);
-                    // dd($sell_price);
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($this->num_uf($sell_price) - $this->num_uf($this->prices[$index]['dinar_price']), num_of_digital_numbers());
                     $this->prices[$index]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) - $this->num_uf($this->prices[$index]['price']), num_of_digital_numbers());
                 } else {
-                    $percent = $this->num_uf($this->prices[$index]['dinar_price'])  / 100;
-                    $this->prices[$index]['dinar_price_after_desc'] = number_format(($this->num_uf($sell_price) - ($percent * $this->num_uf($sell_price))), num_of_digital_numbers());
-                    $this->prices[$index]['price_after_desc'] = number_format(($this->num_uf($dollar_sell_price) - ($percent * $this->num_uf($dollar_sell_price))), num_of_digital_numbers());
+//                    $percent = $this->num_uf($this->prices[$index]['dinar_price'])  / 100;
+//                    $this->prices[$index]['dinar_price_after_desc'] = number_format(($this->num_uf($sell_price) - ($percent * $this->num_uf($sell_price))), num_of_digital_numbers());
+//                    $this->prices[$index]['price_after_desc'] = number_format(($this->num_uf($dollar_sell_price) - ($percent * $this->num_uf($dollar_sell_price))), num_of_digital_numbers());
+                    $this->prices[$index]['dinar_price_after_desc'] = $this->prices[$index]['dinar_price_after_desc'];
+                    $this->prices[$index]['price_after_desc'] = $this->prices[$index]['price_after_desc'];
                     $this->prices[$index]['price'] = $this->num_uf($this->prices[$index]['dinar_price']);
                 }
             }
