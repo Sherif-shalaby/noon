@@ -388,21 +388,21 @@
                 </div>
 
                 {{-- +++++++++++ الخصم دينار +++++++++++ --}}
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        {!! Form::label('discount', 'الخصم دينار', [
-                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
-                        'style' => 'width:100%;font-weight: 700;font-size: 10px',
-                        ]) !!}
-                        {!! Form::number('discount', null, [
-                        'class' => 'form-control p-1',
-                        'style' => 'height:30px',
+{{--                <div class="col-sm-2">--}}
+{{--                    <div class="form-group">--}}
+{{--                        {!! Form::label('discount', 'الخصم دينار', [--}}
+{{--                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',--}}
+{{--                        'style' => 'width:100%;font-weight: 700;font-size: 10px',--}}
+{{--                        ]) !!}--}}
+{{--                        {!! Form::number('discount', null, [--}}
+{{--                        'class' => 'form-control p-1',--}}
+{{--                        'style' => 'height:30px',--}}
 
-                        'wire:model' => 'discount',
-                        'wire:change' => 'changeTotal',
-                        ]) !!}
-                    </div>
-                </div>
+{{--                        'wire:model' => 'discount',--}}
+{{--                        'wire:change' => 'changeTotal',--}}
+{{--                        ]) !!}--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 {{-- +++++++++++ النهائي دينار +++++++++++ --}}
                 <div class="col-sm-2">

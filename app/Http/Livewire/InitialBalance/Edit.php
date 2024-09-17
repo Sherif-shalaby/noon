@@ -709,12 +709,12 @@ class Edit extends Component
 
     public function edit()
     {
-         try {
+//         try {
         if (empty($this->rows)) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
         }
         else {
-             DB::beginTransaction();
+//             DB::beginTransaction();
             // Add stock transaction
             //Edit Product
             $product = Product::find($this->item[0]['id']);
@@ -816,10 +816,10 @@ class Edit extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
             return redirect()->route('initial-balance.edit', $this->stockId);
         }
-         } catch (\Exception $e) {
-             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
-             dd($e);
-         }
+//         } catch (\Exception $e) {
+//             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
+//             dd($e);
+//         }
     }
     public function saveTransaction($product_id, $variations = [])
     {
@@ -886,6 +886,7 @@ class Edit extends Component
                             'dinar_piece_price' => !empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price'])  : null,
                             'piece_price' => !empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null,
                         ];
+
                         if (!empty($price['id'])) {
                             if (!empty(ProductPrice::find($price['id']))) {
                                 ProductPrice::find($price['id'])->update($price_data);
