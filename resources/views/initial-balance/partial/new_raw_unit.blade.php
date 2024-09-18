@@ -199,8 +199,8 @@
                         !=0) disabled @endif wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                         placeholder="{{ __('lang.price') }}">
                     <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                        style='font-weight:500;font-size:12px;color:#888'>{{ isset($rows[$index]['prices'][$key]['dollar_sell_price']) &&
-                        $rows[$index]['prices'][$key]['dollar_sell_price'] }}
+                        style='font-weight:500;font-size:12px;color:#888'>{{ isset($rows[$index]['prices'][$key]['dollar_sell_price']) ?
+                        $rows[$index]['prices'][$key]['dollar_sell_price'] : 0 }}
                         $</span>
                     @error('rows.' . $index . 'prices' . $key . '.dinar_sell_price')
                     <label class="text-danger validation-error error-msg">{{ $message }}</label>
