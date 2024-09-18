@@ -18,7 +18,6 @@
                 <label class="text-danger validation-error error-msg">{{ $message }}</label>
                 @enderror
             </div>
-
             <div
                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                 <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
@@ -40,7 +39,7 @@
                             {{ $index == 0 ? __('lang.choose_big_unit') : __('lang.choose_small_unit') }}
                         </option>
                         @foreach ($units as $unit)
-                        <option value="{{ $unit->id }}" {{ $rows[$index]['unit_id']==$unit->id ? 'selected' : '' }}>
+                        <option value="{{ $unit->id }}" {{ isset($rows[$index]['unit_id']) &&  $rows[$index]['unit_id']==$unit->id ? 'selected' : '' }}>
                             {{ $unit->name }}</option>
                         @endforeach
                     </select>
@@ -114,7 +113,7 @@
                     <button class="plus-button h-100 py-1 px-1 " data-bs-toggle=" collapse"
                         data-bs-target="#panelsStayOpen-collapse{{ $index }}" data-index="{{ $index }}"
                         aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}" wire:click="stayShow">
-                        @if ($rows[$index]['show_prices'])
+                        @if (isset($rows[$index]['show_prices']) && $rows[$index]['show_prices'])
                         <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
                         @else
                         <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
@@ -126,7 +125,7 @@
         </div>
     </div>
 
-    <div class="accordion-collapse @if ($rows[$index]['show_prices']) show @endif  collapse">
+    <div class="accordion-collapse @if (isset($rows[$index]['show_prices']) && $rows[$index]['show_prices']) show @endif  collapse">
         @foreach ($rows[$index]['prices'] as $key => $price)
         <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             <div
@@ -151,7 +150,7 @@
                 <div class="mb-2  d-flex flex-column mx-2 align-items-end " style="width: 130px">
                     <div class="d-flex justify-content-between">
                         <label class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                            style='font-weight:500;font-size:10px;color:#333'>{{
+                            style='font-weight:500;font-size:10px;color:#333'>{{ isset($rows[$index]['prices'][$key]['customer_name']) &&
                             $rows[$index]['prices'][$key]['customer_name'] }}</label>
                         <span style='font-weight:500;font-size:10px;color:#333'>
                             :
@@ -172,10 +171,10 @@
                                 flex-wrap: nowrap;
                                 margin-bottom: 10px;" @if ($index !=0) disabled @endif
                         wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
-                        placeholder="{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
+                        placeholder="{{ isset($rows[$index]['prices'][$key]['customer_name']) &&  $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
                         wire:change="changeIncrease({{ $index }},{{ $key }})">
                     <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                        style='font-weight:500;font-size:12px;color:#888'>{{
+                        style='font-weight:500;font-size:12px;color:#888'>{{ isset($rows[$index]['prices'][$key]['dollar_increase']) &&
                         $rows[$index]['prices'][$key]['dollar_increase'] ?? 0 }}
                         $</span>
                     @error('rows.' . $index . 'prices' . $key . '.dinar_increase')
@@ -200,7 +199,7 @@
                         !=0) disabled @endif wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                         placeholder="{{ __('lang.price') }}">
                     <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                        style='font-weight:500;font-size:12px;color:#888'>{{
+                        style='font-weight:500;font-size:12px;color:#888'>{{ isset($rows[$index]['prices'][$key]['dollar_sell_price']) &&
                         $rows[$index]['prices'][$key]['dollar_sell_price'] }}
                         $</span>
                     @error('rows.' . $index . 'prices' . $key . '.dinar_sell_price')
