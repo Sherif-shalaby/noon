@@ -751,7 +751,7 @@ class Edit extends Component
 
     public function edit()
     {
-        dd(1);
+//        dd(1);
         //         try {
         if (empty($this->rows)) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
