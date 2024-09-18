@@ -751,7 +751,6 @@ class Edit extends Component
 
     public function edit()
     {
-//        dd(1);
         //         try {
         if (empty($this->rows)) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
@@ -1597,7 +1596,7 @@ class Edit extends Component
                 if ($i == $key) {
                     if ($this->prices[$key]['fill_id'] == $price['fill_id']) {
 //                        unset($this->prices[$i]);
-                        $this->deteted_prices[] = $this->prices[$i];
+                        $this->deteted_prices[] = $this->prices[$key]['id'];
                         unset($this->prices[$key]);
                     }
                 }
