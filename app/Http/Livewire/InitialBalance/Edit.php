@@ -321,11 +321,12 @@ class Edit extends Component
             'dinar_total_price' => null,
             'piece_price' => null,
             'dinar_piece_price' => null,
-            'discount_from_original_price' => false,
-            //            'apply_on_all_customers' => 0,
-
+            'apply_on_all_customers' => 0,
+            'parent_price' => 0,
+            'discount_from_original_price' => true,
         ];
-        array_unshift($this->prices, $new_price);
+        $this->prices[] = $new_price;
+
     }
 
     public function  changeFill($index)
@@ -750,6 +751,7 @@ class Edit extends Component
 
     public function edit()
     {
+        dd(1);
         //         try {
         if (empty($this->rows)) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
@@ -1589,17 +1591,20 @@ class Edit extends Component
 
     public function delete_price_raw($key)
     {
-        if ($this->prices[$key]['apply_on_all_customers']) {
+//        dd($this->prices,$key);
+//        if ($this->prices[$key]['apply_on_all_customers']) {
             foreach ($this->prices as $i => $price) {
-                if ($i != $key) {
+                if ($i == $key) {
                     if ($this->prices[$key]['fill_id'] == $price['fill_id']) {
-                        unset($this->prices[$i]);
+//                        unset($this->prices[$i]);
+                        $this->deteted_prices[] = $this->prices[$i];
+                        unset($this->prices[$key]);
                     }
                 }
             }
-        }
-        $this->deteted_prices[] = $this->prices[$key]['id'];
-        unset($this->prices[$key]);
+//        }
+//        $this->deteted_prices[] = $this->prices[$key]['id'];
+//        unset($this->prices[$key]);
     }
     public function delete_store_raw($key)
     {

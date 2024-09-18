@@ -1358,7 +1358,7 @@ class Create extends Component
     public function changePrice($index, $via = 'price')
     {
         //here $index as parameter not make change
-        $index = 0;
+//        $index = 0;
         $fill_id = $this->prices[$index]['fill_id'] ?? 0;
         $row_index = $this->getKey($fill_id) ?? 0;
 
