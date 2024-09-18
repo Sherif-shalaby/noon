@@ -1082,19 +1082,10 @@ class Create extends Component
             'quantity' => '',
         ];
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
-
-        // $this->calculateFillStoresDataCount($index);
     }
 
 
     public $basic_unit_variations_count;
-    // public $fill_stores_data_count;
-
-    // public function calculateFillStoresDataCount($index)
-    // {
-    //     $this->fill_stores_data_count = count(array_filter($this->fill_stores[$index]['data']));
-    // }
-
 
     public function calculateBasicUnitVariationsCount()
     {

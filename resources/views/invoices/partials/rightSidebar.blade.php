@@ -133,8 +133,8 @@
                     @endif
                     @if (!empty($variationSums))
                     @foreach ($variationSums as $unit_name => $variant)
-                            {{__('lang.extra_quantity') }}:
-                            <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant['extra_qty'] }}</span>
+                    {{__('lang.extra_quantity') }}:
+                    <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant['extra_qty'] }}</span>
 
                     {{ $unit_name == '' ? __('lang.no_units') : $unit_name }}:
                     <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant['qty'] }}
@@ -205,8 +205,8 @@
                     'style' => 'width:100%;font-weight: 700;font-size: 10px',
                     ]) !!}
                     <div class="input-wrapper width-full">
-                        {!! Form::number('dollar_loading_cost', null, [
-                        'class' => 'form-control initial-balance-input width-full m-0',
+                        {!! Form::text('dollar_loading_cost', null, [
+                        'class' => 'form-control formatted_number initial-balance-input width-full m-0',
                         'wire:model' => 'dollar_loading_cost',
                         'placeholder' => __('lang.loading_cost') . ' $',
                         ]) !!}
@@ -218,14 +218,15 @@
                     </div>
                 </div>
                 {{-- +++++++++++ الاجمالي بالدولار +++++++++++ --}}
+
                 <div class="col-sm-2 dollar-cell showHideDollarCells {{ $toggle_dollar == '1' ? 'd-none' : '' }}">
                     <div class="form-group">
                         {!! Form::label('dollar_grand_total', 'الاجمالي بالدولار', [
                         'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
-                        {!! Form::number('dollar_grand_total', $total_dollar, [
-                        'class' => 'form-control p-1',
+                        {!! Form::text('dollar_grand_total',number_format($total_dollar), [
+                        'class' => 'form-control formatted_number p-1',
                         'style' => 'height:30px',
                         'data-live-search' => 'true',
                         'readonly',
@@ -236,20 +237,20 @@
                 </div>
 
                 {{-- +++++++++++ الخصم دولار +++++++++++ --}}
-{{--                <div class="col-sm-2 dollar-cell showHideDollarCells">--}}
-{{--                    <div class="form-group">--}}
-{{--                        {!! Form::label('dollar_discount', 'الخصم دولار', [--}}
-{{--                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',--}}
-{{--                        'style' => 'width:100%;font-weight: 700;font-size: 10px',--}}
-{{--                        ]) !!}--}}
-{{--                        {!! Form::number('dollar_discount', null, [--}}
-{{--                        'class' => 'form-control p-1',--}}
-{{--                        'style' => 'height:30px',--}}
-{{--                        'wire:model' => 'discount_dollar',--}}
-{{--                        'wire:change' => 'changeDollarTotal',--}}
-{{--                        ]) !!}--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                {{-- <div class="col-sm-2 dollar-cell showHideDollarCells">--}}
+                    {{-- <div class="form-group">--}}
+                        {{-- {!! Form::label('dollar_discount', 'الخصم دولار', [--}}
+                        {{-- 'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',--}}
+                        {{-- 'style' => 'width:100%;font-weight: 700;font-size: 10px',--}}
+                        {{-- ]) !!}--}}
+                        {{-- {!! Form::number('dollar_discount', null, [--}}
+                        {{-- 'class' => 'form-control p-1',--}}
+                        {{-- 'style' => 'height:30px',--}}
+                        {{-- 'wire:model' => 'discount_dollar',--}}
+                        {{-- 'wire:change' => 'changeDollarTotal',--}}
+                        {{-- ]) !!}--}}
+                        {{-- </div>--}}
+                    {{-- </div>--}}
 
                 {{-- +++++++++++ النهائي دولار +++++++++++ --}}
                 <div class="col-sm-2 dollar-cell showHideDollarCells">
@@ -258,8 +259,8 @@
                         'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
-                        {!! Form::number('dollar_final_total', $dollar_final_total, [
-                        'class' => 'form-control p-1',
+                        {!! Form::text('dollar_final_total', number_format($dollar_final_total), [
+                        'class' => 'form-control formatted_number p-1',
                         'style' => 'height:30px',
                         'readonly',
                         ]) !!}
@@ -273,8 +274,8 @@
                         'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
-                        {!! Form::number('dollar_amount', null, [
-                        'class' => 'form-control p-1',
+                        {!! Form::text('dollar_amount', null, [
+                        'class' => 'form-control formatted_number p-1',
                         'style' => 'height:30px',
                         'wire:model' => 'dollar_amount',
                         'wire:change' => 'changeReceivedDollar',
@@ -361,8 +362,8 @@
                     'style' => 'width:100%;font-weight: 700;font-size: 10px',
                     ]) !!}
                     <div class="input-wrapper width-full">
-                        {!! Form::number('loading_cost', null, [
-                        'class' => 'form-control initial-balance-input width-full m-0',
+                        {!! Form::text('loading_cost', null, [
+                        'class' => 'form-control formatted_number initial-balance-input width-full m-0',
                         'wire:model' => 'loading_cost',
                         'placeholder' => __('lang.loading_cost'),
                         ]) !!}
@@ -370,39 +371,42 @@
                 </div>
 
                 {{-- +++++++++++ الاجمالي بالدينار +++++++++++ --}}
+
                 <div class="col-sm-2">
                     <div class="form-group">
                         {!! Form::label('grand_total', 'الاجمالي بالدينار', [
                         'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
-                        {!! Form::number('grand_total', $total, [
-                        'class' => 'form-control p-1',
+                        {!! Form::text('grand_total', number_format($total), [
+                        'class' => 'form-control formatted_number p-1',
                         'style' => 'height:30px',
                         'data-live-search' => 'true',
                         'readonly',
                         'placeholder' => __('lang.price'),
                         'wire:model' => 'total',
+
                         ]) !!}
+                        <input type="hidden" wire:model="total" id="grand_total_hidden">
                     </div>
                 </div>
 
                 {{-- +++++++++++ الخصم دينار +++++++++++ --}}
-{{--                <div class="col-sm-2">--}}
-{{--                    <div class="form-group">--}}
-{{--                        {!! Form::label('discount', 'الخصم دينار', [--}}
-{{--                        'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',--}}
-{{--                        'style' => 'width:100%;font-weight: 700;font-size: 10px',--}}
-{{--                        ]) !!}--}}
-{{--                        {!! Form::number('discount', null, [--}}
-{{--                        'class' => 'form-control p-1',--}}
-{{--                        'style' => 'height:30px',--}}
+                {{-- <div class="col-sm-2">--}}
+                    {{-- <div class="form-group">--}}
+                        {{-- {!! Form::label('discount', 'الخصم دينار', [--}}
+                        {{-- 'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',--}}
+                        {{-- 'style' => 'width:100%;font-weight: 700;font-size: 10px',--}}
+                        {{-- ]) !!}--}}
+                        {{-- {!! Form::number('discount', null, [--}}
+                        {{-- 'class' => 'form-control p-1',--}}
+                        {{-- 'style' => 'height:30px',--}}
 
-{{--                        'wire:model' => 'discount',--}}
-{{--                        'wire:change' => 'changeTotal',--}}
-{{--                        ]) !!}--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                        {{-- 'wire:model' => 'discount',--}}
+                        {{-- 'wire:change' => 'changeTotal',--}}
+                        {{-- ]) !!}--}}
+                        {{-- </div>--}}
+                    {{-- </div>--}}
 
                 {{-- +++++++++++ النهائي دينار +++++++++++ --}}
                 <div class="col-sm-2">
@@ -412,8 +416,8 @@
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
 
-                        {!! Form::number('final_total', $final_total, [
-                        'class' => 'form-control p-1',
+                        {!! Form::text('final_total',number_format($final_total), [
+                        'class' => 'form-control formatted_number p-1',
                         'style' => 'height:30px',
                         'readonly',
                         ]) !!}
@@ -427,8 +431,8 @@
                         'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
-                        {!! Form::number('amount', null, [
-                        'class' => 'form-control p-1',
+                        {!! Form::text('amount', null, [
+                        'class' => 'form-control formatted_number p-1',
                         'style' => 'height:30px',
                         'wire:model' => 'amount',
                         'wire:change' => 'changeReceivedDinar',

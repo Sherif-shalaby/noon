@@ -314,7 +314,7 @@ class Create extends Component
             }
         }
 
-        if(is_object($search_result) && count($search_result->items()) == 0){
+        if (is_object($search_result) && count($search_result->items()) == 0) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'هذا المنتج غير موجود',]);
             $search_result = '';
             $this->search_by_product_symbol = '';
@@ -1063,7 +1063,7 @@ class Create extends Component
                 // dinar_sub_total
                 $this->total += round_250($this->num_uf($item['sub_total']));
                 // dollar_sub_total
-                $this->total_dollar += $this->num_uf($item['dollar_sub_total']) ? $this->num_uf($item['dollar_sub_total']) : ($this->num_uf($item['sub_total']) / $this->num_uf($item['exchange_rate'])) ;
+                $this->total_dollar += $this->num_uf($item['dollar_sub_total']) ? $this->num_uf($item['dollar_sub_total']) : ($this->num_uf($item['sub_total']) / $this->num_uf($item['exchange_rate']));
                 $this->discount += $this->num_uf($item['discount_price']);
                 $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
                 // dd($this->total_dollar);
@@ -1486,24 +1486,22 @@ class Create extends Component
                 $this->items[$key]['discount_price']  *= $this->items[$key]['exchange_rate'];
             }
         }
-//        dd($this->items[$key],($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
-//            ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price'])));
+        //        dd($this->items[$key],($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
+        //            ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price'])));
         if ($this->items[$key]['price'] != 0) {
-            if (isset($this->items[$key]['discount_categories']) && $this->items[$key]['discount_categories'][0]['dinar_price_customers'] == $this->items[$key]['discount_categories'][0]['dinar_piece_price']){
+            if (isset($this->items[$key]['discount_categories']) && $this->items[$key]['discount_categories'][0]['dinar_price_customers'] == $this->items[$key]['discount_categories'][0]['dinar_piece_price']) {
                 //apply qty discount if exist
                 $price1st = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity']) / ($this->items[$key]['extra_quantity'] ? $this->items[$key]['quantity']  + $this->items[$key]['extra_quantity'] : $this->items[$key]['quantity']));
                 //apply price discout
                 $price2nd = $price1st - $this->items[$key]['discount_price'];
                 $this->items[$key]['sub_total'] = $price2nd * ($this->items[$key]['extra_quantity'] ? $this->items[$key]['quantity']  + $this->items[$key]['extra_quantity'] : $this->items[$key]['quantity']);
                 $this->items[$key]['sub_total'] =  number_format($this->items[$key]['sub_total'], num_of_digital_numbers());
-            }else{
+            } else {
                 $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
                     ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));
                 $this->items[$key]['sub_total'] = number_format($this->items[$key]['sub_total'], num_of_digital_numbers());
             }
-
-        }
-        elseif ($this->items[$key]['dollar_price'] != 0) {
+        } elseif ($this->items[$key]['dollar_price'] != 0) {
             $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
                 ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
         }

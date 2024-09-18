@@ -38,4 +38,21 @@
 <script src="{{ asset('salescreen/js/main.js') }}"></script>
 <script src="{{ asset('salescreen/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('salescreen/js/all.min.js') }}"></script>
+
+<script>
+    document.addEventListener('livewire:load', function () {
+    // Hook into Livewire's lifecycle to reapply JS changes after any Livewire updates
+    Livewire.hook('message.processed', (message, component) => {
+
+$('.formatted_number').each(function() {
+// Remove commas for raw number
+let rawValue = $(this).val().replace(/,/g, '');
+
+// Format the number with commas
+let formattedValue = Number(rawValue).toLocaleString();
+$(this).val(formattedValue);
+});
+    })})
+
+</script>
 @endpush

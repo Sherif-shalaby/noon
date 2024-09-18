@@ -541,33 +541,48 @@
 
                         <div class="d-flex justify-content-end my-2">
 
-                            <div class="text-center mx-1">
+
+                            <div class="text-center " style="">
+
                                 {{ $this->count_total_by_variation_stores() }}
                                 @if (!empty($variationStoreSums))
+
+
                                 @foreach ($variationStoreSums as $unitName => $variant_qty)
                                 <h2 class="items_quantity_span" style="margin-right: 15px;">
                                     {{ $unitName }} : {{ __('lang.total') }} :
-                                    {{ $variant_qty }}
+
+                                    <span class="text-primary">
+                                        {{ $variant_qty }}
+                                    </span>
                                 </h2>
                                 @endforeach
-                                <h2 style="margin-right: 15px;">
+
+
+                                <h2 class="text-primary py-2">
                                     {{ __('lang.total_stores') }} </h2>
                                 @endif
                             </div>
-                            <div class="d-flex mx-1">
+
+
+
+                            <div class="d-flex ">
 
                                 @foreach ($fill_stores as $i => $store)
-                                <div class="mx-1">
+                                <div class="d-flex flex-column justify-content-between">
 
                                     @if (!empty($this->count_fill_stores_unit($i)))
+
                                     @foreach ($this->count_fill_stores_unit($i) as $unit_name => $variant)
-                                    <div class="text-center">
+                                    <div class="text-center px-4">
                                         <h2 class="items_quantity_span" style="margin-right: 15px;">
                                             {{ $unit_name }}: {{ $variant }} </h2>
                                     </div>
                                     @endforeach
+
+
                                     @endif
-                                    <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                    <h2 class="items_quantity_span py-2 px-4 text-primary">
                                         {{ $this->getExtraFillStore($i) }}</h2>
                                 </div>
                                 @endforeach
@@ -575,16 +590,16 @@
 
 
 
-                            <div class=" text-center mx-1">
+                            <div class=" text-center ">
 
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                 @foreach ($variationSums as $unit_name => $variant)
-                                <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                <h2 class="items_quantity_span px-4" style="margin-right: 15px;">
                                     {{ $unit_name }}: {{ $variant }} </h2>
                                 @endforeach
                                 @endif
-                                <h2 class="items_quantity_span" style="margin-right: 15px;">
+                                <h2 class="items_quantity_span py-2 px-4 text-primary">
                                     {{ $this->getStore() }}</h2>
                                 </h4>
                             </div>
@@ -718,7 +733,6 @@
 
                                                         </div>
                                                     </div>
-
                                                     @endforeach
                                                     <div class=" mt-1  d-flex justify-content-center align-items-center px-1"
                                                         style="order: 1">
@@ -728,7 +742,6 @@
                                                             wire:click="addStoreDataRow({{ $i }})">
                                                             <i class="fa fa-plus"></i>
                                                         </button>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -880,13 +893,19 @@
                                     </div>
                                 </h2>
                                 <div class="d-flex flex-column  discount {{ $show_discount == 0 ? 'd-none' : '' }}">
-
+                                    <div
+                                        class="col-md-12 d-flex my-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <button type="button" class="btn btn-sm mx-1 btn-primary"
+                                            wire:click="addPriceRow()">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
                                     @foreach ($prices as $key => $price)
                                     <div wire:key='{{ $key }}'
                                         class="d-flex discount_row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  {{ $price['parent_price'] == 1 ? 'd-none' : '' }}"
                                         style="overflow-x: auto">
 
-                                        <div class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
+                                        <div class="  mb-2 d-flex flex-column
                                                     @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
                                                     pl-1" style="width:145px">
                                             {!! Form::label('price_category', __('lang.price_category'), [
@@ -900,7 +919,7 @@
                                                 wire:model="prices.{{ $key }}.price_category" maxlength="6">
                                         </div>
 
-                                        <div class="mb-2 animate__animated animate__bounceInLeft d-flex flex-column
+                                        <div class="mb-2  d-flex flex-column
                                             @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                             style="width: 100px">
                                             <label for="fill_id"
@@ -927,7 +946,7 @@
                                         </div>
 
 
-                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column
+                                        <div class=" mb-2  d-flex flex-column
                                                     @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
                                                     pl-1">
                                             {!! Form::label('price', __('lang.quantity'), [
@@ -949,7 +968,7 @@
 
 
                                         <div
-                                            class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif   pl-1">
+                                            class=" mb-2  d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif   pl-1">
                                             {!! Form::label('b_qty', __('lang.b_qty'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -968,7 +987,7 @@
                                         </div>
 
                                         {{-- we are here --}}
-                                        <div class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                        <div class="  mb-2  d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                             style="width: 100px">
                                             {!! Form::label('customer_type', __('lang.customer_type'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
@@ -1002,7 +1021,7 @@
                                         </div>
 
 
-                                        <div class="price_type  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
+                                        <div class="price_type  mb-2  d-flex flex-column
                                                                     @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
                                                                     pl-1" style="width: 100px">
                                             {!! Form::label('price_type', __('lang.type'), [
@@ -1053,7 +1072,7 @@
                                             @enderror --}}
                                         </div>
                                         <div
-                                            class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                                            class=" mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                             {!! Form::label(
                                             'price',
                                             isset($price['price_type']) && $price['price_type'] == 'fixed' ?
@@ -1083,7 +1102,7 @@
                                         </div>
 
                                         <div
-                                            class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                                            class=" mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                             {!! Form::label('', __('lang.price'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -1106,7 +1125,7 @@
                                         </div>
 
                                         <div
-                                            class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                                            class=" mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                             {!! Form::label('total_price', __('lang.total_price'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -1129,7 +1148,7 @@
                                         </div>
 
                                         <div
-                                            class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                                            class=" mb-2  d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                             {!! Form::label('piece_price', __('lang.piece_price'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2
                                             mb-0',
@@ -1151,20 +1170,21 @@
                                             </p>
                                         </div>
 
-                                        <div class=" mb-4 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-center pl-1"
+                                        <div class=" mb-4  d-flex flex-row justify-content-center  align-items-center pl-1"
                                             style="width: fit-content">
+
                                             <button type="button" class="btn btn-sm mx-1 btn-primary"
                                                 wire:click="addPriceRow()">
                                                 <i class="fa fa-plus"></i>
                                             </button>
-                                            @if ($key > 0)
+                                            {{-- @if ($key > 0) --}}
                                             <button class="btn btn-sm mx-1 btn-danger"
                                                 wire:click="delete_price_raw({{ $key }})">
                                                 <i class="fa fa-trash"></i>
                                             </button>
-                                            @endif
+                                            {{-- @endif --}}
                                         </div>
-                                        <div class=" mb-4 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-center pl-1"
+                                        <div class=" mb-4  d-flex flex-row justify-content-center  align-items-center pl-1"
                                             style="width: fit-content">
 
                                             <div class="custom-control custom-switch">
@@ -1172,7 +1192,11 @@
                                                     name="prices.{{ $key }}.apply_on_all_customers"
                                                     id="apply_on_all_customers{{ $key }}" style="font-size: 0.75rem"
                                                     wire:model="prices.{{ $key }}.apply_on_all_customers"
-                                                    wire:change="applyOnAllCustomers({{ $key }})">
+                                                    wire:change="applyOnAllCustomers({{ $key }})" @if (count($prices)>
+                                                1)
+                                                disabled
+                                                @endif
+                                                >
 
                                                 <label class="custom-control-label"
                                                     for="apply_on_all_customers{{ $key }}">@lang('lang.apply_on_all_customers')</label>
@@ -1215,7 +1239,7 @@
 
 
 
-@include('initial-balance.partial.scripts')
+@include('initial-balance.partial.create_scripts')
 
 
 @push('javascripts')
