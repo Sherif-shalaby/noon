@@ -174,8 +174,8 @@
                         placeholder="{{ isset($rows[$index]['prices'][$key]['customer_name']) &&  $rows[$index]['prices'][$key]['customer_name'] ? $rows[$index]['prices'][$key]['customer_name'] :'' }}"
                         wire:change="changeIncrease({{ $index }},{{ $key }})">
                     <span class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}"
-                        style='font-weight:500;font-size:12px;color:#888'>{{ isset($rows[$index]['prices'][$key]['dollar_increase']) &&
-                        $rows[$index]['prices'][$key]['dollar_increase'] ?? 0 }}
+                        style='font-weight:500;font-size:12px;color:#888'>{{ isset($rows[$index]['prices'][$key]['dollar_increase']) ?
+                        $rows[$index]['prices'][$key]['dollar_increase'] : 0 }}
                         $</span>
                     @error('rows.' . $index . 'prices' . $key . '.dinar_increase')
                     <label class="text-danger validation-error error-msg">{{ $message }}</label>
