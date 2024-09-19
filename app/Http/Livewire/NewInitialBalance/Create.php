@@ -82,7 +82,7 @@ class Create extends Component
             'piece_price' => null,
             'apply_on_all_customers' => 0,
             'parent_price' => 0,
-            'discount_from_original_price' => 0,
+            'discount_from_original_price' => true,
         ]
     ];
     public $fill_stores = [
@@ -1131,7 +1131,7 @@ class Create extends Component
                 'dollar_sell_price' => 0,
                 'dinar_sell_price' => null,
                 'quantity' => null,
-                'discount_from_original_price' => 1,
+                'discount_from_original_price' => true,
             ];
             array_unshift($this->rows[$index]['prices'], $new_price);
         }
