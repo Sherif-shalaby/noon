@@ -337,7 +337,7 @@ class Edit extends Component
             'dinar_piece_price' => null,
             'apply_on_all_customers' => 0,
             'parent_price' => 0,
-            'discount_from_original_price' => true,
+            'discount_from_original_price' => 0,
         ];
         $this->prices[] = $new_price;
 
@@ -461,7 +461,7 @@ class Edit extends Component
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $this->branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
-        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
+//        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         $categories = Category::orderBy('name', 'asc')->where('parent_id', 1)->pluck('name', 'id')->toArray();
         $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
@@ -577,7 +577,7 @@ class Edit extends Component
                                     'dinar_price' => $price->dinar_price,
                                     'dinar_total_price' => $price->dinar_total_price,
                                     'dinar_piece_price' => $price->dinar_piece_price,
-                                    'discount_from_original_price' => false,
+                                    'discount_from_original_price' => $price->dinar_piece_price == $price->dinar_price_customers ? false : true,
                                 ];
                                 array_unshift($this->prices, $new_price);
                             }

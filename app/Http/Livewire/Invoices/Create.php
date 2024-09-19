@@ -877,7 +877,8 @@ class Create extends Component
                 } else {
                     $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * (float)$this->items[$key]['quantity']) - ((float)$this->items[$key]['quantity'] * $this->num_uf($this->items[$key]['discount']));
                 }
-            } else if ($variationId != null) {
+            }
+            else if ($variationId != null) {
                 $get_Variation_price = VariationPrice::where('variation_id', $variationId ?? 0);
                 $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
@@ -903,6 +904,7 @@ class Create extends Component
                 //                dd($variant->variations->unit->name);
                 //                dd($current_stock->prices);
 
+
                 $new_item = [
                     'variation' => $product->variations,
                     'product' => $product,
@@ -918,14 +920,14 @@ class Create extends Component
                     'quantity_available' => $quantity_available,
                     'quantity_available_default' => $quantity_available,
                     'sub_total' => (float)1 * $this->num_uf($price),
-                    'dollar_sub_total' => (float)1 * $this->num_uf($dollar_price),
+                    'dollar_sub_total' => $price > 0 ? (float) 1 * $this->num_uf($price) / $exchange_rate : (float) 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
                     'discount_categories' => !empty($current_stock) ? $current_stock->prices()->where('price_customer_types', $get_Variation_price->first()->customer_type_id ?? 0)->get() : null,
                     'discount' => 0,
                     'discount_price' => 0,
                     'discount_type' => null,
                     'discount_category' => null,
-                    'dollar_price' => $this->num_uf($dollar_price),
+                    'dollar_price' => $price > 0 ? $this->num_uf($price) / $exchange_rate : $this->num_uf($dollar_price) ,
                     'unit_name' => !empty($variant) ? $variant->variations->unit->name : '',
                     'base_unit_multiplier' => !empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
                     'total_quantity' => !empty($product->unit) ? 1 * $product->unit->base_unit_multiplier : 1,
@@ -935,7 +937,8 @@ class Create extends Component
                 ];
 
                 $this->items[] = $new_item;
-            } else {
+            }
+            else {
                 $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id ? $product->variations()->first()->id : 0);
                 $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
@@ -984,14 +987,14 @@ class Create extends Component
                     'quantity_available' => $quantity_available,
                     'quantity_available_default' => $quantity_available,
                     'sub_total' => (float)1 * $this->num_uf($price),
-                    'dollar_sub_total' => (float)1 * $this->num_uf($dollar_price),
+                    'dollar_sub_total' => $price > 0 ? (float) 1 * $this->num_uf($price) / $exchange_rate : (float) 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
                     'discount_categories' => count($discountCate) > 0 ?  $discountCate : null,
                     'discount' => 0,
                     'discount_price' => 0,
                     'discount_type' => null,
                     'discount_category' => null,
-                    'dollar_price' => $this->num_uf($dollar_price),
+                    'dollar_price' => $price > 0 ? $this->num_uf($price) / $exchange_rate : $this->num_uf($dollar_price) ,
                     'unit_name' => !empty($variant) ? $variant->variations->unit->name : '',
                     'base_unit_multiplier' => !empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
                     'total_quantity' => !empty($product->unit) ? 1 * $product->unit->base_unit_multiplier : 1,
@@ -1074,37 +1077,39 @@ class Create extends Component
                     // dd($item_variation);
                     if ($first_variation->id === $item['unit_id']) {
                         if (System::getProperty('loading_cost_currency') == 2) {
-                            if ($item['sub_total'] > 0) {
+//                            if ($item['sub_total'] > 0) {
                                 $this->loading_cost += ($item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate'])) * ($item['quantity'] + $item['extra_quantity']);
-                            } else {
+//                            } else {
                                 $this->dollar_loading_cost += $item_variation->unit->loading_cost * ($item['quantity'] + $item['extra_quantity']);
-                            }
-                        } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
-                            if ($item['dollar_sub_total'] > 0) {
-                                $this->dollar_loading_cost += ($item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate'])) * ($item['quantity'] + $item['extra_quantity']);
-                            } else {
-                                $this->loading_cost += $item_variation->unit->loading_cost * ($item['quantity'] + $item['extra_quantity']);
-                            }
+//                            }
                         }
-                    } else {
+                        elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
+//                            if ($item['dollar_sub_total'] > 0) {
+                                $this->dollar_loading_cost += ($item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate'])) * ($item['quantity'] + $item['extra_quantity']);
+//                            } else {
+                                $this->loading_cost += $item_variation->unit->loading_cost * ($item['quantity'] + $item['extra_quantity']);
+//                            }
+                        }
+                    }
+                    else {
                         if ($item_variation->unit->loading_cost != 0) {
                             if (System::getProperty('loading_cost_currency') == 2) {
-                                if ($item['sub_total'] > 0) {
+//                                if ($item['sub_total'] > 0) {
                                     $this->loading_cost += ($item_variation->unit->loading_cost * $this->num_uf($item['exchange_rate'])) * ($item['quantity'] + $item['extra_quantity']);
-                                } else {
+//                                } else {
                                     $this->dollar_loading_cost += $item_variation->unit->loading_cost * $item['quantity'];
-                                }
+//                                }
                             } elseif (System::getProperty('loading_cost_currency') != 2 && !empty(System::getProperty('loading_cost_currency'))) {
-                                if ($item['dollar_sub_total'] > 0) {
+//                                if ($item['dollar_sub_total'] > 0) {
                                     $this->dollar_loading_cost += ($item_variation->unit->loading_cost / $this->num_uf($item['exchange_rate'])) * ($item['quantity'] + $item['extra_quantity']);
-                                } else {
+//                                } else {
                                     $this->loading_cost += $item_variation->unit->loading_cost * ($item['quantity'] + $item['extra_quantity']);
-                                }
+//                                }
                             }
-                        } else {
+                        }
+                        else {
                             $product_variations = Variation::where('product_id', $item['product']['id'])->get();
                             $qtyByUnit = 1;
-                            // dd($product_variations);
                             foreach ($product_variations as $variation) {
                                 if ($item_variation->basic_unit_id != null) {
                                     $basic_variation = Variation::where('product_id', $item['product']['id'])
@@ -1218,7 +1223,7 @@ class Create extends Component
     public function change_dollar_loading_cost_to_dinar()
     {
         $exchange_rate = System::getProperty('dollar_exchange') ?? 1;
-        $this->loading_cost += $this->dollar_loading_cost * $exchange_rate;
+        $this->loading_cost = $this->dollar_loading_cost * $exchange_rate;
         $this->dollar_loading_cost = 0;
     }
 
@@ -1486,8 +1491,7 @@ class Create extends Component
                 $this->items[$key]['discount_price']  *= $this->items[$key]['exchange_rate'];
             }
         }
-        //        dd($this->items[$key],($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity'])) -
-        //            ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price'])));
+
         if ($this->items[$key]['price'] != 0) {
             if (isset($this->items[$key]['discount_categories']) && $this->items[$key]['discount_categories'][0]['dinar_price_customers'] == $this->items[$key]['discount_categories'][0]['dinar_piece_price']) {
                 //apply qty discount if exist
@@ -1501,7 +1505,10 @@ class Create extends Component
                     ($this->num_uf($this->items[$key]['quantity']) * $this->num_uf($this->items[$key]['discount_price']));
                 $this->items[$key]['sub_total'] = number_format($this->items[$key]['sub_total'], num_of_digital_numbers());
             }
-        } elseif ($this->items[$key]['dollar_price'] != 0) {
+            $this->items[$key]['dollar_sub_total'] = $this->num_uf($this->items[$key]['sub_total']) / $this->items[$key]['exchange_rate'];
+            $this->items[$key]['dollar_sub_total']  = number_format($this->items[$key]['dollar_sub_total'],num_of_digital_numbers());
+        }
+        elseif ($this->items[$key]['dollar_price'] != 0) {
             $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity'])) -
                 ($this->num_uf($this->items[$key]['quantity']) * (float)$this->num_uf($this->items[$key]['discount_price']));
         }

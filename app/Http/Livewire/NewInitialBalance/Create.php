@@ -82,7 +82,7 @@ class Create extends Component
             'piece_price' => null,
             'apply_on_all_customers' => 0,
             'parent_price' => 0,
-            'discount_from_original_price' => true,
+            'discount_from_original_price' => 0,
         ]
     ];
     public $fill_stores = [
