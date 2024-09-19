@@ -574,7 +574,7 @@ class Edit extends Component
                                     'product_price_id' => $price->id,
                                     'total_price' => $price->total_price,
                                     'piece_price' => $price->piece_price,
-                                    'dinar_price' => $price->dinar_price,
+//                                    'dinar_price' => $price->dinar_price,
                                     'dinar_total_price' => $price->dinar_total_price,
                                     'dinar_piece_price' => $price->dinar_piece_price,
                                     'discount_from_original_price' => $price->dinar_piece_price == $price->dinar_price_customers ? false : true,
