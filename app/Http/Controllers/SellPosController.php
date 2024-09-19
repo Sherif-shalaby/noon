@@ -552,7 +552,7 @@ class SellPosController extends Controller
         return redirect()->back()->with('status', $output);
     }
     public function editInvoice($id){
-        $stores=Store::latest()->pluck('name','id')->toArray();
+        $stores = Store::latest()->pluck('name','id')->toArray();
         return view('invoices.edit',compact('id','stores'));
     }
 }

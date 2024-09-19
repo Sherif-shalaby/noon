@@ -378,7 +378,7 @@
                         'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
-                        {!! Form::text('grand_total', number_format($total), [
+                        {!! Form::text('grand_total', number_format((float)$total), [
                         'class' => 'form-control formatted_number p-1',
                         'style' => 'height:30px',
                         'data-live-search' => 'true',
@@ -416,7 +416,7 @@
                         'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
 
-                        {!! Form::text('final_total',number_format($final_total), [
+                        {!! Form::text('final_total',number_format((float)$final_total), [
                         'class' => 'form-control formatted_number p-1',
                         'style' => 'height:30px',
                         'readonly',
