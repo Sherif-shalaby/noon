@@ -901,8 +901,7 @@ class Create extends Component
                     $dollar_price = 0;
                 }
                 $variant = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first();
-                //                dd($variant->variations->unit->name);
-                //                dd($current_stock->prices);
+
 
 
                 $new_item = [
@@ -912,7 +911,7 @@ class Create extends Component
                     'customer_type_id' => $get_Variation_price->first()->customer_type_id ?? 0,
                     'quantity' => 1,
                     'extra_quantity' => 0,
-                    'price' => round($this->num_uf($price),3),
+                    'price' => $this->num_uf($price),
                     'category_id' => $product->category?->id,
                     'department_name' => $product->category?->name,
                     'client_id' => $product->customer?->id,
@@ -920,14 +919,14 @@ class Create extends Component
                     'quantity_available' => $quantity_available,
                     'quantity_available_default' => $quantity_available,
                     'sub_total' => (float)1 * $this->num_uf($price),
-                    'dollar_sub_total' => $price > 0 ? (float) 1 * $this->num_uf($price / $exchange_rate) : (float) 1 * $this->num_uf($dollar_price),
+                    'dollar_sub_total' => $price > 0 ? (float) 1 * $this->num_uf($price) / $exchange_rate : (float) 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
                     'discount_categories' => !empty($current_stock) ? $current_stock->prices()->where('price_customer_types', $get_Variation_price->first()->customer_type_id ?? 0)->get() : null,
                     'discount' => 0,
                     'discount_price' => 0,
                     'discount_type' => null,
                     'discount_category' => null,
-                    $price > 0 ? $this->num_uf($price / $exchange_rate) : $this->num_uf($dollar_price),
+                    'dollar_price' => 0 ,
                     'unit_name' => !empty($variant) ? $variant->variations->unit->name : '',
                     'base_unit_multiplier' => !empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
                     'total_quantity' => !empty($product->unit) ? 1 * $product->unit->base_unit_multiplier : 1,
@@ -979,7 +978,7 @@ class Create extends Component
                     'customer_type_id' => $get_Variation_price->first()->customer_type_id ?? 0,
                     'quantity' => 1,
                     'extra_quantity' => 0,
-                    'price' => round($this->num_uf($price),3),
+                    'price' => $this->num_uf($price),
                     'category_id' => $product->category?->id,
                     'department_name' => $product->category?->name,
                     'client_id' => $product->customer?->id,
@@ -987,14 +986,14 @@ class Create extends Component
                     'quantity_available' => $quantity_available,
                     'quantity_available_default' => $quantity_available,
                     'sub_total' => (float)1 * $this->num_uf($price),
-                    'dollar_sub_total' => $price > 0 ? (float) 1 * $this->num_uf($price / $exchange_rate) : (float) 1 * $this->num_uf($dollar_price),
+                    'dollar_sub_total' => $price > 0 ? (float) 1 * $this->num_uf($price) / $exchange_rate : (float) 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
                     'discount_categories' => count($discountCate) > 0 ?  $discountCate : null,
                     'discount' => 0,
                     'discount_price' => 0,
                     'discount_type' => null,
                     'discount_category' => null,
-                    'dollar_price' => $price > 0 ? $this->num_uf($price / $exchange_rate) : $this->num_uf($dollar_price),
+                    'dollar_price' => 0 ,
                     'unit_name' => !empty($variant) ? $variant->variations->unit->name : '',
                     'base_unit_multiplier' => !empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
                     'total_quantity' => !empty($product->unit) ? 1 * $product->unit->base_unit_multiplier : 1,
