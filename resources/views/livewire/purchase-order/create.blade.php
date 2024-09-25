@@ -17,8 +17,8 @@
                                 <div class="col-md-3 animate__animated animate__bounceInRight"
                                     style="animation-delay: 1.1s">
                                     <div class="i-checks">
-                                        <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox" @if
-                                            (isset($clear_all_input_stock_form) && $clear_all_input_stock_form=='1' )
+                                        <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
+                                               @if(isset($clear_all_input_stock_form) && $clear_all_input_stock_form =='1' )
                                             checked @endif class="">
                                         <label for="clear_all_input_form" style="font-size: 0.75rem" class="mb-0">
                                             <strong>

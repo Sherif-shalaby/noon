@@ -56,7 +56,7 @@ class Create extends Component
 {
     use WithFileUploads;
     protected $rules = [
-        // 'store_id' => 'required',
+//         'store_id' => 'required',
         'supplier' => 'required',
         // 'paying_currency' => 'required',
         'purchase_type' => 'required',
@@ -483,7 +483,8 @@ class Create extends Component
         }
         if ($this->toggle_customers_dropdown) {
             $this->rules['customer_id'] = 'required';
-        } else {
+        }
+        else {
             $this->rules['supplier'] = 'required';
         }
         if ($this->payment_status != 'pending') {
@@ -492,7 +493,6 @@ class Create extends Component
         }
         // dd($this->rules);
         $this->validate();
-
 
         try {
             if (!empty($this->po_id)) {
@@ -522,7 +522,7 @@ class Create extends Component
             $transaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
             $transaction->dollar_grand_total = $this->toggle_dollar == "0" ? $this->num_uf($this->sum_dollar_total_cost()) : 0;
             $transaction->dollar_final_total = $this->toggle_dollar == "0" ? $this->num_uf($this->dollar_final_total()) : 0;
-            $transaction->dinar_remaining = $this->num_uf($this->dinar_remaining);
+            $transaction->dinar_remaining = $this->payment_status == 'partial' ? $this->num_uf($this->amount) - $this->num_uf($this->total_amount) : $this->num_uf($this->dinar_remaining);
             $transaction->dollar_remaining = $this->toggle_dollar == "0" ? $this->num_uf($this->dollar_remaining) : 0;
             $transaction->notes = !empty($this->notes) ? $this->notes : null;
             $transaction->notify_before_days = !empty($this->notify_before_days) ? $this->notify_before_days : 0;
@@ -716,8 +716,6 @@ class Create extends Component
                 // $payment->amount_change_dinar = $this->amount_change_dinar;
                 // $payment->amount_change_dollar = $this->amount_change_dollar;
 
-
-
                 //upload Documents
                 if ($this->upload_documents) {
                     $payment->upload_documents = store_file($this->upload_documents, 'stock_transaction_payment');
@@ -801,7 +799,8 @@ class Create extends Component
             DB::commit();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'lang.success',]);
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
@@ -937,7 +936,7 @@ class Create extends Component
 
     public function add_product($id, $add_via = null, $index = null, $new_unit_raw = 0)
     {
-        if (!empty($this->searchProduct)) {
+         if (!empty($this->searchProduct)) {
             $this->searchProduct = '';
         }
         if (!empty($this->search_by_product_symbol)) {
@@ -947,10 +946,12 @@ class Create extends Component
         $product = Product::find($id);
         $stock = $product->stock_lines->last();
         $variations = $product->variations;
+
         if ($add_via == 'unit') {
             $show_product_data = false;
             $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
-        } else {
+        }
+        else {
             if (!empty($this->items) && $new_unit_raw == 0) {
                 $newArr = array_filter($this->items, function ($item) use ($product) {
                     return $item['product']['id'] == $product->id;
@@ -978,10 +979,19 @@ class Create extends Component
     public function addNewProduct($variations, $product, $show_product_data, $index = null, $stock)
     {
         $current_stock = $product->stock_lines->sum('quantity', '-', 'quantity_sold');
+        $stores = ProductStore::where('product_id', $product->id)->get();
+
         if (!empty($variations)) {
             $variant = !empty($stock) ? Variation::find($stock->variation_id) : Variation::find($variations->first()->id ?? 0);
         }
-        $customer_prices = $this->addCustomersPrice();
+        $variations_prices = $variations->mapWithKeys(function ($variation) {
+            return [
+                $variation->id => $variation->prices()->with('customer_type')->get(),
+            ];
+        })->toArray();
+        $choosesVariation = !empty($stock) ? $stock->variation_id : ($variations->first()->id ?? null);
+
+        $customer_prices = $this->addCustomersPrice($variations_prices[$choosesVariation]);
         $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
@@ -1160,32 +1170,59 @@ class Create extends Component
         array_unshift($this->items[$index]['prices'], $new_price);
     }
 
-    public function addCustomersPrice()
+    public function addCustomersPrice($variations_prices = [])
     {
         $customer_prices = [];
+        if (count($variations_prices) > 0){
+            foreach ($variations_prices as $variation_price) {
+                $new_price = [
+                    'customer_type_id' => $variation_price['customer_type']['id'],
+                    'customer_name' => $variation_price['customer_type']['name'],
+                    'percent' => $variation_price['percent'],
+                    'dollar_increase' => $variation_price['dollar_increase'],
+                    'dinar_increase' => $variation_price['dinar_increase'],
+                    'dollar_sell_price' => $variation_price['dollar_sell_price'],
+                    'dinar_sell_price' => $variation_price['dinar_sell_price'],
+                    'quantity' => null,
+                ];
+                array_unshift($customer_prices, $new_price);
+            }
+        }else{
+            foreach ($this->customer_types as $customer_type) {
 
-        foreach ($this->customer_types as $customer_type) {
-            $new_price = [
-                'customer_type_id' => $customer_type->id,
-                'customer_name' => $customer_type->name,
-                'percent' => null,
-                'dollar_increase' => null,
-                'dinar_increase' => null,
-                'dollar_sell_price' => null,
-                'dinar_sell_price' => null,
-                'quantity' => null,
-            ];
-            array_unshift($customer_prices, $new_price);
+                $new_price = [
+                    'customer_type_id' => $customer_type->id,
+                    'customer_name' => $customer_type->name,
+                    'percent' => null,
+                    'dollar_increase' => null,
+                    'dinar_increase' => null,
+                    'dollar_sell_price' => null,
+                    'dinar_sell_price' => null,
+                    'quantity' => null,
+                ];
+                array_unshift($customer_prices, $new_price);
+            }
         }
+
         return $customer_prices;
     }
 
     public function addStoreRow($index)
     {
-        $customer_prices = $this->addCustomersPrice();
+
+        $variations_prices = collect($this->items[$index]['variations'])->mapWithKeys(function ($variation) {
+                return [
+                    $variation['id'] => VariationPrice::where('variation_id',$variation['id'])->with('customer_type')->get(),
+                ];
+        })->toArray();
+        unset($variations_prices[$this->items[$index]['variation_id']]);
+
+        $firstIndex = array_key_first($variations_prices);
+        $customer_prices = $this->addCustomersPrice($variations_prices[$firstIndex]);
+
         $new_store = [
-            'variations' => $this->items[$index]['variations'],
-            'variation_id' => null,
+            'variations' => isset($new_variations) ? $new_variations : $this->items[$index]['variations'],
+            'variation_id' => isset($firstIndex) ? $firstIndex : null,
             'product' => $this->items[$index]['product'],
             'purchase_price' =>  null,
             'dollar_purchase_price' =>  null,
@@ -1222,9 +1259,9 @@ class Create extends Component
             'dollar_purchase_after_discount' => null,
             'discount_on_bonus_quantity' => true,
         ];
-        //        dd($new_store);
         array_unshift($this->items[$index]['stores'], $new_store);
     }
+
     public function changePercent($index, $key, $via = null, $i = null)
     {
         if (!empty($this->items[$index]['used_currency'])) {
@@ -1385,11 +1422,13 @@ class Create extends Component
 
     public function getVariationData($index, $via = null, $i = null)
     {
+
         if ($via == 'stores') {
             $variant = Variation::find($this->items[$index]['stores'][$i]['variation_id']);
             if (!empty($variant)) {
                 $product_data = Product::find($variant->product_id);
                 $product = $this->items[$index]['stores'][$i]['product'];
+                $customer_prices = $this->addCustomersPrice();
                 if (!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id == $variant->id) {
                     $this->items[$index]['stores'][$i]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size : 0;
                     $this->items[$index]['stores'][$i]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
@@ -1404,9 +1443,12 @@ class Create extends Component
                 $this->items[$index]['unit'] = $variant->unit->name ?? '';
                 $this->items[$index]['stores'][$i]['base_unit_multiplier'] = $variant->equal ?? 0;
                 $this->items[$index]['unit_sku'] = $variant->sku;
+                $this->items[$index]['stores'][$i]['customer_prices'] = $customer_prices;
+
             }
             $this->getSubUnits($index, 'stores', $i);
-        } else {
+        }
+        else {
             $variant = Variation::find($this->items[$index]['variation_id']);
             $product_data = Product::find($this->items[$index]['product']['id']);
             if (!empty($variant)) {
@@ -1417,12 +1459,14 @@ class Create extends Component
                     $dimension_variation = Variation::find($product_data->product_dimensions->variation_id);
                     if (isset($variant->unit_id) && $dimension_variation->unit_id == $variant->unit_id) {
                         $qty_difference = 1;
-                    } elseif (isset($variant->unit_id) && $dimension_variation->basic_unit_id == $variant->unit_id) {
+                    }
+                    elseif (isset($variant->unit_id) && $dimension_variation->basic_unit_id == $variant->unit_id) {
                         if (count($dimension_variation->variation_equals) > 0) {
                             $qtyByUnit = 1 / $dimension_variation->variation_equals()->latest()->first()->equal;
                             $qty_difference = $qtyByUnit * 1;
                         }
-                    } else {
+                    }
+                    else {
                         if ($variant->id > $dimension_variation->id) {
                             $variants = Variation::where('id', '<=', $variant->id)
                                 ->where('id', '>', $dimension_variation->id)->get();

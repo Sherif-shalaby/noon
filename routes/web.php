@@ -184,18 +184,18 @@ Route::group(['middleware' => ['auth']], function () {
     // fetch "sub_categories3" of selected "sub_categories2" selectbox
     Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_sub_categories3']);
     Route::get('product/add_product_raw', [ProductController::class,'addProductRow']);
-    
+
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
     Route::resource('customers', CustomerController::class);
-    
-    
-    
-    
-    
+
+
+
+
+
     ###################عمل مطابقة فواتير العملاء ######################################
-    
+
     // Route::post('update-confirm-status', 'CustomerController@updateConfirmStatus');
     Route::post('/updateConfirmStatus',[CustomerController::class,'updateConfirmStatus']);
 
@@ -289,25 +289,25 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('get-due-report', GetDueReportController::class);
     // ########### Supplier Report ###########
     Route::resource('get-supplier-report', SupplierReportController::class);
-    
+
 
 
         // ########### product transaction Report ###########
-        
-        
+
+
         Route::resource('ProductReport', productTransacrionReport::class);
         Route::get('getProductReport', [productTransacrionReport::class, 'getProductReport'])->name('getProductReport');
-        
-        
+
+
         // ########### product transaction Report ###########
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
     // ########### Customers Report ###########
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
@@ -316,10 +316,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('report/get-profit-loss', [ProfitReportController::class,'index'])->name('profit_report');
 
     // ########### Sales Per Employee Report ###########
-
     Route::resource('sales-per-employee', SalesPerEmployeeReportController::class);
+
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
+
     // ajax request : get_product_search
     Route::get('get-dashboard-data/{start_date}/{end_date}',  [ProfitReportController::class,'getDashboardData']);
 

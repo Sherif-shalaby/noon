@@ -434,6 +434,7 @@ return array(
     'product_quantity_alert_report' => 'تقرير تنبيه كمية المنتج',
     'product_quantity' => 'كمية المنتج',
     'dues' => 'الرسوم',
+    'dinar_remaining' => 'المتبقي',
     'user_report' => 'تقرير المستخدم',
     'customer_report' => 'تقرير العملاء',
     // supplier_report

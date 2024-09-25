@@ -1,7 +1,6 @@
 <div
     class="col-md-3 mb-2 align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields {{ $payment_status != 'pending' ? '' : 'd-none' }}">
-    <div
-        class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+    <div class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
 
         {!! Form::label('amount', __('lang.amount'), [
         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -12,6 +11,8 @@
                 class="form-control initial-balance-input m-0" wire:model="total_amount"
                 wire:change="changeReceivedDinar()">
         </div>
+
+
         @if ($dinar_remaining > 0)
         <span wire:model="dinar_remaining">Change: {{ $dinar_remaining }}</span>
         @endif
@@ -20,6 +21,24 @@
         @enderror
     </div>
 </div>
+
+
+<div
+    class="col-md-3 mb-2 align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields {{ $payment_status != 'pending' ? '' : 'd-none' }}">
+    <div class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+        {!! Form::label('amount', __('lang.dinar_remaining'), [
+                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                'style' => 'font-size: 12px;font-weight: 500;',
+                ]) !!}
+        <div class="input-wrapper">
+            <input style="width: 100%" type="number" placeholder="{{ $amount - $total_amount }}"
+                   class="form-control initial-balance-input m-0" wire:model="dinar_remaining" disabled>
+        </div>
+
+    </div>
+</div>
+
+
 
 <div
     class="col-md-3 mb-2  align-items-center dollar-cell  showHideDollarCells animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields {{ $payment_status != 'pending' ? '' : 'd-none' }}">

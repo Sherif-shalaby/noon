@@ -736,7 +736,6 @@
             <span class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
-
         <div class="animate__animated  animate__bounceInLeft d-flex flex-column store_drop_down  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
             style="width: 100px;min-height: 60px;">
             <label for="unit" class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"

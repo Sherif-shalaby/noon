@@ -48,9 +48,7 @@
                     <div class="card-body py-0 px-0">
                         <div class="col-md-12">
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-
-                                <div
-                                    class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                <div class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                                     {!! Form::label('invoice_no', __('lang.invoice_no'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -860,6 +858,8 @@
                                             autocomplete="off" fdprocessedid="pipnea" wire:model="due_date">
                                     </div>
                                 </div>
+
+
 
                                 {{-- <div
                                     class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none {{ $show_payment == 1 ? 'd-none' : '' }}">
