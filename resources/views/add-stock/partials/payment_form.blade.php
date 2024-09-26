@@ -22,7 +22,7 @@
     </div>
 </div>
 
-
+@if($payment_status == 'partial')
 <div
     class="col-md-3 mb-2 align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields {{ $payment_status != 'pending' ? '' : 'd-none' }}">
     <div class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
@@ -37,6 +37,7 @@
 
     </div>
 </div>
+@endif
 
 
 

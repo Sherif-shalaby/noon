@@ -624,6 +624,8 @@ class Create extends Component
                         $Variation_price->customer_type_id = $price['customer_type_id'] ?? null;
                         $Variation_price->dinar_sell_price = $this->num_uf($price['dinar_sell_price']) ?? null;
                         $Variation_price->dollar_sell_price = $this->toggle_dollar == "0" ? ($this->num_uf($price['dollar_sell_price']) ?? null) : 0;
+                        $Variation_price->dinar_increase = $this->num_uf($price['dinar_increase']) ?? null;
+                        $Variation_price->dollar_increase = $price['dollar_increase'] > 0 ? $this->num_uf($price['dollar_increase']) : $this->num_uf($price['dinar_increase']) / $this->exchange_rate;
                         $Variation_price->percent = $price['percent'] ?? null;
                         $Variation_price->save();
                         $add_variation_stock_data = [
@@ -948,7 +950,8 @@ class Create extends Component
         if ($add_via == 'unit') {
             $show_product_data = false;
             $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
-        } else {
+        }
+        else {
             if (!empty($this->items) && $new_unit_raw == 0) {
                 $newArr = array_filter($this->items, function ($item) use ($product) {
                     return $item['product']['id'] == $product->id;
@@ -961,11 +964,13 @@ class Create extends Component
                     $item = $this->items[$key];
                     array_splice($this->items, $key, 1);
                     array_unshift($this->items, $item);
-                } else {
+                }
+                else {
                     $show_product_data = true;
                     $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
                 }
-            } else {
+            }
+            else {
                 $show_product_data = true;
                 $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
             }
@@ -983,12 +988,13 @@ class Create extends Component
         }
         $variations_prices = $variations->mapWithKeys(function ($variation) {
             return [
-                $variation->id => $variation->prices()->with('customer_type')->get(),
+                $variation->id => $variation->prices()->with('customer_type')->latest()->take(4)->get(),
             ];
         })->toArray();
         $choosesVariation = !empty($stock) ? $stock->variation_id : ($variations->first()->id ?? null);
 
         $customer_prices = $this->addCustomersPrice($variations_prices[$choosesVariation]);
+
         $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
@@ -1207,56 +1213,48 @@ class Create extends Component
     public function addStoreRow($index)
     {
 
-        $variations_prices = collect($this->items[$index]['variations'])->mapWithKeys(function ($variation) {
-            return [
-                $variation['id'] => VariationPrice::where('variation_id', $variation['id'])->with('customer_type')->get(),
-            ];
-        })->toArray();
-        unset($variations_prices[$this->items[$index]['variation_id']]);
+        $this->add_product($this->items[$index]['product']['id'],'unit',$index);
 
-        $firstIndex = array_key_first($variations_prices);
-        $customer_prices = $this->addCustomersPrice($variations_prices[$firstIndex]);
-
-        $new_store = [
-            'variations' => isset($new_variations) ? $new_variations : $this->items[$index]['variations'],
-            'variation_id' => isset($firstIndex) ? $firstIndex : null,
-            'product' => $this->items[$index]['product'],
-            'purchase_price' =>  null,
-            'dollar_purchase_price' =>  null,
-            'purchase_price_span' => null,
-            'dollar_purchase_price_span' =>  null,
-            'dollar_selling_price' =>  null,
-            'selling_price' =>  null,
-            'selling_price_span' =>  null,
-            'dollar_selling_price_span' =>  null,
-            'quantity' => 1,
-            'unit' =>  '',
-            'base_unit_multiplier' =>  0,
-            'fill_type' => 'fixed',
-            'sub_total' => 0,
-            'dollar_sub_total' => 0,
-            'size' => 0,
-            'total_size' => 0,
-            'weight' => 0,
-            'total_weight' => 0,
-            'dollar_cost' => 0,
-            'cost' => 0,
-            'dollar_total_cost' => 0,
-            'total_cost' => 0,
-            'current_stock' => $this->items[$index]['current_stock'],
-            'total_stock' => $this->items[$index]['current_stock'] + 1,
-            'fill_quantity' =>  null,
-            'used_currency' => null,
-            'store_id' => null,
-            'customer_prices' => $customer_prices,
-            'units' => [],
-            'dollar_purchase_discount' => null,
-            'dollar_purchase_discount_percent' => null,
-            'purchase_after_discount' => null,
-            'dollar_purchase_after_discount' => null,
-            'discount_on_bonus_quantity' => true,
-        ];
-        array_unshift($this->items[$index]['stores'], $new_store);
+//        $new_store = [
+//            'variations' => isset($new_variations) ? $new_variations : $this->items[$index]['variations'],
+//            'variation_id' => isset($firstIndex) ? $firstIndex : null,
+//            'product' => $this->items[$index]['product'],
+//            'purchase_price' =>  null,
+//            'dollar_purchase_price' =>  null,
+//            'purchase_price_span' => null,
+//            'dollar_purchase_price_span' =>  null,
+//            'dollar_selling_price' =>  null,
+//            'selling_price' =>  null,
+//            'selling_price_span' =>  null,
+//            'dollar_selling_price_span' =>  null,
+//            'quantity' => 1,
+//            'unit' =>  '',
+//            'base_unit_multiplier' =>  0,
+//            'fill_type' => 'fixed',
+//            'sub_total' => 0,
+//            'dollar_sub_total' => 0,
+//            'size' => 0,
+//            'total_size' => 0,
+//            'weight' => 0,
+//            'total_weight' => 0,
+//            'dollar_cost' => 0,
+//            'cost' => 0,
+//            'dollar_total_cost' => 0,
+//            'total_cost' => 0,
+//            'current_stock' => $this->items[$index]['current_stock'],
+//            'total_stock' => $this->items[$index]['current_stock'] + 1,
+//            'fill_quantity' =>  null,
+//            'used_currency' => null,
+//            'store_id' => null,
+//            'customer_prices' => $customer_prices,
+//            'units' => [],
+//            'dollar_purchase_discount' => null,
+//            'dollar_purchase_discount_percent' => null,
+//            'purchase_after_discount' => null,
+//            'dollar_purchase_after_discount' => null,
+//            'discount_on_bonus_quantity' => true,
+//        ];
+//        array_unshift($this->items[$index]['stores'], $new_store);
     }
 
     public function changePercent($index, $key, $via = null, $i = null)
@@ -1424,14 +1422,19 @@ class Create extends Component
             $variant = Variation::find($this->items[$index]['stores'][$i]['variation_id']);
             if (!empty($variant)) {
                 $product_data = Product::find($variant->product_id);
+
                 $product = $this->items[$index]['stores'][$i]['product'];
-                $customer_prices = $this->addCustomersPrice();
+
+                $variations = VariationPrice::where('variation_id', $variant->id)->with('customer_type')->latest()->take(4)->get()->toArray();
+                $customer_prices = $this->addCustomersPrice($variations);
+
                 if (!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id == $variant->id) {
                     $this->items[$index]['stores'][$i]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size : 0;
                     $this->items[$index]['stores'][$i]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
                     $this->items[$index]['stores'][$i]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight : 0;
                     $this->items[$index]['stores'][$i]['total_weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * 1 : 0;
-                } else {
+                }
+                else {
                     $this->items[$index]['stores'][$i]['size'] = 0;
                     $this->items[$index]['stores'][$i]['total_size'] = 0;
                     $this->items[$index]['stores'][$i]['weight'] = 0;
@@ -1442,12 +1445,17 @@ class Create extends Component
                 $this->items[$index]['unit_sku'] = $variant->sku;
                 $this->items[$index]['stores'][$i]['customer_prices'] = $customer_prices;
             }
+
             $this->getSubUnits($index, 'stores', $i);
-        } else {
+        }
+        else {
             $variant = Variation::find($this->items[$index]['variation_id']);
             $product_data = Product::find($this->items[$index]['product']['id']);
             if (!empty($variant)) {
-                $product_variations = Variation::where('product_id', $variant->product_id)->get();
+                $variations = VariationPrice::where('variation_id', $variant->id)->with('customer_type')->latest()->take(4)->get()->toArray();
+
+                $customer_prices = $this->addCustomersPrice($variations);
+
                 $qty_difference = 0;
                 $qtyByUnit = 1;
                 if (!empty($product_data->product_dimensions) && !empty($product_data->product_dimensions->variation_id)) {
@@ -1489,6 +1497,7 @@ class Create extends Component
                 $this->items[$index]['unit'] = $variant->unit->name ?? '';
                 $this->items[$index]['base_unit_multiplier'] = $variant->equal ?? 0;
                 $this->items[$index]['unit_sku'] = $variant->sku;
+                $this->items[$index]['customer_prices'] = $customer_prices;
             }
             $this->getSubUnits($index);
         }

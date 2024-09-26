@@ -1043,6 +1043,7 @@
 <div class="d-flex justify-content-start align-items-center mt-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif"
     style="overflow-x: auto;">
     <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        @if(isset($store['customer_prices']) && count($store['customer_prices']) > 0)
         @foreach ($store['customer_prices'] as $key => $price)
         <div
             class=" @if ($key % 2 == 0) bg-white @else bg-dark-gray @endif mx-1 px-2 rounded-lg d-flex justify-content-center align-items-start">
@@ -1098,6 +1099,7 @@
             </div>
         </div>
         @endforeach
+        @endif
 
         <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center align-items-center mt-1"
             style="width: 85px;background-color: #596fd7;color: white;border-radius: 6px">
@@ -1105,7 +1107,7 @@
                 class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                 style='font-weight:500;font-size:10px;color:white!important'>{{ __('lang.new_stock') }}</label>
             <span class="current_stock_text" style="font-weight: 600">
-                {{ $store['total_stock'] }}
+                {{ isset($store['total_stock']) ? $store['total_stock'] : ($product['stores'][$index]['total_stock']) }}
             </span>
         </div>
 
