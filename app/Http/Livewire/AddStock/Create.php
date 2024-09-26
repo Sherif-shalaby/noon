@@ -56,7 +56,7 @@ class Create extends Component
 {
     use WithFileUploads;
     protected $rules = [
-//         'store_id' => 'required',
+        //         'store_id' => 'required',
         'supplier' => 'required',
         // 'paying_currency' => 'required',
         'purchase_type' => 'required',
@@ -483,8 +483,7 @@ class Create extends Component
         }
         if ($this->toggle_customers_dropdown) {
             $this->rules['customer_id'] = 'required';
-        }
-        else {
+        } else {
             $this->rules['supplier'] = 'required';
         }
         if ($this->payment_status != 'pending') {
@@ -799,8 +798,7 @@ class Create extends Component
             DB::commit();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'lang.success',]);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
@@ -936,7 +934,7 @@ class Create extends Component
 
     public function add_product($id, $add_via = null, $index = null, $new_unit_raw = 0)
     {
-         if (!empty($this->searchProduct)) {
+        if (!empty($this->searchProduct)) {
             $this->searchProduct = '';
         }
         if (!empty($this->search_by_product_symbol)) {
@@ -950,8 +948,7 @@ class Create extends Component
         if ($add_via == 'unit') {
             $show_product_data = false;
             $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
-        }
-        else {
+        } else {
             if (!empty($this->items) && $new_unit_raw == 0) {
                 $newArr = array_filter($this->items, function ($item) use ($product) {
                     return $item['product']['id'] == $product->id;
@@ -1173,7 +1170,7 @@ class Create extends Component
     public function addCustomersPrice($variations_prices = [])
     {
         $customer_prices = [];
-        if (count($variations_prices) > 0){
+        if (count($variations_prices) > 0) {
             foreach ($variations_prices as $variation_price) {
                 $new_price = [
                     'customer_type_id' => $variation_price['customer_type']['id'],
@@ -1187,7 +1184,7 @@ class Create extends Component
                 ];
                 array_unshift($customer_prices, $new_price);
             }
-        }else{
+        } else {
             foreach ($this->customer_types as $customer_type) {
 
                 $new_price = [
@@ -1211,9 +1208,9 @@ class Create extends Component
     {
 
         $variations_prices = collect($this->items[$index]['variations'])->mapWithKeys(function ($variation) {
-                return [
-                    $variation['id'] => VariationPrice::where('variation_id',$variation['id'])->with('customer_type')->get(),
-                ];
+            return [
+                $variation['id'] => VariationPrice::where('variation_id', $variation['id'])->with('customer_type')->get(),
+            ];
         })->toArray();
         unset($variations_prices[$this->items[$index]['variation_id']]);
 
@@ -1444,11 +1441,9 @@ class Create extends Component
                 $this->items[$index]['stores'][$i]['base_unit_multiplier'] = $variant->equal ?? 0;
                 $this->items[$index]['unit_sku'] = $variant->sku;
                 $this->items[$index]['stores'][$i]['customer_prices'] = $customer_prices;
-
             }
             $this->getSubUnits($index, 'stores', $i);
-        }
-        else {
+        } else {
             $variant = Variation::find($this->items[$index]['variation_id']);
             $product_data = Product::find($this->items[$index]['product']['id']);
             if (!empty($variant)) {
@@ -1459,14 +1454,12 @@ class Create extends Component
                     $dimension_variation = Variation::find($product_data->product_dimensions->variation_id);
                     if (isset($variant->unit_id) && $dimension_variation->unit_id == $variant->unit_id) {
                         $qty_difference = 1;
-                    }
-                    elseif (isset($variant->unit_id) && $dimension_variation->basic_unit_id == $variant->unit_id) {
+                    } elseif (isset($variant->unit_id) && $dimension_variation->basic_unit_id == $variant->unit_id) {
                         if (count($dimension_variation->variation_equals) > 0) {
                             $qtyByUnit = 1 / $dimension_variation->variation_equals()->latest()->first()->equal;
                             $qty_difference = $qtyByUnit * 1;
                         }
-                    }
-                    else {
+                    } else {
                         if ($variant->id > $dimension_variation->id) {
                             $variants = Variation::where('id', '<=', $variant->id)
                                 ->where('id', '>', $dimension_variation->id)->get();

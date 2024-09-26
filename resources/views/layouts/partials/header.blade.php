@@ -15,12 +15,12 @@
                 alt="collapse">
         </button>
         {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> --}}
-        <div class="collapse navbar-collapse" id="menu">
-            <ul style="width: 100%"
-                class="horizontal-menu navbar-nav d-flex flex-wrap justify-content-start mt-md-0 @if (app()->isLocale('ar')) flex-column flex-md-row-reverse @else flex-row @endif">
-                {{-- ###################### Dashboard : نظرة عامة ###################### --}}
-                {{-- @can('dashboard')  --}}
-                @if (!empty($module_settings['dashboard']))
+            <div class="collapse navbar-collapse" id="menu">
+                <ul style="width: 100%"
+                    class="horizontal-menu navbar-nav d-flex flex-wrap justify-content-start mt-md-0 @if (app()->isLocale('ar')) flex-column flex-md-row-reverse @else flex-row @endif">
+                    {{-- ###################### Dashboard : نظرة عامة ###################### --}}
+                    {{-- @can('dashboard') --}}
+                    @if (!empty($module_settings['dashboard']))
                     <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a target="_blank"
                             class="home-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center"
@@ -84,15 +84,16 @@
                                     </g>
                                 </svg>
                             </div>
-                            {{-- <img src="{{ asset('images/topbar/dashboard.png') }}" class="img-fluid pl-1" alt="dashboard"> --}}
+                            {{-- <img src="{{ asset('images/topbar/dashboard.png') }}" class="img-fluid pl-1"
+                                alt="dashboard"> --}}
                             <span class="mx-2" style="font-weight: 600">{{ __('lang.dashboard') }}</span>
                         </a>
                     </li>
-                @endif
-                {{-- @endcan --}}
-                {{-- ###################### Products : المنتجات ###################### --}}
-                {{-- @can('product_module')  --}}
-                @if (!empty($module_settings['product_module']))
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### Products : المنتجات ###################### --}}
+                    {{-- @can('product_module') --}}
+                    @if (!empty($module_settings['product_module']))
                     <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a class="products-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center"
                             href="{{ route('products.create') }}" target="_blank"
@@ -101,63 +102,63 @@
                                 <img src="{{ asset('images/navbar/products.svg') }}" alt="{{ __('lang.products') }}">
                             </div>
                             {{-- <img src="{{ asset('images/topbar/dairy-products.png') }}" class="img-fluid pl-1"
-                            alt="widgets">< --}}
-                            <span class="mx-2" style="font-weight: 600">{{ __('lang.products') }}</span>
+                                alt="widgets">
+                            < --}} <span class="mx-2" style="font-weight: 600">{{ __('lang.products') }}</span>
                         </a>
                     </li>
-                @endif
-                {{-- @endcan --}}
-                {{-- ###################### Cashier : المبيعات ###################### --}}
-                {{-- @can('cashier_module') --}}
-                @if (!empty($module_settings['cashier_module']))
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### Cashier : المبيعات ###################### --}}
+                    {{-- @can('cashier_module') --}}
+                    @if (!empty($module_settings['cashier_module']))
                     <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a class="cashier-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             target="_blank" href="{{ route('pos.index') }}"
                             style="cursor: pointer;text-decoration: none;height: 100%;">
-                            {{-- <img
-                            src="{{ asset('images/topbar/cashier-machine.png') }}" class="img-fluid pl-1"
-                            alt="apps"> --}}
+                            {{-- <img src="{{ asset('images/topbar/cashier-machine.png') }}" class="img-fluid pl-1"
+                                alt="apps"> --}}
                             <div style="width: 25px" class="d-flex align-items-center">
                                 <img src="{{ asset('images/navbar/pos.svg') }}" alt="{{ __('lang.sells') }}">
                             </div>
                             <span class="mx-2" style="font-weight: 600">{{ __('lang.sells') }}</span>
                         </a>
                     </li>
-                @endif
-                {{-- @endcan --}}
-                {{-- ###################### Task 03-01-2024 : Cash : نقدي ###################### --}}
-                {{-- @can('cashier_module') --}}
-                {{-- @if (!empty($module_settings['cashier_module'])) --}}
-                <li class="scroll  mx-2 mb-0 p-0" style="height: 40px;">
-                    <a target="_blank"
-                        class="cash-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                        href="{{ route('cash.index') }}" style="cursor: pointer;text-decoration: none;height: 100%;">
-                        <div style="width: 25px" class="d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512"
-                                style="enable-background:new 0 0 512 512" xml:space="preserve">
-                                <path style="fill:#ace5ac"
-                                    d="M482.358 363.789H29.642c-11.906 0-21.558-9.651-21.558-21.558V169.768c0-11.906 9.651-21.558 21.558-21.558h452.716c11.906 0 21.558 9.651 21.558 21.558v172.463c0 11.907-9.652 21.558-21.558 21.558z" />
-                                <path style="fill:#699e69"
-                                    d="M460.8 331.453H51.2c-5.953 0-10.779-4.826-10.779-10.779V191.326c0-5.953 4.826-10.779 10.779-10.779h409.6c5.953 0 10.779 4.826 10.779 10.779v129.347c0 5.954-4.826 10.78-10.779 10.78z" />
-                                <path style="fill:#febd4b"
-                                    d="M315.284 385.347H196.716c-5.953 0-10.779-4.826-10.779-10.779V137.432c0-5.953 4.826-10.779 10.779-10.779h118.568c5.953 0 10.779 4.826 10.779 10.779v237.137c0 5.953-4.826 10.778-10.779 10.778z" />
-                                <path style="fill:#c1c1c1" d="M288.337 385.347h-64.674V126.653h64.674v258.694z" />
-                                <path style="fill:#81bc82"
-                                    d="M137.432 256c0 14.882-12.065 26.947-26.947 26.947S83.537 270.882 83.537 256s12.065-26.947 26.947-26.947 26.948 12.064 26.948 26.947zm264.084-26.947c-14.883 0-26.947 12.065-26.947 26.947s12.065 26.947 26.947 26.947 26.947-12.065 26.947-26.947-12.065-26.947-26.947-26.947z" />
-                                <path
-                                    d="M75.453 256c0 19.317 15.715 35.032 35.032 35.032s35.032-15.715 35.032-35.032-15.715-35.032-35.032-35.032S75.453 236.683 75.453 256zm53.894 0c0 10.401-8.463 18.863-18.863 18.863S91.621 266.401 91.621 256s8.463-18.863 18.863-18.863 18.863 8.462 18.863 18.863zm-97.01 64.674V191.326c0-10.401 8.463-18.863 18.863-18.863h107.789a8.082 8.082 0 0 1 8.084 8.084 8.082 8.082 0 0 1-8.084 8.084H51.2a2.697 2.697 0 0 0-2.695 2.695v129.347a2.697 2.697 0 0 0 2.695 2.695h107.789a8.082 8.082 0 0 1 8.084 8.084 8.082 8.082 0 0 1-8.084 8.084H51.2c-10.401.001-18.863-8.462-18.863-18.862zM436.547 256c0-19.317-15.715-35.032-35.032-35.032-19.317 0-35.032 15.715-35.032 35.032s15.715 35.032 35.032 35.032c19.318 0 35.032-15.715 35.032-35.032zm-53.894 0c0-10.401 8.463-18.863 18.863-18.863 10.401 0 18.863 8.463 18.863 18.863 0 10.401-8.463 18.863-18.863 18.863-10.401 0-18.863-8.462-18.863-18.863zm99.705-115.874H334.147v-2.695c0-10.401-8.463-18.863-18.863-18.863H196.716c-10.401 0-18.863 8.463-18.863 18.863v2.695H29.642C13.298 140.126 0 153.424 0 169.768v172.463c0 16.344 13.298 29.642 29.642 29.642h148.211v2.695c0 10.401 8.463 18.863 18.863 18.863h118.568c10.401 0 18.863-8.463 18.863-18.863v-2.695h148.211c16.344 0 29.642-13.298 29.642-29.642V169.768c0-16.344-13.298-29.642-29.642-29.642zM177.853 355.705H29.642c-7.43 0-13.474-6.044-13.474-13.474V169.768c0-7.43 6.044-13.474 13.474-13.474h148.211v199.411zm140.126 18.863a2.697 2.697 0 0 1-2.695 2.695h-18.863V202.105c0-4.466-3.618-8.084-8.084-8.084s-8.084 3.618-8.084 8.084v175.158h-48.505v-56.589c0-4.466-3.618-8.084-8.084-8.084s-8.084 3.618-8.084 8.084v56.589h-18.863a2.697 2.697 0 0 1-2.695-2.695V137.432a2.697 2.697 0 0 1 2.695-2.695h18.863v153.6c0 4.466 3.618 8.084 8.084 8.084s8.084-3.618 8.084-8.084v-153.6h48.505v35.032c0 4.466 3.618 8.084 8.084 8.084s8.084-3.618 8.084-8.084v-35.032h18.863a2.697 2.697 0 0 1 2.695 2.695v237.136zm177.853-32.336c0 7.43-6.044 13.474-13.474 13.474H334.147V156.295h148.211c7.43 0 13.474 6.044 13.474 13.474v172.463zm-16.169-150.906v129.347c0 10.401-8.463 18.863-18.863 18.863H355.166a8.082 8.082 0 0 1-8.084-8.084 8.082 8.082 0 0 1 8.084-8.084H460.8a2.697 2.697 0 0 0 2.695-2.695V191.326a2.697 2.697 0 0 0-2.695-2.695H353.01a8.082 8.082 0 0 1-8.084-8.084 8.082 8.082 0 0 1 8.084-8.084H460.8c10.401 0 18.863 8.463 18.863 18.863z" />
-                            </svg>
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### Task 03-01-2024 : Cash : نقدي ###################### --}}
+                    {{-- @can('cashier_module') --}}
+                    {{-- @if (!empty($module_settings['cashier_module'])) --}}
+                    <li class="scroll  mx-2 mb-0 p-0" style="height: 40px;">
+                        <a target="_blank"
+                            class="cash-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            href="{{ route('cash.index') }}"
+                            style="cursor: pointer;text-decoration: none;height: 100%;">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512"
+                                    style="enable-background:new 0 0 512 512" xml:space="preserve">
+                                    <path style="fill:#ace5ac"
+                                        d="M482.358 363.789H29.642c-11.906 0-21.558-9.651-21.558-21.558V169.768c0-11.906 9.651-21.558 21.558-21.558h452.716c11.906 0 21.558 9.651 21.558 21.558v172.463c0 11.907-9.652 21.558-21.558 21.558z" />
+                                    <path style="fill:#699e69"
+                                        d="M460.8 331.453H51.2c-5.953 0-10.779-4.826-10.779-10.779V191.326c0-5.953 4.826-10.779 10.779-10.779h409.6c5.953 0 10.779 4.826 10.779 10.779v129.347c0 5.954-4.826 10.78-10.779 10.78z" />
+                                    <path style="fill:#febd4b"
+                                        d="M315.284 385.347H196.716c-5.953 0-10.779-4.826-10.779-10.779V137.432c0-5.953 4.826-10.779 10.779-10.779h118.568c5.953 0 10.779 4.826 10.779 10.779v237.137c0 5.953-4.826 10.778-10.779 10.778z" />
+                                    <path style="fill:#c1c1c1" d="M288.337 385.347h-64.674V126.653h64.674v258.694z" />
+                                    <path style="fill:#81bc82"
+                                        d="M137.432 256c0 14.882-12.065 26.947-26.947 26.947S83.537 270.882 83.537 256s12.065-26.947 26.947-26.947 26.948 12.064 26.948 26.947zm264.084-26.947c-14.883 0-26.947 12.065-26.947 26.947s12.065 26.947 26.947 26.947 26.947-12.065 26.947-26.947-12.065-26.947-26.947-26.947z" />
+                                    <path
+                                        d="M75.453 256c0 19.317 15.715 35.032 35.032 35.032s35.032-15.715 35.032-35.032-15.715-35.032-35.032-35.032S75.453 236.683 75.453 256zm53.894 0c0 10.401-8.463 18.863-18.863 18.863S91.621 266.401 91.621 256s8.463-18.863 18.863-18.863 18.863 8.462 18.863 18.863zm-97.01 64.674V191.326c0-10.401 8.463-18.863 18.863-18.863h107.789a8.082 8.082 0 0 1 8.084 8.084 8.082 8.082 0 0 1-8.084 8.084H51.2a2.697 2.697 0 0 0-2.695 2.695v129.347a2.697 2.697 0 0 0 2.695 2.695h107.789a8.082 8.082 0 0 1 8.084 8.084 8.082 8.082 0 0 1-8.084 8.084H51.2c-10.401.001-18.863-8.462-18.863-18.862zM436.547 256c0-19.317-15.715-35.032-35.032-35.032-19.317 0-35.032 15.715-35.032 35.032s15.715 35.032 35.032 35.032c19.318 0 35.032-15.715 35.032-35.032zm-53.894 0c0-10.401 8.463-18.863 18.863-18.863 10.401 0 18.863 8.463 18.863 18.863 0 10.401-8.463 18.863-18.863 18.863-10.401 0-18.863-8.462-18.863-18.863zm99.705-115.874H334.147v-2.695c0-10.401-8.463-18.863-18.863-18.863H196.716c-10.401 0-18.863 8.463-18.863 18.863v2.695H29.642C13.298 140.126 0 153.424 0 169.768v172.463c0 16.344 13.298 29.642 29.642 29.642h148.211v2.695c0 10.401 8.463 18.863 18.863 18.863h118.568c10.401 0 18.863-8.463 18.863-18.863v-2.695h148.211c16.344 0 29.642-13.298 29.642-29.642V169.768c0-16.344-13.298-29.642-29.642-29.642zM177.853 355.705H29.642c-7.43 0-13.474-6.044-13.474-13.474V169.768c0-7.43 6.044-13.474 13.474-13.474h148.211v199.411zm140.126 18.863a2.697 2.697 0 0 1-2.695 2.695h-18.863V202.105c0-4.466-3.618-8.084-8.084-8.084s-8.084 3.618-8.084 8.084v175.158h-48.505v-56.589c0-4.466-3.618-8.084-8.084-8.084s-8.084 3.618-8.084 8.084v56.589h-18.863a2.697 2.697 0 0 1-2.695-2.695V137.432a2.697 2.697 0 0 1 2.695-2.695h18.863v153.6c0 4.466 3.618 8.084 8.084 8.084s8.084-3.618 8.084-8.084v-153.6h48.505v35.032c0 4.466 3.618 8.084 8.084 8.084s8.084-3.618 8.084-8.084v-35.032h18.863a2.697 2.697 0 0 1 2.695 2.695v237.136zm177.853-32.336c0 7.43-6.044 13.474-13.474 13.474H334.147V156.295h148.211c7.43 0 13.474 6.044 13.474 13.474v172.463zm-16.169-150.906v129.347c0 10.401-8.463 18.863-18.863 18.863H355.166a8.082 8.082 0 0 1-8.084-8.084 8.082 8.082 0 0 1 8.084-8.084H460.8a2.697 2.697 0 0 0 2.695-2.695V191.326a2.697 2.697 0 0 0-2.695-2.695H353.01a8.082 8.082 0 0 1-8.084-8.084 8.082 8.082 0 0 1 8.084-8.084H460.8c10.401 0 18.863 8.463 18.863 18.863z" />
+                                </svg>
 
-                        </div>
-                        <span class="mx-2" style="font-weight: 600">{{ __('lang.cash') }}</span>
-                    </a>
-                </li>
-                {{-- </li> --}}
-                {{-- @endif --}}
-                {{-- @endcan --}}
-                {{-- ###################### Purchases : المشتريات ###################### --}}
-                {{-- @can('stock_module') --}}
-                @if (!empty($module_settings['stock_module']))
+                            </div>
+                            <span class="mx-2" style="font-weight: 600">{{ __('lang.cash') }}</span>
+                        </a>
+                    </li>
+                    {{-- </li> --}}
+                    {{-- @endif --}}
+                    {{-- @endcan --}}
+                    {{-- ###################### Purchases : المشتريات ###################### --}}
+                    {{-- @can('stock_module') --}}
+                    @if (!empty($module_settings['stock_module']))
                     <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a target="_blank"
                             class="purchases-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
@@ -199,14 +200,13 @@
                                 </svg>
 
                             </div>
-                            {{-- <img
-                            src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid pl-1"
-                            alt="components"> --}}
+                            {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid pl-1"
+                                alt="components"> --}}
                             <span class="mx-2" style="font-weight: 600">{{ __('lang.stock') }}</span>
                         </a>
                     </li>
-                @endif
-                @if (!empty($module_settings['stock_module']))
+                    @endif
+                    @if (!empty($module_settings['stock_module']))
                     <li class="scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a target="_blank"
                             class="initial-balance-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
@@ -216,56 +216,62 @@
                                 <img src="{{ asset('images/navbar/balance.svg') }}"
                                     alt="{{ __('lang.initial_balance') }}">
                             </div>
-                            {{-- <img
-                            src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid pl-1"
-                            alt="components"> --}}
+                            {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid pl-1"
+                                alt="components"> --}}
                             <span class="mx-2" style="font-weight: 600">{{ __('lang.initial_balance') }}</span>
                         </a>
                     </li>
-                @endif
-                {{-- @endcan --}}
-                {{-- ###################### Purchase_Order : امر شراء ###################### --}}
-                <li class="scroll mx-2 mb-0 p-0 dropdown" style="height: 40px;">
-                    <a href="javaScript:void();"
-                        class="d-flex purchases-order-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                        style="height: 100%;" data-toggle="dropdown">
-                        <div style="width: 25px" class="d-flex align-items-center">
-                            <img src="{{ asset('images/navbar/purchase_order.svg') }}"
-                                alt="{{ __('lang.purchase_order') }}">
-                        </div>
-                        <span class="mx-2" style="font-weight: 600">{{ __('lang.purchase_order') }}</span>
-                    </a>
-                    <ul
-                        class="dropdown-menu list-style-none
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### Purchase_Order : امر شراء ###################### --}}
+                    <li class="scroll mx-2 mb-0 p-0 dropdown" style="height: 40px;">
+                        <a href="javaScript:void();"
+                            class="d-flex purchases-order-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                            style="height: 100%;" data-toggle="dropdown">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <img src="{{ asset('images/navbar/purchase_order.svg') }}"
+                                    alt="{{ __('lang.purchase_order') }}">
+                            </div>
+                            <span class="mx-2" style="font-weight: 600">{{ __('lang.purchase_order') }}</span>
+                        </a>
+                        <ul class="dropdown-menu list-style-none
                         @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        {{-- ########### purchase_order : اوامر الشراء########### --}}
-                        <li class="navbar_item">
-                            <a target="_blank"
-                                class="purchases-order-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                href="{{ route('purchase_order.index') }}"
-                                style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
-                                    class="mdi mdi-circle"></i>@lang('lang.show_purchase_order')</a>
-                        </li>
-                        {{-- ########### required_products : المواد المطلوبة ########### --}}
-                        <li class="navbar_item"><a target="_blank"
-                                class="required-products-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                href="{{ route('required-products.index') }}"
-                                style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
-                                    class="mdi mdi-circle"></i>@lang('lang.required_products')</a></li>
-                    </ul>
-                </li>
-                {{-- ###################### Returns : المرتجعات ###################### --}}
-                {{-- @can('return_module')  --}}
-                @if (!empty($module_settings['return_module']))
+                            {{-- ########### purchase_order : اوامر الشراء########### --}}
+                            <li class="navbar_item">
+                                <a target="_blank"
+                                    class="purchases-order-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    href="{{ route('purchase_order.index') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
+                                        class="mdi mdi-circle"></i>@lang('lang.show_purchase_order')</a>
+                            </li>
+                            {{-- ########### required_products : المواد المطلوبة ########### --}}
+                            <li class="navbar_item"><a target="_blank"
+                                    class="required-products-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    href="{{ route('required-products.index') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
+                                        class="mdi mdi-circle"></i>@lang('lang.required_products')</a></li>
+                            <li class="navbar_item">
+                                <a target="_blank"
+                                    class="purchases-order-create-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    href="{{ route('purchase_order.create') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
+                                        class="mdi mdi-circle"></i>@lang('lang.create_purchase_order')</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{-- ###################### Returns : المرتجعات ###################### --}}
+                    {{-- @can('return_module') --}}
+                    @if (!empty($module_settings['return_module']))
                     <li class="scroll mx-2 mb-0 p-0 dropdown" style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex returns-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
                             style="height: 100%;" data-toggle="dropdown">
-                            {{-- <img src="{{ asset('images/topbar/return.png') }}" class="img-fluid pl-1" alt="pages"> --}}
+                            {{-- <img src="{{ asset('images/topbar/return.png') }}" class="img-fluid pl-1" alt="pages">
+                            --}}
                             <div style="width: 25px" class="d-flex align-items-center">
-                                <svg version="1.1" id="Layer_1" style="width: 100%"
-                                    xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 64 64"
-                                    style="enable-background:new 0 0 64 64" xml:space="preserve">
+                                <svg version="1.1" id="Layer_1" style="width: 100%" xmlns="http://www.w3.org/2000/svg"
+                                    x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 64 64"
+                                    xml:space="preserve">
                                     <style>
                                         .st1 {
                                             fill: #81d4fa;
@@ -310,10 +316,10 @@
                                         class="mdi mdi-circle"></i>@lang('lang.sells_return')</a></li>
                         </ul>
                     </li>
-                @endif
-                {{-- @endcan  --}}
-                {{-- ###################### Supplier Returns :  المرتجعات للموردين ###################### --}}
-                @if (!empty($module_settings['return_module']))
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### Supplier Returns : المرتجعات للموردين ###################### --}}
+                    @if (!empty($module_settings['return_module']))
                     <li class="scroll mx-2 mb-0 p-0 dropdown" style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex suppliers-returns-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
@@ -343,17 +349,16 @@
                             </li>
                         </ul>
                     </li>
-                @endif
-                {{-- ###################### Employees : الموظفين ###################### --}}
-                {{-- @can('employee_module')  --}}
-                @if (!empty($module_settings['employee_module']))
+                    @endif
+                    {{-- ###################### Employees : الموظفين ###################### --}}
+                    {{-- @can('employee_module') --}}
+                    @if (!empty($module_settings['employee_module']))
                     <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex employees-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
                             style="height: 100%;" data-toggle="dropdown">
-                            {{-- <img
-                            src="{{ asset('images/topbar/employee.png') }}" class="img-fluid pl-1"
-                            alt="widgets"> --}}
+                            {{-- <img src="{{ asset('images/topbar/employee.png') }}" class="img-fluid pl-1"
+                                alt="widgets"> --}}
                             <div style="width: 25px" class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                     <defs>
@@ -439,17 +444,17 @@
                                         class="mdi mdi-circle"></i>@lang('lang.attend_and_leave')</a></li>
                         </ul>
                     </li>
-                @endif
-                {{-- @endcan --}}
-                {{-- ###################### Customers : العملاء ###################### --}}
-                {{-- @can('customer_module')  --}}
-                @if (!empty($module_settings['customer_module']))
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### Customers : العملاء ###################### --}}
+                    {{-- @can('customer_module') --}}
+                    @if (!empty($module_settings['customer_module']))
                     <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex customers-menu align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
                             style="height: 100%;font-weight: 600" data-toggle="dropdown">
-                            {{-- <img src="{{ asset('images/topbar/customer-feedback.png') }}"
-                            class="img-fluid pl-1" alt="layouts"> --}}
+                            {{-- <img src="{{ asset('images/topbar/customer-feedback.png') }}" class="img-fluid pl-1"
+                                alt="layouts"> --}}
                             <div style="width: 25px" class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512"
                                     style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -496,21 +501,21 @@
                                         class="mdi mdi-circle"></i>{{ __('lang.customer_types') }}</a></li>
                         </ul>
                     </li>
-                @endif
-                {{-- @endcan --}}
-                {{-- ###################### customer_price_offer : عرض سعر للعملاء ###################### --}}
-                {{-- @can('customer_module')  --}}
-                @if (!empty($module_settings['customer_module']))
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### customer_price_offer : عرض سعر للعملاء ###################### --}}
+                    {{-- @can('customer_module') --}}
+                    @if (!empty($module_settings['customer_module']))
                     <li class="scroll mx-2 mb-0 p-0 " style="height: 40px;">
                         <a class="customer-price-offer-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             href="{{ route('customer_price_offer.create') }}"
                             style="cursor: pointer;font-weight: 600;text-decoration: none;height: 100%;">
                             {{-- <img src="{{ asset('images/topbar/customer-feedback.png') }}" class="img-fluid pl-1"
-                            alt="layouts"> --}}
+                                alt="layouts"> --}}
                             <div style="width: 25px" class="d-flex align-items-center">
-                                <svg version="1.1" style="width: 100%" id="Layer_1"
-                                    xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 256 256"
-                                    style="enable-background:new 0 0 256 256" xml:space="preserve">
+                                <svg version="1.1" style="width: 100%" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                    x="0" y="0" viewBox="0 0 256 256" style="enable-background:new 0 0 256 256"
+                                    xml:space="preserve">
                                     <style>
                                         .st0 {
                                             fill: #6dcc6d
@@ -596,18 +601,17 @@
                             <span class="mx-2">{{ __('lang.customer_price_offer') }}</span>
                         </a>
                     </li>
-                @endif
-                {{-- @endcan --}}
-                {{-- ###################### suppliers : الموردين ###################### --}}
-                {{-- @can('supplier_module')  --}}
-                @if (!empty($module_settings['supplier_module']))
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### suppliers : الموردين ###################### --}}
+                    {{-- @can('supplier_module') --}}
+                    @if (!empty($module_settings['supplier_module']))
                     <li class="scroll mx-2 mb-0 p-0 " style="height: 40px;">
                         <a class="suppliers-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                             href="{{ route('suppliers.create') }}" target="_blank"
                             style="cursor: pointer;font-weight: 600;text-decoration: none;height: 100%;">
-                            {{-- <img
-                            src="{{ asset('images/topbar/inventory.png') }}" class="img-fluid pl-1"
-                            alt="widgets"> --}}
+                            {{-- <img src="{{ asset('images/topbar/inventory.png') }}" class="img-fluid pl-1"
+                                alt="widgets"> --}}
                             <div style="width: 25px" class="d-flex align-items-center">
                                 <svg version="1.1" style="width: 100%" id="ecommerce_1_"
                                     xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 115 115"
@@ -675,10 +679,8 @@
                                             <path class="st1"
                                                 d="M94.809 86.04a12.734 12.734 0 0 1-3.895.615c-.987 0-1.943-.124-2.865-.337a12.62 12.62 0 0 1-1.238-.354c-.025.159-.055.316-.055.48 0 1.37.887 2.546 2.174 3.143.167.077.339.146.519.203l.013.004c.422.131.87.216 1.343.216s.921-.085 1.343-.216l.013-.004c.18-.057.352-.126.519-.203 1.287-.597 2.174-1.773 2.174-3.143.002-.138-.027-.27-.045-.404z" />
                                             <circle class="st0" cx="90.915" cy="74.035" r="12.74" />
-                                            <ellipse class="st2" cx="85.635" cy="77.58" rx="1.466"
-                                                ry="1.885" />
-                                            <ellipse class="st2" cx="95.198" cy="77.58" rx="1.466"
-                                                ry="1.885" />
+                                            <ellipse class="st2" cx="85.635" cy="77.58" rx="1.466" ry="1.885" />
+                                            <ellipse class="st2" cx="95.198" cy="77.58" rx="1.466" ry="1.885" />
                                             <path class="st2"
                                                 d="M90.915 61.294c-7.036 0-12.74 5.704-12.74 12.74 0 1.456.256 2.849.706 4.153l.008-.079c.039-.398.079-.797.175-1.184.145-.583.416-1.126.701-1.655a29.864 29.864 0 0 1 2.104-3.312c2.035-.086 4.101.004 6.126-.216 2.689-.293 5.336-1.216 7.595-2.69a9.438 9.438 0 0 0 3.601 4.789 9.16 9.16 0 0 0 2.185 1.088c.463 1.733.681 3.527.656 5.321a12.675 12.675 0 0 0 1.623-6.214c.001-7.037-5.703-12.741-12.74-12.741z" />
                                         </g>
@@ -766,461 +768,462 @@
                             <span class="mx-2">{{ __('lang.suppliers') }}</span>
                         </a>
                     </li>
-                @endif
-                {{-- @endcan --}}
-                {{-- ###################### Delivery : التوصيل ###################### --}}
-                <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
-                    <a href="javaScript:void();"
-                        class="d-flex delivery-menu align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                        style="height: 100%;font-weight: 600" data-toggle="dropdown">
-                        <div style="width: 25px" class="d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 64 64"
-                                style="enable-background:new 0 0 64 64" xml:space="preserve">
-                                <style>
-                                    .st0 {
-                                        display: none
-                                    }
-
-                                    .st1 {
-                                        display: inline
-                                    }
-
-                                    .st2 {
-                                        fill: #f1f2f2
-                                    }
-
-                                    .st3 {
-                                        fill: #36d7b7
-                                    }
-
-                                    .st4 {
-                                        fill: none;
-                                        stroke: #414042;
-                                        stroke-miterlimit: 10
-                                    }
-
-                                    .st5,
-                                    .st6,
-                                    .st7 {
-                                        display: inline;
-                                        fill: #d1d3d4
-                                    }
-
-                                    .st6,
-                                    .st7 {
-                                        fill: #414042
-                                    }
-
-                                    .st7 {
-                                        fill: none;
-                                        stroke: #414042;
-                                        stroke-miterlimit: 10
-                                    }
-
-                                    .st8 {
-                                        fill: #fff
-                                    }
-
-                                    .st9 {
-                                        fill: #f5ab35
-                                    }
-
-                                    .st10 {
-                                        fill: #f9cd86
-                                    }
-
-                                    .st11,
-                                    .st12 {
-                                        display: inline;
-                                        fill: #36d7b7
-                                    }
-
-                                    .st12 {
-                                        fill: #fff
-                                    }
-
-                                    .st13,
-                                    .st14,
-                                    .st16 {
-                                        display: inline;
-                                        fill: #e6e7e8
-                                    }
-
-                                    .st14,
-                                    .st16 {
-                                        fill: #5edfc5
-                                    }
-
-                                    .st16 {
-                                        fill: #f7bc5d
-                                    }
-
-                                    .st17,
-                                    .st18,
-                                    .st19 {
-                                        display: inline;
-                                        fill: #f5ab35
-                                    }
-
-                                    .st18,
-                                    .st19 {
-                                        fill: #b88028
-                                    }
-
-                                    .st19 {
-                                        fill: #29a189
-                                    }
-
-                                    .st20 {
-                                        fill: #e6e7e8
-                                    }
-
-                                    .st21 {
-                                        fill: #bcbec0
-                                    }
-
-                                    .st22 {
-                                        fill: #58595b
-                                    }
-
-                                    .st23 {
-                                        fill: #29a189
-                                    }
-
-                                    .st24 {
-                                        fill: #414042
-                                    }
-
-                                    .st25 {
-                                        fill: #d1d3d4
-                                    }
-
-                                    .st26 {
-                                        display: inline;
-                                        fill: #bcbec0
-                                    }
-
-                                    .st27 {
-                                        fill: #f1f2f2
-                                    }
-
-                                    .st27,
-                                    .st28,
-                                    .st34 {
-                                        display: inline
-                                    }
-
-                                    .st28 {
-                                        fill: none;
-                                        stroke: #414042;
-                                        stroke-linecap: round;
-                                        stroke-miterlimit: 10
-                                    }
-
-                                    .st34 {
-                                        fill: #afefe2
-                                    }
-                                </style>
-                                <g id="icons">
-                                    <g id="XMLID_826_">
-                                        <path id="XMLID_836_" class="st9"
-                                            d="M50 29.7c-.2-.5-.7-.9-1.3-.9h-8v12.6c2.4 0 4.3 1.9 4.3 4.3h7.6v-8.5L50 29.7z" />
-                                        <path id="XMLID_835_" class="st24"
-                                            d="M43.6 36.3h7c.3 0 .7.1.9.1l1.1.4-2.6-7.1s-.3-1.3-2.5-.9h-5v6.6c.1.5.6.9 1.1.9z" />
-                                        <path id="XMLID_812_" class="st4"
-                                            d="M48.8 28.8h-8v12.6c2.4 0 4.3 1.9 4.3 4.3" />
-                                        <path id="XMLID_832_" class="st2"
-                                            d="M53.4 45.6c0 .2-.2.4-.4.4h-3.4c-.2 0-.4-.2-.4-.4v-1.9c0-.2.2-.4.4-.4H53c.2 0 .4.2.4.4v1.9z" />
-                                        <path id="XMLID_831_" class="st4"
-                                            d="M53.4 45.6c0 .2-.2.4-.4.4h-3.4c-.2 0-.4-.2-.4-.4v-1.9c0-.2.2-.4.4-.4H53c.2 0 .4.2.4.4v1.9z" />
-                                        <g id="XMLID_809_">
-                                            <g id="XMLID_804_">
-                                                <circle id="XMLID_824_" class="st22" cx="23.8" cy="46"
-                                                    r="3" />
-                                                <circle id="XMLID_823_" class="st4" cx="23.8" cy="46"
-                                                    r="3" />
-                                                <circle id="XMLID_822_" class="st2" cx="23.8" cy="46"
-                                                    r="1.2" />
-                                            </g>
-                                            <g id="XMLID_817_">
-                                                <circle id="XMLID_820_" class="st22" cx="40.7" cy="46"
-                                                    r="3" />
-                                                <circle id="XMLID_819_" class="st4" cx="40.7" cy="46"
-                                                    r="3" />
-                                                <circle id="XMLID_818_" class="st2" cx="40.7" cy="46"
-                                                    r="1.2" />
-                                            </g>
-                                            <g id="XMLID_805_">
-                                                <circle id="XMLID_816_" class="st22" cx="16.4" cy="46"
-                                                    r="3" />
-                                                <circle id="XMLID_814_" class="st4" cx="16.4" cy="46"
-                                                    r="3" />
-                                                <circle id="XMLID_811_" class="st2" cx="16.4" cy="46"
-                                                    r="1.2" />
-                                            </g>
-                                        </g>
-                                        <path id="XMLID_815_" class="st4" d="M38.8 43.5H28.2" />
-                                        <path id="XMLID_813_" class="st4"
-                                            d="M12 45.3c0-2 1.6-3.6 3.6-3.6h8.9c2 0 3.6 1.6 3.6 3.6v.8" />
-                                        <path id="XMLID_810_" class="st3" d="M9.9 23.8h28.9v17H9.9z" />
-                                        <path id="XMLID_821_" class="st4" d="M38.8 23.8v17H9.9" />
-                                        <path id="XMLID_808_" class="st8" d="M12.2 29.5h23.3v4.8H12.2z" />
-                                        <path id="XMLID_807_" class="st4" d="M48.4 28.7 41.7 23" />
-                                        <path id="XMLID_806_" class="st4" d="M43.9 25v3.1" />
-                                        <path id="XMLID_825_" class="st4" d="M9.7 50.3h44.6" />
-                                        <path id="XMLID_909_" class="st4" d="M50.1 19.7H37.4" />
-                                        <path id="XMLID_911_" class="st4" d="M44.9 16.7H19.3" />
-                                        <path id="XMLID_912_" class="st4" d="M27.5 13.7H9.7" />
-                                        <path id="XMLID_913_" class="st4" d="M29 13.7h4.1" />
-                                        <path id="XMLID_910_" class="st4" d="M31.3 19.7h4" />
-                                    </g>
-                                </g>
-                            </svg>
-
-                        </div>
-                        <span class="mx-2">{{ __('lang.delivery') }}</span>
-                    </a>
-                    <ul
-                        class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        <li class="navbar_item">
-                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('delivery.index') }}" target="_blank"
-                                class="delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <i class="mdi mdi-circle"></i>
-                                {{ __('lang.index') }}</a>
-                        </li>
-                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('delivery_plan.plansList') }}" target="_blank"
-                                class="plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <i class="mdi mdi-circle"></i>
-                                {{ __('lang.plans') }}</a></li>
-                        {{-- <li><a href="{{route('delivery.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
-                        {{-- <a href="{{route('delivery.maps')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.delivery')}}</span></a> --}}
-                    </ul>
-                </li>
-                {{-- ###################### sell car : عربة بيع ###################### --}}
-                <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
-                    <a href="javaScript:void();"
-                        class="d-flex sell-car-menu align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                        style="height: 100%;font-weight: 600" data-toggle="dropdown">
-                        <div style="width: 25px" class="d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
-                                <defs>
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### Delivery : التوصيل ###################### --}}
+                    <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
+                        <a href="javaScript:void();"
+                            class="d-flex delivery-menu align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                            style="height: 100%;font-weight: 600" data-toggle="dropdown">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 64 64"
+                                    style="enable-background:new 0 0 64 64" xml:space="preserve">
                                     <style>
-                                        .cls-1 {
-                                            fill: #dad7e5
+                                        .st0 {
+                                            display: none
                                         }
 
-                                        .cls-3 {
-                                            fill: #ffde76
+                                        .st1 {
+                                            display: inline
                                         }
 
-                                        .cls-7 {
-                                            fill: #374f68
+                                        .st2 {
+                                            fill: #f1f2f2
                                         }
 
-                                        .cls-8 {
-                                            fill: #425b72
+                                        .st3 {
+                                            fill: #36d7b7
                                         }
 
-                                        .cls-13 {
-                                            fill: #edebf2
+                                        .st4 {
+                                            fill: none;
+                                            stroke: #414042;
+                                            stroke-miterlimit: 10
+                                        }
+
+                                        .st5,
+                                        .st6,
+                                        .st7 {
+                                            display: inline;
+                                            fill: #d1d3d4
+                                        }
+
+                                        .st6,
+                                        .st7 {
+                                            fill: #414042
+                                        }
+
+                                        .st7 {
+                                            fill: none;
+                                            stroke: #414042;
+                                            stroke-miterlimit: 10
+                                        }
+
+                                        .st8 {
+                                            fill: #fff
+                                        }
+
+                                        .st9 {
+                                            fill: #f5ab35
+                                        }
+
+                                        .st10 {
+                                            fill: #f9cd86
+                                        }
+
+                                        .st11,
+                                        .st12 {
+                                            display: inline;
+                                            fill: #36d7b7
+                                        }
+
+                                        .st12 {
+                                            fill: #fff
+                                        }
+
+                                        .st13,
+                                        .st14,
+                                        .st16 {
+                                            display: inline;
+                                            fill: #e6e7e8
+                                        }
+
+                                        .st14,
+                                        .st16 {
+                                            fill: #5edfc5
+                                        }
+
+                                        .st16 {
+                                            fill: #f7bc5d
+                                        }
+
+                                        .st17,
+                                        .st18,
+                                        .st19 {
+                                            display: inline;
+                                            fill: #f5ab35
+                                        }
+
+                                        .st18,
+                                        .st19 {
+                                            fill: #b88028
+                                        }
+
+                                        .st19 {
+                                            fill: #29a189
+                                        }
+
+                                        .st20 {
+                                            fill: #e6e7e8
+                                        }
+
+                                        .st21 {
+                                            fill: #bcbec0
+                                        }
+
+                                        .st22 {
+                                            fill: #58595b
+                                        }
+
+                                        .st23 {
+                                            fill: #29a189
+                                        }
+
+                                        .st24 {
+                                            fill: #414042
+                                        }
+
+                                        .st25 {
+                                            fill: #d1d3d4
+                                        }
+
+                                        .st26 {
+                                            display: inline;
+                                            fill: #bcbec0
+                                        }
+
+                                        .st27 {
+                                            fill: #f1f2f2
+                                        }
+
+                                        .st27,
+                                        .st28,
+                                        .st34 {
+                                            display: inline
+                                        }
+
+                                        .st28 {
+                                            fill: none;
+                                            stroke: #414042;
+                                            stroke-linecap: round;
+                                            stroke-miterlimit: 10
+                                        }
+
+                                        .st34 {
+                                            fill: #afefe2
                                         }
                                     </style>
-                                </defs>
-                                <g id="Truck_Delivery" data-name="Truck Delivery">
-                                    <path class="cls-1"
-                                        d="M7.13 34H1v-4h7.36a4 4 0 0 0-1.23 4zM47 30v4h-5.13a4 4 0 0 0-1.23-4zM34.13 34H14.87a4 4 0 0 0-1.23-4h21.72a4 4 0 0 0-1.23 4z" />
-                                    <path d="M32 12v18H13.64a4 4 0 0 0-5.28 0H2V12z" style="fill:#fc6" />
-                                    <path class="cls-3" d="M32 12v16H14A10 10 0 0 1 4 18v-6z" />
-                                    <path d="M47 22v8h-6.36a4 4 0 0 0-5.28 0H32V14h4v6a2 2 0 0 0 2 2z"
-                                        style="fill:#db5669" />
-                                    <path d="M47 22h-9a2 2 0 0 1-2-2v-6h6z" style="fill:#9fdbf3" />
-                                    <path d="M46.38 21H44a7 7 0 0 1-7-7h5z" style="fill:#b2e5fb" />
-                                    <path class="cls-7" d="M42 33c0 4.65-6.72 5.53-7.87 1A4 4 0 1 1 42 33z" />
-                                    <path class="cls-8"
-                                        d="M41.27 35.3c-3.82 2.59-8-2.15-5.55-5.57a4 4 0 0 1 5.55 5.57z" />
-                                    <path class="cls-7" d="M15 33c0 4.65-6.72 5.53-7.87 1A4 4 0 1 1 15 33z" />
-                                    <path class="cls-8"
-                                        d="M14.27 35.3c-3.82 2.59-8-2.15-5.55-5.57a4 4 0 0 1 5.55 5.57z" />
-                                    <path class="cls-1"
-                                        d="M12 33a1 1 0 0 0-2 0 1 1 0 0 0 2 0zM39 33a1 1 0 0 0-2 0 1 1 0 0 0 2 0z" />
-                                    <path style="fill:#a87e6b" d="M13 17h8v8h-8z" />
-                                    <path d="M21 17v7h-1a6 6 0 0 1-6-6v-1z" style="fill:#be927c" />
-                                    <path d="M18 17v2a1 1 0 0 1-2 0v-2z" style="fill:#f6ccaf" />
-                                    <path d="M47 22v6h-7a6 6 0 0 1-6-6v-8h2v6a2 2 0 0 0 2 2z" style="fill:#f26674" />
-                                    <path class="cls-3" d="M47 25v2h-2a1 1 0 0 1 0-2z" />
-                                    <path class="cls-13"
-                                        d="M47 30v3c-2.18 0-4.32.25-5.48-1.89a4 4 0 0 0-.88-1.11zM35.36 30a4 4 0 0 0-.88 1.11 3.85 3.85 0 0 1-3.4 1.89H17.92a3.85 3.85 0 0 1-3.4-1.89 4 4 0 0 0-.88-1.11zM8.36 30A4 4 0 0 0 7 33H4a3 3 0 0 1-3-3z" />
-                                </g>
-                            </svg>
-                        </div>
-                        <span class="mx-2">{{ __('lang.sell_car') }}</span>
-                    </a>
-
-                    <ul
-                        class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('sell-car.index') }}" target="_blank"
-                                class="sell-car-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <i class="mdi mdi-circle"></i>
-                                @lang('lang.sell_car')</a>
-                        </li>
-                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('delivery.index') }}" target="_blank"
-                                class="sell-car-delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <i class="mdi mdi-circle"></i>
-                                {{ __('lang.plans') }}</a></li>
-                        {{-- <li><a href="{{route('delivery.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
-                        {{-- <a href="{{route('delivery.maps')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.delivery')}}</span></a> --}}
-                    </ul>
-                </li>
-                {{-- ###################### sell car : عربة بيع ###################### --}}
-                <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
-                    <a href="javaScript:void();"
-                        class="d-flex rep-requests-menu align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                        style="height: 100%;font-weight: 600" data-toggle="dropdown">
-                        <div style="width: 25px" class="d-flex align-items-center">
-                            <svg version="1.1" style="width: 100%" id="Layer_1"
-                                xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 256 256"
-                                style="enable-background:new 0 0 256 256" xml:space="preserve">
-                                <style>
-                                    .st0 {
-                                        fill: #382b73
-                                    }
-
-                                    .st2 {
-                                        fill: #1caee4
-                                    }
-
-                                    .st3 {
-                                        fill: #009add
-                                    }
-
-                                    .st4 {
-                                        fill: #d1d3d4
-                                    }
-
-                                    .st5 {
-                                        fill: #fff
-                                    }
-
-                                    .st6 {
-                                        fill: #e6e7e8
-                                    }
-
-                                    .st7 {
-                                        fill: #27c1e6
-                                    }
-                                </style>
-                                <switch>
-                                    <g>
-                                        <circle class="st0" cx="128" cy="128" r="120" />
-                                        <circle cx="128" cy="128" r="102.5" style="fill:#473080" />
-                                        <path class="st0"
-                                            d="M164.524 130.094c-9.423 0-17.935 3.903-24.007 10.181a30.746 30.746 0 0 0-14.738-4.465l.01-.028-9.353-4.031v-7.385a23.645 23.645 0 0 0 14.321-13.372c.397-.389.783-.79 1.158-1.2a7.596 7.596 0 0 0 6.822-11.956 31.113 31.113 0 0 0 1.337-9.049c0-9.997-4.715-18.893-12.041-24.586l-.018-.014a17.06 17.06 0 0 0-.266-.204l-.008-.006-.27-.202-.019-.014a17.03 17.03 0 0 0-.271-.198h-.001a29.119 29.119 0 0 0-.284-.203l-.007-.005a31.058 31.058 0 0 0-2.03-1.319l-.037-.022c-.08-.047-.16-.095-.241-.141l-.074-.043-.226-.129-.09-.051-.22-.123-.097-.053-.214-.116-.108-.058-.211-.111-.111-.058-.204-.104-.126-.063-.201-.1-.118-.058a20.588 20.588 0 0 0-.212-.103l-.111-.053-.216-.102a4.447 4.447 0 0 0-.121-.055l-.208-.095-.123-.055a19.75 19.75 0 0 0-.213-.094l-.118-.051-.212-.091-.147-.061a33.05 33.05 0 0 0-.701-.282l-.167-.065-.157-.059-.19-.071-.164-.059-.181-.065-.169-.059-.184-.063-.16-.054a14.648 14.648 0 0 0-.194-.064l-.16-.052-.194-.062-.158-.049a15.974 15.974 0 0 0-.205-.062l-.147-.044-.213-.062-.148-.042-.209-.058-.154-.042-.22-.058-.135-.035-.237-.06-.13-.032a16.572 16.572 0 0 0-.238-.056l-.129-.03-.277-.062-.086-.019a33.577 33.577 0 0 0-.338-.071l-.033-.007c-.25-.051-.5-.099-.752-.144l-.072-.013-.301-.052-.106-.017a25.773 25.773 0 0 0-.273-.043l-.109-.016-.265-.039-.131-.018-.249-.033a21.988 21.988 0 0 0-.513-.061l-.248-.027-.145-.015-.235-.022-.149-.013a19.884 19.884 0 0 0-.243-.02l-.138-.011-.254-.018-.132-.009-.257-.015-.132-.007c-.091-.005-.183-.008-.275-.012l-.112-.005a31.9 31.9 0 0 0-.314-.01l-.073-.002c-.127-.003-.254-.006-.382-.007h-.01a26.803 26.803 0 0 0-.783 0l-.071.001-.309.006-.089.002-.299.009-.082.003-.367.016h-.004l-.39.022-.031.002-.334.023-.094.007-.277.023-.101.009-.305.029-.062.006-.374.04-.025.003-.332.04-.108.014-.255.034-.115.016-.279.041-.078.012c-.24.037-.479.076-.717.119l-.104.019a22.96 22.96 0 0 0-.256.047l-.114.022a21.22 21.22 0 0 0-.245.049l-.112.023c-.104.021-.207.043-.311.066l-.037.008-.353.079-.087.02-.256.061-.123.03-.229.057-.119.03-.254.067-.091.024-.34.094-.073.021-.259.075-.131.039-.209.063-.136.042-.213.068-.121.039-.299.099a5.309 5.309 0 0 0-.116.04l-.231.08-.147.052-.184.066-.149.055-.178.066-.149.056-.197.076-.179.07-.245.098-.152.063-.166.069-.166.07-.141.061-.18.078-.126.056c-.216.096-.43.194-.643.295l-.126.06-.18.087-.125.061-.18.089-.117.059-.19.097a25.727 25.727 0 0 0-.474.25l-.084.045-.184.1-.115.063-.183.102-.104.059-.188.107a6.533 6.533 0 0 0-.086.051c-.15.087-.299.176-.448.265l-.005.003-.195.119-.095.058-.185.116-.09.057a33.83 33.83 0 0 0-.197.126l-.051.033c-.224.145-.446.293-.666.444l-.071.048-.192.133a5.002 5.002 0 0 0-.076.054l-.193.137-.063.045c-5.992 4.313-10.388 10.704-12.132 18.118l-.007.032-.06.261-.018.08-.053.244-.02.097-.05.241-.016.083c-.052.261-.101.524-.146.787l-.022.128-.034.204-.025.158a11.803 11.803 0 0 0-.054.363l-.025.177-.028.211-.025.192-.035.291-.017.154-.022.206-.016.162-.02.21-.014.153-.019.229-.011.136-.025.355v.005c-.008.122-.015.245-.021.367l-.006.127-.011.243-.005.137-.008.249-.003.126-.005.263-.002.114-.002.372a36.083 36.083 0 0 0 .004.498l.002.082c.054 2.94.515 5.781 1.331 8.468a7.596 7.596 0 0 0 6.821 11.957c.375.41.761.81 1.158 1.199a23.479 23.479 0 0 0 3.972 6.435 25.1 25.1 0 0 0 1.156 1.243 24.258 24.258 0 0 0 1.675 1.522 23.547 23.547 0 0 0 7.518 4.173h-.001v8.206-.821l-4.677 2.015-4.677 2.015.01.028c-9.539.401-17.96 5.124-23.357 12.261l-.001.001c-.369.488-.724.988-1.064 1.498l-.02.03c-.253.381-.498.767-.735 1.16l-.01.016c-.074.123-.147.246-.219.37l-.022.038c-.228.392-.448.79-.659 1.193l-.023.044c-.061.116-.12.232-.179.349l-.035.069c-.063.125-.124.25-.185.375l-.008.017c-.133.274-.262.551-.387.829l-.022.05a37.17 37.17 0 0 0-.154.351l-.037.086c-.051.119-.102.24-.151.36l-.019.045c-.114.278-.224.558-.331.84l-.029.078a33.48 33.48 0 0 0-.124.337l-.036.101c-.042.117-.083.234-.123.352l-.022.063a31.26 31.26 0 0 0-.276.851l-.032.104a39.586 39.586 0 0 0-.131.44l-.094.334-.027.095a31.09 31.09 0 0 0-.354 1.43l-.071.328-.023.108a27.944 27.944 0 0 0-.191 1.011l-.051.304-.024.149-.048.321-.018.123c-.042.294-.079.589-.112.885l-.016.146a31.49 31.49 0 0 0-.046.466l-.027.306-.012.145a33.019 33.019 0 0 0-.076 1.357l-.005.155-.008.333-.002.127c-.002.153-.004.307-.004.461v14.197a6.773 6.773 0 0 0 6.773 6.773h72.189c5.992 5.709 14.103 9.214 23.032 9.214 18.444 0 33.396-14.952 33.396-33.396.008-18.443-14.944-33.394-33.388-33.394zm-55.897-4.518zm-.317-.006-.232-.007.232.007zm-.922-.043-.209-.015.209.015zm-.295-.021-.189-.015.189.015zm-.287-.024a13.076 13.076 0 0 1-.206-.02l.206.02zm-.273-.026-.259-.028.259.028zm-.376-.042-.146-.018.146.018zm-.28-.035-.13-.017.13.017zm-.271-.037zm-.454-.069-.042-.007.042.007zm-.211-.035-.086-.015.086.015zm-.264-.047a1.627 1.627 0 0 1-.068-.013l.068.013zm-.258-.049a.174.174 0 0 1-.022-.005l.022.005zm-.676-.142-.03-.007.03.007zm-.233-.054a.465.465 0 0 0-.036-.008l.036.008zm-1.149-.302s-.001 0 0 0c-.001 0 0 0 0 0zm5.097.888zm1.199.044.297.002.297-.002-.297.002-.245-.001-.052-.001zm5.757-.634h.002-.002zm-.927.2.027-.005-.027.005zm-.255.049.064-.012a7.668 7.668 0 0 0-.064.012zm-.261.046.079-.013-.079.013zm-.206.034.03-.005-.03.005zm-.462.071.106-.016-.106.016zm-.275.037.134-.018-.134.018zm-.253.032-.027.003.149-.018-.122.015zm-.35.039-.053.006.257-.028a11.61 11.61 0 0 1-.204.022zm-.325.032c.072-.007.143-.013.214-.021l-.214.021zm-.287.024.191-.016-.191.016zm-.296.021.211-.015c-.07.006-.141.01-.211.015zm-.636.033zm-.285.01.234-.008-.234.008zm-.316.006.249-.005-.249.005zm7.156 8.968v1.238-1.238z" />
-                                        <g>
-                                            <path class="st2"
-                                                d="M148.604 180.671H69.302a6.773 6.773 0 0 1-6.773-6.773v-14.197c0-17.077 13.844-30.921 30.921-30.921h31.006c17.077 0 30.921 13.844 30.921 30.921v14.197a6.773 6.773 0 0 1-6.773 6.773z" />
-                                            <path class="st3"
-                                                d="M141.773 134.083v46.589h6.831a6.773 6.773 0 0 0 6.773-6.773v-14.196c0-10.661-5.395-20.061-13.604-25.62z" />
-                                            <path class="st4"
-                                                d="m125.789 128.781-9.353-4.03v4.03l-7.482 11.661-7.483-11.661v-4.03l-9.353 4.03 16.835 45.682h.001z" />
-                                            <path class="st5"
-                                                d="m92.118 128.781 7.069 19.162c.285.773 1.275.99 1.857.408l7.909-7.909-7.482-11.661v-4.031l-9.353 4.031zM125.789 128.781l-7.069 19.162a1.129 1.129 0 0 1-1.857.408l-7.909-7.909 7.482-11.661v-4.031l9.353 4.031z" />
-                                            <path class="st6"
-                                                d="M108.953 118.578c-2.615 0-5.131-.426-7.482-1.212v11.415l7.482 11.661 7.482-11.661v-11.416a23.52 23.52 0 0 1-7.482 1.213z" />
-                                            <path class="st2"
-                                                d="m115.217 146.706-4.667 4.667a2.257 2.257 0 0 1-3.193 0l-4.667-4.667 6.263-6.263 6.264 6.263z" />
-                                            <path class="st3"
-                                                d="M110.55 151.373a2.26 2.26 0 0 1-3.193 0l-1.6-1.6-1.387 12.255 4.583 12.439 4.583-12.439-1.387-12.254-1.599 1.599z" />
-                                            <path class="st7"
-                                                d="m86.871 148.847 3.982-3.511c.737-.65.35-1.865-.627-1.969l-4.675-.5a1.129 1.129 0 0 1-.941-1.507l4.442-12.259a27.88 27.88 0 0 1 3.081-.282l16.819 45.649-22.165-24.008a1.131 1.131 0 0 1 .084-1.613zM131.036 148.847l-3.982-3.511c-.737-.65-.35-1.865.627-1.969l4.675-.5a1.128 1.128 0 0 0 .941-1.507l-4.442-12.259a27.875 27.875 0 0 0-3.082-.282l-16.819 45.649 22.165-24.008a1.13 1.13 0 0 0-.083-1.613zM136.433 171.288h-15.239a1.587 1.587 0 1 0 0 3.174h15.239a1.587 1.587 0 1 0 0-3.174z" />
-                                            <path class="st3"
-                                                d="M76.134 180.671v-46.589c-8.209 5.559-13.604 14.959-13.604 25.62v14.196a6.773 6.773 0 0 0 6.773 6.773h6.831z" />
-                                            <g>
-                                                <circle transform="rotate(-67.723 108.95 81.787)" class="st3"
-                                                    cx="108.954" cy="81.791" r="31.119" />
-                                                <path class="st5"
-                                                    d="M108.953 118.578c-13.023 0-23.58-10.557-23.58-23.58V82.754c0-13.023 10.557-23.58 23.58-23.58 13.023 0 23.58 10.557 23.58 23.58v12.244c.001 13.023-10.556 23.58-23.58 23.58z" />
-                                                <path class="st4"
-                                                    d="M108.953 118.578c-2.616 0-5.131-.426-7.482-1.212v4.495a23.506 23.506 0 0 0 7.482 1.232c2.618 0 5.129-.445 7.482-1.232v-4.495a23.548 23.548 0 0 1-7.482 1.212z" />
-                                                <path class="st5"
-                                                    d="M85.373 94.998v-7.369a7.596 7.596 0 1 0 1.29 15.082 23.579 23.579 0 0 1-1.29-7.713zM132.534 87.629v7.369c0 2.701-.455 5.296-1.291 7.713a7.596 7.596 0 1 0 1.291-15.082z" />
-                                                <path class="st6"
-                                                    d="M108.953 115.192c-13.023 0-23.58-10.557-23.58-23.58v3.386c0 13.023 10.557 23.58 23.58 23.58 13.023 0 23.58-10.557 23.58-23.58v-3.386c.001 13.023-10.556 23.58-23.58 23.58zM85.373 82.754v4.644c9.217-5.373 15.425-15.334 15.47-26.762-9.021 3.31-15.47 11.95-15.47 22.118z" />
-                                                <path class="st6"
-                                                    d="M121.311 88.238c3.961 0 7.739-.762 11.223-2.112v-3.372c0-13.023-10.557-23.58-23.58-23.58-6.817 0-12.94 2.91-17.245 7.536 4.043 12.491 15.763 21.528 29.602 21.528z" />
-                                                <path class="st2"
-                                                    d="M90.347 56.845c1.562 15.725 14.828 28.006 30.964 28.006a30.977 30.977 0 0 0 18.607-6.174c-1.562-15.725-14.828-28.007-30.964-28.007a30.99 30.99 0 0 0-18.607 6.175z" />
-                                                <path class="st3"
-                                                    d="M77.834 81.791c0 1.416.104 2.807.287 4.174C91.229 82.3 100.848 70.277 100.848 56c0-1.416-.104-2.808-.287-4.174-13.108 3.664-22.727 15.687-22.727 29.965z" />
-                                                <path class="st2"
-                                                    d="M101.777 91.909a2.857 2.857 0 1 1-5.714 0 2.857 2.857 0 0 1 5.714 0zM123.941 91.909a2.857 2.857 0 1 1-5.714 0 2.857 2.857 0 0 1 5.714 0z" />
-                                                <g>
-                                                    <path class="st6"
-                                                        d="M85.373 94.998V90.86a4.365 4.365 0 1 0 0 8.73c.153 0 .298-.03.448-.045a23.662 23.662 0 0 1-.448-4.547zM132.556 94.998V90.86a4.365 4.365 0 0 1 0 8.73c-.153 0-.298-.03-.448-.045.288-1.473.448-2.991.448-4.547z" />
+                                    <g id="icons">
+                                        <g id="XMLID_826_">
+                                            <path id="XMLID_836_" class="st9"
+                                                d="M50 29.7c-.2-.5-.7-.9-1.3-.9h-8v12.6c2.4 0 4.3 1.9 4.3 4.3h7.6v-8.5L50 29.7z" />
+                                            <path id="XMLID_835_" class="st24"
+                                                d="M43.6 36.3h7c.3 0 .7.1.9.1l1.1.4-2.6-7.1s-.3-1.3-2.5-.9h-5v6.6c.1.5.6.9 1.1.9z" />
+                                            <path id="XMLID_812_" class="st4"
+                                                d="M48.8 28.8h-8v12.6c2.4 0 4.3 1.9 4.3 4.3" />
+                                            <path id="XMLID_832_" class="st2"
+                                                d="M53.4 45.6c0 .2-.2.4-.4.4h-3.4c-.2 0-.4-.2-.4-.4v-1.9c0-.2.2-.4.4-.4H53c.2 0 .4.2.4.4v1.9z" />
+                                            <path id="XMLID_831_" class="st4"
+                                                d="M53.4 45.6c0 .2-.2.4-.4.4h-3.4c-.2 0-.4-.2-.4-.4v-1.9c0-.2.2-.4.4-.4H53c.2 0 .4.2.4.4v1.9z" />
+                                            <g id="XMLID_809_">
+                                                <g id="XMLID_804_">
+                                                    <circle id="XMLID_824_" class="st22" cx="23.8" cy="46" r="3" />
+                                                    <circle id="XMLID_823_" class="st4" cx="23.8" cy="46" r="3" />
+                                                    <circle id="XMLID_822_" class="st2" cx="23.8" cy="46" r="1.2" />
+                                                </g>
+                                                <g id="XMLID_817_">
+                                                    <circle id="XMLID_820_" class="st22" cx="40.7" cy="46" r="3" />
+                                                    <circle id="XMLID_819_" class="st4" cx="40.7" cy="46" r="3" />
+                                                    <circle id="XMLID_818_" class="st2" cx="40.7" cy="46" r="1.2" />
+                                                </g>
+                                                <g id="XMLID_805_">
+                                                    <circle id="XMLID_816_" class="st22" cx="16.4" cy="46" r="3" />
+                                                    <circle id="XMLID_814_" class="st4" cx="16.4" cy="46" r="3" />
+                                                    <circle id="XMLID_811_" class="st2" cx="16.4" cy="46" r="1.2" />
                                                 </g>
                                             </g>
+                                            <path id="XMLID_815_" class="st4" d="M38.8 43.5H28.2" />
+                                            <path id="XMLID_813_" class="st4"
+                                                d="M12 45.3c0-2 1.6-3.6 3.6-3.6h8.9c2 0 3.6 1.6 3.6 3.6v.8" />
+                                            <path id="XMLID_810_" class="st3" d="M9.9 23.8h28.9v17H9.9z" />
+                                            <path id="XMLID_821_" class="st4" d="M38.8 23.8v17H9.9" />
+                                            <path id="XMLID_808_" class="st8" d="M12.2 29.5h23.3v4.8H12.2z" />
+                                            <path id="XMLID_807_" class="st4" d="M48.4 28.7 41.7 23" />
+                                            <path id="XMLID_806_" class="st4" d="M43.9 25v3.1" />
+                                            <path id="XMLID_825_" class="st4" d="M9.7 50.3h44.6" />
+                                            <path id="XMLID_909_" class="st4" d="M50.1 19.7H37.4" />
+                                            <path id="XMLID_911_" class="st4" d="M44.9 16.7H19.3" />
+                                            <path id="XMLID_912_" class="st4" d="M27.5 13.7H9.7" />
+                                            <path id="XMLID_913_" class="st4" d="M29 13.7h4.1" />
+                                            <path id="XMLID_910_" class="st4" d="M31.3 19.7h4" />
+                                        </g>
+                                    </g>
+                                </svg>
+
+                            </div>
+                            <span class="mx-2">{{ __('lang.delivery') }}</span>
+                        </a>
+                        <ul
+                            class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                            <li class="navbar_item">
+                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('delivery.index') }}" target="_blank"
+                                    class="delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <i class="mdi mdi-circle"></i>
+                                    {{ __('lang.index') }}</a>
+                            </li>
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('delivery_plan.plansList') }}" target="_blank"
+                                    class="plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <i class="mdi mdi-circle"></i>
+                                    {{ __('lang.plans') }}</a></li>
+                            {{-- <li><a href="{{route('delivery.create')}}"><i
+                                        class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
+                            {{-- <a href="{{route('delivery.maps')}}"><img
+                                    src="{{asset('images/topbar/inventory.png')}}" class="img-fluid"
+                                    alt="widgets"><span>{{__('lang.delivery')}}</span></a> --}}
+                        </ul>
+                    </li>
+                    {{-- ###################### sell car : عربة بيع ###################### --}}
+                    <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
+                        <a href="javaScript:void();"
+                            class="d-flex sell-car-menu align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                            style="height: 100%;font-weight: 600" data-toggle="dropdown">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
+                                    <defs>
+                                        <style>
+                                            .cls-1 {
+                                                fill: #dad7e5
+                                            }
+
+                                            .cls-3 {
+                                                fill: #ffde76
+                                            }
+
+                                            .cls-7 {
+                                                fill: #374f68
+                                            }
+
+                                            .cls-8 {
+                                                fill: #425b72
+                                            }
+
+                                            .cls-13 {
+                                                fill: #edebf2
+                                            }
+                                        </style>
+                                    </defs>
+                                    <g id="Truck_Delivery" data-name="Truck Delivery">
+                                        <path class="cls-1"
+                                            d="M7.13 34H1v-4h7.36a4 4 0 0 0-1.23 4zM47 30v4h-5.13a4 4 0 0 0-1.23-4zM34.13 34H14.87a4 4 0 0 0-1.23-4h21.72a4 4 0 0 0-1.23 4z" />
+                                        <path d="M32 12v18H13.64a4 4 0 0 0-5.28 0H2V12z" style="fill:#fc6" />
+                                        <path class="cls-3" d="M32 12v16H14A10 10 0 0 1 4 18v-6z" />
+                                        <path d="M47 22v8h-6.36a4 4 0 0 0-5.28 0H32V14h4v6a2 2 0 0 0 2 2z"
+                                            style="fill:#db5669" />
+                                        <path d="M47 22h-9a2 2 0 0 1-2-2v-6h6z" style="fill:#9fdbf3" />
+                                        <path d="M46.38 21H44a7 7 0 0 1-7-7h5z" style="fill:#b2e5fb" />
+                                        <path class="cls-7" d="M42 33c0 4.65-6.72 5.53-7.87 1A4 4 0 1 1 42 33z" />
+                                        <path class="cls-8"
+                                            d="M41.27 35.3c-3.82 2.59-8-2.15-5.55-5.57a4 4 0 0 1 5.55 5.57z" />
+                                        <path class="cls-7" d="M15 33c0 4.65-6.72 5.53-7.87 1A4 4 0 1 1 15 33z" />
+                                        <path class="cls-8"
+                                            d="M14.27 35.3c-3.82 2.59-8-2.15-5.55-5.57a4 4 0 0 1 5.55 5.57z" />
+                                        <path class="cls-1"
+                                            d="M12 33a1 1 0 0 0-2 0 1 1 0 0 0 2 0zM39 33a1 1 0 0 0-2 0 1 1 0 0 0 2 0z" />
+                                        <path style="fill:#a87e6b" d="M13 17h8v8h-8z" />
+                                        <path d="M21 17v7h-1a6 6 0 0 1-6-6v-1z" style="fill:#be927c" />
+                                        <path d="M18 17v2a1 1 0 0 1-2 0v-2z" style="fill:#f6ccaf" />
+                                        <path d="M47 22v6h-7a6 6 0 0 1-6-6v-8h2v6a2 2 0 0 0 2 2z"
+                                            style="fill:#f26674" />
+                                        <path class="cls-3" d="M47 25v2h-2a1 1 0 0 1 0-2z" />
+                                        <path class="cls-13"
+                                            d="M47 30v3c-2.18 0-4.32.25-5.48-1.89a4 4 0 0 0-.88-1.11zM35.36 30a4 4 0 0 0-.88 1.11 3.85 3.85 0 0 1-3.4 1.89H17.92a3.85 3.85 0 0 1-3.4-1.89 4 4 0 0 0-.88-1.11zM8.36 30A4 4 0 0 0 7 33H4a3 3 0 0 1-3-3z" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <span class="mx-2">{{ __('lang.sell_car') }}</span>
+                        </a>
+
+                        <ul
+                            class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('sell-car.index') }}" target="_blank"
+                                    class="sell-car-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <i class="mdi mdi-circle"></i>
+                                    @lang('lang.sell_car')</a>
+                            </li>
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('delivery.index') }}" target="_blank"
+                                    class="sell-car-delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <i class="mdi mdi-circle"></i>
+                                    {{ __('lang.plans') }}</a></li>
+                            {{-- <li><a href="{{route('delivery.create')}}"><i
+                                        class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
+                            {{-- <a href="{{route('delivery.maps')}}"><img
+                                    src="{{asset('images/topbar/inventory.png')}}" class="img-fluid"
+                                    alt="widgets"><span>{{__('lang.delivery')}}</span></a> --}}
+                        </ul>
+                    </li>
+                    {{-- ###################### sell car : عربة بيع ###################### --}}
+                    <li class="dropdown scroll mx-2 mb-0 p-0 " style="height: 40px;">
+                        <a href="javaScript:void();"
+                            class="d-flex rep-requests-menu align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                            style="height: 100%;font-weight: 600" data-toggle="dropdown">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <svg version="1.1" style="width: 100%" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                    x="0" y="0" viewBox="0 0 256 256" style="enable-background:new 0 0 256 256"
+                                    xml:space="preserve">
+                                    <style>
+                                        .st0 {
+                                            fill: #382b73
+                                        }
+
+                                        .st2 {
+                                            fill: #1caee4
+                                        }
+
+                                        .st3 {
+                                            fill: #009add
+                                        }
+
+                                        .st4 {
+                                            fill: #d1d3d4
+                                        }
+
+                                        .st5 {
+                                            fill: #fff
+                                        }
+
+                                        .st6 {
+                                            fill: #e6e7e8
+                                        }
+
+                                        .st7 {
+                                            fill: #27c1e6
+                                        }
+                                    </style>
+                                    <switch>
+                                        <g>
+                                            <circle class="st0" cx="128" cy="128" r="120" />
+                                            <circle cx="128" cy="128" r="102.5" style="fill:#473080" />
+                                            <path class="st0"
+                                                d="M164.524 130.094c-9.423 0-17.935 3.903-24.007 10.181a30.746 30.746 0 0 0-14.738-4.465l.01-.028-9.353-4.031v-7.385a23.645 23.645 0 0 0 14.321-13.372c.397-.389.783-.79 1.158-1.2a7.596 7.596 0 0 0 6.822-11.956 31.113 31.113 0 0 0 1.337-9.049c0-9.997-4.715-18.893-12.041-24.586l-.018-.014a17.06 17.06 0 0 0-.266-.204l-.008-.006-.27-.202-.019-.014a17.03 17.03 0 0 0-.271-.198h-.001a29.119 29.119 0 0 0-.284-.203l-.007-.005a31.058 31.058 0 0 0-2.03-1.319l-.037-.022c-.08-.047-.16-.095-.241-.141l-.074-.043-.226-.129-.09-.051-.22-.123-.097-.053-.214-.116-.108-.058-.211-.111-.111-.058-.204-.104-.126-.063-.201-.1-.118-.058a20.588 20.588 0 0 0-.212-.103l-.111-.053-.216-.102a4.447 4.447 0 0 0-.121-.055l-.208-.095-.123-.055a19.75 19.75 0 0 0-.213-.094l-.118-.051-.212-.091-.147-.061a33.05 33.05 0 0 0-.701-.282l-.167-.065-.157-.059-.19-.071-.164-.059-.181-.065-.169-.059-.184-.063-.16-.054a14.648 14.648 0 0 0-.194-.064l-.16-.052-.194-.062-.158-.049a15.974 15.974 0 0 0-.205-.062l-.147-.044-.213-.062-.148-.042-.209-.058-.154-.042-.22-.058-.135-.035-.237-.06-.13-.032a16.572 16.572 0 0 0-.238-.056l-.129-.03-.277-.062-.086-.019a33.577 33.577 0 0 0-.338-.071l-.033-.007c-.25-.051-.5-.099-.752-.144l-.072-.013-.301-.052-.106-.017a25.773 25.773 0 0 0-.273-.043l-.109-.016-.265-.039-.131-.018-.249-.033a21.988 21.988 0 0 0-.513-.061l-.248-.027-.145-.015-.235-.022-.149-.013a19.884 19.884 0 0 0-.243-.02l-.138-.011-.254-.018-.132-.009-.257-.015-.132-.007c-.091-.005-.183-.008-.275-.012l-.112-.005a31.9 31.9 0 0 0-.314-.01l-.073-.002c-.127-.003-.254-.006-.382-.007h-.01a26.803 26.803 0 0 0-.783 0l-.071.001-.309.006-.089.002-.299.009-.082.003-.367.016h-.004l-.39.022-.031.002-.334.023-.094.007-.277.023-.101.009-.305.029-.062.006-.374.04-.025.003-.332.04-.108.014-.255.034-.115.016-.279.041-.078.012c-.24.037-.479.076-.717.119l-.104.019a22.96 22.96 0 0 0-.256.047l-.114.022a21.22 21.22 0 0 0-.245.049l-.112.023c-.104.021-.207.043-.311.066l-.037.008-.353.079-.087.02-.256.061-.123.03-.229.057-.119.03-.254.067-.091.024-.34.094-.073.021-.259.075-.131.039-.209.063-.136.042-.213.068-.121.039-.299.099a5.309 5.309 0 0 0-.116.04l-.231.08-.147.052-.184.066-.149.055-.178.066-.149.056-.197.076-.179.07-.245.098-.152.063-.166.069-.166.07-.141.061-.18.078-.126.056c-.216.096-.43.194-.643.295l-.126.06-.18.087-.125.061-.18.089-.117.059-.19.097a25.727 25.727 0 0 0-.474.25l-.084.045-.184.1-.115.063-.183.102-.104.059-.188.107a6.533 6.533 0 0 0-.086.051c-.15.087-.299.176-.448.265l-.005.003-.195.119-.095.058-.185.116-.09.057a33.83 33.83 0 0 0-.197.126l-.051.033c-.224.145-.446.293-.666.444l-.071.048-.192.133a5.002 5.002 0 0 0-.076.054l-.193.137-.063.045c-5.992 4.313-10.388 10.704-12.132 18.118l-.007.032-.06.261-.018.08-.053.244-.02.097-.05.241-.016.083c-.052.261-.101.524-.146.787l-.022.128-.034.204-.025.158a11.803 11.803 0 0 0-.054.363l-.025.177-.028.211-.025.192-.035.291-.017.154-.022.206-.016.162-.02.21-.014.153-.019.229-.011.136-.025.355v.005c-.008.122-.015.245-.021.367l-.006.127-.011.243-.005.137-.008.249-.003.126-.005.263-.002.114-.002.372a36.083 36.083 0 0 0 .004.498l.002.082c.054 2.94.515 5.781 1.331 8.468a7.596 7.596 0 0 0 6.821 11.957c.375.41.761.81 1.158 1.199a23.479 23.479 0 0 0 3.972 6.435 25.1 25.1 0 0 0 1.156 1.243 24.258 24.258 0 0 0 1.675 1.522 23.547 23.547 0 0 0 7.518 4.173h-.001v8.206-.821l-4.677 2.015-4.677 2.015.01.028c-9.539.401-17.96 5.124-23.357 12.261l-.001.001c-.369.488-.724.988-1.064 1.498l-.02.03c-.253.381-.498.767-.735 1.16l-.01.016c-.074.123-.147.246-.219.37l-.022.038c-.228.392-.448.79-.659 1.193l-.023.044c-.061.116-.12.232-.179.349l-.035.069c-.063.125-.124.25-.185.375l-.008.017c-.133.274-.262.551-.387.829l-.022.05a37.17 37.17 0 0 0-.154.351l-.037.086c-.051.119-.102.24-.151.36l-.019.045c-.114.278-.224.558-.331.84l-.029.078a33.48 33.48 0 0 0-.124.337l-.036.101c-.042.117-.083.234-.123.352l-.022.063a31.26 31.26 0 0 0-.276.851l-.032.104a39.586 39.586 0 0 0-.131.44l-.094.334-.027.095a31.09 31.09 0 0 0-.354 1.43l-.071.328-.023.108a27.944 27.944 0 0 0-.191 1.011l-.051.304-.024.149-.048.321-.018.123c-.042.294-.079.589-.112.885l-.016.146a31.49 31.49 0 0 0-.046.466l-.027.306-.012.145a33.019 33.019 0 0 0-.076 1.357l-.005.155-.008.333-.002.127c-.002.153-.004.307-.004.461v14.197a6.773 6.773 0 0 0 6.773 6.773h72.189c5.992 5.709 14.103 9.214 23.032 9.214 18.444 0 33.396-14.952 33.396-33.396.008-18.443-14.944-33.394-33.388-33.394zm-55.897-4.518zm-.317-.006-.232-.007.232.007zm-.922-.043-.209-.015.209.015zm-.295-.021-.189-.015.189.015zm-.287-.024a13.076 13.076 0 0 1-.206-.02l.206.02zm-.273-.026-.259-.028.259.028zm-.376-.042-.146-.018.146.018zm-.28-.035-.13-.017.13.017zm-.271-.037zm-.454-.069-.042-.007.042.007zm-.211-.035-.086-.015.086.015zm-.264-.047a1.627 1.627 0 0 1-.068-.013l.068.013zm-.258-.049a.174.174 0 0 1-.022-.005l.022.005zm-.676-.142-.03-.007.03.007zm-.233-.054a.465.465 0 0 0-.036-.008l.036.008zm-1.149-.302s-.001 0 0 0c-.001 0 0 0 0 0zm5.097.888zm1.199.044.297.002.297-.002-.297.002-.245-.001-.052-.001zm5.757-.634h.002-.002zm-.927.2.027-.005-.027.005zm-.255.049.064-.012a7.668 7.668 0 0 0-.064.012zm-.261.046.079-.013-.079.013zm-.206.034.03-.005-.03.005zm-.462.071.106-.016-.106.016zm-.275.037.134-.018-.134.018zm-.253.032-.027.003.149-.018-.122.015zm-.35.039-.053.006.257-.028a11.61 11.61 0 0 1-.204.022zm-.325.032c.072-.007.143-.013.214-.021l-.214.021zm-.287.024.191-.016-.191.016zm-.296.021.211-.015c-.07.006-.141.01-.211.015zm-.636.033zm-.285.01.234-.008-.234.008zm-.316.006.249-.005-.249.005zm7.156 8.968v1.238-1.238z" />
                                             <g>
-                                                <circle transform="rotate(-76.521 164.518 156.482)" class="st5"
-                                                    cx="164.524" cy="156.489" r="33.396" />
+                                                <path class="st2"
+                                                    d="M148.604 180.671H69.302a6.773 6.773 0 0 1-6.773-6.773v-14.197c0-17.077 13.844-30.921 30.921-30.921h31.006c17.077 0 30.921 13.844 30.921 30.921v14.197a6.773 6.773 0 0 1-6.773 6.773z" />
+                                                <path class="st3"
+                                                    d="M141.773 134.083v46.589h6.831a6.773 6.773 0 0 0 6.773-6.773v-14.196c0-10.661-5.395-20.061-13.604-25.62z" />
+                                                <path class="st4"
+                                                    d="m125.789 128.781-9.353-4.03v4.03l-7.482 11.661-7.483-11.661v-4.03l-9.353 4.03 16.835 45.682h.001z" />
+                                                <path class="st5"
+                                                    d="m92.118 128.781 7.069 19.162c.285.773 1.275.99 1.857.408l7.909-7.909-7.482-11.661v-4.031l-9.353 4.031zM125.789 128.781l-7.069 19.162a1.129 1.129 0 0 1-1.857.408l-7.909-7.909 7.482-11.661v-4.031l9.353 4.031z" />
                                                 <path class="st6"
-                                                    d="M167.555 132.269h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.559a.94.94 0 0 1 1.104 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.735-.536.357-1.7-.553-1.7zM173.32 138.623l-.294.904c-.281.865.709 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.736-.535.358-1.699-.552-1.699h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.699l.769.559a.942.942 0 0 1 .339 1.05zM156.101 135.315h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.699l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.865.709 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.735-.535.356-1.699-.554-1.699zM139.731 146.041l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.709 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.736-.535.358-1.7-.552-1.7h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.865-1.506-.865-1.787 0l-.294.904a.94.94 0 0 1-.894.649h-.95c-.91 0-1.288 1.165-.552 1.7zM182.049 146.041l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.736-.535.358-1.7-.552-1.7h-.95a.94.94 0 0 1-.894-.649l-.294-.904c-.281-.865-1.506-.865-1.787 0l-.294.904a.94.94 0 0 1-.894.649h-.95c-.909 0-1.288 1.165-.551 1.7zM167.555 179.941h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.865.71 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.735-.535.357-1.7-.553-1.7zM155.372 176.699h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.865.709 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.734-.536.356-1.7-.554-1.7zM179.938 176.699h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.293.904a.94.94 0 0 1-.894.649h-.95c-.91 0-1.288 1.165-.552 1.7l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.865.709 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.734-.536.356-1.7-.554-1.7zM191.391 156.105h-.95a.94.94 0 0 1-.894-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.94.94 0 0 1-.894.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.558a.94.94 0 0 1 .341 1.051l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.559a.94.94 0 0 1 1.104 0l.769.559c.736.535 1.727-.185 1.445-1.05l-.293-.904a.94.94 0 0 1 .341-1.051l.769-.558c.738-.535.359-1.7-.551-1.7zM187.85 167.793h-.95a.94.94 0 0 1-.894-.649l-.293-.904c-.281-.865-1.506-.865-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.288 1.165-.552 1.7l.769.558a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.558c.736-.535.357-1.7-.553-1.7zM147.377 167.793h-.95a.94.94 0 0 1-.894-.649l-.294-.904c-.281-.865-1.506-.865-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.288 1.165-.552 1.7l.769.558a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.558c.736-.535.358-1.7-.552-1.7zM141.24 160.809l.769.559c.737.535 1.727-.185 1.446-1.05l-.294-.904a.94.94 0 0 1 .341-1.051l.769-.558c.736-.535.358-1.7-.552-1.7h-.95a.94.94 0 0 1-.894-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.94.94 0 0 1-.894.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.558a.94.94 0 0 1 .341 1.051l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0z" />
+                                                    d="M108.953 118.578c-2.615 0-5.131-.426-7.482-1.212v11.415l7.482 11.661 7.482-11.661v-11.416a23.52 23.52 0 0 1-7.482 1.213z" />
+                                                <path class="st2"
+                                                    d="m115.217 146.706-4.667 4.667a2.257 2.257 0 0 1-3.193 0l-4.667-4.667 6.263-6.263 6.264 6.263z" />
+                                                <path class="st3"
+                                                    d="M110.55 151.373a2.26 2.26 0 0 1-3.193 0l-1.6-1.6-1.387 12.255 4.583 12.439 4.583-12.439-1.387-12.254-1.599 1.599z" />
+                                                <path class="st7"
+                                                    d="m86.871 148.847 3.982-3.511c.737-.65.35-1.865-.627-1.969l-4.675-.5a1.129 1.129 0 0 1-.941-1.507l4.442-12.259a27.88 27.88 0 0 1 3.081-.282l16.819 45.649-22.165-24.008a1.131 1.131 0 0 1 .084-1.613zM131.036 148.847l-3.982-3.511c-.737-.65-.35-1.865.627-1.969l4.675-.5a1.128 1.128 0 0 0 .941-1.507l-4.442-12.259a27.875 27.875 0 0 0-3.082-.282l-16.819 45.649 22.165-24.008a1.13 1.13 0 0 0-.083-1.613zM136.433 171.288h-15.239a1.587 1.587 0 1 0 0 3.174h15.239a1.587 1.587 0 1 0 0-3.174z" />
+                                                <path class="st3"
+                                                    d="M76.134 180.671v-46.589c-8.209 5.559-13.604 14.959-13.604 25.62v14.196a6.773 6.773 0 0 0 6.773 6.773h6.831z" />
                                                 <g>
+                                                    <circle transform="rotate(-67.723 108.95 81.787)" class="st3"
+                                                        cx="108.954" cy="81.791" r="31.119" />
+                                                    <path class="st5"
+                                                        d="M108.953 118.578c-13.023 0-23.58-10.557-23.58-23.58V82.754c0-13.023 10.557-23.58 23.58-23.58 13.023 0 23.58 10.557 23.58 23.58v12.244c.001 13.023-10.556 23.58-23.58 23.58z" />
+                                                    <path class="st4"
+                                                        d="M108.953 118.578c-2.616 0-5.131-.426-7.482-1.212v4.495a23.506 23.506 0 0 0 7.482 1.232c2.618 0 5.129-.445 7.482-1.232v-4.495a23.548 23.548 0 0 1-7.482 1.212z" />
+                                                    <path class="st5"
+                                                        d="M85.373 94.998v-7.369a7.596 7.596 0 1 0 1.29 15.082 23.579 23.579 0 0 1-1.29-7.713zM132.534 87.629v7.369c0 2.701-.455 5.296-1.291 7.713a7.596 7.596 0 1 0 1.291-15.082z" />
+                                                    <path class="st6"
+                                                        d="M108.953 115.192c-13.023 0-23.58-10.557-23.58-23.58v3.386c0 13.023 10.557 23.58 23.58 23.58 13.023 0 23.58-10.557 23.58-23.58v-3.386c.001 13.023-10.556 23.58-23.58 23.58zM85.373 82.754v4.644c9.217-5.373 15.425-15.334 15.47-26.762-9.021 3.31-15.47 11.95-15.47 22.118z" />
+                                                    <path class="st6"
+                                                        d="M121.311 88.238c3.961 0 7.739-.762 11.223-2.112v-3.372c0-13.023-10.557-23.58-23.58-23.58-6.817 0-12.94 2.91-17.245 7.536 4.043 12.491 15.763 21.528 29.602 21.528z" />
                                                     <path class="st2"
-                                                        d="m165.418 129.383.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.709 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.938.938 0 0 0 .893-.649l.294-.904c.282-.866 1.506-.866 1.788 0zM176.686 132.429l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.289 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.71 1.585-1.446 1.05l-.769-.559a.941.941 0 0 0-1.105 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.938.938 0 0 0 .893-.649l.294-.904c.283-.866 1.508-.866 1.789 0zM153.964 132.429l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.289 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.71 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.938.938 0 0 0 .893-.649l.294-.904c.282-.866 1.507-.866 1.788 0zM144.208 141.456l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.288 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.71 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.866 1.505-.866 1.787 0zM186.525 141.456l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.709 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.938.938 0 0 0 .893-.649l.294-.904c.281-.866 1.506-.866 1.787 0zM165.418 177.055l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.288 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.709 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.938.938 0 0 0 .893-.649l.294-.904c.282-.865 1.506-.865 1.788 0zM153.234 173.813l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.865-.71 1.585-1.446 1.05l-.769-.558a.94.94 0 0 0-1.104 0l-.769.558c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.866 1.505-.866 1.786 0zM177.8 173.813l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.865-.71 1.585-1.446 1.05l-.769-.558a.94.94 0 0 0-1.104 0l-.769.558c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.866 1.505-.866 1.786 0zM189.254 153.219l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.289 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.865-.709 1.585-1.446 1.05l-.769-.558a.941.941 0 0 0-1.105 0l-.769.558c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.865 1.506-.865 1.787 0zM185.713 164.907l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.71 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.865 1.506-.865 1.787 0zM145.239 164.907l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.709 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.938.938 0 0 0 .893-.649l.294-.904c.282-.865 1.506-.865 1.787 0zM141.581 153.219l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.865-.709 1.585-1.446 1.05l-.769-.558a.94.94 0 0 0-1.104 0l-.769.558c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.28-.865 1.505-.865 1.786 0z" />
+                                                        d="M90.347 56.845c1.562 15.725 14.828 28.006 30.964 28.006a30.977 30.977 0 0 0 18.607-6.174c-1.562-15.725-14.828-28.007-30.964-28.007a30.99 30.99 0 0 0-18.607 6.175z" />
+                                                    <path class="st3"
+                                                        d="M77.834 81.791c0 1.416.104 2.807.287 4.174C91.229 82.3 100.848 70.277 100.848 56c0-1.416-.104-2.808-.287-4.174-13.108 3.664-22.727 15.687-22.727 29.965z" />
+                                                    <path class="st2"
+                                                        d="M101.777 91.909a2.857 2.857 0 1 1-5.714 0 2.857 2.857 0 0 1 5.714 0zM123.941 91.909a2.857 2.857 0 1 1-5.714 0 2.857 2.857 0 0 1 5.714 0z" />
+                                                    <g>
+                                                        <path class="st6"
+                                                            d="M85.373 94.998V90.86a4.365 4.365 0 1 0 0 8.73c.153 0 .298-.03.448-.045a23.662 23.662 0 0 1-.448-4.547zM132.556 94.998V90.86a4.365 4.365 0 0 1 0 8.73c-.153 0-.298-.03-.448-.045.288-1.473.448-2.991.448-4.547z" />
+                                                    </g>
                                                 </g>
                                                 <g>
-                                                    <circle transform="rotate(-76.638 164.521 156.493)" cx="164.524"
-                                                        cy="156.489" style="fill:#ef5a9d" r="14.107" />
-                                                    <path
-                                                        d="M163.423 164.577a2.365 2.365 0 0 1-1.671-.692l-4.619-4.619a2.362 2.362 0 1 1 3.341-3.341l2.949 2.947 5.975-5.975a2.362 2.362 0 1 1 3.341 3.341l-7.645 7.647a2.369 2.369 0 0 1-1.671.692z"
-                                                        style="fill:#e43d91" />
-                                                    <path
-                                                        d="M163.423 162.906a2.365 2.365 0 0 1-1.671-.692l-4.619-4.619a2.362 2.362 0 1 1 3.341-3.341l2.949 2.947 5.975-5.975a2.362 2.362 0 1 1 3.341 3.341l-7.645 7.647a2.365 2.365 0 0 1-1.671.692z"
-                                                        style="fill:#fede3a" />
-                                                    <path
-                                                        d="m172.738 151.383-7.645 7.647a2.361 2.361 0 0 1-3.342 0l-4.62-4.619c-.024-.025-.041-.053-.064-.079a2.358 2.358 0 0 0 .064 3.263l4.62 4.619a2.365 2.365 0 0 0 3.342 0l7.645-7.647a2.357 2.357 0 0 0 .064-3.263c-.023.026-.039.055-.064.079z"
-                                                        style="fill:#f7cb15" />
+                                                    <circle transform="rotate(-76.521 164.518 156.482)" class="st5"
+                                                        cx="164.524" cy="156.489" r="33.396" />
+                                                    <path class="st6"
+                                                        d="M167.555 132.269h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.559a.94.94 0 0 1 1.104 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.735-.536.357-1.7-.553-1.7zM173.32 138.623l-.294.904c-.281.865.709 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.736-.535.358-1.699-.552-1.699h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.699l.769.559a.942.942 0 0 1 .339 1.05zM156.101 135.315h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.699l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.865.709 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.735-.535.356-1.699-.554-1.699zM139.731 146.041l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.709 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.736-.535.358-1.7-.552-1.7h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.865-1.506-.865-1.787 0l-.294.904a.94.94 0 0 1-.894.649h-.95c-.91 0-1.288 1.165-.552 1.7zM182.049 146.041l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.736-.535.358-1.7-.552-1.7h-.95a.94.94 0 0 1-.894-.649l-.294-.904c-.281-.865-1.506-.865-1.787 0l-.294.904a.94.94 0 0 1-.894.649h-.95c-.909 0-1.288 1.165-.551 1.7zM167.555 179.941h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.865.71 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.735-.535.357-1.7-.553-1.7zM155.372 176.699h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.865.709 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.734-.536.356-1.7-.554-1.7zM179.938 176.699h-.95a.938.938 0 0 1-.893-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.293.904a.94.94 0 0 1-.894.649h-.95c-.91 0-1.288 1.165-.552 1.7l.769.559a.939.939 0 0 1 .341 1.05l-.294.904c-.281.865.709 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0l.769.559c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.559c.734-.536.356-1.7-.554-1.7zM191.391 156.105h-.95a.94.94 0 0 1-.894-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.94.94 0 0 1-.894.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.558a.94.94 0 0 1 .341 1.051l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.559a.94.94 0 0 1 1.104 0l.769.559c.736.535 1.727-.185 1.445-1.05l-.293-.904a.94.94 0 0 1 .341-1.051l.769-.558c.738-.535.359-1.7-.551-1.7zM187.85 167.793h-.95a.94.94 0 0 1-.894-.649l-.293-.904c-.281-.865-1.506-.865-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.288 1.165-.552 1.7l.769.558a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.558c.736-.535.357-1.7-.553-1.7zM147.377 167.793h-.95a.94.94 0 0 1-.894-.649l-.294-.904c-.281-.865-1.506-.865-1.787 0l-.294.904a.939.939 0 0 1-.893.649h-.95c-.91 0-1.288 1.165-.552 1.7l.769.558a.939.939 0 0 1 .341 1.05l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.558a.94.94 0 0 1 1.104 0l.769.558c.736.535 1.727-.185 1.446-1.05l-.294-.904a.939.939 0 0 1 .341-1.05l.769-.558c.736-.535.358-1.7-.552-1.7zM141.24 160.809l.769.559c.737.535 1.727-.185 1.446-1.05l-.294-.904a.94.94 0 0 1 .341-1.051l.769-.558c.736-.535.358-1.7-.552-1.7h-.95a.94.94 0 0 1-.894-.649l-.294-.904c-.281-.866-1.506-.866-1.787 0l-.294.904a.94.94 0 0 1-.894.649h-.95c-.91 0-1.289 1.165-.552 1.7l.769.558a.94.94 0 0 1 .341 1.051l-.294.904c-.281.866.71 1.585 1.446 1.05l.769-.559a.941.941 0 0 1 1.105 0z" />
+                                                    <g>
+                                                        <path class="st2"
+                                                            d="m165.418 129.383.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.709 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.938.938 0 0 0 .893-.649l.294-.904c.282-.866 1.506-.866 1.788 0zM176.686 132.429l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.289 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.71 1.585-1.446 1.05l-.769-.559a.941.941 0 0 0-1.105 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.938.938 0 0 0 .893-.649l.294-.904c.283-.866 1.508-.866 1.789 0zM153.964 132.429l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.289 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.71 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.938.938 0 0 0 .893-.649l.294-.904c.282-.866 1.507-.866 1.788 0zM144.208 141.456l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.288 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.71 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.866 1.505-.866 1.787 0zM186.525 141.456l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.709 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.938.938 0 0 0 .893-.649l.294-.904c.281-.866 1.506-.866 1.787 0zM165.418 177.055l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.288 1.165.552 1.7l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.709 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.7.552-1.7h.95a.938.938 0 0 0 .893-.649l.294-.904c.282-.865 1.506-.865 1.788 0zM153.234 173.813l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.865-.71 1.585-1.446 1.05l-.769-.558a.94.94 0 0 0-1.104 0l-.769.558c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.866 1.505-.866 1.786 0zM177.8 173.813l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.865-.71 1.585-1.446 1.05l-.769-.558a.94.94 0 0 0-1.104 0l-.769.558c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.866 1.505-.866 1.786 0zM189.254 153.219l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.289 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.865-.709 1.585-1.446 1.05l-.769-.558a.941.941 0 0 0-1.105 0l-.769.558c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.865 1.506-.865 1.787 0zM185.713 164.907l.294.904a.939.939 0 0 0 .893.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.71 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.281-.865 1.506-.865 1.787 0zM145.239 164.907l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.866-.709 1.585-1.446 1.05l-.769-.559a.94.94 0 0 0-1.104 0l-.769.559c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.938.938 0 0 0 .893-.649l.294-.904c.282-.865 1.506-.865 1.787 0zM141.581 153.219l.294.904a.94.94 0 0 0 .894.649h.95c.91 0 1.288 1.165.552 1.699l-.769.559a.939.939 0 0 0-.341 1.05l.294.904c.281.865-.709 1.585-1.446 1.05l-.769-.558a.94.94 0 0 0-1.104 0l-.769.558c-.736.535-1.727-.185-1.446-1.05l.294-.904a.939.939 0 0 0-.341-1.05l-.769-.559c-.736-.535-.358-1.699.552-1.699h.95a.94.94 0 0 0 .894-.649l.294-.904c.28-.865 1.505-.865 1.786 0z" />
+                                                    </g>
+                                                    <g>
+                                                        <circle transform="rotate(-76.638 164.521 156.493)" cx="164.524"
+                                                            cy="156.489" style="fill:#ef5a9d" r="14.107" />
+                                                        <path
+                                                            d="M163.423 164.577a2.365 2.365 0 0 1-1.671-.692l-4.619-4.619a2.362 2.362 0 1 1 3.341-3.341l2.949 2.947 5.975-5.975a2.362 2.362 0 1 1 3.341 3.341l-7.645 7.647a2.369 2.369 0 0 1-1.671.692z"
+                                                            style="fill:#e43d91" />
+                                                        <path
+                                                            d="M163.423 162.906a2.365 2.365 0 0 1-1.671-.692l-4.619-4.619a2.362 2.362 0 1 1 3.341-3.341l2.949 2.947 5.975-5.975a2.362 2.362 0 1 1 3.341 3.341l-7.645 7.647a2.365 2.365 0 0 1-1.671.692z"
+                                                            style="fill:#fede3a" />
+                                                        <path
+                                                            d="m172.738 151.383-7.645 7.647a2.361 2.361 0 0 1-3.342 0l-4.62-4.619c-.024-.025-.041-.053-.064-.079a2.358 2.358 0 0 0 .064 3.263l4.62 4.619a2.365 2.365 0 0 0 3.342 0l7.645-7.647a2.357 2.357 0 0 0 .064-3.263c-.023.026-.039.055-.064.079z"
+                                                            style="fill:#f7cb15" />
+                                                    </g>
                                                 </g>
                                             </g>
                                         </g>
-                                    </g>
-                                </switch>
-                            </svg>
-                        </div>
-                        <span class="mx-2">{{ __('lang.representatives_requests') }}</span>
-                    </a>
-                    <ul
-                        class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        <li class="navbar_item">
-                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('representatives.index') }}" target="_blank"
-                                class="rep-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <i class="mdi mdi-circle"></i>
-                                {{ __('lang.representatives_requests') }}</a>
-                        </li>
-                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('rep_plan.index') }}" target="_blank"
-                                class="rep-plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <i class="mdi mdi-circle"></i>
-                                {{ __('lang.plans') }}</a></li>
-                        {{-- <li><a href="{{route('delivery.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
-                        {{-- <a href="{{route('delivery.maps')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.delivery')}}</span></a> --}}
-                    </ul>
-                </li>
+                                    </switch>
+                                </svg>
+                            </div>
+                            <span class="mx-2">{{ __('lang.representatives_requests') }}</span>
+                        </a>
+                        <ul
+                            class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                            <li class="navbar_item">
+                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('representatives.index') }}" target="_blank"
+                                    class="rep-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <i class="mdi mdi-circle"></i>
+                                    {{ __('lang.representatives_requests') }}</a>
+                            </li>
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('rep_plan.index') }}" target="_blank"
+                                    class="rep-plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <i class="mdi mdi-circle"></i>
+                                    {{ __('lang.plans') }}</a></li>
+                            {{-- <li><a href="{{route('delivery.create')}}"><i
+                                        class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
+                            {{-- <a href="{{route('delivery.maps')}}"><img
+                                    src="{{asset('images/topbar/inventory.png')}}" class="img-fluid"
+                                    alt="widgets"><span>{{__('lang.delivery')}}</span></a> --}}
+                        </ul>
+                    </li>
 
-                {{-- @endcan --}}
-                {{-- ###################### settings : الاعدادات ###################### --}}
-                {{-- @can('settings_module') --}}
-                @if (!empty($module_settings['settings_module']))
+                    {{-- @endcan --}}
+                    {{-- ###################### settings : الاعدادات ###################### --}}
+                    {{-- @can('settings_module') --}}
+                    @if (!empty($module_settings['settings_module']))
                     <li class="dropdown menu-item-has-mega-menu scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex settings-icon-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
                             style="height: 100%;font-weight: 600" data-toggle="dropdown">
-                            {{-- <img src="{{ asset('images/topbar/settings.png') }}"
-                            class="img-fluid pl-1" alt="basic"> --}}
+                            {{-- <img src="{{ asset('images/topbar/settings.png') }}" class="img-fluid pl-1"
+                                alt="basic"> --}}
                             <div style="width: 25px" class="d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                     <defs>
@@ -1239,12 +1242,10 @@
                                         </style>
                                     </defs>
                                     <g id="_29-setting" data-name="29-setting">
-                                        <rect class="cls-1" x="1" y="5" width="46" height="34"
-                                            rx="2" ry="2" />
+                                        <rect class="cls-1" x="1" y="5" width="46" height="34" rx="2" ry="2" />
                                         <path class="cls-1" d="M13 43h22v4H13z" />
                                         <path class="cls-2" d="M17 39h14v4H17z" />
-                                        <rect x="5" y="9" width="38" height="26" rx="2"
-                                            ry="2" style="fill:#b5efff" />
+                                        <rect x="5" y="9" width="38" height="26" rx="2" ry="2" style="fill:#b5efff" />
                                         <path
                                             d="M41 9H7a2 2 0 0 0-2 2v3a2 2 0 0 1 2-2h34a2 2 0 0 1 2 2v-3a2 2 0 0 0-2-2z"
                                             style="fill:#80dbff" />
@@ -1404,16 +1405,17 @@
                             </ul>
                         </div>
                     </li>
-                @endif
-                {{-- @endcan  --}}
-                {{-- ###################### reports : التقرير ###################### --}}
-                {{-- @can('reports_module') --}}
-                @if (!empty($module_settings['reports_module']))
+                    @endif
+                    {{-- @endcan --}}
+                    {{-- ###################### reports : التقرير ###################### --}}
+                    {{-- @can('reports_module') --}}
+                    @if (!empty($module_settings['reports_module']))
                     <li class="dropdown scroll mx-2 mb-0 p-0" style="height: 40px;">
                         <a href="javaScript:void();"
                             class="d-flex reports-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
                             style="height: 100%;font-weight: 600" data-toggle="dropdown">
-                            {{-- <img src="{{ asset('images/topbar/report.png') }}" class="img-fluid pl-1" alt="advanced"> --}}
+                            {{-- <img src="{{ asset('images/topbar/report.png') }}" class="img-fluid pl-1"
+                                alt="advanced"> --}}
                             <div style="width: 25px" class="d-flex align-items-center">
                                 <img src="{{ asset('images/navbar/reports.svg') }}" alt="{{ __('lang.reports') }}">
                             </div>
@@ -1468,7 +1470,7 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.sales_per_employee') }}
                                             </a>
                                         </li>
-                                        {{--          Daily Purchase Report           --}}
+                                        {{-- Daily Purchase Report --}}
                                         <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                                 href="{{ route('reports.daily_purchase_report') }}" target="_blank"
@@ -1507,11 +1509,10 @@
                                         {{-- +++++++++++ Representative Salary Report +++++++++++ --}}
                                         <li class="navbar_item">
                                             <a class="representative_salary_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                                target="_blank"
-                                                href="{{ route('representative_salary_report.index') }}"
+                                                target="_blank" href="{{ route('representative_salary_report.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
-                                                <i
-                                                    class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report')
+                                                }}
                                             </a>
                                         </li>
                                         {{-- +++++++++++ profit Report +++++++++++ --}}
@@ -1519,8 +1520,8 @@
                                             <a class="profit_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 target="_blank" href="{{ route('profit_report') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
-                                                <i
-                                                    class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report')
+                                                }}
                                             </a>
                                         </li>
                                         {{-- +++++++++++ productTransacrionReport Report +++++++++++ --}}
@@ -1537,8 +1538,8 @@
                                             <a class="monthly_sale_and_purchase_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 target="_blank" href="{{ route('report.monthly_sale_report') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
-                                                <i
-                                                    class="mdi mdi-circle"></i>{{ __('lang.monthly_sale_and_purchase_report') }}
+                                                <i class="mdi mdi-circle"></i>{{
+                                                __('lang.monthly_sale_and_purchase_report') }}
                                             </a>
                                         </li>
                                         {{-- +++++++++++ Get Due Report +++++++++++ --}}
@@ -1596,82 +1597,83 @@
                             </ul>
                         </div>
                     </li>
-                @endif
-                {{-- @endcan --}}
-                <li class="scroll  mx-2 mb-0 p-0" style="height: 40px;">
-                    <a class="due-button align-items-center d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                        style="cursor: pointer;font-weight: 600;text-decoration: none;height: 100%;" target="_blank"
-                        href="{{ route('dues') }}">
-                        <div style="width: 25px" class="d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg"style="width:100%" viewBox="0 0 256 256"
-                                xml:space="preserve">
-                                <path fill="#AFAFAF"
-                                    d="M232.63 155.041c-4.49 12.366-11.121 23.708-19.416 33.585a4.572 4.572 0 0 1-5.793 1.012l-10.4-6.002c-12.296 12.738-28.106 22.091-45.847 26.5v11.983a4.59 4.59 0 0 1-3.794 4.516c-2.497.441-5.017.801-7.548 1.068v-13.716a5.817 5.817 0 0 0-5.817-5.817h-12.029a5.817 5.817 0 0 0-5.817 5.817v13.716a109.272 109.272 0 0 1-7.548-1.068 4.59 4.59 0 0 1-3.794-4.516v-11.983c-17.741-4.409-33.55-13.762-45.847-26.5l-10.4 6.002a4.57 4.57 0 0 1-5.793-1.012c-8.295-9.877-14.926-21.219-19.416-33.585a4.603 4.603 0 0 1 2.024-5.538l10.389-5.991c-4.909-17.113-4.967-35.645 0-52.955l-10.389-6.002a4.588 4.588 0 0 1-2.024-5.526c4.49-12.367 11.121-23.709 19.416-33.585a4.588 4.588 0 0 1 5.793-1.024l10.4 6.002c12.296-12.738 28.106-22.08 45.847-26.489V11.94a4.578 4.578 0 0 1 3.781-4.502 111.929 111.929 0 0 1 38.785 0 4.577 4.577 0 0 1 3.781 4.502v11.994c17.741 4.409 33.55 13.751 45.847 26.489l10.4-6.002a4.587 4.587 0 0 1 5.793 1.024c8.295 9.876 14.926 21.219 19.416 33.585a4.588 4.588 0 0 1-2.024 5.526l-10.389 6.002c4.909 17.101 4.967 35.645 0 52.955l10.389 5.991a4.602 4.602 0 0 1 2.024 5.537z" />
-                                <circle fill="#FC5D3D" cx="128" cy="117.033" r="67.169" />
-                                <circle fill="#EFEFEF" cx="128" cy="117.033" r="49.917" />
-                                <path fill="#13BF6C"
-                                    d="m142.99 98.773-20.91 20.91-9.07-9.07a7.36 7.36 0 0 0-10.408 10.408l14.274 14.274a7.36 7.36 0 0 0 10.408 0l26.114-26.114a7.36 7.36 0 0 0 0-10.408 7.358 7.358 0 0 0-10.408 0z" />
-                                <path fill="#FC5D3D"
-                                    d="M139.831 213.987v37.68h-23.662v-37.68a5.817 5.817 0 0 1 5.817-5.817h12.029a5.816 5.816 0 0 1 5.816 5.817z" />
-                                <path fill="#EFEFEF"
-                                    d="M140.126 199.14a2.5 2.5 0 0 1 2.028-2.896c37.96-6.689 67.004-39.718 67.004-79.923 0-15.788-4.528-31.084-13.095-44.233a2.5 2.5 0 1 1 4.189-2.729c9.097 13.963 13.905 30.202 13.905 46.962 0 42.675-30.827 77.744-71.137 84.847a2.5 2.5 0 0 1-2.894-2.028zM190.299 64.3a82.374 82.374 0 0 0-4.911-5.363 2.5 2.5 0 1 1 3.535-3.537 87.253 87.253 0 0 1 5.21 5.691 2.498 2.498 0 0 1-.313 3.521 2.497 2.497 0 0 1-3.521-.312zM110.26 200.645a85.362 85.362 0 0 1-30.501-12.918 2.5 2.5 0 0 1 2.804-4.141 80.36 80.36 0 0 0 28.723 12.164 2.5 2.5 0 0 1-1.026 4.895zm-38.664-19.188a87.984 87.984 0 0 1-4.518-4.211 2.498 2.498 0 0 1 0-3.535 2.498 2.498 0 0 1 3.535 0 83.067 83.067 0 0 0 4.26 3.969 2.502 2.502 0 0 1 .25 3.527 2.502 2.502 0 0 1-3.527.25z" />
-                                <path fill="#FFCBC3"
-                                    d="M130.112 246.066a2.5 2.5 0 0 1-2.5-2.5v-9.404a2.5 2.5 0 1 1 5 0v9.404a2.5 2.5 0 0 1-2.5 2.5zm0-19.404a2.5 2.5 0 0 1-2.5-2.5v-4a2.5 2.5 0 1 1 5 0v4a2.5 2.5 0 0 1-2.5 2.5z" />
-                                <path
-                                    d="M139.46 118.87a2.496 2.496 0 0 0 0 3.529 2.508 2.508 0 0 0 3.54 0 2.5 2.5 0 0 0 0-3.529c-.94-.951-2.589-.951-3.54 0z" />
-                                <path
-                                    d="M146.541 111.799c-1.003.98-.968 2.572-.01 3.53.949.95 2.6.95 3.539 0l5.091-5.09c3.801-3.803 3.904-10.056 0-13.94-3.82-3.84-10.091-3.87-13.94 0l-19.14 19.14-7.3-7.31c-3.747-3.747-10.025-3.936-13.95.01-3.771 3.772-3.915 10.004 0 13.94l14.28 14.27c3.69 3.71 9.95 3.991 13.94 0l6.88-6.88c.97-.97.97-2.56 0-3.53-.939-.939-2.59-.949-3.53 0l-6.879 6.88a4.873 4.873 0 0 1-6.88 0l-14.27-14.279a4.862 4.862 0 0 1 0-6.87 4.85 4.85 0 0 1 6.87 0l9.07 9.07c.95.939 2.59.939 3.54 0l20.91-20.91c1.867-1.887 4.966-1.904 6.87 0 1.938 1.938 1.85 5.039 0 6.87l-5.091 5.099zM76.57 38.33a2.512 2.512 0 0 0 .71-3.471c-.73-1.109-2.35-1.449-3.46-.71a2.512 2.512 0 0 0-.71 3.471 2.503 2.503 0 0 0 3.46.71z" />
-                                <path
-                                    d="M21.021 155.179c4.54 12.51 11.22 24.07 19.85 34.34 2.212 2.638 5.99 3.282 8.97 1.57l8.72-5.03c12.15 12.101 27.29 20.851 43.77 25.3v10.051a7.08 7.08 0 0 0 5.86 6.979c1.84.325 3.669.584 5.48.813v21.757a2.5 2.5 0 0 0 5 0v-37.68c0-1.83 1.49-3.32 3.32-3.32h12.03c1.82 0 3.311 1.49 3.311 3.32v37.68a2.5 2.5 0 0 0 5 0v-21.757a112.58 112.58 0 0 0 5.479-.813 7.089 7.089 0 0 0 5.86-6.979v-10.051c16.479-4.449 31.61-13.199 43.77-25.3l8.73 5.03c2.895 1.677 6.7 1.119 8.96-1.56 8.63-10.28 15.31-21.83 19.85-34.341a7.12 7.12 0 0 0-3.12-8.56l-8.72-5.03a98.489 98.489 0 0 0 3.28-25.27c0-8.57-1.101-17.08-3.28-25.28l8.72-5.04c2.962-1.724 4.286-5.336 3.12-8.54-4.54-12.51-11.22-24.07-19.85-34.35a7.084 7.084 0 0 0-8.96-1.57l-8.73 5.03c-12.149-12.101-27.279-20.84-43.77-25.29V11.229c0-3.439-2.46-6.37-5.851-6.96-12.96-2.3-26.64-2.31-39.649 0a7.053 7.053 0 0 0-5.84 6.96V21.29a97.725 97.725 0 0 0-19.67 7.67c-1.171.586-1.732 2.087-1.07 3.37.676 1.304 2.271 1.657 3.37 1.06a93.165 93.165 0 0 1 20.47-7.74 2.5 2.5 0 0 0 1.9-2.43V11.23c-.01-1 .73-1.87 1.71-2.04 12.41-2.199 25.5-2.199 37.91 0 .989.17 1.729 1.04 1.72 2.04v11.99c0 1.15.78 2.15 1.899 2.43 16.99 4.22 32.43 13.14 44.65 25.8.771.8 2.09.979 3.05.43l10.4-6.01c.87-.49 2-.28 2.63.47 8.26 9.83 14.64 20.88 18.98 32.83.345.958-.082 2.02-.931 2.51l-10.39 6a2.52 2.52 0 0 0-1.15 2.86c2.4 8.33 3.61 17.01 3.61 25.79a93.21 93.21 0 0 1-3.61 25.779c-.31 1.11.16 2.28 1.16 2.86l10.39 5.99c.899.52 1.258 1.638.91 2.53-4.33 11.949-10.71 22.989-18.97 32.819-.632.763-1.76.96-2.62.46l-10.41-6.01c-.97-.56-2.279-.37-3.05.43-12.229 12.67-27.67 21.591-44.65 25.811a2.491 2.491 0 0 0-1.899 2.42v11.99c.01 1.01-.72 1.88-1.73 2.05-1.548.273-3.085.5-4.609.704V213.28c0-4.591-3.73-8.32-8.311-8.32h-3.52v-19.031c37.48-1.308 67.17-32.098 67.17-69.61 0-38.426-31.133-69.659-69.67-69.659-5.78 0-11.53.71-17.1 2.109-1.33.34-2.15 1.7-1.81 3.04.33 1.311 1.72 2.141 3.04 1.811A64.856 64.856 0 0 1 128 51.649c35.896.022 64.67 29.079 64.67 64.67 0 35.71-28.89 64.671-64.67 64.671-35.723 0-64.67-28.912-64.67-64.671 0-22.77 11.64-43.439 31.12-55.289a2.508 2.508 0 0 0 .84-3.44 2.495 2.495 0 0 0-3.44-.83C71.609 69.057 58.33 91.3 58.33 116.319c0 37.342 29.524 68.296 67.17 69.61v19.031h-3.51c-4.59 0-8.32 3.729-8.32 8.32v10.885c-1.518-.2-3.053-.426-4.61-.705a2.072 2.072 0 0 1-1.73-2.05v-11.99c0-1.15-.78-2.14-1.9-2.42-16.99-4.22-32.43-13.15-44.65-25.811-.78-.8-2.09-.989-3.05-.43l-10.4 6c-.897.534-2.009.287-2.63-.46-8.26-9.82-14.64-20.87-18.98-32.82a2.1 2.1 0 0 1 .93-2.52l10.38-5.99c1-.58 1.47-1.75 1.16-2.86-2.4-8.34-3.61-17.01-3.61-25.79 0-8.779 1.21-17.449 3.6-25.779.32-1.11-.15-2.28-1.15-2.86l-10.38-6a2.077 2.077 0 0 1-.93-2.5c4.34-11.96 10.73-23.01 18.98-32.84a2.097 2.097 0 0 1 2.63-.47l10.4 6.01c.96.55 2.28.37 3.05-.43a93.39 93.39 0 0 1 7.96-7.341c1.082-.911 1.207-2.492.34-3.52-.84-1.03-2.49-1.19-3.52-.35a99.806 99.806 0 0 0-7 6.34l-8.73-5.03a7.084 7.084 0 0 0-8.96 1.57c-8.63 10.279-15.31 21.83-19.85 34.35-1.147 3.108.09 6.778 3.13 8.54l8.71 5.04c-2.18 8.2-3.28 16.7-3.28 25.27s1.1 17.07 3.28 25.28l-8.71 5.03c-2.911 1.688-4.314 5.253-3.129 8.55z" />
-                                <path
-                                    d="M75.58 116.33c0 28.916 23.452 52.41 52.42 52.41 28.941 0 52.41-23.446 52.41-52.41 0-1.38-1.12-2.5-2.49-2.5a2.5 2.5 0 0 0-2.5 2.5c-.02 26.194-21.201 47.41-47.42 47.41-26.173 0-47.42-21.19-47.42-47.41 0-26.157 21.158-47.42 47.43-47.42 19.71 0 37.58 12.409 44.45 30.899.46 1.25 1.95 1.94 3.21 1.471a2.507 2.507 0 0 0 1.479-3.221C169.78 78.274 150.693 63.91 128 63.91c-28.898 0-52.42 23.416-52.42 52.42z" />
-                                <path
-                                    d="M174.85 108.979a2.492 2.492 0 0 0 2.86 2.08 2.498 2.498 0 0 0 2.08-2.85 2.505 2.505 0 0 0-2.851-2.09c-1.37.204-2.295 1.495-2.089 2.86zM103.01 56.66c1.27-.53 1.87-2 1.34-3.271-.52-1.229-2.02-1.859-3.26-1.34h-.01c-1.27.53-1.88 2-1.34 3.27a2.481 2.481 0 0 0 3.27 1.341z" />
-                            </svg>
-                        </div>
-                        {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid" alt="components"> --}}
-                        <span class="mx-2">{{ __('lang.dues') }}</span>
-                    </a>
-                </li>
+                    @endif
+                    {{-- @endcan --}}
+                    <li class="scroll  mx-2 mb-0 p-0" style="height: 40px;">
+                        <a class="due-button align-items-center d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                            style="cursor: pointer;font-weight: 600;text-decoration: none;height: 100%;" target="_blank"
+                            href="{{ route('dues') }}">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="width:100%" viewBox="0 0 256 256"
+                                    xml:space="preserve">
+                                    <path fill="#AFAFAF"
+                                        d="M232.63 155.041c-4.49 12.366-11.121 23.708-19.416 33.585a4.572 4.572 0 0 1-5.793 1.012l-10.4-6.002c-12.296 12.738-28.106 22.091-45.847 26.5v11.983a4.59 4.59 0 0 1-3.794 4.516c-2.497.441-5.017.801-7.548 1.068v-13.716a5.817 5.817 0 0 0-5.817-5.817h-12.029a5.817 5.817 0 0 0-5.817 5.817v13.716a109.272 109.272 0 0 1-7.548-1.068 4.59 4.59 0 0 1-3.794-4.516v-11.983c-17.741-4.409-33.55-13.762-45.847-26.5l-10.4 6.002a4.57 4.57 0 0 1-5.793-1.012c-8.295-9.877-14.926-21.219-19.416-33.585a4.603 4.603 0 0 1 2.024-5.538l10.389-5.991c-4.909-17.113-4.967-35.645 0-52.955l-10.389-6.002a4.588 4.588 0 0 1-2.024-5.526c4.49-12.367 11.121-23.709 19.416-33.585a4.588 4.588 0 0 1 5.793-1.024l10.4 6.002c12.296-12.738 28.106-22.08 45.847-26.489V11.94a4.578 4.578 0 0 1 3.781-4.502 111.929 111.929 0 0 1 38.785 0 4.577 4.577 0 0 1 3.781 4.502v11.994c17.741 4.409 33.55 13.751 45.847 26.489l10.4-6.002a4.587 4.587 0 0 1 5.793 1.024c8.295 9.876 14.926 21.219 19.416 33.585a4.588 4.588 0 0 1-2.024 5.526l-10.389 6.002c4.909 17.101 4.967 35.645 0 52.955l10.389 5.991a4.602 4.602 0 0 1 2.024 5.537z" />
+                                    <circle fill="#FC5D3D" cx="128" cy="117.033" r="67.169" />
+                                    <circle fill="#EFEFEF" cx="128" cy="117.033" r="49.917" />
+                                    <path fill="#13BF6C"
+                                        d="m142.99 98.773-20.91 20.91-9.07-9.07a7.36 7.36 0 0 0-10.408 10.408l14.274 14.274a7.36 7.36 0 0 0 10.408 0l26.114-26.114a7.36 7.36 0 0 0 0-10.408 7.358 7.358 0 0 0-10.408 0z" />
+                                    <path fill="#FC5D3D"
+                                        d="M139.831 213.987v37.68h-23.662v-37.68a5.817 5.817 0 0 1 5.817-5.817h12.029a5.816 5.816 0 0 1 5.816 5.817z" />
+                                    <path fill="#EFEFEF"
+                                        d="M140.126 199.14a2.5 2.5 0 0 1 2.028-2.896c37.96-6.689 67.004-39.718 67.004-79.923 0-15.788-4.528-31.084-13.095-44.233a2.5 2.5 0 1 1 4.189-2.729c9.097 13.963 13.905 30.202 13.905 46.962 0 42.675-30.827 77.744-71.137 84.847a2.5 2.5 0 0 1-2.894-2.028zM190.299 64.3a82.374 82.374 0 0 0-4.911-5.363 2.5 2.5 0 1 1 3.535-3.537 87.253 87.253 0 0 1 5.21 5.691 2.498 2.498 0 0 1-.313 3.521 2.497 2.497 0 0 1-3.521-.312zM110.26 200.645a85.362 85.362 0 0 1-30.501-12.918 2.5 2.5 0 0 1 2.804-4.141 80.36 80.36 0 0 0 28.723 12.164 2.5 2.5 0 0 1-1.026 4.895zm-38.664-19.188a87.984 87.984 0 0 1-4.518-4.211 2.498 2.498 0 0 1 0-3.535 2.498 2.498 0 0 1 3.535 0 83.067 83.067 0 0 0 4.26 3.969 2.502 2.502 0 0 1 .25 3.527 2.502 2.502 0 0 1-3.527.25z" />
+                                    <path fill="#FFCBC3"
+                                        d="M130.112 246.066a2.5 2.5 0 0 1-2.5-2.5v-9.404a2.5 2.5 0 1 1 5 0v9.404a2.5 2.5 0 0 1-2.5 2.5zm0-19.404a2.5 2.5 0 0 1-2.5-2.5v-4a2.5 2.5 0 1 1 5 0v4a2.5 2.5 0 0 1-2.5 2.5z" />
+                                    <path
+                                        d="M139.46 118.87a2.496 2.496 0 0 0 0 3.529 2.508 2.508 0 0 0 3.54 0 2.5 2.5 0 0 0 0-3.529c-.94-.951-2.589-.951-3.54 0z" />
+                                    <path
+                                        d="M146.541 111.799c-1.003.98-.968 2.572-.01 3.53.949.95 2.6.95 3.539 0l5.091-5.09c3.801-3.803 3.904-10.056 0-13.94-3.82-3.84-10.091-3.87-13.94 0l-19.14 19.14-7.3-7.31c-3.747-3.747-10.025-3.936-13.95.01-3.771 3.772-3.915 10.004 0 13.94l14.28 14.27c3.69 3.71 9.95 3.991 13.94 0l6.88-6.88c.97-.97.97-2.56 0-3.53-.939-.939-2.59-.949-3.53 0l-6.879 6.88a4.873 4.873 0 0 1-6.88 0l-14.27-14.279a4.862 4.862 0 0 1 0-6.87 4.85 4.85 0 0 1 6.87 0l9.07 9.07c.95.939 2.59.939 3.54 0l20.91-20.91c1.867-1.887 4.966-1.904 6.87 0 1.938 1.938 1.85 5.039 0 6.87l-5.091 5.099zM76.57 38.33a2.512 2.512 0 0 0 .71-3.471c-.73-1.109-2.35-1.449-3.46-.71a2.512 2.512 0 0 0-.71 3.471 2.503 2.503 0 0 0 3.46.71z" />
+                                    <path
+                                        d="M21.021 155.179c4.54 12.51 11.22 24.07 19.85 34.34 2.212 2.638 5.99 3.282 8.97 1.57l8.72-5.03c12.15 12.101 27.29 20.851 43.77 25.3v10.051a7.08 7.08 0 0 0 5.86 6.979c1.84.325 3.669.584 5.48.813v21.757a2.5 2.5 0 0 0 5 0v-37.68c0-1.83 1.49-3.32 3.32-3.32h12.03c1.82 0 3.311 1.49 3.311 3.32v37.68a2.5 2.5 0 0 0 5 0v-21.757a112.58 112.58 0 0 0 5.479-.813 7.089 7.089 0 0 0 5.86-6.979v-10.051c16.479-4.449 31.61-13.199 43.77-25.3l8.73 5.03c2.895 1.677 6.7 1.119 8.96-1.56 8.63-10.28 15.31-21.83 19.85-34.341a7.12 7.12 0 0 0-3.12-8.56l-8.72-5.03a98.489 98.489 0 0 0 3.28-25.27c0-8.57-1.101-17.08-3.28-25.28l8.72-5.04c2.962-1.724 4.286-5.336 3.12-8.54-4.54-12.51-11.22-24.07-19.85-34.35a7.084 7.084 0 0 0-8.96-1.57l-8.73 5.03c-12.149-12.101-27.279-20.84-43.77-25.29V11.229c0-3.439-2.46-6.37-5.851-6.96-12.96-2.3-26.64-2.31-39.649 0a7.053 7.053 0 0 0-5.84 6.96V21.29a97.725 97.725 0 0 0-19.67 7.67c-1.171.586-1.732 2.087-1.07 3.37.676 1.304 2.271 1.657 3.37 1.06a93.165 93.165 0 0 1 20.47-7.74 2.5 2.5 0 0 0 1.9-2.43V11.23c-.01-1 .73-1.87 1.71-2.04 12.41-2.199 25.5-2.199 37.91 0 .989.17 1.729 1.04 1.72 2.04v11.99c0 1.15.78 2.15 1.899 2.43 16.99 4.22 32.43 13.14 44.65 25.8.771.8 2.09.979 3.05.43l10.4-6.01c.87-.49 2-.28 2.63.47 8.26 9.83 14.64 20.88 18.98 32.83.345.958-.082 2.02-.931 2.51l-10.39 6a2.52 2.52 0 0 0-1.15 2.86c2.4 8.33 3.61 17.01 3.61 25.79a93.21 93.21 0 0 1-3.61 25.779c-.31 1.11.16 2.28 1.16 2.86l10.39 5.99c.899.52 1.258 1.638.91 2.53-4.33 11.949-10.71 22.989-18.97 32.819-.632.763-1.76.96-2.62.46l-10.41-6.01c-.97-.56-2.279-.37-3.05.43-12.229 12.67-27.67 21.591-44.65 25.811a2.491 2.491 0 0 0-1.899 2.42v11.99c.01 1.01-.72 1.88-1.73 2.05-1.548.273-3.085.5-4.609.704V213.28c0-4.591-3.73-8.32-8.311-8.32h-3.52v-19.031c37.48-1.308 67.17-32.098 67.17-69.61 0-38.426-31.133-69.659-69.67-69.659-5.78 0-11.53.71-17.1 2.109-1.33.34-2.15 1.7-1.81 3.04.33 1.311 1.72 2.141 3.04 1.811A64.856 64.856 0 0 1 128 51.649c35.896.022 64.67 29.079 64.67 64.67 0 35.71-28.89 64.671-64.67 64.671-35.723 0-64.67-28.912-64.67-64.671 0-22.77 11.64-43.439 31.12-55.289a2.508 2.508 0 0 0 .84-3.44 2.495 2.495 0 0 0-3.44-.83C71.609 69.057 58.33 91.3 58.33 116.319c0 37.342 29.524 68.296 67.17 69.61v19.031h-3.51c-4.59 0-8.32 3.729-8.32 8.32v10.885c-1.518-.2-3.053-.426-4.61-.705a2.072 2.072 0 0 1-1.73-2.05v-11.99c0-1.15-.78-2.14-1.9-2.42-16.99-4.22-32.43-13.15-44.65-25.811-.78-.8-2.09-.989-3.05-.43l-10.4 6c-.897.534-2.009.287-2.63-.46-8.26-9.82-14.64-20.87-18.98-32.82a2.1 2.1 0 0 1 .93-2.52l10.38-5.99c1-.58 1.47-1.75 1.16-2.86-2.4-8.34-3.61-17.01-3.61-25.79 0-8.779 1.21-17.449 3.6-25.779.32-1.11-.15-2.28-1.15-2.86l-10.38-6a2.077 2.077 0 0 1-.93-2.5c4.34-11.96 10.73-23.01 18.98-32.84a2.097 2.097 0 0 1 2.63-.47l10.4 6.01c.96.55 2.28.37 3.05-.43a93.39 93.39 0 0 1 7.96-7.341c1.082-.911 1.207-2.492.34-3.52-.84-1.03-2.49-1.19-3.52-.35a99.806 99.806 0 0 0-7 6.34l-8.73-5.03a7.084 7.084 0 0 0-8.96 1.57c-8.63 10.279-15.31 21.83-19.85 34.35-1.147 3.108.09 6.778 3.13 8.54l8.71 5.04c-2.18 8.2-3.28 16.7-3.28 25.27s1.1 17.07 3.28 25.28l-8.71 5.03c-2.911 1.688-4.314 5.253-3.129 8.55z" />
+                                    <path
+                                        d="M75.58 116.33c0 28.916 23.452 52.41 52.42 52.41 28.941 0 52.41-23.446 52.41-52.41 0-1.38-1.12-2.5-2.49-2.5a2.5 2.5 0 0 0-2.5 2.5c-.02 26.194-21.201 47.41-47.42 47.41-26.173 0-47.42-21.19-47.42-47.41 0-26.157 21.158-47.42 47.43-47.42 19.71 0 37.58 12.409 44.45 30.899.46 1.25 1.95 1.94 3.21 1.471a2.507 2.507 0 0 0 1.479-3.221C169.78 78.274 150.693 63.91 128 63.91c-28.898 0-52.42 23.416-52.42 52.42z" />
+                                    <path
+                                        d="M174.85 108.979a2.492 2.492 0 0 0 2.86 2.08 2.498 2.498 0 0 0 2.08-2.85 2.505 2.505 0 0 0-2.851-2.09c-1.37.204-2.295 1.495-2.089 2.86zM103.01 56.66c1.27-.53 1.87-2 1.34-3.271-.52-1.229-2.02-1.859-3.26-1.34h-.01c-1.27.53-1.88 2-1.34 3.27a2.481 2.481 0 0 0 3.27 1.341z" />
+                                </svg>
+                            </div>
+                            {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid"
+                                alt="components"> --}}
+                            <span class="mx-2">{{ __('lang.dues') }}</span>
+                        </a>
+                    </li>
 
-                {{-- @if (!empty($module_settings['customer_module'])) --}}
-                <li class="dropdown  scroll mx-2 mb-0 p-0" style="height: 40px;">
-                    <a href="javaScript:void();"
-                        class="d-flex proccess-invoice-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
-                        style="height: 100%;font-weight: 600" data-toggle="dropdown">
-                        <div style="width: 25px" class="d-flex align-items-center">
-                            <img src="{{ asset('images/navbar/prepare.svg') }}" alt="{{ __('lang.reports') }}">
-                        </div>
-                        <span class="mx-2">{{ __('lang.process_invoices') }}</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none;"
-                                target="_blank"
-                                class="process_invoices-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif text-decoration-none"
-                                href="{{ route('process-invoice.index') }}"><i
-                                    class="mdi mdi-circle"></i>{{ __('lang.process_invoices') }}</a></li>
-                    </ul>
-                </li>
-                {{-- @endif --}}
-                <li class="scroll  mx-2 mb-0 p-0" style="height: 40px;">
-                    <a class="store-transfer-button align-items-center d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                        style="cursor: pointer;font-weight: 600;text-decoration: none;height: 100%;" target="_blank"
-                        href="{{ route('store_transfer.create') }}">
-                        <div style="width: 25px" class="d-flex align-items-center">
-                            <img src="{{ asset('images/navbar/transfer.svg') }}"
-                                alt="{{ __('lang.store_transfer') }}">
-                        </div>
-                        <span class="mx-2">{{ __('lang.store_transfer') }}</span>
-                    </a>
-                </li>
-            </ul>
+                    {{-- @if (!empty($module_settings['customer_module'])) --}}
+                    <li class="dropdown  scroll mx-2 mb-0 p-0" style="height: 40px;">
+                        <a href="javaScript:void();"
+                            class="d-flex proccess-invoice-menu align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                            style="height: 100%;font-weight: 600" data-toggle="dropdown">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <img src="{{ asset('images/navbar/prepare.svg') }}" alt="{{ __('lang.reports') }}">
+                            </div>
+                            <span class="mx-2">{{ __('lang.process_invoices') }}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none;"
+                                    target="_blank"
+                                    class="process_invoices-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif text-decoration-none"
+                                    href="{{ route('process-invoice.index') }}"><i class="mdi mdi-circle"></i>{{
+                                    __('lang.process_invoices') }}</a></li>
+                        </ul>
+                    </li>
+                    {{-- @endif --}}
+                    <li class="scroll  mx-2 mb-0 p-0" style="height: 40px;">
+                        <a class="store-transfer-button align-items-center d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                            style="cursor: pointer;font-weight: 600;text-decoration: none;height: 100%;" target="_blank"
+                            href="{{ route('store_transfer.create') }}">
+                            <div style="width: 25px" class="d-flex align-items-center">
+                                <img src="{{ asset('images/navbar/transfer.svg') }}"
+                                    alt="{{ __('lang.store_transfer') }}">
+                            </div>
+                            <span class="mx-2">{{ __('lang.store_transfer') }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
 
 </nav>
 <!-- End Horizontal Nav -->
 {{-- </div>
-    <!-- End container-fluid -->
+<!-- End container-fluid -->
 </div> --}}
 <!-- End Navigationbar -->
 <script>
@@ -1739,6 +1741,13 @@
     $('.required-products-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('required-products.index') }}"
+        document.body.classList.add('animated-element');
+        // window.location.href = url;
+        window.open(url, "_blank")
+    })
+    $('.purchases-order-create-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('purchase_order.create') }}"
         document.body.classList.add('animated-element');
         // window.location.href = url;
         window.open(url, "_blank")
