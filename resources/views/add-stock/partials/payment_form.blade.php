@@ -31,7 +31,7 @@
                 'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
         <div class="input-wrapper">
-            <input style="width: 100%" type="number" placeholder="{{ $amount - $total_amount }}"
+            <input style="width: 100%" type="number" placeholder="{{  $amount > 0 ? $amount - $total_amount : $total_amount }}"
                    class="form-control initial-balance-input m-0" wire:model="dinar_remaining" disabled>
         </div>
 
