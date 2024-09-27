@@ -510,6 +510,7 @@ class Create extends Component
         }
         $this->validate();
 
+        dd(1);
 //        try {
             if (!empty($this->po_id)) {
                 $ref_transaction_po = PurchaseOrderTransaction::find($this->po_id);
