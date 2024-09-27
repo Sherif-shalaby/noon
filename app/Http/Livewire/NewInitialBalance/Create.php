@@ -513,6 +513,7 @@ class Create extends Component
     }
     private function addVariationProduct($product)
     {
+
         foreach ($this->rows as $index => $row) {
             $Variation = new Variation();
             $Variation->sku = !empty($this->rows[$index]['sku']) ? $this->rows[$index]['sku'] : $this->num_uf($this->generateSku($product->name)) + $index;

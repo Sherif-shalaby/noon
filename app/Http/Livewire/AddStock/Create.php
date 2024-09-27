@@ -82,7 +82,7 @@ class Create extends Component
         $end_date, $exchangeRate, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [], $expenses = [], $customer_types, $total_amount_dollar, $dollar_remaining, $dinar_remaining, $units, $date_and_time,
         $toggle_customers_dropdown, $customer_id, $total_expenses = 0, $market_exchange_rate = 1, $dinar_expenses = 0, $dollar_expenses = 0, $productIds,
-        $add_specific_product = 0, $toggle_dollar = 0, $total_dollar, $total, $countryId, $countryName;
+        $add_specific_product = 0, $toggle_dollar = 0, $total_dollar, $total, $countryId, $countryName,$add_product_id;
     public $supplier_data = [
         'dollar_debit' => '',
         'dinar_debit' => '',
@@ -271,6 +271,7 @@ class Create extends Component
         $stores = Store::whereHas('branch', function ($query) {
             $query->where('type', 'branch');
         })->pluck('name', 'id');
+
         $departments = Category::where('parent_id', '!=', null)->get();
         $customer_types = CustomerType::latest()->get();
         $po_nos = PurchaseOrderTransaction::where('status', '!=', 'received')->pluck('po_no', 'id');
@@ -282,8 +283,14 @@ class Create extends Component
             $search_result = $search_result->paginate();
             if (count($search_result) === 1) {
                 $this->add_product($search_result->first()->id);
+                $produt_stores = ProductStore::where('product_id', $search_result->first()->id)
+                    ->whereIn('store_id', array_keys($stores->toArray()))
+                    ->pluck('store_id')
+                    ->toArray();
+                $stores = collect($stores)->only($produt_stores);
                 $search_result = '';
                 $this->search_by_product_symbol = '';
+                $this->add_product_id = '';
             }
         }
         if (!empty($this->searchProduct)) {
@@ -299,28 +306,39 @@ class Create extends Component
                 $search_result = Product::whereIn('id', $variation);
                 $search_result = $search_result->paginate();
             }
-
             if (count($search_result) === 1) {
                 $this->add_product($search_result->first()->id);
+                $produt_stores = ProductStore::where('product_id', $search_result->first()->id)
+                    ->whereIn('store_id', array_keys($stores->toArray()))
+                    ->pluck('store_id')
+                    ->toArray();
+                $stores = collect($stores)->only($produt_stores);
                 $search_result = '';
                 $this->searchProduct = '';
+                $this->add_product_id = '';
             }
+        }
+
+        if(!empty($this->add_product_id) && (empty($this->searchProduct) || empty($this->search_by_product_symbol))){
+            $produt_stores = ProductStore::where('product_id', $this->add_product_id)
+                ->whereIn('store_id', array_keys($stores->toArray()))
+                ->pluck('store_id')
+                ->toArray();
+            $stores = collect($stores)->only($produt_stores);
+            $this->add_product_id = '';
         }
         if ($this->source_type == 'pos') {
             $users = StorePos::pluck('name', 'id');
-        } elseif ($this->source_type == 'store') {
+        }
+        elseif ($this->source_type == 'store') {
             $users = Store::pluck('name', 'id');
-        } elseif ($this->source_type == 'safe') {
+        }
+        elseif ($this->source_type == 'safe') {
             $users = MoneySafe::pluck('name', 'id');
-        } else {
+        }
+        else {
             $users = User::Notview()->pluck('name', 'id');
         }
-        // if(!empty($this->department_id)){
-        //     $products = Product::where('category_id' , $this->department_id)->get();
-        // }
-        // else{
-        // $allproducts = Product::paginate();
-        // }
         $this->dispatchBrowserEvent('initialize-select2');
         $this->allproducts = Product::when($this->department_id1 != null, function ($query) {
             $query->where('category_id', $this->department_id1);
@@ -490,7 +508,6 @@ class Create extends Component
             $this->rules['source_type'] = 'required';
             $this->rules['source_id'] = 'required';
         }
-        // dd($this->rules);
         $this->validate();
 
         try {
@@ -625,7 +642,11 @@ class Create extends Component
                         $Variation_price->dinar_sell_price = $this->num_uf($price['dinar_sell_price']) ?? null;
                         $Variation_price->dollar_sell_price = $this->toggle_dollar == "0" ? ($this->num_uf($price['dollar_sell_price']) ?? null) : 0;
                         $Variation_price->dinar_increase = $this->num_uf($price['dinar_increase']) ?? null;
-                        $Variation_price->dollar_increase = $price['dollar_increase'] > 0 ? $this->num_uf($price['dollar_increase']) : $this->num_uf($price['dinar_increase']) / $this->exchange_rate;
+                        $Variation_price->dollar_increase = is_numeric($price['dollar_increase']) && $price['dollar_increase'] > 0
+                            ? $this->num_uf($price['dollar_increase'])
+                            : (is_numeric($price['dinar_increase']) && is_numeric($this->exchange_rate) && $this->exchange_rate > 0
+                                ? $this->num_uf($price['dinar_increase']) / $this->exchange_rate
+                                : 0);
                         $Variation_price->percent = $price['percent'] ?? null;
                         $Variation_price->save();
                         $add_variation_stock_data = [
@@ -944,6 +965,8 @@ class Create extends Component
         }
 
         $product = Product::find($id);
+        $this->add_product_id = $product->id;
+
         $stock = $product->stock_lines->last();
         $variations = $product->variations;
 
@@ -981,7 +1004,6 @@ class Create extends Component
     public function addNewProduct($variations, $product, $show_product_data, $index = null, $stock)
     {
         $current_stock = $product->stock_lines->sum('quantity', '-', 'quantity_sold');
-        $stores = ProductStore::where('product_id', $product->id)->get();
 
         if (!empty($variations)) {
             $variant = !empty($stock) ? Variation::find($stock->variation_id) : Variation::find($variations->first()->id ?? 0);
@@ -994,7 +1016,10 @@ class Create extends Component
         $choosesVariation = !empty($stock) ? $stock->variation_id : ($variations->first()->id ?? null);
 
         $customer_prices = $this->addCustomersPrice($variations_prices[$choosesVariation]);
-
+        $produt_stores = ProductStore::with('store')->where('product_id', $this->add_product_id)
+            ->get()
+            ->pluck('store.name','store.id')
+            ->toArray();
         $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
@@ -1029,6 +1054,7 @@ class Create extends Component
             'fill_quantity' => !empty($stock) ? $stock->fill_quantity : null,
             'used_currency' => null,
             'stores' => [],
+            'product_stores' => $produt_stores,
             'store_id' => null,
             'customer_prices' => $customer_prices,
             'units' => [],
@@ -1181,11 +1207,11 @@ class Create extends Component
                 $new_price = [
                     'customer_type_id' => $variation_price['customer_type']['id'],
                     'customer_name' => $variation_price['customer_type']['name'],
-                    'percent' => $variation_price['percent'],
-                    'dollar_increase' => $variation_price['dollar_increase'],
-                    'dinar_increase' => $variation_price['dinar_increase'],
-                    'dollar_sell_price' => $variation_price['dollar_sell_price'],
-                    'dinar_sell_price' => $variation_price['dinar_sell_price'],
+                    'percent' => number_format($this->num_uf($variation_price['percent']), num_of_digital_numbers()),
+                    'dollar_increase' => number_format($this->num_uf($variation_price['dollar_increase']), num_of_digital_numbers()),
+                    'dinar_increase' => number_format($this->num_uf($variation_price['dinar_increase']), num_of_digital_numbers()),
+                    'dollar_sell_price' => number_format($this->num_uf($variation_price['dollar_sell_price']), num_of_digital_numbers()),
+                    'dinar_sell_price' => number_format($this->num_uf($variation_price['dinar_sell_price']), num_of_digital_numbers()),
                     'quantity' => null,
                 ];
                 array_unshift($customer_prices, $new_price);
@@ -1905,6 +1931,11 @@ class Create extends Component
     }
     public function changeCurrentStock($index, $var = null, $i = null)
     {
+//        dd($this->items[$index]['quantity'] <= 0);
+        if($this->items[$index]['quantity'] <= 0){
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'لا يمكن للكمية ان تكون اقل من 1',]);
+            $this->items[$index]['quantity'] = 1;
+        }
         if ($var == 'stores') {
             $this->items[$index]['stores'][$i]['total_stock'] = $this->num_uf($this->items[$index]['stores'][$i]['quantity']) + $this->num_uf($this->items[$index]['stores'][$i]['current_stock']);
             // dd($this->items[$index]['total_stock']);
@@ -2681,12 +2712,15 @@ class Create extends Component
         $qtyByUnit = 1;
         if (!empty($product_store) && !empty($product_store->variation_id)) {
             $store_variation = Variation::find($product_store->variation_id);
+
             if (isset($unit->unit_id) && $store_variation->unit_id == $unit->unit_id) {
                 $qty_difference = $new_quantity;
             } elseif (isset($unit->unit_id) && $store_variation->basic_unit_id == $unit->unit_id) {
+                $store_variation->equal = $store_variation->equal > 0 ? $store_variation->equal :  1;
                 $qtyByUnit = 1 / $store_variation->equal;
                 $qty_difference = $qtyByUnit * $new_quantity;
-            } else {
+            }
+            else {
                 foreach ($product_variations as $key => $product_variation) {
                     if (!empty($product_variations[$key + 1])) {
                         if ($store_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {

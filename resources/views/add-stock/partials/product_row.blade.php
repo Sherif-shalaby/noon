@@ -77,6 +77,17 @@
             style="width:fit-content;min-height: 60px">
             <label for="store" class="mb-0 @if (app()->isLocale('ar')) d-block text-end mx-2 @else  mx-2 @endif"
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') }}</label>
+            @if (isset($product['product_stores']) && count($product['product_stores']) > 0)
+                <div class="input-wrapper" style="width: 100%!important">
+                    <select name="items.{{ $index }}.store_id" class="form-select store_id.{{$index}}"
+                            wire:model="items.{{ $index }}.store_id">
+                        <option value="" selected>{{ __('lang.please_select') }}</option>
+                        @foreach ($product['product_stores'] as $id => $store)
+                                <option value="{{ $id }}">{{ $store ?? '' }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @else
             <div class="input-wrapper  justify-content-between" style="width: 200px !important">
                 {!! Form::select('store_id', $stores, $store_id, [
                 'class' => ' form-select store_id' . $index,
@@ -92,6 +103,7 @@
                     <i class="fas fa-plus"></i>
                 </button>
             </div>
+            @endif
             {{-- @error('items.' . $index . '.store_id')
             <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror --}}
@@ -152,7 +164,7 @@
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.quantity') }}</label>
 
             <input type="text" class="form-control quantity  initial-balance-input" style="width: 80px" required
-                wire:model="items.{{ $index }}.quantity" wire:input="changeCurrentStock({{ $index }})">
+                wire:model="items.{{ $index }}.quantity" wire:input="changeCurrentStock({{ $index }})"  wire:model.lazy="items.{{ $index }}.quantity">
             @error('items.{{ $index }}.quantity')
             <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
@@ -166,7 +178,7 @@
                 style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.b_qty') }}</label>
             <input type="text" class="form-control bonus_quantity initial-balance-input width-full"
                 placeholder="{{ __('lang.b_qty') }}" wire:model="items.{{ $index }}.bonus_quantity"
-                wire:input="changeCurrentStock({{ $index }})">
+                wire:input="changeCurrentStock({{ $index }})" >
             @error('items.{{ $index }}.bonus_quantity')
             <span class="error  validation-error text-danger">{{ $message }}</span>
             @enderror
@@ -789,7 +801,7 @@
             ]) !!}
             <input type="text" class="form-control initial-balance-input width-full quantity" required
                 wire:model="items.{{ $index }}.stores.{{ $i }}.quantity"
-                wire:input="changeCurrentStock({{ $index }},'stores',{{ $i }})">
+                wire:input="changeCurrentStock({{ $index }},'stores',{{ $i }})"  wire:model.lazy="items.{{ $index }}.stores.{{ $i }}.quantity">
             @error('items.{{ $index }}.quantity')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
@@ -803,7 +815,7 @@
             ]) !!}
             <input type="text" class="form-control initial-balance-input width-full bonus_quantity"
                 placeholder="{{ __('lang.b_qty') }}" wire:model="items.{{ $index }}.stores.{{ $i }}.bonus_quantity"
-                wire:input="changeCurrentStock({{ $index }},'stores',{{ $i }})">
+                wire:input="changeCurrentStock({{ $index }},'stores',{{ $i }})" >
             @error('items.' . $index . '.stores' . $i . '.bonus_quantity')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
