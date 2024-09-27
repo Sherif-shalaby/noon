@@ -510,7 +510,7 @@ class Create extends Component
         }
         $this->validate();
 
-        try {
+//        try {
             if (!empty($this->po_id)) {
                 $ref_transaction_po = PurchaseOrderTransaction::find($this->po_id);
             }
@@ -821,10 +821,10 @@ class Create extends Component
             DB::commit();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'lang.success',]);
-        } catch (\Exception $e) {
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
-            dd($e);
-        }
+//        } catch (\Exception $e) {
+//            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
+//            dd($e);
+//        }
         return redirect('/add-stock/create');
     }
 
