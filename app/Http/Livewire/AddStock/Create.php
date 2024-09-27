@@ -66,8 +66,8 @@ class Create extends Component
         // 'transaction_currency' => 'required',
         'items.*.dollar_purchase_price' => 'nullable|numeric',
         'items.*.purchase_price' => 'required_if:items.*.dollar_purchase_price,==,null,0,|nullable|numeric',
-        'items.*.dollar_selling_price' => 'required_if:items.*.purchase_price,!=,null,0,|nullable|numeric',
-        'items.*.selling_price' => 'required_if:items.*.dollar_purchase_price,!=,null,0,|nullable|numeric',
+//        'items.*.dollar_selling_price' => 'required_if:items.*.purchase_price,!=,null,0,|nullable|numeric',
+//        'items.*.selling_price' => 'required_if:items.*.dollar_purchase_price,!=,null,0,|nullable|numeric',
         // 'items.*.store_id' => 'required',
         'items.*.used_currency' => 'required',
     ];
@@ -510,8 +510,7 @@ class Create extends Component
         }
         $this->validate();
 
-        dd(1);
-//        try {
+        try {
             if (!empty($this->po_id)) {
                 $ref_transaction_po = PurchaseOrderTransaction::find($this->po_id);
             }
@@ -822,10 +821,10 @@ class Create extends Component
             DB::commit();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'lang.success',]);
-//        } catch (\Exception $e) {
-//            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
-//            dd($e);
-//        }
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
+            dd($e);
+        }
         return redirect('/add-stock/create');
     }
 
