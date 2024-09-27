@@ -31,8 +31,11 @@
                 'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
         <div class="input-wrapper">
-            <input style="width: 100%" type="number" placeholder="{{  $amount > 0 ? $amount - $total_amount : $total_amount }}"
-                   class="form-control initial-balance-input m-0" wire:model="dinar_remaining" disabled>
+            <input style="width: 100%" type="number"
+                   placeholder="{{ is_numeric($amount) && is_numeric($total_amount)
+                  ? floatval($amount) > 0 ? floatval($amount) - floatval($total_amount) : floatval($total_amount) : 0 }}"
+                   class="form-control initial-balance-input m-0"
+                   wire:model="dinar_remaining" disabled>
         </div>
 
     </div>
