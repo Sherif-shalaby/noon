@@ -1467,7 +1467,7 @@ class Create extends Component
             $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
             $this->items[$key]['discount_type'] = $discount->price_type;
             $this->items[$key]['discount_category'] = $discount->price_category;
-            $amount = (int)($this->items[$key]['quantity'] / $discount->quantity);
+            $amount = (int) ($this->items[$key]['quantity']) / (int) $discount->quantity;
             $this->items[$key]['extra_quantity'] = ($this->items[$key]['quantity'] >= $discount->quantity) ? (($discount->bonus_quantity ? $discount->bonus_quantity : 0) * $amount) : 0;
             $price = ($this->items[$key]['quantity'] >= $discount->quantity) ? $discount->dinar_price : 0;
         } else
