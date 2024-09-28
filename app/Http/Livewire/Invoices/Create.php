@@ -1459,6 +1459,10 @@ class Create extends Component
 
     public function subtotal($key, $via = 'quantity')
     {
+        if($this->items[$key]['quantity'] == ''){
+            $this->items[$key]['quantity'] = 1;
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => "لا يمكن ان تكون الكمية فارغة",]);
+        }
         $negativeSell = System::getProperty('negative_sell');
         if ($via == 'quantity') {
             $this->changeDiscount($key);
@@ -1494,7 +1498,14 @@ class Create extends Component
         if ($this->items[$key]['price'] != 0) {
             if (isset($this->items[$key]['discount_categories']) && $this->items[$key]['discount_categories'][0]['dinar_price_customers'] == $this->items[$key]['discount_categories'][0]['dinar_piece_price']) {
                 //apply qty discount if exist
-                $price1st = ($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity']) / ($this->items[$key]['extra_quantity'] ? $this->items[$key]['quantity']  + $this->items[$key]['extra_quantity'] : $this->items[$key]['quantity']));
+                $price1st = (
+                        (float) $this->num_uf($this->items[$key]['price']) *
+                        (int) $this->num_uf($this->items[$key]['quantity'])
+                    ) / (
+                    $this->items[$key]['extra_quantity']
+                        ? (int) $this->num_uf($this->items[$key]['quantity']) + (int) $this->num_uf($this->items[$key]['extra_quantity'])
+                        : (int) $this->num_uf($this->items[$key]['quantity'])
+                    );
                 //apply price discout
                 $price2nd = $price1st - $this->items[$key]['discount_price'];
                 $this->items[$key]['sub_total'] = $price2nd * ($this->items[$key]['extra_quantity'] ? $this->items[$key]['quantity']  + $this->items[$key]['extra_quantity'] : $this->items[$key]['quantity']);
