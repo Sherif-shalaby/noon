@@ -1116,7 +1116,7 @@ class Create extends Component
                                         ->first();
 
                                     if ($basic_variation && $basic_variation->basic_unit_id != null) {
-                                        $increment = $item_variation->equal;
+                                        $increment = $item_variation->equal ?? 1;
                                         if ($item['quantity'] > 0) {
                                             $qtyByUnit = floor((($item['quantity'] + $item['extra_quantity']) - 1) / $increment) + 1;
                                             $increment = $basic_variation->equal;
@@ -1125,7 +1125,7 @@ class Create extends Component
                                             }
                                         }
                                     } else {
-                                        $increment = $item_variation->equal;
+                                        $increment = $item_variation->equal ?? 1;
                                         if ($item['quantity'] > 0) {
                                             $qtyByUnit = floor((($item['quantity'] + $item['extra_quantity']) - 1) / $increment) + 1;
                                         }
@@ -1496,7 +1496,7 @@ class Create extends Component
         }
 
         if ($this->items[$key]['price'] != 0) {
-            if (isset($this->items[$key]['discount_categories']) && $this->items[$key]['discount_categories'][0]['dinar_price_customers'] == $this->items[$key]['discount_categories'][0]['dinar_piece_price']) {
+            if ((isset($this->items[$key]['discount_categories']) && count($this->items[$key]['discount_categories']) > 0) && $this->items[$key]['discount_categories'][0]['dinar_price_customers'] == $this->items[$key]['discount_categories'][0]['dinar_piece_price']) {
                 //apply qty discount if exist
                 $price1st = (
                         (float) $this->num_uf($this->items[$key]['price']) *
