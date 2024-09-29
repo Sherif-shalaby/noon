@@ -591,25 +591,41 @@
                                     @endforeach
                                     @endif
                                 </h4>
-                                <h4 class="mx-5"> @lang('lang.total') :
-                                    {{ @number_format($total, num_of_digital_numbers()) ?? 0.0 }}
+                                    <h4 class="mx-5"> @lang('lang.total') :
+                                        {{ @number_format($total, num_of_digital_numbers()) ?? 0.0 }}
 
-                                    <span class="final_total_span"></span>
-                                </h4>
+                                        <span class="final_total_span"></span>
+                                    </h4>
 
-                                <h4
-                                    class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
-                                    @lang('lang.total')$ :
+                                    <h4
+                                        class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
+                                        @lang('lang.total')$ :
 
-                                    {{ @number_format($total_dollar, num_of_digital_numbers()) ?? 0.0 }}
+                                        {{ @number_format($total_dollar, num_of_digital_numbers()) ?? 0.0 }}
 
-                                    <span class="final_total_span"></span>
-                                </h4>
+                                        <span class="final_total_span"></span>
+                                    </h4>
+
+                                @if($discount_amount > 0)
+                                    <h4 class="mx-5"> @lang('lang.final_amount') :
+                                        {{ @number_format($this->final_total, num_of_digital_numbers()) ?? 0.0 }}
+
+                                        <span class="final_total_span"></span>
+                                    </h4>
+                                    <h4
+                                        class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
+                                        @lang('lang.final_amount_dollar')$ :
+
+                                        {{ @number_format($this->final_total_dollar, num_of_digital_numbers()) ?? 0.0 }}
+
+                                        <span class="final_total_span"></span>
+                                    </h4>
+
+                                @endif
                             </div>
 
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <div
-                                    class="col-md-12 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-12 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                     <div class="col-md-2 mx-3">
                                         {{ $this->getTotalExpenses() }}

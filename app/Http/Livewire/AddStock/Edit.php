@@ -106,7 +106,6 @@ class Edit extends Component
         $this->market_exchange_rate = System::getProperty('dollar_exchange');
         $this->toggle_dollar = System::getProperty('toggle_dollar');
         $this->store_id = $recent_stock->store_id ?? '';
-        // dd($recent_stock);
         $this->supplier = $recent_stock->supplier_id ?? '';
         $this->transaction_date = $recent_stock->transaction_date ?? '';
         $this->transaction_currency = $recent_stock->transaction_currency ?? '';
@@ -117,10 +116,12 @@ class Edit extends Component
         $this->other_expenses = !empty((int)$recent_stock->other_expenses) ? $recent_stock->other_expenses : null;
         $this->discount_amount = !empty((int)$recent_stock->discount_amount) ? $recent_stock->discount_amount : null;
         $this->other_payments = !empty((int)$recent_stock->other_payments) ? $recent_stock->other_payments : null;
+        $this->due_date = $recent_stock->due_date ?? '';
         $transaction_payment = $recent_stock->transaction_payments->last();
-        // dd($transaction_payment);
         $this->total_amount = $transaction_payment->amount ?? '';
         $this->total_amount_dollar = $transaction_payment->dollar_amount ?? '';
+        $this->bank_name = $transaction_payment->bank_name ?? '';
+        $this->ref_number = $transaction_payment->ref_number ?? '';
         // $this->purchase_final = $transaction_payment->amount ?? '';
         // dd( $this->amount);
         $this->method = $transaction_payment->method ?? '';

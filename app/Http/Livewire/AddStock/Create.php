@@ -82,7 +82,7 @@ class Create extends Component
         $end_date, $exchangeRate, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [], $expenses = [], $customer_types, $total_amount_dollar, $dollar_remaining, $dinar_remaining, $units, $date_and_time,
         $toggle_customers_dropdown, $customer_id, $total_expenses = 0, $market_exchange_rate = 1, $dinar_expenses = 0, $dollar_expenses = 0, $productIds,
-        $add_specific_product = 0, $toggle_dollar = 0, $total_dollar, $total, $countryId, $countryName,$add_product_id;
+        $add_specific_product = 0, $toggle_dollar = 0, $total_dollar, $total, $countryId, $countryName,$add_product_id,$final_total,$final_total_dollar;
     public $supplier_data = [
         'dollar_debit' => '',
         'dinar_debit' => '',
@@ -510,11 +510,13 @@ class Create extends Component
         }
         $this->validate();
 
+
         try {
             if (!empty($this->po_id)) {
                 $ref_transaction_po = PurchaseOrderTransaction::find($this->po_id);
             }
             $this->toggle_dollar = System::getProperty('toggle_dollar');
+            $finalTotal = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
             // Add stock transaction
             $transaction = new StockTransaction();
             $transaction->store_id = $this->store_id;
@@ -535,10 +537,10 @@ class Create extends Component
             // $transaction->other_payments = !empty($this->other_payments) ? $this->other_payments : 0;
             // $transaction->other_expenses = !empty($this->other_expenses) ? $this->other_expenses : 0;
             $transaction->grand_total = $this->num_uf($this->sum_total_cost());
-            $transaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
+            $transaction->final_total = $finalTotal;
             $transaction->dollar_grand_total = $this->toggle_dollar == "0" ? $this->num_uf($this->sum_dollar_total_cost()) : 0;
             $transaction->dollar_final_total = $this->toggle_dollar == "0" ? $this->num_uf($this->dollar_final_total()) : 0;
-            $transaction->dinar_remaining = $this->payment_status == 'partial' ? $this->num_uf($this->amount) - $this->num_uf($this->total_amount) : $this->num_uf($this->dinar_remaining);
+            $transaction->dinar_remaining = $this->payment_status == 'partial' ? $finalTotal - $this->num_uf($this->total_amount) : $this->num_uf($this->dinar_remaining);
             $transaction->dollar_remaining = $this->toggle_dollar == "0" ? $this->num_uf($this->dollar_remaining) : 0;
             $transaction->notes = !empty($this->notes) ? $this->notes : null;
             $transaction->notify_before_days = !empty($this->notify_before_days) ? $this->notify_before_days : 0;
@@ -823,7 +825,7 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'lang.success',]);
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
-            dd($e);
+//            dd($e);
         }
         return redirect('/add-stock/create');
     }
@@ -1816,6 +1818,8 @@ class Create extends Component
     }
     public function changeTotalAmount()
     {
+        $this->final_total = '';
+        $this->final_total_dollar = '';
         // if($this->paying_currency == 2){
         $totalExpenses = $this->num_uf($this->getTotalExpenses());
         $this->total_amount_dollar = $this->num_uf($this->sum_dollar_total_cost());
@@ -1824,6 +1828,10 @@ class Create extends Component
         // $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
         $this->total_amount = $this->sum_total_cost();
         // }
+        if($this->discount_amount > 0){
+            $this->final_total = $this->total - $this->num_uf($this->discount_amount);
+            $this->final_total_dollar = $this->num_uf($this->final_total) / $this->num_uf($this->exchange_rate);
+        }
     }
     public function changeReceivedDollar()
     {

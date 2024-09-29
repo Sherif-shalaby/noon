@@ -31,11 +31,20 @@
                 'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
         <div class="input-wrapper">
+            @if(isset($this->final_total) && $this->final_total > 0 && is_numeric($this->final_total))
+                <input style="width: 100%" type="number"
+                       placeholder="{{ is_numeric($this->total_amount) && is_numeric($this->final_total)
+                  ? floatval($this->total_amount) > 0 ? floatval($this->final_total) - floatval($this->total_amount) : floatval($this->final_total) : 0 }}"
+                       class="form-control initial-balance-input m-0"
+                       wire:model="dinar_remaining" disabled>
+            @else
             <input style="width: 100%" type="number"
-                   placeholder="{{ is_numeric($amount) && is_numeric($total_amount)
-                  ? floatval($amount) > 0 ? floatval($amount) - floatval($total_amount) : floatval($total_amount) : 0 }}"
+                   placeholder="{{ is_numeric($this->total_amount) && is_numeric($total)
+                  ? floatval($this->total_amount) > 0 ? floatval($total) - floatval($this->total_amount)  : floatval($total) : 0 }}"
                    class="form-control initial-balance-input m-0"
                    wire:model="dinar_remaining" disabled>
+            @endif
+
         </div>
 
     </div>
@@ -110,6 +119,28 @@
 
     </div>
 </div>
+{{--@if($due_date)--}}
+{{--    <div--}}
+{{--        class="col-md-3 mb-2  align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields {{ $payment_status != 'pending' ? '' : 'd-none' }}">--}}
+{{--        <div--}}
+{{--            class="d-flex width-full @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">--}}
+
+{{--            {!! Form::label('due_date', __('lang.due_date'), [--}}
+{{--            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',--}}
+{{--            'style' => 'font-size: 12px;font-weight: 500;',--}}
+{{--            ]) !!}--}}
+{{--            <div class="input-wrapper">--}}
+{{--                {!! Form::date('due_date', $due_date, [--}}
+{{--                'class' => 'form-control m-0 initial-balance-input width-full',--}}
+{{--                'placeholder' => __('lang.payment_date'),--}}
+{{--                'wire:model' => 'due_date',--}}
+{{--                ]) !!}--}}
+{{--            </div>--}}
+
+{{--        </div>--}}
+{{--    </div>--}}
+
+{{--@endif--}}
 
 <div
     class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide {{ $show_payment == 1 ? 'd-none' : '' }}">
@@ -205,7 +236,9 @@
             ? $transaction_payment->bank_name
             : (!empty($payment)
             ? $payment->bank_name
-            : null),
+            : (isset($this->bank_name)
+            ? $this->bank_name
+            :null)),
             [
             'class' => 'form-control not_cash m-0 initial-balance-input width-full',
             'placeholder' => __('lang.bank_name'),

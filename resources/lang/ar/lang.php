@@ -515,6 +515,8 @@ return array(
     'clear_all_input_form' => 'الاحتفاظ بالبيانات بعد عملية الإدخال',
     'this_product_exists_before' => 'هذا المنتج موجود من قبل',
     'add' => 'اضافة',
+    'final_amount' => 'السعر النهائي',
+    'final_amount_dollar' => 'السعر النهائي',
     'success' => 'تم بنجاح',
     'base_unit' => 'قاعدة الوحدة',
     'number' => 'عدد',
