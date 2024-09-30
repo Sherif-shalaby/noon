@@ -47,7 +47,7 @@
                     {{-- {!! Form::open(['id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!} --}}
                     <div class="card-body py-0 px-0">
                         <div class="col-md-12">
-                            <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <div
                                     class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                                     {!! Form::label('invoice_no', __('lang.invoice_no'), [
@@ -165,8 +165,8 @@
                                 </div>
                                 @endif
 
-                                <div
-                                    class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                <div class="mb-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                    style="min-width: 125px">
                                     {!! Form::label('purchase_type', __('lang.po_no'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -185,8 +185,8 @@
                                     @enderror
                                 </div>
 
-                                <div
-                                    class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                <div class="mb-2  d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                    style="min-width: 125px">
                                     {!! Form::label('divide_costs', __('lang.divide_costs'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -247,11 +247,12 @@
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!} --}}
 
-                                    <label for="files" class="btn btn-primary px-2"
+                                    <label for="files" class="btn position-relative btn-primary px-2"
                                         style="width: 30px;height: 30px;margin-top: 16px;color:white !important">
                                         <i class="fas fa-camera"></i>
-                                        <input style="opacity: 0;" type="file" name="files[]" id="files"
-                                            wire:model="files">
+                                        <input
+                                            style="opacity: 0;position: absolute;top: 0;left: 0;right: 0;width: 100%;height: 100%;"
+                                            type="file" name="files[]" id="files" wire:model="files">
                                     </label>
                                 </div>
 
@@ -591,41 +592,42 @@
                                     @endforeach
                                     @endif
                                 </h4>
-                                    <h4 class="mx-5"> @lang('lang.total') :
-                                        {{ @number_format($total, num_of_digital_numbers()) ?? 0.0 }}
+                                <h4 class="mx-5"> @lang('lang.total') :
+                                    {{ @number_format($total, num_of_digital_numbers()) ?? 0.0 }}
 
-                                        <span class="final_total_span"></span>
-                                    </h4>
+                                    <span class="final_total_span"></span>
+                                </h4>
 
-                                    <h4
-                                        class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
-                                        @lang('lang.total')$ :
+                                <h4
+                                    class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
+                                    @lang('lang.total')$ :
 
-                                        {{ @number_format($total_dollar, num_of_digital_numbers()) ?? 0.0 }}
+                                    {{ @number_format($total_dollar, num_of_digital_numbers()) ?? 0.0 }}
 
-                                        <span class="final_total_span"></span>
-                                    </h4>
+                                    <span class="final_total_span"></span>
+                                </h4>
 
                                 @if($discount_amount > 0)
-                                    <h4 class="mx-5"> @lang('lang.final_amount') :
-                                        {{ @number_format($this->final_total, num_of_digital_numbers()) ?? 0.0 }}
+                                <h4 class="mx-5"> @lang('lang.final_amount') :
+                                    {{ @number_format($this->final_total, num_of_digital_numbers()) ?? 0.0 }}
 
-                                        <span class="final_total_span"></span>
-                                    </h4>
-                                    <h4
-                                        class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
-                                        @lang('lang.final_amount_dollar')$ :
+                                    <span class="final_total_span"></span>
+                                </h4>
+                                <h4
+                                    class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
+                                    @lang('lang.final_amount_dollar')$ :
 
-                                        {{ @number_format($this->final_total_dollar, num_of_digital_numbers()) ?? 0.0 }}
+                                    {{ @number_format($this->final_total_dollar, num_of_digital_numbers()) ?? 0.0 }}
 
-                                        <span class="final_total_span"></span>
-                                    </h4>
+                                    <span class="final_total_span"></span>
+                                </h4>
 
                                 @endif
                             </div>
 
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <div class="col-md-12 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div
+                                    class="col-md-12 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                     <div class="col-md-2 mx-3">
                                         {{ $this->getTotalExpenses() }}

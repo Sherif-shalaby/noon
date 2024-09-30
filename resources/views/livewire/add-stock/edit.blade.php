@@ -28,7 +28,7 @@
                             style="animation-delay: 1.1s">
                             <div class="i-checks d-flex align-items-center ">
                                 <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
-                                       @if(isset($clear_all_input_stock_form) && $clear_all_input_stock_form=='1' ) checked
+                                    @if(isset($clear_all_input_stock_form) && $clear_all_input_stock_form=='1' ) checked
                                     @endif class="">
                                 <label for="clear_all_input_form" style="font-size: 0.75rem" class="mb-0 mx-1">
                                     @lang('lang.clear_all_input_form')
@@ -51,7 +51,7 @@
                     {{-- {!! Form::open(['id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!} --}}
                     <div class="card-body  py-0 px-0">
                         <div class="col-md-12">
-                            <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                 <div
                                     class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
@@ -106,7 +106,7 @@
                                 {{-- +++++++++++++++ supplier dropdown ++++++++++ --}}
                                 @if (empty($toggle_customers_dropdown))
                                 <div
-                                    class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                    class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                                     {!! Form::label('supplier_id', __('lang.supplier') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -170,8 +170,8 @@
                                 </div>
                                 @endif
 
-                                <div
-                                    class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                <div class="mb-2  d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                    style="min-width: 125px">
                                     {!! Form::label('purchase_type', __('lang.po'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -191,8 +191,8 @@
                                 </div>
 
 
-                                <div
-                                    class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                <div class="mb-2  d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                    style="min-width: 125px">
                                     {!! Form::label('divide_costs', __('lang.divide_costs'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -254,11 +254,12 @@
                                     class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
 
                                     <label for="files"
-                                        class="btn btn-primary d-flex justify-content-center align-items-center"
+                                        class="btn position-relative btn-primary d-flex justify-content-center align-items-center"
                                         style="width: 30px;height: 30px;margin-top: 16px;color:white !important">
                                         <i class="fas fa-camera"></i>
-                                        <input style="opacity: 0;" type="file" name="files[]" id="files"
-                                            wire:model="files">
+                                        <input
+                                            style="opacity: 0;position: absolute;top: 0;left: 0;right: 0;width: 100%;height: 100%;"
+                                            type="file" name="files[]" id="files" wire:model="files">
                                     </label>
 
                                 </div>

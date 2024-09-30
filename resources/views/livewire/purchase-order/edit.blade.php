@@ -31,14 +31,14 @@
                         {!! Form::open(['id' => 'purchase_order_form']) !!}
                         <div class="card-body">
                             {{-- ============ filter ============ --}}
-                            <div class="col-md-12">
+                            <div class="col-md-12 px-0" style="z-index: 2">
                                 <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {{-- ////////////////// stores filter ////////////////// --}}
                                     <div class="col-md-3 d-flex mb-2  animate__animated animate__bounceInLeft  align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                         style="animation-delay: 1.15s">
                                         {!! Form::label('store_id', __('lang.store') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                        'style' => 'font-size: 12px !important;font-weight: 500;',
                                         ]) !!}
                                         <div class="input-wrapper">
 
@@ -60,7 +60,7 @@
                                         style="animation-delay: 1.2s">
                                         {!! Form::label('supplier_id', __('lang.supplier') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                        'style' => 'font-size: 12px !important;font-weight: 500;',
                                         ]) !!}
                                         <div class="input-wrapper" wire:ignore>
                                             {!! Form::select('supplier_id', $suppliers, $supplier, [
@@ -83,7 +83,7 @@
                                         style="animation-delay: 1.25s">
                                         {!! Form::label('po_no', __('lang.po_no') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                        'style' => 'font-size: 12px !important;font-weight: 500;',
                                         ]) !!}
                                         {!! Form::text('po_no', $po_no, [
                                         'class' => 'form-control m-0 initial-balance-input width-full',
@@ -319,7 +319,7 @@
                                 {!! Form::label('details', __('lang.details'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end h5 mb-3 width-fit' : ' mb-3 h5
                                 width-fit',
-                                'style' => 'font-size: 12px;font-weight: 500;',
+                                'style' => 'font-size: 12px !important;font-weight: 500;',
                                 ]) !!}
                                 {{-- {!! Form::textarea('details', null, ['class' => 'form-control', 'rows' => 3]) !!}
                                 --}}

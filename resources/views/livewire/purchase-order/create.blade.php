@@ -18,7 +18,7 @@
                                     style="animation-delay: 1.1s">
                                     <div class="i-checks">
                                         <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
-                                               @if(isset($clear_all_input_stock_form) && $clear_all_input_stock_form =='1' )
+                                            @if(isset($clear_all_input_stock_form) && $clear_all_input_stock_form=='1' )
                                             checked @endif class="">
                                         <label for="clear_all_input_form" style="font-size: 0.75rem" class="mb-0">
                                             <strong>
@@ -31,7 +31,7 @@
                             {{-- +++++++++++++++++++++ form +++++++++++++++++ --}}
                             <form action="{{ route('pos.store') }}">
                                 <div class="card-body pt-0">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 px-0" style="z-index: 2">
                                         <div
                                             class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             {{-- ////////////////// stores filter ////////////////// --}}
@@ -40,7 +40,7 @@
                                                 style="animation-delay: 1.15s">
                                                 <label for="store_id"
                                                     class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                                    style="font-size: 12px;font-weight: 500;">
+                                                    style="font-size: 12px !important;font-weight: 500;">
                                                     @lang('lang.store')<span style="color:#dc3545;">*</span>
                                                 </label>
                                                 <div class="input-wrapper width-full">
@@ -63,7 +63,7 @@
                                                 style="animation-delay: 1.15s">
                                                 <label for="customer_id"
                                                     class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                                    style="font-size: 12px;font-weight: 500;">
+                                                    style="font-size: 12px !important;font-weight: 500;">
                                                     @lang('lang.suppliers')<span style="color:#dc3545;">*</span>
                                                 </label>
                                                 <div class="input-wrapper width-full">
@@ -84,12 +84,12 @@
                                             </div>
                                             {{-- ////////////////// product_number inputField : رقم طلب الشراء
                                             ////////////////// --}}
-                                            <div class="col-6 col-md-1 mb-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                            <div class="col-6 col-md-1 mb-1 d-flex justify-content-end animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                                 style="animation-delay: 1.15s">
                                                 {!! Form::label('po_no', __('lang.po_no') . '*', [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end h5 mx-2 mb-0 ' : '
                                                 mx-2 mb-0 h5 ',
-                                                'style' => 'font-size: 12px;font-weight: 500;',
+                                                'style' => 'font-size: 12px !important;font-weight: 500;',
                                                 ]) !!}
                                                 <div class="input-wrapper width-full">
 
@@ -298,7 +298,7 @@
                                         style="animation-delay: 1.5s;">
                                         {!! Form::label('details', __('lang.details'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end h5 mb-0 ' : ' mb-0 h5 ',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                        'style' => 'font-size: 12px !important;font-weight: 500;',
                                         ]) !!}
                                         {{-- {!! Form::textarea('details', null, ['class' => 'form-control', 'rows' =>
                                         3]) !!} --}}
