@@ -3,7 +3,7 @@
 @push('css')
 <style>
     .table-top-head {
-        top: 262px !important;
+        top: 285px !important;
     }
 
     .table-scroll-wrapper {
@@ -18,19 +18,19 @@
 
     @media(max-width:991px) {
         .table-top-head {
-            top: 262px !important
+            top: 284px !important
         }
     }
 
     @media(max-width:768px) {
         .table-top-head {
-            top: 620px !important
+            top: 685px !important
         }
     }
 
     @media(max-width:575px) {
         .table-top-head {
-            top: 620px !important
+            top: 685px !important
         }
     }
 

@@ -569,58 +569,96 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12 text-center mt-1 d-flex justify-content-center">
-                                <h4 class="mx-5">@lang('lang.items_count'):
-                                    <span class="items_count_span" style="margin-right: 5px;">{{ $this->countItems()
+                            <div class="col-md-12 text-center mt-1 d-flex justify-content-around">
+                                <h6 class="d-flex flex-column rounded"
+                                    style="border: 1px solid #596fd7;height: fit-content;">
+                                    <span class="px-2 py-1 d-block">
+                                        @lang('lang.items_count')
+                                    </span>
+                                    <span class="items_count_span p-1 text-white"
+                                        style="background: #596fd7;border-radius: 0 0 3px 3px;">{{
+                                        $this->countItems()
                                         }}</span>
-                                </h4>
-                                <h4 class=" mx-5">
-                                    {{-- @lang('lang.units_count'): <span class="items_quantity_span"
-                                        style="margin-right: 5px;">{{ $this->countUnitsItems() }}</span> --}}
-                                </h4>
-                                <h4 class="mx-5">
-                                    {{-- @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                        style="margin-right: 5px;">{{ $this->total_quantity() }}</span> --}}
-                                </h4>
-                                <h4 class=" mx-5">
+                                </h6>
+
+                                <h6 class="d-flex flex-column">
                                     {{ $this->count_total_by_variations() }}
+
                                     @if (!empty($variationSums))
+
                                     @foreach ($variationSums as $unit_name => $variant)
-                                    {{ $unit_name == '' ? __('lang.no_units') : $unit_name }}:
-                                    <span class="items_quantity_span" style="margin-right: 15px;">
-                                        {{ $variant }} </span><br>
+                                    <div style="border: 1px solid #596fd7;height: fit-content;"
+                                        class="rounded d-flex mb-1">
+                                        <span class="p-2">
+                                            {{ $unit_name == '' ? __('lang.no_units') : $unit_name }}
+                                        </span>
+                                        <span class="p-2 text-white w-100 items_quantity_span"
+                                            style="border-radius: 0px 5px 5px 0px;background: #596fd7">
+                                            {{ $variant }} </span>
+                                    </div>
+
                                     @endforeach
+
                                     @endif
-                                </h4>
-                                <h4 class="mx-5"> @lang('lang.total') :
-                                    {{ @number_format($total, num_of_digital_numbers()) ?? 0.0 }}
+                                </h6>
+
+
+                                <h6 class="d-flex flex-column rounded"
+                                    style="border: 1px solid #596fd7;height: fit-content;">
+                                    <span class="px-2 py-1 d-block">
+                                        @lang('lang.total')
+                                    </span>
+                                    <span class="p-1 text-white"
+                                        style="background: #596fd7;border-radius: 0 0 3px 3px;">
+                                        {{ @number_format($total, num_of_digital_numbers()) ?? 0.0 }}
+                                    </span>
 
                                     <span class="final_total_span"></span>
-                                </h4>
+                                </h6>
 
-                                <h4
-                                    class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
-                                    @lang('lang.total')$ :
+                                <h6 class="dollar-cell d-flex flex-column rounded showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
+                                    style="border: 1px solid #596fd7;height: fit-content;">
+                                    <span class="px-2 py-1 d-block">
 
-                                    {{ @number_format($total_dollar, num_of_digital_numbers()) ?? 0.0 }}
+                                        @lang('lang.total')$
+                                    </span>
+
+                                    <span class="p-1 text-white"
+                                        style="background: #596fd7;border-radius: 0 0 3px 3px;">
+                                        {{ @number_format($total_dollar, num_of_digital_numbers()) ?? 0.0 }}
+                                    </span>
 
                                     <span class="final_total_span"></span>
-                                </h4>
+                                </h6>
 
                                 @if($discount_amount > 0)
-                                <h4 class="mx-5"> @lang('lang.final_amount') :
-                                    {{ @number_format($this->final_total, num_of_digital_numbers()) ?? 0.0 }}
+                                <h6 class="d-flex flex-column rounded"
+                                    style="border: 1px solid #596fd7;height: fit-content;">
+                                    <span class="px-2 py-1 d-block">
+                                        @lang('lang.final_amount')
+                                    </span>
+                                    <span class="p-1 text-white"
+                                        style="background: #596fd7;border-radius: 0 0 3px 3px;">
+                                        {{ @number_format($this->final_total, num_of_digital_numbers()) ?? 0.0 }}
+                                    </span>
+
+                                    <span class="text-white final_total_span"
+                                        style="background: #596fd7;border-radius: 0 0 3px 3px;"></span>
+                                </h6>
+
+
+                                <h6 class="dollar-cell d-flex flex-column rounded showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
+                                    style="border: 1px solid #596fd7;height: fit-content;">
+                                    <span class="px-2 py-1 d-block">
+                                        @lang('lang.final_amount_dollar')$
+                                    </span>
+                                    <span class="p-1 text-white"
+                                        style="background: #596fd7;border-radius: 0 0 3px 3px;">
+                                        {{ @number_format($this->final_total_dollar, num_of_digital_numbers()) ?? 0.0 }}
+                                    </span>
 
                                     <span class="final_total_span"></span>
-                                </h4>
-                                <h4
-                                    class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} ">
-                                    @lang('lang.final_amount_dollar')$ :
-
-                                    {{ @number_format($this->final_total_dollar, num_of_digital_numbers()) ?? 0.0 }}
-
-                                    <span class="final_total_span"></span>
-                                </h4>
+                                </h6>
 
                                 @endif
                             </div>

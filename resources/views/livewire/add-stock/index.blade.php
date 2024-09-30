@@ -1,19 +1,5 @@
 {{-- @livewire('add-stock.add-payment') --}}
-<style>
-    .table-top-head {
-        top: 190px;
-    }
 
-    .table-scroll-wrapper {
-        width: fit-content;
-    }
-
-    @media(min-width:1900px) {
-        .table-scroll-wrapper {
-            width: 100%;
-        }
-    }
-</style>
 <section class="mb-0">
     <div class="col-md-22">
         <div class="card mt-1 mb-0">
@@ -58,163 +44,164 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($stocks as $index => $stock)
-                                        <tr>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.po_ref_no')">
-                                                    {{ $stock->po_no ?? '' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.invoice_no')">
-                                                    {{ $stock->invoice_no ?? '' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.date_and_time')">
-                                                    {{ $stock->created_at }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.invoice_date')">
-                                                    {{ $stock->transaction_date }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.supplier')">
-                                                    {{ $stock->supplier->name ?? '' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                @if (!empty($stock->add_stock_lines))
-                                                    @foreach ($stock->add_stock_lines as $stock_line)
-                                                        <span class="custom-tooltip"
-                                                            style="font-size: 10px;font-weight: 600"
-                                                            data-tooltip="@lang('lang.products')">
+                                    <tr>
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.po_ref_no')">
+                                                {{ $stock->po_no ?? '' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.invoice_no')">
+                                                {{ $stock->invoice_no ?? '' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.date_and_time')">
+                                                {{ $stock->created_at }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.invoice_date')">
+                                                {{ $stock->transaction_date }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.supplier')">
+                                                {{ $stock->supplier->name ?? '' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (!empty($stock->add_stock_lines))
+                                            @foreach ($stock->add_stock_lines as $stock_line)
+                                            <span class="custom-tooltip" style="font-size: 10px;font-weight: 600"
+                                                data-tooltip="@lang('lang.products')">
 
-                                                            {{ $stock_line->product->name ?? '' }} <br>
-                                                        </span>
-                                                    @endforeach
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.created_by')">
-                                                    {{ $stock->created_by_relationship->first()->name }}
-                                                </span>
-                                            </td>
-                                            @if ($stock->transaction_currency == 2)
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.value')">
-                                                        {{ number_format($stock->dollar_final_total, num_of_digital_numbers()) }}
-                                                    </span>
-                                                </td>
-                                            @else
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.value')">
-                                                        {{ number_format($stock->final_total, num_of_digital_numbers()) }}
-                                                    </span>
-                                                </td>
+                                                {{ $stock_line->product->name ?? '' }} <br>
+                                            </span>
+                                            @endforeach
                                             @endif
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.paid_amount')">
-                                                    {{ $this->calculatePaidAmount($stock->id) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.pending_amount')">
-                                                    {{ $this->calculatePendingAmount($stock->id) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.due_date')">
-                                                    {{ $stock->due_date ?? '' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.notes')">
-                                                    {{ $stock->notes ?? '' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <button type="button"
-                                                    class="btn btn-default btn-sm dropdown-toggle d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    @lang('lang.action')
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                    user="menu">
-                                                    <li>
-                                                        <a href="{{ route('stocks.show', $stock->id) }}"
-                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
-                                                                class="fa fa-eye"></i>
-                                                            @lang('lang.view') </a>
-                                                    </li>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.created_by')">
+                                                {{ $stock->created_by_relationship->first()->name }}
+                                            </span>
+                                        </td>
+                                        @if ($stock->transaction_currency == 2)
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.value')">
+                                                {{ number_format($stock->dollar_final_total, num_of_digital_numbers())
+                                                }}
+                                            </span>
+                                        </td>
+                                        @else
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.value')">
+                                                {{ number_format($stock->final_total, num_of_digital_numbers()) }}
+                                            </span>
+                                        </td>
+                                        @endif
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.paid_amount')">
+                                                {{ $this->calculatePaidAmount($stock->id) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.pending_amount')">
+                                                {{ $this->calculatePendingAmount($stock->id) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.due_date')">
+                                                {{ $stock->due_date ?? '' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600"
+                                                data-tooltip="@lang('lang.notes')">
+                                                {{ $stock->notes ?? '' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button type="button"
+                                                class="btn btn-default btn-sm dropdown-toggle d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                @lang('lang.action')
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                user="menu">
+                                                <li>
+                                                    <a href="{{ route('stocks.show', $stock->id) }}"
+                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                            class="fa fa-eye"></i>
+                                                        @lang('lang.view') </a>
+                                                </li>
 
-                                                    <li>
-                                                        <a href="{{ route('stocks.edit', $stock->id) }}"
-                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
-                                                                class="fa fa-edit"></i>
-                                                            @lang('lang.edit') </a>
-                                                    </li>
+                                                <li>
+                                                    <a href="{{ route('stocks.edit', $stock->id) }}"
+                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                            class="fa fa-edit"></i>
+                                                        @lang('lang.edit') </a>
+                                                </li>
 
-                                                    <li>
-                                                        <a data-href="{{ route('stocks.delete', $stock->id) }}"
-                                                            {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
-                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
-                                                                class="fa fa-trash"></i>
-                                                            @lang('lang.delete')</a>
-                                                    </li>
-                                                    @if ($stock->payment_status != 'paid')
-                                                        <li>
-                                                            <a data-href="{{ route('stocks.addPayment', $stock->id) }}"
-                                                                data-container=".view_modal"
-                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal">
-                                                                <i class="fa fa-money"></i>
-                                                                @lang('lang.pay')
-                                                            </a>
-                                                        </li>
-                                                    @endif
-                                                </ul>
-                                            </td>
+                                                <li>
+                                                    <a data-href="{{ route('stocks.delete', $stock->id) }}" {{--
+                                                        data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}"
+                                                        --}}
+                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
+                                                            class="fa fa-trash"></i>
+                                                        @lang('lang.delete')</a>
+                                                </li>
+                                                @if ($stock->payment_status != 'paid')
+                                                <li>
+                                                    <a data-href="{{ route('stocks.addPayment', $stock->id) }}"
+                                                        data-container=".view_modal"
+                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal">
+                                                        <i class="fa fa-money"></i>
+                                                        @lang('lang.pay')
+                                                    </a>
+                                                </li>
+                                                @endif
+                                            </ul>
+                                        </td>
 
-                                        </tr>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
@@ -228,18 +215,18 @@
     </div>
 
     <!-- add Payment Modal -->
-    {{--    @include('add-stock.partials.add-payment') --}}
+    {{-- @include('add-stock.partials.add-payment') --}}
 
 </section>
 <div class="view_modal no-print"></div>
 @push('javascripts')
-    <script>
-        window.addEventListener('openAddPaymentModal', event => {
+<script>
+    window.addEventListener('openAddPaymentModal', event => {
             $("#addPayment").modal('show');
         })
 
         window.addEventListener('closeAddPaymentModal', event => {
             $("#addPayment").modal('hide');
         })
-    </script>
+</script>
 @endpush
