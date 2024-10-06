@@ -805,8 +805,8 @@
                                                 placeholder="{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                                 @if (empty($prices[$key]['price_type'])) readonly @endif>
                                             <p
-                                                class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
-                                                {{ $price['price_type'] == 'fixed' ? __('lang.amount') :
+                                                class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                                {{ $price['price_type'] == 'fixed' ? __('lang.amount') . ' $' :
                                                 __('lang.percent') . ' $' }}
                                                 : {{ $this->prices[$key]['price'] ?? '' }}
                                             </p>
@@ -823,7 +823,7 @@
                                                 wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                                 placeholder="{{ __('lang.price') }}">
                                             <p
-                                                class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                                class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                                                 {{ __('lang.price') . ' $' }}:{{ $this->prices[$key]['price_after_desc']
                                                 ?? '' }}
                                             </p>
@@ -843,7 +843,7 @@
                                                 wire:model="prices.{{ $key }}.dinar_total_price"
                                                 placeholder="{{ __('lang.total_price') }}">
                                             <p
-                                                class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                                class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                                                 {{ __('lang.total_price') . ' $' }}:{{
                                                 $this->prices[$key]['total_price'] ?? '' }}
                                             </p>
@@ -860,7 +860,7 @@
                                                 wire:model="prices.{{ $key }}.dinar_piece_price"
                                                 placeholder="{{ __('lang.total_price') }}">
                                             <p
-                                                class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
+                                                class="dollar-cell {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
                                                 {{ __('lang.piece_price') . ' $' }}:{{
                                                 $this->prices[$key]['piece_price'] ?? '' }}
                                             </p>
@@ -1009,6 +1009,7 @@
                                                             class="form-control quantity initial-balance-input"
                                                             style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                                                             wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"
+                                                               wire:change="count_total_by_variation_stores()"
                                                             placeholder="{{ __('lang.quantity') }}">
                                                         @error('fill_stores.' . $i . 'data' . $x . '.quantity')
                                                         <label class="text-danger error-msg">{{ $message }}</label>

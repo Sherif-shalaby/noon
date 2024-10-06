@@ -1471,8 +1471,8 @@ class Create extends Component
             $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
             $this->items[$key]['discount_type'] = $discount->price_type;
             $this->items[$key]['discount_category'] = $discount->price_category;
-            $amount = (int) ($this->items[$key]['quantity']) / (int) $discount->quantity;
-            $this->items[$key]['extra_quantity'] = ($this->items[$key]['quantity'] >= $discount->quantity) ? (($discount->bonus_quantity ? $discount->bonus_quantity : 0) * $amount) : 0;
+            $amount = intval($this->items[$key]['quantity']) / intval($discount->quantity);
+            $this->items[$key]['extra_quantity'] = intval(($this->items[$key]['quantity'] >= $discount->quantity) ? (($discount->bonus_quantity ? $discount->bonus_quantity : 0) * $amount) : 0);
             $price = ($this->items[$key]['quantity'] >= $discount->quantity) ? $discount->dinar_price : 0;
         } else
             $price = 0;
@@ -1500,11 +1500,11 @@ class Create extends Component
                 //apply qty discount if exist
                 $price1st = (
                         (float) $this->num_uf($this->items[$key]['price']) *
-                        (int) $this->num_uf($this->items[$key]['quantity'])
+                         intval($this->num_uf($this->items[$key]['quantity']))
                     ) / (
                     $this->items[$key]['extra_quantity']
-                        ? (int) $this->num_uf($this->items[$key]['quantity']) + (int) $this->num_uf($this->items[$key]['extra_quantity'])
-                        : (int) $this->num_uf($this->items[$key]['quantity'])
+                        ? intval($this->num_uf($this->items[$key]['quantity'])) + intval($this->num_uf($this->items[$key]['extra_quantity']))
+                        : intval($this->num_uf($this->items[$key]['quantity']))
                     );
                 //apply price discout
                 $price2nd = $price1st - $this->items[$key]['discount_price'];
