@@ -1015,7 +1015,8 @@ class Edit extends Component
 
                 if (!empty($this->fill_stores[$i]['stock_id'])) {
                     $transaction_store = StockTransaction::find($this->fill_stores[$i]['stock_id']);
-                } else {
+                }
+                else {
                     $transaction_store = new StockTransaction();
                 }
                 $store_id = !empty($this->fill_stores[$i]['extra_store_id']) ? $this->num_uf($this->fill_stores[$i]['extra_store_id']) : null;
@@ -1064,7 +1065,7 @@ class Edit extends Component
 
                                 $add_variation_stock_data = [
                                     'variation_price_id' => $variation_price->id,
-                                    'stock_line_id' => $stock_line->id,
+                                    'stock_line_id' => $stock_line ? $stock_line->id : null,
                                     // 'quantity' => ($i == -1) && $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : $quantity,
                                     'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price']) : null,
                                     'sell_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) : null,
@@ -1074,8 +1075,8 @@ class Edit extends Component
                                     'dollar_sub_total' => !empty($this->dollar_sub_total($index, $key)) ? $this->num_uf((float)$this->dollar_sub_total($index, $key)) : null,
                                     // 'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
                                 ];
-                                if (!empty(VariationStockline::where('variation_price_id', $variation_price->id)->where('stock_line_id', $stock_line->id)->first())) {
-                                    VariationStockline::where('variation_price_id', $variation_price->id)->where('stock_line_id', $stock_line->id)->update($add_variation_stock_data);
+                                if (!empty(VariationStockline::where('variation_price_id', $variation_price?->id)->where('stock_line_id', $stock_line?->id)->first())) {
+                                    VariationStockline::where('variation_price_id', $variation_price?->id)->where('stock_line_id', $stock_line?->id)->update($add_variation_stock_data);
                                 } else {
                                     VariationStockline::create($add_variation_stock_data);
                                 }

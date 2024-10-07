@@ -433,25 +433,22 @@
                                     @endforeach
 
                                     <div class="d-flex justify-content-between align-items-center">
+{{--                                        <div>--}}
+{{--                                            <span style="font-weight:700;font-size: 14px;" class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">$@lang('lang.total')--}}
+{{--                                            </span>--}}
+{{--                                            <span style="font-weight:700;font-size: 16px;" class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">--}}
+{{--                                                {{ @number_format($this->sum_dollar_sub_total(), num_of_digital_numbers()) ?? 0.0 }}--}}
+{{--                                            </span>--}}
+{{--                                        </div>--}}
 
-                                        <div>
-                                            <span style="font-weight:700;font-size: 14px;"
-                                                class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">$@lang('lang.total')</span>
-                                            <span style="font-weight:700;font-size: 16px;"
-                                                class="dollar-cell showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }}">
-                                                {{ @number_format($this->sum_dollar_sub_total(),
-                                                num_of_digital_numbers()) ?? 0.0 }}
-                                            </span>
-                                        </div>
+{{--                                        <div>--}}
 
-                                        <div>
-
-                                            <span style="font-weight:700;font-size: 14px;">@lang('lang.total')</span>
-                                            <span style="font-weight:700;font-size: 16px;">
-                                                {{ @number_format($this->sum_sub_total(), num_of_digital_numbers()) ??
-                                                0.0 }}
-                                            </span>
-                                        </div>
+{{--                                            <span style="font-weight:700;font-size: 14px;">@lang('lang.total')</span>--}}
+{{--                                            <span style="font-weight:700;font-size: 16px;">--}}
+{{--                                                {{ @number_format($this->sum_sub_total(), num_of_digital_numbers()) ??--}}
+{{--                                                0.0 }}--}}
+{{--                                            </span>--}}
+{{--                                        </div>--}}
                                         {{--
                                         <div>
                                             <span
@@ -639,7 +636,7 @@
                                     </span>
                                     <span class="p-1 text-white"
                                         style="background: #596fd7;border-radius: 0 0 3px 3px;">
-                                        {{ @number_format($this->final_total, num_of_digital_numbers()) ?? 0.0 }}
+                                        {{ !$this->num_uf($this->dinar_expenses) ? @number_format((float)$this->final_total, num_of_digital_numbers()) ?? 0.0 : @number_format((float)$this->final_total + $this->num_uf($this->dinar_expenses), num_of_digital_numbers()) ?? 0.0}}
                                     </span>
 
                                     <span class="text-white final_total_span"
@@ -654,7 +651,7 @@
                                     </span>
                                     <span class="p-1 text-white"
                                         style="background: #596fd7;border-radius: 0 0 3px 3px;">
-                                        {{ @number_format($this->final_total_dollar, num_of_digital_numbers()) ?? 0.0 }}
+                                        {{ !$this->num_uf($this->dollar_expenses) ? @number_format((float)$this->final_total_dollar, num_of_digital_numbers()) ?? 0.0 : @number_format((float)$this->final_total_dollar + $this->num_uf($this->dollar_expenses), num_of_digital_numbers()) ?? 0.0 }}
                                     </span>
 
                                     <span class="final_total_span"></span>

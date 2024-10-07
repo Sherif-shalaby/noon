@@ -439,9 +439,11 @@ class Create extends Component
             if ($expense['expense_currency'] == '2') {
                 $this->total_expenses += $this->num_uf($expense['amount']);
                 $this->dollar_expenses += $this->num_uf($expense['amount']);
+                $this->dinar_expenses += $this->num_uf($expense['amount']) * $this->num_uf($this->exchange_rate);
             } else {
                 $this->total_expenses += $this->num_uf($expense['amount']) / $this->num_uf($this->exchange_rate);
                 $this->dinar_expenses += $this->num_uf($expense['amount']);
+                $this->dollar_expenses += $this->num_uf($expense['amount']) / $this->num_uf($this->exchange_rate);
             }
         }
         $this->dinar_expenses = $this->num_uf($this->dinar_expenses);
@@ -1832,6 +1834,7 @@ class Create extends Component
             $this->final_total = $this->total - $this->num_uf($this->discount_amount);
             $this->final_total_dollar = $this->num_uf($this->final_total) / $this->num_uf($this->exchange_rate);
         }
+
     }
     public function changeReceivedDollar()
     {
