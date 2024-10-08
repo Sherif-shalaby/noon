@@ -250,7 +250,7 @@
                                         $amount = 0;
                                         $payments = $stock->transaction_payments;
                                         $stockLine = App\Models\AddStockLine::where('stock_transaction_id', $stock->id)->latest()->first();
-                                        $pending = $stockLine?->sub_total - $paid;
+                                        $pending = $stockLine?->sub_total + array_sum(array_column(json_decode($stock->expenses, true), 'amount'))  - ($paid + ($stock->discount_amount));
 //                                        if ($stock->transaction_currency == 2) {
 //                                        $final_total = $stock->dollar_final_total;
 //                                        foreach ($payments as $payment) {
