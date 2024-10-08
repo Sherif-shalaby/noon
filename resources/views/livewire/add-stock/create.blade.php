@@ -628,7 +628,7 @@
                                     <span class="final_total_span"></span>
                                 </h6>
 
-                                @if($discount_amount > 0)
+                                @if($discount_amount > 0 || $this->dinar_expenses > 0)
                                 <h6 class="d-flex flex-column rounded"
                                     style="border: 1px solid #596fd7;height: fit-content;">
                                     <span class="px-2 py-1 d-block">

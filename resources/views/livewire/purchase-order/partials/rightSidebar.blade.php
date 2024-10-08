@@ -96,10 +96,10 @@
                 </div>
                 {{-- +++++++++++ الباقي دينار +++++++++++ --}}
                 <div class="col-md-6">
-                    <div class="form-group">
-                        {!! Form::label('dinar_remaining', 'الباقي دينار', ['class' => 'text-primary']) !!}
-                        {!! Form::number('dinar_remaining', $dinar_remaining ,['class'=>'form-control','readonly','wire:model' => 'dinar_remaining']) !!}
-                    </div>
+{{--                    <div class="form-group">--}}
+{{--                        {!! Form::label('dinar_remaining', 'الباقي دينار', ['class' => 'text-primary']) !!}--}}
+{{--                        {!! Form::number('dinar_remaining', $dinar_remaining ,['class'=>'form-control','readonly','wire:model' => 'dinar_remaining']) !!}--}}
+{{--                    </div>--}}
                 </div>
 
             </div>

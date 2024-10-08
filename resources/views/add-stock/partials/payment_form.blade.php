@@ -34,17 +34,16 @@
             @if(isset($this->final_total) && $this->final_total > 0 && is_numeric($this->final_total))
                 <input style="width: 100%" type="number"
                        placeholder="{{ is_numeric($this->total_amount) && is_numeric($this->final_total)
-          ? number_format(
-                floatval($this->total_amount) > 0
-                ? floatval($this->final_total) - floatval($this->total_amount)
-                : floatval($this->final_total), 2)
+          ? number_format(floatval($this->total_amount) > 0
+                ? floatval($this->final_total) - floatval($this->total_amount) + floatval($this->dinar_expenses)
+                : floatval($this->final_total) + floatval($this->dinar_expenses), 2)
           : 0 }}"
                        class="form-control initial-balance-input m-0"
                        wire:model="dinar_remaining" disabled>
             @else
-            <input style="width: 100%" type="number"
+            <input style="width: 100%" type="number" name="final_dinar_remaining"
                    placeholder="{{ is_numeric($this->total_amount) && is_numeric($total)
-                  ? floatval($this->total_amount) > 0 ? floatval($total) - floatval($this->total_amount)  : floatval($total) : 0 }}"
+                  ? floatval($this->total_amount) > 0 ? floatval($total) - floatval($this->total_amount) + floatval($this->dinar_expenses) : floatval($total) + floatval($this->dinar_expenses) : 0 }}"
                    class="form-control initial-balance-input m-0"
                    wire:model="dinar_remaining" disabled>
             @endif
