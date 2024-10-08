@@ -134,7 +134,7 @@ class Create extends Component
             // 'rows.*.sku' => 'required',
             'rows.*.sku' => 'nullable|unique:variations,sku,NULL,id,deleted_at,NULL',
             'rows.*.purchase_price' => 'required',
-            'prices.*.price_customer_types' => 'required',
+//            'prices.*.price_customer_types' => 'required',
             // 'rows.*.dollar_purchase_price' => 'required',
             // 'rows.*.dollar_selling_price' => 'required',
             // 'rows.*.selling_price' => 'required',
