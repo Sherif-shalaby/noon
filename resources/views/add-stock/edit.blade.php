@@ -9,7 +9,6 @@
 @section('page_title')
     @lang('lang.stock')
 @endsection
-
 @section('breadcrumbs')
     @parent
     <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a

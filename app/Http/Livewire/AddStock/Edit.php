@@ -83,7 +83,7 @@ class Edit extends Component
         $end_date, $exchangeRate, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [], $expenses = [], $customer_types, $total_amount_dollar, $dollar_remaining, $dinar_remaining, $units, $date_and_time,
         $toggle_customers_dropdown, $customer_id, $total_expenses = 0, $market_exchange_rate = 1, $dinar_expenses = 0, $dollar_expenses = 0, $productIds,
-        $add_specific_product = 0, $toggle_dollar = 0, $total_dollar, $total, $countryId, $countryName, $transaction_id;
+        $add_specific_product = 0, $toggle_dollar = 0, $total_dollar, $total, $countryId, $countryName, $transaction_id,$final_total,$final_total_dollar;
     public $supplier_data = [
         'dollar_debit' => '',
         'dinar_debit' => '',
@@ -1860,6 +1860,11 @@ class Edit extends Component
         // $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
         $this->total_amount = $this->sum_total_cost();
         // }
+
+        if($this->discount_amount > 0 || $this->dinar_expenses > 0){
+            $this->final_total = $this->total - $this->num_uf($this->discount_amount);
+            $this->final_total_dollar = $this->num_uf($this->final_total) / $this->num_uf($this->exchange_rate);
+        }
     }
     public function changeReceivedDollar()
     {

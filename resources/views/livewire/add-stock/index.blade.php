@@ -137,7 +137,7 @@
                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                 style="font-size: 12px;font-weight: 600"
                                                 data-tooltip="@lang('lang.pending_amount')">
-                                                {{ $this->calculatePendingAmount($stock->id) }}
+                                                {{ $stock->payment_status == "partial" ? $this->calculatePendingAmount($stock->id) : 0.0 }}
                                             </span>
                                         </td>
                                         <td>

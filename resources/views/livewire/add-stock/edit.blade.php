@@ -575,7 +575,36 @@
                                     <span class="final_total_span"></span>
                                 </h4>
 
+                                @if($discount_amount > 0 || $this->dinar_expenses > 0)
+                                    <h6 class="d-flex flex-column rounded"
+                                        style="border: 1px solid #596fd7;height: fit-content;">
+                                    <span class="px-2 py-1 d-block">
+                                        @lang('lang.final_amount')
+                                    </span>
+                                        <span class="p-1 text-white"
+                                              style="background: #596fd7;border-radius: 0 0 3px 3px;">
+                                        {{ !$this->num_uf($this->dinar_expenses) ? @number_format((float)$this->final_total, num_of_digital_numbers()) ?? 0.0 : @number_format((float)$this->final_total + $this->num_uf($this->dinar_expenses), num_of_digital_numbers()) ?? 0.0}}
+                                    </span>
 
+                                        <span class="text-white final_total_span"
+                                              style="background: #596fd7;border-radius: 0 0 3px 3px;"></span>
+                                    </h6>
+
+
+                                    <h6 class="dollar-cell d-flex flex-column rounded showHideDollarCells {{ $settings['toggle_dollar'] == '1' ? 'd-none' : '' }} "
+                                        style="border: 1px solid #596fd7;height: fit-content;">
+                                    <span class="px-2 py-1 d-block">
+                                        @lang('lang.final_amount_dollar')$
+                                    </span>
+                                        <span class="p-1 text-white"
+                                              style="background: #596fd7;border-radius: 0 0 3px 3px;">
+                                        {{ !$this->num_uf($this->dollar_expenses) ? @number_format((float)$this->final_total_dollar, num_of_digital_numbers()) ?? 0.0 : @number_format((float)$this->final_total_dollar + $this->num_uf($this->dollar_expenses), num_of_digital_numbers()) ?? 0.0 }}
+                                    </span>
+
+                                        <span class="final_total_span"></span>
+                                    </h6>
+
+                                @endif
                             </div>
 
                             {{-- #############EXPENSES########## --}}

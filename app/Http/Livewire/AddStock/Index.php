@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\AddStock;
 
+use App\Models\AddStockLine;
 use App\Models\Brand;
 use App\Models\Currency;
 use App\Models\StockTransaction;
@@ -78,6 +79,7 @@ class Index extends Component
                 return $query->where('created_at', '<=', $this->to);
             })
             ->orderBy('created_at', 'desc')->get();
+
         $this->dispatchBrowserEvent('initialize-select2');
 
         $this->dispatchBrowserEvent('componentRefreshed');
@@ -93,6 +95,10 @@ class Index extends Component
         $pending = 0;
         $amount = 0;
         $payments = $transaction->transaction_payments;
+//        $paidValue = $this->calculatePaidAmount($transaction->id);
+//        $stockLine = AddStockLine::where('transaction_id', $transaction->id)->latest()->first();
+//        $pending = $stockLine?->sub_total - $paidValue;
+
         if ($transaction->transaction_currency == 2) {
             $final_total = $transaction->dollar_final_total;
             foreach ($payments as $payment) {

@@ -249,36 +249,39 @@
                                         $pending = 0;
                                         $amount = 0;
                                         $payments = $stock->transaction_payments;
-                                        if ($stock->transaction_currency == 2) {
-                                        $final_total = $stock->dollar_final_total;
-                                        foreach ($payments as $payment) {
-                                        if ($payment->paying_currency == 2) {
-                                        $amount += $payment->amount;
-                                        $pending = $final_total - $amount;
-                                        } else {
-                                        $amount += $payment->amount / $payment->exchange_rate;
-                                        $pending = $final_total - $amount;
-                                        }
-                                        }
-                                        } else {
-                                        $final_total = $stock->final_total;
-                                        foreach ($payments as $payment) {
-                                        if ($payment->paying_currency == 2) {
-                                        $amount += $payment->amount * $payment->exchange_rate;
-                                        $pending = $final_total - $amount;
-                                        } else {
-                                        $amount += $payment->amount;
-                                        $pending = $final_total - $amount;
-                                        }
-                                        }
-                                        }
+                                        $stockLine = App\Models\AddStockLine::where('stock_transaction_id', $stock->id)->latest()->first();
+                                        $pending = $stockLine?->sub_total - $paid;
+//                                        if ($stock->transaction_currency == 2) {
+//                                        $final_total = $stock->dollar_final_total;
+//                                        foreach ($payments as $payment) {
+//                                        if ($payment->paying_currency == 2) {
+//                                        $amount += $payment->amount;
+//                                        $pending = $final_total - $amount;
+//                                        } else {
+//                                        $amount += $payment->amount / $payment->exchange_rate;
+//                                        $pending = $final_total - $amount;
+//                                        }
+//                                        }
+//                                        } else {
+//                                        $final_total = $stock->final_total;
+//                                        foreach ($payments as $payment) {
+//                                        if ($payment->paying_currency == 2) {
+//                                        $amount += $payment->amount * $payment->exchange_rate;
+//                                        $pending = $final_total - $amount;
+//                                        } else {
+//                                        $amount += $payment->amount;
+//                                        $pending = $final_total - $amount;
+//                                        }
+//                                        }
+//                                        }
+
                                         @endphp
                                         <td class="col10">
                                             <span
                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                 style="font-size: 12px;font-weight: 600"
                                                 data-tooltip="@lang('lang.pending_amount')">
-                                                {{ @num_format($pending) }}
+                                                {{  $stock->payment_status == "partial" ? @num_format($pending) : '0.0' }}
                                             </span>
                                         </td>
                                         <td class="col11">
