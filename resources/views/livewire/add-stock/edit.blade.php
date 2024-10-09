@@ -438,8 +438,6 @@
                                 <div class="table-responsive col-md-11 border border-1  animate__animated animate__bounceInLeft "
                                     style="height: 100vh;overflow: scroll;animation-delay: 1.8s">
 
-
-
                                     @if (!empty($items))
                                     @php
                                     $i = 0;

@@ -103,6 +103,7 @@ class Edit extends Component
     {
         $this->transaction_id = $id;
         $recent_stock = StockTransaction::find($id);
+        $this->expenses = json_decode($recent_stock->expenses, true);
         $this->market_exchange_rate = System::getProperty('dollar_exchange');
         $this->toggle_dollar = System::getProperty('toggle_dollar');
         $this->store_id = $recent_stock->store_id ?? '';
